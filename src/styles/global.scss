@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap');
+
+@import './customize.scss';
+@import './variables.scss';
+@import './form.scss';
+@import './footer.scss';
+@import './swiper.scss';
+@import './product-description.scss';
+@import './custom-date-picker.scss';
+
+.container {
+  @apply max-w-[1200px] w-full mx-auto xl:px-0;
+}
+
+.flex-center {
+  @apply flex justify-center items-center;
+}
+
+.flex-between {
+  @apply flex justify-between items-center;
+}
+
+.flex-end{
+  @apply flex justify-end items-center
+}
+
+
+/* It set 1rem = 10px */
+html,
+body {
+  font-size: 62.5%;
+  font-family: 'Nunito', sans-serif;
+}
+
+h1 {
+  @apply text-text-color font-bold text-3xl;
+}
+
+h2 {
+  @apply text-text-color font-semibold text-xl;
+}
+
+h3 {
+  @apply text-text-color font-semibold text-lg;
+}
+
+h4 {
+  @apply text-text-color font-semibold text-md;
+}
+
+h5 {
+  @apply text-text-color font-semibold text-base;
+}
+
+p,
+li,
+div {
+  @apply text-text-color text-base font-medium;
+}

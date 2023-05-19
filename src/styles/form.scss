@@ -1,0 +1,23 @@
+@import './variables.scss';
+
+// placeholder for all input
+input::placeholder {
+  @apply text-gray-400 leading-8 text-base;
+}
+
+// placeholder for search-form's input
+.search-form {
+  input::placeholder {
+    @apply text-gray-400 leading-8 text-base font-bold;
+  }
+}
+
+.address_picker_item {
+  @apply p-8 cursor-pointer bg-white hover:bg-gray-100 active:opacity-50 duration-150 ease-linear;
+}
+
+
+// placeholder for all textarea
+textarea::placeholder {
+  @apply text-gray-400 leading-8 text-base;
+}

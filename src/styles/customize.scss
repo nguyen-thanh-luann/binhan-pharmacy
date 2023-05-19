@@ -1,0 +1,124 @@
+@import './variables.scss';
+
+/* =============title============= */
+
+.title_xs {
+  @apply text-text-color leading-7 text-xs font-bold;
+}
+
+.title_sm {
+  @apply text-text-color leading-8 text-sm font-bold;
+}
+.title {
+  @apply text-text-color leading-8 text-base font-bold;
+}
+.title_md {
+  @apply text-text-color leading-9 text-md font-bold;
+}
+.title_lg {
+  @apply text-text-color leading-10 text-lg font-bold;
+}
+.title_xl {
+  @apply text-text-color leading-10 text-xl font-bold;
+}
+.title_2xl {
+  @apply text-text-color leading-10 text-2xl font-bold;
+}
+
+/* =============text============= */
+
+.text_xs {
+  @apply text-text-color leading-7 text-xs font-medium;
+}
+
+.text_sm {
+  @apply text-text-color leading-8 text-sm font-medium;
+}
+
+.text {
+  @apply text-text-color leading-8 text-base font-medium;
+}
+
+.text_md {
+  @apply text-text-color leading-9 text-md font-medium;
+}
+
+.text_lg {
+  @apply text-text-color leading-10 text-lg font-medium;
+}
+
+.text_xl {
+  @apply text-text-color leading-10 text-xl font-medium;
+}
+
+/* =============background============= */
+
+.gradient {
+  background-image: linear-gradient(rgba(255, 255, 255, 0), rgb(255, 255, 255));
+}
+
+.word-wrap-anywhere {
+  word-wrap: anywhere;
+}
+
+//customer input number button
+@layer base {
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number'] {
+    -webkit-appearance: none;
+    -moz-appearance: textfield !important;
+    margin: 0;
+  }
+}
+
+// use in product item discount badge
+.discount_badge {
+  background-image: url('../assets/images/discount_badge.png');
+  width: 38px;
+  height: 42px;
+}
+
+// forwardlink
+.forward-link {
+  position: relative;
+  width: fit-content;
+  cursor: pointer;
+  display: block;
+  transition-duration: 150ms linear;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 1.5px;
+    bottom: 0;
+    left: 0;
+    background-color: $primary;
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-out;
+  }
+
+  &:hover {
+    color: $primary;
+    &::after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
+    }
+  }
+
+  &:active {
+    opacity: 0.5;
+  }
+}
+
+// custom effect
+
+.effect-in-out{
+  @apply duration-200 ease-in-out
+}
+
+.effect-linear{
+  @apply duration-200 ease-linear
+}

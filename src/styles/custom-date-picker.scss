@@ -1,0 +1,7 @@
+@import './variables.scss';
+
+.date-picker{
+  .rdrDefinedRangesWrapper{
+    @apply hidden md:block
+  }
+}

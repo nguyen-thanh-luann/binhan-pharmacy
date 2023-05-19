@@ -1,0 +1,30 @@
+export enum WebsocketEmitEvents {
+  LOGIN = 'login',
+  JOIN_ROOM = 'join_room',
+  LEAVE_ROOM = 'leave_room',
+  SEND_MESSAGE = 'send_message',
+  READ_MESSAGE = 'read_message',
+  START_TYPING = 'start_typing',
+  STOP_TYPING = 'stop_typing',
+  LIKE_MESSAGE = 'like_message',
+  UNLIKE_MESSAGE = 'unlike_message',
+}
+
+export enum WebsocketOnEvents {
+  FRIEND_LOGOUT = 'friend_logout',
+  LOGIN = 'login',
+  FRIEND_LOGIN = 'friend_login',
+  READ_ALL_MESSAGE = 'read_all_message',
+  PARTNER_READ_ALL_MESSAGE = 'partner_read_all_message',
+  RECEIVE_MESSAGE = 'receive_message',
+  RECEIVE_UNREAD_MESSAGE = 'receive_unread_message',
+  CONFIRM_READ_MESSAGE = 'confirm_read_message',
+  START_TYPING = 'start_typing',
+  STOP_TYPING = 'stop_typing',
+  LIKE_MESSAGE = 'like_message',
+  UNLIKE_MESSAGE = 'unlike_message',
+  CREATE_ROOM = 'create_room',
+  DELETE_ROOM = 'delete_room',
+  MEMBER_LEAVE_ROOM = 'member_leave_room',
+  MEMBER_JOIN_ROOM = 'member_join_room',
+}
