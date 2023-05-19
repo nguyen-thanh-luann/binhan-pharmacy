@@ -1,5 +1,4 @@
 export * from './loginPasswordScreen'
 export * from './loginOTPScreen'
 export * from './resetPasswordScreen'
-export * from './signupScreen'
 export * from './userRegister'

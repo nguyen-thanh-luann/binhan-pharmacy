@@ -1,17 +1,15 @@
 import { ReactNode } from 'react'
 
-import { Backdrop, Footer, HeaderGroup, HeaderMobile } from '@/components'
+import { Backdrop, BottomNavigation, Footer, HeaderGroup, HeaderMobile } from '@/components'
 import type { MetaProps } from '@/layouts'
 import { Meta } from '@/layouts'
 import { Toaster } from 'react-hot-toast'
-
 
 type IMainProps = MetaProps & {
   children: ReactNode
 }
 
 export const Main = ({ children, ...attributes }: IMainProps) => {
-
   return (
     <div className="w-full px-1 text-gray-700 antialiased bg-background">
       <Meta {...attributes} />
@@ -32,9 +30,14 @@ export const Main = ({ children, ...attributes }: IMainProps) => {
           },
         }}
       />
-      {children}
 
-      <Footer />
+      <div className="mb-bottom_nav_height md:mb-12">
+        {children}
+
+        <Footer />
+      </div>
+
+      <BottomNavigation />
     </div>
   )
 }

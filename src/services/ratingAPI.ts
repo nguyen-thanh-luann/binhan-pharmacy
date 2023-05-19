@@ -1,17 +1,21 @@
 import {
   AttachmentProps,
+  Comment,
   CreateCommentParams,
+  CreateRatingReq,
   DeleteRatingProps,
   GetCommentsRatingsParams,
   GetRatingsByStarParams,
-  UpdateRatingProps,
+  HTTPResponseV2,
+  QueryList,
+  Rating,
+  RatingRes,
 } from '@/types'
 import axiosClient from '.'
-import { DEFAULT_LIMIT } from '@/constants'
 
 const ratingAPI = {
   getRatingTags: (params: { product_id: number; offset?: number; limit?: number }) => {
-    return axiosClient.post('/comment_controller/get_rating_tag', {
+    return axiosClient.get('/comment_controller/rating_tag', {
       params,
     })
   },
@@ -22,30 +26,20 @@ const ratingAPI = {
     })
   },
 
-  getProductsPurchased: (params: { offset?: number; limit?: number }) => {
-    return axiosClient.post('/comment_controller/get_purchase_product_history', {
+  getProductsPurchased: (params: QueryList): Promise<HTTPResponseV2<RatingRes[]>> => {
+    return axiosClient.get('/comment_controller/purchase_product_history', {
       params,
     })
   },
 
-  updateRatingProduct: (props: UpdateRatingProps) => {
+  updateRatingProduct: (props: CreateRatingReq) => {
     return axiosClient.post('/comment_controller/update_rating_product', {
       params: props,
     })
   },
 
-  deleteRatingProduct: (params: DeleteRatingProps) => {
-    return axiosClient.post('/comment_controller/delete_rating_product', {
-      params,
-    })
-  },
-
-  groupRatingStarCount: (product_tmpl_id: number) => {
-    return axiosClient.post('/comment_controller/group_rating_star_count', {
-      params: {
-        product_tmpl_id,
-      },
-    })
+  groupRatingStarCount: (product_id: number) => {
+    return axiosClient.get(`/comment_controller/group_rating_star_count?product_id=${product_id}`)
   },
 
   getRatingByStar: (params: GetRatingsByStarParams) => {
@@ -54,15 +48,16 @@ const ratingAPI = {
     })
   },
 
-  getRatingsByProduct: ({
-    comment_type,
-    product_id,
-    limit = DEFAULT_LIMIT,
-    offset = 0,
-  }: GetCommentsRatingsParams) => {
-    return axiosClient.get(
-      `/comment_controller/rating_by_product?product_id=${product_id}&comment_type=["${comment_type}"]&limit=${limit}&offset=${offset}`
-    )
+  getRatingsByProduct: (
+    params: GetCommentsRatingsParams
+  ): Promise<HTTPResponseV2<Comment[] | Rating[]>> => {
+    return axiosClient.get('/comment_controller/rating_by_product', {
+      params: {
+        ...params,
+        comment_type: `[${params?.comment_type.map((item) => `"${item}"`).join(', ')}]`,
+        star_rating: params?.star_rating ? `[${params?.star_rating?.join(', ')}]` : undefined,
+      },
+    })
   },
 
   createComment: ({ product_id, content }: CreateCommentParams) => {
@@ -76,6 +71,10 @@ const ratingAPI = {
 
   deleteComment: (comment_id: number) => {
     return axiosClient.delete(`/comment_controller/delete_comment_product?comment_id=${comment_id}`)
+  },
+
+  deleteRating: (params: DeleteRatingProps) => {
+    return axiosClient.delete(`/comment_controller/rating_product`, { params })
   },
 }
 

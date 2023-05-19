@@ -1,18 +1,19 @@
+import { useAuth, useGuest, useUser } from '@/hooks'
+import { createPasswordSchema } from '@/schema'
 import { setAuthOption, setBackdropVisible } from '@/store'
+import { authentication } from '@/utils'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
+import { Button } from '../button'
 import { PhoneForm } from '../form'
 import { OtpForm } from '../form/otpForm'
-import { AuthScreen } from './authScreen'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { createPasswordSchema } from '@/schema'
-import { Button } from '../button'
 import { PasswordField } from '../inputs'
-import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
-import { authentication } from '@/utils'
-import { useAuth } from '@/hooks'
-import { toast } from 'react-hot-toast'
+import { AuthScreen } from './authScreen'
 
 declare global {
   interface Window {
@@ -27,7 +28,12 @@ interface ResetPasswordScreenProps {
 
 export const ResetPasswordScreen = ({ onClose }: ResetPasswordScreenProps) => {
   const dispatch = useDispatch()
+  const router = useRouter()
+  const { guestInfo } = useGuest()
+  const deviceCode = guestInfo?.device_code || ''
   const { resetPassword } = useAuth()
+  const { addGuestCartToShoppingCart, mutateAccountData, generateChatServiceToken } = useUser({})
+
   const [phoneNumber, setPhoneNumber] = useState<string>()
   const [verify, setVerify] = useState<boolean>(false)
 
@@ -66,7 +72,7 @@ export const ResetPasswordScreen = ({ onClose }: ResetPasswordScreenProps) => {
       },
       authentication
     )
-    
+
     try {
       const confirmationResult = await signInWithPhoneNumber(
         authentication,
@@ -100,7 +106,11 @@ export const ResetPasswordScreen = ({ onClose }: ResetPasswordScreenProps) => {
       re_password: getValues('reNewPassword'),
       handleSuccess: () => {
         toast.success('Thay đổi mật khẩu thành công!')
-        dispatch(setAuthOption('loginPassword'))
+        mutateAccountData()
+        // merge cart data of guest to user's cart
+        addGuestCartToShoppingCart(deviceCode)
+        generateChatServiceToken()
+        router.push('/')
       },
     })
   }
@@ -128,7 +138,12 @@ export const ResetPasswordScreen = ({ onClose }: ResetPasswordScreenProps) => {
             <div>
               <form onSubmit={handleSubmit(handlePasswordSubmit)}>
                 <div className="mb-12">
-                  <PasswordField control={control} name="newPassword" label="Mật khẩu mới" />
+                  <PasswordField
+                    control={control}
+                    name="newPassword"
+                    label="Mật khẩu mới"
+                    inputClassName="rounded-[10px] p-[12px]"
+                  />
                 </div>
 
                 <div className="mb-12">
@@ -136,6 +151,7 @@ export const ResetPasswordScreen = ({ onClose }: ResetPasswordScreenProps) => {
                     control={control}
                     name="reNewPassword"
                     label="Nhập lại Mật khẩu mới"
+                    inputClassName="rounded-[10px]"
                   />
                 </div>
 
@@ -152,9 +168,7 @@ export const ResetPasswordScreen = ({ onClose }: ResetPasswordScreenProps) => {
           )}
         </div>
         <div id="recaptcha-container"></div>
-        
       </AuthScreen>
-
     </>
   )
 }

@@ -8,7 +8,7 @@ import {
   Spinner,
 } from '@/components'
 import { isArrayHasValue } from '@/helper'
-import { useCarts, useUserDetail } from '@/hooks'
+import { useCarts, useUserAddress } from '@/hooks'
 import { selectOrderAddress, setOrderAddress } from '@/store'
 import { MainNoFooter } from '@/templates'
 import { useEffect } from 'react'
@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const ShoppingCartPage = () => {
   const dispatch = useDispatch()
-  const { data: userDetail } = useUserDetail({})
+  const { data: addressList } = useUserAddress({})
   const orderAddress = useSelector(selectOrderAddress)
   const {
     data,
@@ -32,10 +32,10 @@ const ShoppingCartPage = () => {
   } = useCarts()
 
   useEffect(() => {
-    if (!orderAddress && userDetail?.shipping_adress?.length > 0) {
-      dispatch(setOrderAddress(userDetail?.shipping_adress?.[0]))
+    if (!orderAddress && isArrayHasValue(addressList)) {
+      dispatch(setOrderAddress(addressList?.[0]))
     }
-  }, [userDetail])
+  }, [addressList])
 
   return (
     <MainNoFooter title={'Giỏ hàng'} description="">

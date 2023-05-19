@@ -6,12 +6,15 @@ export const SWR_KEY = {
   get_product_list_by_attribute_minor: 'get_product_list_by_attribute_minor',
   get_product_detail: 'get_product_detail',
   get_product_description: 'get_product_description',
+  search_product: 'search_product',
+  filter_product: 'filter_product',
 
   get_category_list: 'get_category_list',
   get_category_minor_list: 'get_category_minor_list',
 
   get_attribute_minor_list: 'get_attribute_minor_list',
   get_attribute_minor_list_filter: 'get_attribute_minor_list_filter',
+  get_viscera_attribute: 'get_viscera_attribute',
 
   get_post_list: 'get_post_list',
   get_post_detail: 'get_post_detail',
@@ -30,6 +33,7 @@ export const SWR_KEY = {
   get_star_rating_count: 'get_star_rating_count',
 
   get_user_address: 'get_user_address',
+  get_user_shipping_address: 'get_user_shipping_address',
   get_user_detail: 'get_user_detail',
 
   get_delivery: 'get_delivery',

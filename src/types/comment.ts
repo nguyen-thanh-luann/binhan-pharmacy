@@ -1,14 +1,15 @@
-import { ImageRes } from './common'
+import { URLRes } from './common'
 import { QueryList } from './http'
 
 export interface GetCommentsRatingsParams extends QueryList {
   product_id: number
-  comment_type: ['comment' | 'rating']
+  comment_type: ('comment' | 'rating')[]
+  star_rating?: string[]
 }
 
 export interface CreateCommentParams {
   product_id: number
-  content: string,
+  content: string
   onSuccess?: () => void
 }
 
@@ -17,7 +18,7 @@ export interface CommentAuthor {
   partner_name: string
   phone: string
   gender: string
-  avatar_url: ImageRes
+  avatar_url: URLRes
 }
 
 export interface Comment {
@@ -35,4 +36,8 @@ export interface Comment {
   }
   editable: boolean
   deletable: boolean
+  star_rating: string
+  star_rating_int: number
+  rating_tag: []
+  image_urls: Array<URLRes>
 }

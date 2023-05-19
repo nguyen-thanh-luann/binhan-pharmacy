@@ -45,7 +45,7 @@ export const LoginForm = ({ className, firstOption, secondOption, onSubmit }: Lo
             name="password"
             placeholder={`Mật khẩu`}
             label="Mật khẩu"
-            inputClassName="rounded-[10px] p-[12px]"
+            inputClassName="rounded-[10px]"
           />
         </div>
 

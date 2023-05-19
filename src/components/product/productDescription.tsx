@@ -6,15 +6,15 @@ import {
   scrollIntoElementById,
 } from '@/helper'
 import { useProductDescription } from '@/hooks'
+import { ProductDetailPageContainer } from '@/templates'
 import { ProductDescription as IProductDescription, ProductDescriptionChild } from '@/types'
 import classNames from 'classnames'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Spinner } from '../spinner'
+import { Tabs } from '../tabs'
 import { DescriptionContent } from './descriptionContent'
 import { DescriptionMenu } from './descriptionMenu'
-import { Tabs } from '../tabs'
-import { ProductDetailPageContainer } from '@/templates'
 
 interface ProductDescriptionProps {
   product_id: number
@@ -27,6 +27,7 @@ export const ProductDescription = ({ product_id, className }: ProductDescription
   const [currentTab, setCurrentTab] = useState<string>('')
   const [currentDesc, setCurrentDesc] = useState<String>('')
   const [currentDescId, setCurrentDescId] = useState<number>()
+  const descriptionContentRef = useRef<any>(null)
 
   const { data, isValidating } = useProductDescription({
     key: `${SWR_KEY.get_product_description}_${product_id}`,
@@ -36,13 +37,18 @@ export const ProductDescription = ({ product_id, className }: ProductDescription
   const handleCategoryClick = (data: IProductDescription | ProductDescriptionChild) => {
     scrollIntoElementById(
       `desc_category_${(data as IProductDescription).category_id}`,
-      HEADER_GROUP_HEIGHT
+      HEADER_GROUP_HEIGHT * 2
     ) // scroll distance from top a space == header group height
+
+    if (currentDescId !== data?.category_id && !descriptionContentRef?.current?.show) {
+      descriptionContentRef?.current?.setShow(true)
+    }
+    // console.log(descriptionContentRef?.current?.setShow(true))
 
     setCurrentDescCategory(data as IProductDescription)
   }
 
-  // handle when user select description category and data load success
+  // handle when user select description category when data load success
   useEffect(() => {
     if (isArrayHasValue(currentDescCategory?.tab)) {
       setCurrentTab(currentDescCategory?.tab?.[0]?.tab_id.toString() || '')
@@ -80,7 +86,6 @@ export const ProductDescription = ({ product_id, className }: ProductDescription
             <DescriptionMenu
               currentDescId={currentDescId}
               data={data || []}
-              onChildClick={handleCategoryClick}
               onClick={handleCategoryClick}
               className="sticky top-header_group_height"
             />
@@ -106,7 +111,11 @@ export const ProductDescription = ({ product_id, className }: ProductDescription
             ) : null}
           </div>
 
-          <DescriptionContent data={currentDesc + ''} onUserScroll={(id) => setCurrentDescId(id)} />
+          <DescriptionContent
+            ref={descriptionContentRef}
+            data={currentDesc + ''}
+            onUserScroll={(id) => setCurrentDescId(id)}
+          />
         </ProductDetailPageContainer>
       ) : null}
     </div>

@@ -2,7 +2,7 @@ import { isObjectHasValue } from '@/helper'
 import { useUser, useUserAddress } from '@/hooks'
 import { AddressSchema } from '@/schema'
 import { selectAddressForm, selectOrderAddress, setAddressForm } from '@/store'
-import { AddressAdd, AddressPickerRes, ShippingAddress } from '@/types'
+import { AddressAdd, AddressPickerRes, ShippingAddressV2 } from '@/types'
 import { yupResolver } from '@hookform/resolvers/yup'
 import classNames from 'classnames'
 import { useEffect } from 'react'
@@ -31,8 +31,8 @@ export const AddressForm = ({ onSubmit: onExternalSubmit, className }: AddressFo
     mode: 'all',
   })
 
-  const addressForm = useSelector(selectAddressForm)
-  
+  const addressForm: ShippingAddressV2 = useSelector(selectAddressForm)
+
   const { userInfo } = useUser({})
   const dispatch = useDispatch()
 
@@ -44,20 +44,20 @@ export const AddressForm = ({ onSubmit: onExternalSubmit, className }: AddressFo
 
     setValue('name', addressForm?.name)
     setValue('phone', addressForm?.phone)
-    setValue('street', addressForm?.full_adress)
+    setValue('street', addressForm?.street)
     setValue('state', {
-      label: addressForm?.state_id,
-      value: addressForm?.state_name_id,
+      label: addressForm?.state_id?.name,
+      value: addressForm?.state_id?.id,
     })
 
     setValue('district', {
-      label: addressForm?.district_id,
-      value: addressForm?.district_name_id,
+      label: addressForm?.district_id?.name,
+      value: addressForm?.district_id?.id,
     })
 
     setValue('ward', {
-      label: addressForm?.ward_id,
-      value: addressForm?.ward_name_id,
+      label: addressForm?.ward_id?.name,
+      value: addressForm?.ward_id?.id,
     })
   }, [])
 
@@ -98,19 +98,30 @@ export const AddressForm = ({ onSubmit: onExternalSubmit, className }: AddressFo
       },
     }
 
-    const addressRes: ShippingAddress = {
-      ...data,
+    // change....
+    const addressRes: ShippingAddressV2 = {
+      name: data?.name,
+      phone: data?.phone,
       full_adress: `${data.street}, ${data.ward.label}, ${data.district.label},
                ${data.state.label}`,
       id: addressForm?.id || 0,
-      country_name_id: data?.country_id || '',
-      country_id: data?.country_name || '',
-      district_name_id: data?.district.value,
-      district_id: data?.district.label,
-      state_name_id: data?.state.value,
-      state_id: data?.state.label,
-      ward_name_id: data?.ward.value,
-      ward_id: data?.ward.label,
+      street: data?.street,
+      country_id: {
+        id: data?.country_id,
+        name: data?.country_name,
+      },
+      district_id: {
+        id: data?.district.value,
+        name: data?.district.label,
+      },
+      state_id: {
+        id: data?.state.value,
+        name: data?.state.label,
+      },
+      ward_id: {
+        id: data?.ward.value,
+        name: data?.ward?.label,
+      },
     }
 
     addAddress({ address: newAddress, addressForm: addressRes }).then(() => {
@@ -154,7 +165,7 @@ export const AddressForm = ({ onSubmit: onExternalSubmit, className }: AddressFo
             onSubmit={(data: AddressPickerRes) => handleSelectAddress(data)}
             defaultValue={
               addressForm
-                ? `${addressForm?.state_id} ${addressForm?.district_id} ${addressForm?.ward_id}`
+                ? `${addressForm?.state_id?.name} ${addressForm?.district_id?.name} ${addressForm?.ward_id?.name}`
                 : ``
             }
           />
@@ -165,7 +176,7 @@ export const AddressForm = ({ onSubmit: onExternalSubmit, className }: AddressFo
             control={control}
             name="street"
             placeholder="Địa chỉ chi tiết"
-            defaultValue={addressForm?.full_adress}
+            defaultValue={addressForm?.street}
           />
         </div>
 

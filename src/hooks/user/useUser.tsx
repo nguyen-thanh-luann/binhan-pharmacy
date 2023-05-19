@@ -1,8 +1,10 @@
 import { SWR_KEY } from '@/constants'
-import { cartAPI, userAPI } from '@/services'
-import { CheckPasswordRes, UpdateUserParams, UserInfo } from '@/types'
-import useSWR from 'swr'
+import { authAPI, cartAPI, userAPI } from '@/services'
+import { CheckPasswordRes, GenerateChatTokenRes, UpdateUserParams, UserInfo } from '@/types'
+import useSWR, { useSWRConfig } from 'swr'
 import { useAsync } from '../common'
+import { useAuth } from '../auth'
+import { encodeJWT } from '@/helper'
 
 interface useUserProps {
   shouldFetch?: boolean
@@ -19,10 +21,14 @@ interface useUserRes {
     onSuccess?: () => void,
     onError?: () => void
   ) => void
+  mutateAccountData: () => void
+  generateChatServiceToken: () => void
 }
 
 export const useUser = ({ key, shouldFetch = true }: useUserProps): useUserRes => {
   const { asyncHandler } = useAsync()
+  const { mutate: mutateConfig } = useSWRConfig()
+  const { generateChatToken } = useAuth()
 
   const { data: userInfo, mutate } = useSWR(
     key ? key : SWR_KEY.get_user_information,
@@ -82,11 +88,40 @@ export const useUser = ({ key, shouldFetch = true }: useUserProps): useUserRes =
     }
   }
 
+  const mutateAccountData = () => {
+    mutateConfig(SWR_KEY.get_guest_information)
+    mutateConfig(SWR_KEY.get_cart_length)
+  }
+
+  const generateChatServiceToken = () => {
+    getUserInfo((userInfo) => {
+      handleGenerateChatToken(userInfo)
+    })
+  }
+
+  const handleGenerateChatToken = async (userInfo: UserInfo) => {
+    generateChatToken({
+      token: encodeJWT({ user_id: userInfo.account?.partner_id }),
+      onSuccess: async (data: GenerateChatTokenRes) => {
+        try {
+          const res: any = await authAPI.setChatToken(data)
+          if (res?.result?.success) {
+            console.log('set chat token success!')
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      },
+    })
+  }
+
   return {
     userInfo,
     getUserInfo,
     checkHasPassword,
     updateUser,
     addGuestCartToShoppingCart,
+    mutateAccountData,
+    generateChatServiceToken,
   }
 }

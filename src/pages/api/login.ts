@@ -41,7 +41,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         sameSite: 'lax',
       })
 
-      // reset guest token undefind after login main account
+      // set guest token to undefind after login user account
       cookies.set('guest_token')
       cookies.set('guest_refresh_token')
       cookies.set('device_code')

@@ -20,10 +20,9 @@ export const useProductDetail = ({
 }: useProductDetailProps): useProducDetailRes => {
   const { data, isValidating } = useSWR(
     key,
-    !shouldFetch
+    !shouldFetch || !product_id
       ? null
-      : () =>
-          productAPI.getProductDetail(product_id).then((res: any) => res?.data),
+      : () => productAPI.getProductDetail(product_id).then((res: any) => res?.data),
     {
       revalidateOnFocus: false,
       dedupingInterval: 60000,

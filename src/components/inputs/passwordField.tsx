@@ -1,8 +1,8 @@
-import { EyeIconOutline, EyeInvisibleIconOutline } from '@/assets';
-import classNames from "classnames";
-import React, { useState } from "react";
-import { Control, useController } from "react-hook-form";
-import { twMerge } from "tailwind-merge";
+import { EyeIconOutline, EyeInvisibleIconOutline } from '@/assets'
+import classNames from 'classnames'
+import React, { useState } from 'react'
+import { Control, useController } from 'react-hook-form'
+import { twMerge } from 'tailwind-merge'
 
 type PasswordFieldProps = React.DetailedHTMLProps<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -52,7 +52,7 @@ export const PasswordField = ({
         </label>
       )}
 
-      <div className={`relative ${label ? 'mt-8' : ''}`}>
+      <div className={classNames('relative flex-center', label ? 'mt-8' : '')}>
         <input
           onChange={onChange}
           onBlur={onBlur}
@@ -60,10 +60,9 @@ export const PasswordField = ({
           value={value}
           className={twMerge(
             classNames(
-              `border border-gray-200 w-full p-8 text rounded-md outline-none ${
-                error ? 'border-red bg-red-100' : ''
-              }`,
-              inputClassName
+              `flex-1 text rounded-md outline-none border border-gray-200 p-12 pr-24`,
+              inputClassName,
+              error ? 'border-red bg-red-100' : ''
             )
           )}
           id={name}
@@ -73,7 +72,7 @@ export const PasswordField = ({
 
         <span
           onClick={() => setShowPassword((prev) => !prev)}
-          className="absolute right-10 cursor-pointer top-[50%] translate-y-[-50%]"
+          className="absolute right-10 top-[50%] translate-y-[-50%] cursor-pointer"
         >
           {!showPassword ? (
             <EyeInvisibleIconOutline className="w-12 h-12" />

@@ -1,5 +1,5 @@
 import { SWR_KEY } from '@/constants'
-import { authAPI, userAPI } from '@/services'
+import { userAPI } from '@/services'
 import { RootState, resetChatState, resetOrderData, setBackdropVisible } from '@/store'
 import {
   GenerateChatTokenParams,
@@ -88,7 +88,7 @@ export const useAuth = () => {
         otpInput,
         handleSuccess: async (firebaseToken) => {
           asyncHandler({
-            fetcher: authAPI.resetPassword({
+            fetcher: userAPI.resetPassword({
               firebase_access_token: firebaseToken,
               password,
               re_password,

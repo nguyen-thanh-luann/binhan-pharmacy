@@ -64,9 +64,33 @@ export interface ShippingAddress extends IShippingAddress {
   street: string
 }
 
+export interface ShippingAddressV2 {
+  id: number
+  street: string
+  name: string
+  phone: string
+  ward_id: {
+    id: number
+    name: string
+  }
+  district_id: {
+    id: number
+    name: string
+  }
+  state_id: {
+    id: number
+    name: string
+  }
+  country_id: {
+    id: number
+    name: string
+  }
+  full_adress: string
+}
+
 export interface AddAddressHook {
   address: AddressAdd
-  addressForm?: ShippingAddress
+  addressForm?: ShippingAddressV2
 }
 
 export interface AddressPickerI {

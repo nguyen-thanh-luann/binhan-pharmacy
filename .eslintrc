@@ -1,5 +1,8 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "react/display-name": "off"
+  }
   // // Configuration for JavaScript files
   // "extends": [
   //   "airbnb-base",

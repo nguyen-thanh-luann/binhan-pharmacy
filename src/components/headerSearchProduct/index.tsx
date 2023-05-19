@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { SearchForm } from '../form'
 import { NotFound } from '../notFound'
 import { SearchProductItem, SearchProductItemLoading } from '../product'
+import { SWR_KEY } from '@/constants'
 
 export const HeaderSearchProduct = () => {
   const router = useRouter()
@@ -24,12 +25,17 @@ export const HeaderSearchProduct = () => {
 
   useClickOutside([ref], () => closeModal())
 
-  const { products, handleFilter, isFetching, isLoadingMore } = useProductQuery()
+  const { products, filter, isValidating, isLoadingMore } = useProductQuery({
+    key: `${SWR_KEY.search_product}`,
+    params: {
+      product_type: 'product_product',
+    },
+  })
 
   const searchProducts = async (value: string) => {
     if (!value) return
 
-    handleFilter({
+    filter({
       product_type: 'product_product',
       keyword: value,
     })
@@ -68,7 +74,7 @@ export const HeaderSearchProduct = () => {
         }`}
       >
         {/* call api to search product here */}
-        {isLoadingMore || isFetching ? (
+        {isLoadingMore || isValidating ? (
           <div className="p-8">
             {Array?.from({ length: 7 }).map((_, index) => (
               <SearchProductItemLoading key={index} />

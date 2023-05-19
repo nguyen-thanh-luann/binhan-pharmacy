@@ -29,14 +29,17 @@ export interface HTTPListRes<T> {
   }
 }
 
-export type HTTPListResponse<T> = {
-  result: T
-  paginate: Pagination
+export interface HTTPListRes2<T> {
+  message: string
+  success: boolean
+  status_code: number
+  data: {
+    limit: number
+    offset: number
+    total: number
+    data: T
+  }
 }
-
-export type FetcherPartialParams<Params, Data> = (
-  params: Params
-) => Promise<HTTPResponseV2<Data[]>>
 
 export interface HTTPConfig {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
@@ -120,6 +123,11 @@ export type HTTPResponseV2<T> = HTTPResponseDataV2<{
   paginate: Pagination
 }>
 
+export type HTTPListResponse<T> = {
+  result: T
+  paginate: Pagination
+}
+
 export type HTTPResultResponse<T> = {
   jsonrpc: '2.0'
   id: null
@@ -127,3 +135,7 @@ export type HTTPResultResponse<T> = {
 }
 
 export type Fetcher<Params, Data> = (params: Params) => Promise<HTTPResponseV2<Data[]>>
+
+export type FetcherPartialParams<Params, Data> = (
+  params: Partial<Params>
+) => Promise<HTTPResponseV2<Data[]>>

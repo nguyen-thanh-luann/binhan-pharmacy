@@ -75,7 +75,7 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
       price_unit: product?.price_unit,
       origin_price_unit: product?.origin_price_unit,
       uom_id: product?.uom_id,
-      // attribute_minor_ids: product?.attribute_minor_ids,
+      attribute_minor_ids: product?.attribute_minor_ids, //update or not??? ask later!
       attribute_ids: product?.attribute_ids,
     })
 
@@ -235,7 +235,7 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
         <div className="flex gap-12 items-center">
           <Button
             onClick={() => {
-              toast.success('Comming soon')
+              router.push('/quick_order')
             }}
             title="Đăng ký tư vấn"
             icon={<NoteIconOutline className="text-primary" />}

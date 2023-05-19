@@ -1,10 +1,9 @@
-import { SWR_KEY } from '@/constants'
 import { userAPI } from '@/services'
 import { GetDrugStoreParams, UserAccount } from '@/types'
-import useSWR from 'swr'
+import { useQueryListV2 } from '../common/useQueryV2'
 
 interface useDrugstoresProps {
-  key?: string
+  key: string
   shouldFetch?: boolean
   params: GetDrugStoreParams
 }
@@ -12,33 +11,32 @@ interface useDrugstoresProps {
 interface useDrugstoresRes {
   drugstores: UserAccount[]
   isValidating: boolean
-  filterStore: (params: GetDrugStoreParams) => void
+  filter: (params: GetDrugStoreParams) => void
+  hasMore: boolean
+  isLoadingMore: boolean
+  getMore: () => void
 }
 
-export const useDrugstores = ({
-  key,
-  shouldFetch = true,
-  params,
-}: useDrugstoresProps): useDrugstoresRes => {
-  const { data, isValidating, mutate } = useSWR(
-    key ? key : SWR_KEY.get_drug_stores,
-    !shouldFetch ? null : () => userAPI.getDrugStoreList(params).then((res: any) => res?.data),
-    {
+export const useDrugstores = ({ key, params }: useDrugstoresProps): useDrugstoresRes => {
+  const { data, isValidating, getMore, hasMore, isLoadingMore, filter } = useQueryListV2<
+    UserAccount,
+    GetDrugStoreParams
+  >({
+    key,
+    fetcher: userAPI.getDrugStoreList,
+    initialParams: params,
+    config: {
       revalidateOnFocus: false,
-      dedupingInterval: 600000,
-    }
-  )
-
-  const filterStore = async (params: GetDrugStoreParams) => {
-    const res: any = await userAPI.getDrugStoreList(params)
-    if (res?.success) {
-      mutate(res?.data, false)
-    }
-  } 
+      dedupingInterval: 60000,
+    },
+  })
 
   return {
-    drugstores: data?.result || [],
+    drugstores: data || [],
     isValidating,
-    filterStore
+    filter,
+    hasMore,
+    getMore,
+    isLoadingMore,
   }
 }

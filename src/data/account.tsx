@@ -4,6 +4,7 @@ import {
   UserCircleIcon,
   LogoutIconOutline,
   LockIconOutline,
+  StarIconOutline,
 } from '@/assets'
 
 export const accountIconStyle = 'w-[20px] h-[20px]'
@@ -18,6 +19,11 @@ export const accountNavData = [
     path: '/purchased-order',
     icon: <PackageBoxIconOutline className={accountIconStyle} />,
     title: 'Đơn hàng',
+  },
+  {
+    path: '/account/rating-product',
+    icon: <StarIconOutline className={accountIconStyle} />,
+    title: 'Đánh giá của tôi',
   },
   {
     path: '/account/address',

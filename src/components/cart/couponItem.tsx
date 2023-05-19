@@ -1,5 +1,4 @@
 import classNames from 'classnames'
-import React from 'react'
 
 interface CouponItemProps {
   label: string
@@ -10,7 +9,7 @@ interface CouponItemProps {
 
 const concaveClassName = 'w-[10px] h-[10px] border border-solid border-primary rounded-full absolute top-1/2 transform -translate-y-1/2 bg-white '
 
-export const CouponItem = ({ className, label, active }: CouponItemProps) => {
+export const CouponItem = ({ className, label }: CouponItemProps) => {
   return (
     <div
       className={classNames(

@@ -42,6 +42,7 @@ export interface ImageRes {
 export interface URLRes {
   id: number
   url: string
+  image_url?: string
   name: string
   data_type: string
 }
@@ -70,7 +71,7 @@ export type AUTH_OPTION = 'loginPassword' | 'loginOTP' | 'resetPassword' | 'sign
 export type VERIFY_OTP_TYPE = 'login' | 'resetPassword'
 
 export interface AddressPickerRes {
-  state: OptionType<number>,
+  state: OptionType<number>
   district: OptionType<number>
   ward: OptionType<number>
 }

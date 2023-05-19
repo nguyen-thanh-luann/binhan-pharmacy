@@ -1,41 +1,42 @@
 import { LocationOutlineIcon, UserCircleIcon } from '@/assets'
+import { SWR_KEY } from '@/constants'
 import { isArrayHasValue } from '@/helper'
-import { useDrugstores, useUserAddress, useUserDetail } from '@/hooks'
+import { useDrugstores, useUser, useUserAddress } from '@/hooks'
 import { storeReceiveSchema } from '@/schema'
+import { selectOrderAddress, setOrderAddress } from '@/store'
 import {
   AddressAdd,
   AddressPickerRes,
   GetDrugStoreParams,
-  ShippingAddress,
+  ShippingAddressV2,
   UserAccount,
 } from '@/types'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-hot-toast'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import { useDispatch, useSelector } from 'react-redux'
+import { useSWRConfig } from 'swr'
 import { Button } from '../button'
 import { InputCheckbox, InputField } from '../inputs'
 import { Spinner } from '../spinner'
 import { AddressPicker } from './addressPicker'
 import { SearchField } from './searchField'
-import { toast } from 'react-hot-toast'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectOrderAddress, setOrderAddress } from '@/store'
-import { useSWRConfig } from 'swr'
-import { SWR_KEY } from '@/constants'
 
 export const StoreReceiveForm = () => {
   const [params, setParams] = useState<GetDrugStoreParams>()
   const [storeSelected, setStoreSelected] = useState<UserAccount>()
 
   const { addAddress } = useUserAddress({})
-  const { drugstores, filterStore } = useDrugstores({
+  const { drugstores, filter, hasMore, getMore } = useDrugstores({
+    key: `${SWR_KEY.get_drug_stores}`,
     params: {},
   })
   const orderAddress = useSelector(selectOrderAddress)
   const dispatch = useDispatch()
   const { mutate } = useSWRConfig()
-  const { data: userDetail } = useUserDetail({})
+  const { userInfo } = useUser({})
 
   useEffect(() => {
     if (!storeSelected) {
@@ -54,7 +55,7 @@ export const StoreReceiveForm = () => {
   })
 
   useEffect(() => {
-    if (params) filterStore(params)
+    if (params) filter(params)
   }, [params])
 
   const searchStore = (data: string) => {
@@ -84,7 +85,7 @@ export const StoreReceiveForm = () => {
     }
 
     const newAddress: AddressAdd = {
-      partner_id: userDetail?.partner_id || 0,
+      partner_id: userInfo?.account?.partner_id || 0,
       adress_id: orderAddress?.id || false,
       address_new: {
         name: data.name,
@@ -97,20 +98,28 @@ export const StoreReceiveForm = () => {
       },
     }
 
-    const addressRes: ShippingAddress = {
+    const addressRes: ShippingAddressV2 = {
       name: data?.name,
       phone: data?.phone,
-      street: storeSelected?.street || '',
       full_adress: storeSelected?.full_address || '',
       id: orderAddress?.id || 0,
-      country_name_id: storeSelected?.country_id?.country_id || 0,
-      country_id: storeSelected?.country_id?.country_name || '',
-      district_name_id: storeSelected?.district_id.district_id || 0,
-      district_id: storeSelected?.district_id.district_name || '',
-      state_name_id: storeSelected?.province_id.province_id || 0,
-      state_id: storeSelected?.province_id.province_name || '',
-      ward_name_id: storeSelected?.ward_id.ward_id || 0,
-      ward_id: storeSelected?.ward_id?.ward_name || '',
+      street: storeSelected?.street || '',
+      country_id: {
+        id: storeSelected?.country_id?.country_id || 0,
+        name: storeSelected?.country_id?.country_name || '',
+      },
+      district_id: {
+        id: storeSelected?.district_id.district_id || 0,
+        name: storeSelected?.district_id.district_name || '',
+      },
+      state_id: {
+        id: storeSelected?.province_id.province_id || 0,
+        name: storeSelected?.province_id.province_name || '',
+      },
+      ward_id: {
+        id: storeSelected?.ward_id.ward_id || 0,
+        name: storeSelected?.ward_id?.ward_name || '',
+      },
     }
 
     addAddress({ address: newAddress, addressForm: addressRes }).then(() => {
@@ -137,7 +146,7 @@ export const StoreReceiveForm = () => {
                 label="Họ và tên"
                 placeholder={`Họ và tên`}
                 className="flex-1"
-                defaultValue={userDetail?.name || ''}
+                defaultValue={userInfo?.account?.partner_name || ''}
                 required
               />
 
@@ -149,7 +158,7 @@ export const StoreReceiveForm = () => {
                 placeholder={`số điện thoại`}
                 className="flex-1"
                 required
-                defaultValue={userDetail?.phone || ''}
+                defaultValue={userInfo?.account?.phone || ''}
               />
             </div>
           </div>
@@ -178,15 +187,10 @@ export const StoreReceiveForm = () => {
             <div className="max-h-[400px] overflow-scroll scrollbar-hide">
               <InfiniteScroll
                 dataLength={drugstores?.length || 0}
-                next={() =>
-                  // hanldeLoadMore({
-                  //   limit: DEFAULT_LIMIT,
-                  // })
-                  {}
-                }
+                next={() => getMore()}
                 hasMore={false}
                 loader={
-                  false ? (
+                  hasMore ? (
                     <div className="my-12">
                       <Spinner />
                     </div>

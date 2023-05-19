@@ -11,6 +11,7 @@ import { NotFound } from '../notFound'
 import { SelectProductItem } from '../product'
 import { Spinner } from '../spinner'
 import { SearchField } from './searchField'
+import { SWR_KEY } from '@/constants'
 
 interface SelectProductFormProps {
   className?: string
@@ -33,7 +34,12 @@ export const SelectProductForm = ({
     onClose?.()
   })
 
-  const { products, handleFilter, hasMore } = useProductQuery()
+  const { products, filter, hasMore } = useProductQuery({
+    key: `${SWR_KEY.search_product}`,
+    params: {
+      product_type: 'product_product',
+    },
+  })
 
   const handleSubmit = () => {
     if (productSelected) {
@@ -47,7 +53,7 @@ export const SelectProductForm = ({
   const searchProducts = async (value: string) => {
     if (!value) return
 
-    handleFilter({
+    filter({
       product_type: 'product_product',
       keyword: value,
     })

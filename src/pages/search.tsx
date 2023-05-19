@@ -5,10 +5,10 @@ import {
   NotFound,
   ProductFilterSidebar,
   ProductItem,
-  Spinner,
+  ProductsLoadingSlice,
   Tabs,
 } from '@/components'
-import { DEFAULT_LIMIT, PRODUCT_FILTER_TABS, WEB_TITTLE } from '@/constants'
+import { PRODUCT_FILTER_TABS, SWR_KEY, WEB_TITTLE } from '@/constants'
 import { isArrayHasValue, isObjectHasValue } from '@/helper'
 import { useModal, useProductQuery } from '@/hooks'
 import { MainNoFooter } from '@/templates'
@@ -23,12 +23,16 @@ interface AttributeReq {
 }
 
 const SearchPage = () => {
-
   const router = useRouter()
   const [currentTab, setCurrentTab] = useState<string>('default')
   const { visible: showFilters, openModal: openFilters, closeModal: closeFilters } = useModal()
 
-  const { products, handleFilter, isFetching, isLoadingMore, hasMore } = useProductQuery()
+  const { products, filter, isValidating, hasMore, getMore } = useProductQuery({
+    key: `${SWR_KEY.filter_product}`,
+    params: {
+      product_type: 'product_product',
+    },
+  })
 
   useEffect(() => {
     let attribute: any = {}
@@ -77,7 +81,7 @@ const SearchPage = () => {
       })
     }
 
-    handleFilter({
+    filter({
       product_type: 'product_product',
       keyword: router?.query?.keyword || '',
       sort_by: (router?.query?.sort_by as ProductfilterSortType) || undefined,
@@ -101,16 +105,6 @@ const SearchPage = () => {
       query: { ...router?.query, sort_by: value },
     })
   }
-
-  const handleLoadMore = () => {
-    if (!isObjectHasValue(router.query)) return
-
-    handleFilter({
-      ...router.query,
-      offset: (Number(router.query?.offset) || products?.length) + DEFAULT_LIMIT,
-    })
-  }
-
 
   return (
     <MainNoFooter title={WEB_TITTLE} description="">
@@ -139,7 +133,6 @@ const SearchPage = () => {
                 labelClassName="px-12 py-8 text-center border-b border-white"
                 tabActiveClassName="!border-primary text-primary"
               />
-
               <div
                 onClick={openFilters}
                 className="flex md:hidden mt-12 items-center gap-4 cursor-pointer hover:text-primary duration-150"
@@ -171,23 +164,19 @@ const SearchPage = () => {
             </div>
 
             {/* product slide here */}
-            <div>
-              {isFetching || isLoadingMore ? (
-                <div className="flex justify-center my-12">
-                  <Spinner />
-                </div>
+            <div className="max-h-[95vh] overflow-scroll scrollbar-hide">
+              {isValidating ? (
+                <ProductsLoadingSlice className="grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-12" />
               ) : null}
 
               {isArrayHasValue(products) ? (
                 <InfiniteScroll
                   dataLength={products?.length || 0}
-                  next={() => handleLoadMore()}
+                  next={() => getMore()}
                   hasMore={hasMore}
                   loader={
                     hasMore ? (
-                      <div className="my-12">
-                        <Spinner />
-                      </div>
+                      <ProductsLoadingSlice className="grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-12" />
                     ) : null
                   }
                 >

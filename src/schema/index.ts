@@ -29,24 +29,7 @@ export const AddressSchema = Yup.object().shape({
 
 export const ratingProductSchema = Yup.object().shape({
   star_rating: Yup.number().oneOf([1, 2, 3, 4, 5]).required(),
-  content: Yup.string().required(),
-  tag_ids: Yup.array().of(Yup.string()).optional(),
-  image_ids: Yup.array()
-    .of(
-      Yup.object({
-        url: Yup.string().required(),
-        id: Yup.number().required(),
-      })
-    )
-    .optional(),
-  attachment_ids: Yup.array()
-    .of(
-      Yup.object({
-        url: Yup.string().required(),
-        id: Yup.number().required(),
-      })
-    )
-    .optional(),
+  content: Yup.string().required('Vui lòng nhập nội dung đánh giá!'),
 })
 
 export const phoneNumberSchema = Yup.object().shape({
@@ -59,7 +42,9 @@ export const createPasswordSchema = Yup.object().shape({
   newPassword: Yup.string()
     .min(6, 'Mật khẩu phải có ít nhất 6 ký tự')
     .required('Vui lòng nhập mật khẩu'),
-  reNewPassword: Yup.string().oneOf([Yup.ref('newPassword')]),
+  reNewPassword: Yup.string()
+    .oneOf([Yup.ref('newPassword')], 'Mật khẩu xác nhận phải trùng với mật khẩu mới')
+    .required('Vui lòng nhập mật khẩu xác nhận'),
 })
 
 export const productReviewSchema = Yup.object().shape({
@@ -231,12 +216,13 @@ export const getAdviceSchema = Yup.object().shape({
     .required('Vui lòng chọn điạ chỉ phường xã'),
 
   gender: Yup.string().oneOf(['male', 'female', 'other']).required('Vui lòng chọn giới tính'),
-  drugstore_id: Yup.object().shape({
-    label: Yup.string(),
-    value: Yup.number().required()
-  }).required('Vui lòng chọn cửa hàng!')
+  drugstore_id: Yup.object()
+    .shape({
+      label: Yup.string(),
+      value: Yup.number().required(),
+    })
+    .required('Vui lòng chọn cửa hàng!'),
 })
-
 
 export const storeReceiveSchema = Yup.object().shape({
   name: Yup.string()
@@ -250,4 +236,3 @@ export const storeReceiveSchema = Yup.object().shape({
 
   drugstore_id: Yup.number().required('Vui lòng chọn cửa hàng!'),
 })
-

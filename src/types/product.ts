@@ -2,7 +2,7 @@ import { AttributeMinor } from './attribute'
 import { Category } from './category'
 import { ImageId, ImageRes } from './common'
 import { QueryList } from './http'
-import { RatingRangePost, StarString } from './rating'
+import { StarRatingRange, StarRatingRangeReq, StarString } from './rating'
 
 //use in api v2
 export interface ProductParams {
@@ -48,8 +48,8 @@ export interface FilterProductParams extends QueryList {
   attributes?: any //list object update later
   attribute_id?: number
   attribute_value_ids?: number[] | []
-  sort_by?: ProductfilterSortType,
-  price_min?: number | undefined,
+  sort_by?: ProductfilterSortType
+  price_min?: number | undefined
   price_max?: number | undefined
 }
 
@@ -72,10 +72,11 @@ export interface Product {
   create_date: Date
   attribute_minor_ids: AttributeMinor[]
   rel_uom_ids: ProductUom[]
+  packaging_specifications: string
   attribute_ids: ProductAttribute[]
   rel_attribute_ids: ProductRelAttribute[]
   has_variant: boolean
-  star_rating: number
+  star_rating: StarRatingRange
   rating_count: number
   product_available: number
   quantity: number
@@ -122,8 +123,6 @@ export interface ProductDetail extends Product {
   liked_count: number
 }
 
-
-
 export interface ProductDescriptionTab {
   content_id: number
   tab_id: number
@@ -132,13 +131,7 @@ export interface ProductDescriptionTab {
   extra_content: string
 }
 
-export interface ProductDescriptionChild {
-  category_id: number
-  category_name: string
-  content: string
-  extra_content: string
-  tab: ProductDescriptionTab[]
-}
+export interface ProductDescriptionChild extends ProductDescription {}
 
 export interface ProductDescription {
   category_id: number
@@ -173,7 +166,7 @@ export interface CommentRating {
   comment_id: number
   message: string | false
   star_rating: StarString
-  star_rating_int: RatingRangePost
+  star_rating_int: StarRatingRangeReq
   rating_tag: TagRating[]
   date: string
   partner_id: number
@@ -199,7 +192,6 @@ export interface CommentRating {
     image_url: string
   }[]
 }
-
 
 export interface TagRating {
   tag_id: number

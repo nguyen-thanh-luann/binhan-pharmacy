@@ -1,8 +1,7 @@
-import { encodeJWT } from '@/helper'
-import { useAuth, useUser } from '@/hooks'
-import { authAPI, userAPI } from '@/services'
+import { useAuth, useGuest, useUser } from '@/hooks'
+import { userAPI } from '@/services'
 import { setBackdropVisible } from '@/store'
-import { GenerateChatTokenRes, UserInfo, VERIFY_OTP_TYPE } from '@/types'
+import { VERIFY_OTP_TYPE } from '@/types'
 import { authentication } from '@/utils/firebase'
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
 import { useRouter } from 'next/router'
@@ -28,8 +27,11 @@ interface VerifyOtpFormProps {
 export const VerifyOtpForm = ({ firstOption, secondOption, type }: VerifyOtpFormProps) => {
   const dispatch = useDispatch()
   const router = useRouter()
-  const { loginPhoneNumber, generateChatToken } = useAuth()
-  const { getUserInfo, updateUser } = useUser({})
+  const { guestInfo } = useGuest()
+  const deviceCode = guestInfo?.device_code || ''
+  const { loginPhoneNumber } = useAuth()
+  const { updateUser, addGuestCartToShoppingCart, mutateAccountData, generateChatServiceToken } =
+    useUser({})
   const [phoneNumber, setPhoneNumber] = useState<string>('')
   const [otpForm, setOtpForm] = useState<boolean>()
 
@@ -90,7 +92,10 @@ export const VerifyOtpForm = ({ firstOption, secondOption, type }: VerifyOtpForm
           loginPhoneNumber({
             otpInput,
             handleSuccess: () => {
-              handleGetUserInfo()
+              mutateAccountData()
+              // merge cart data of guest to user's cart
+              addGuestCartToShoppingCart(deviceCode)
+              generateChatServiceToken()
               router.push('/')
             },
           })
@@ -107,7 +112,10 @@ export const VerifyOtpForm = ({ firstOption, secondOption, type }: VerifyOtpForm
                   medicine_account_type: 'patient_account',
                 },
                 () => {
-                  handleGetUserInfo()
+                  mutateAccountData()
+                  // merge cart data of guest to user's cart
+                  addGuestCartToShoppingCart(deviceCode)
+                  generateChatServiceToken()
                   router.push('/')
                 }
               )
@@ -116,24 +124,6 @@ export const VerifyOtpForm = ({ firstOption, secondOption, type }: VerifyOtpForm
         }
       }
     )
-  }
-
-  const handleGetUserInfo = () => {
-    getUserInfo((userInfo) => {
-      handleGenerateChatToken(userInfo)
-    })
-  }
-
-  const handleGenerateChatToken = async (userInfo: UserInfo) => {
-    generateChatToken({
-      token: encodeJWT({ user_id: userInfo?.account?.partner_id }),
-      onSuccess: async (data: GenerateChatTokenRes) => {
-        const res: any = await authAPI.setChatToken(data)
-        if (res?.result?.success) {
-          console.log('set chat token success!')
-        }
-      },
-    })
   }
 
   const checkAccountExist = async (

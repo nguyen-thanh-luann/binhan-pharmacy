@@ -7,12 +7,15 @@ import {
   GetProductByAttributeMinorParams,
   GetProductByCategoryParams,
   HTTPListRes,
+  HTTPResponseV2,
+  Product,
+  VisceraAttribute,
 } from '@/types'
 import { AxiosPromise } from 'axios'
 import axiosClient from '.'
 
 const productAPI = {
-  filterProduct: (params?: FilterProductParams) => {
+  filterProduct: (params?: FilterProductParams): Promise<HTTPResponseV2<Product[]>> => {
     return axiosClient.post('/product_controller/list_product_by_filter', {
       params: {
         ...params,
@@ -66,6 +69,10 @@ const productAPI = {
     )
   },
 
+  getListVisceraAttribute: (): Promise<HTTPResponseV2<VisceraAttribute[]>> => {
+    return axiosClient.get('/category_controller/list_viscera_attribute_value')
+  },
+
   getProductsByAttributeMinor: ({
     limit = DEFAULT_LIMIT,
     offset = 0,
@@ -104,4 +111,3 @@ const productAPI = {
 }
 
 export { productAPI }
-

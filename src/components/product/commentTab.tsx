@@ -1,23 +1,23 @@
-import React, { useRef } from 'react'
-import { NotFound } from '../notFound'
-import { twMerge } from 'tailwind-merge'
-import classNames from 'classnames'
-import { Button } from '../button'
-import { toast } from 'react-hot-toast'
-import { useComment, useUser } from '@/hooks'
+import { SWR_KEY } from '@/constants'
 import { isArrayHasValue } from '@/helper'
+import { useComment, useUser } from '@/hooks'
+import classNames from 'classnames'
+import { useRef } from 'react'
+import { toast } from 'react-hot-toast'
+import InfiniteScroll from 'react-infinite-scroll-component'
+import { twMerge } from 'tailwind-merge'
+import { Button } from '../button'
+import { NotFound } from '../notFound'
 import { Spinner } from '../spinner'
-import { DEFAULT_LIMIT, SWR_KEY } from '@/constants'
 import { CommentItem } from './commentItem'
 import { CommentItemLoading } from './commentItemLoading'
-import InfiniteScroll from 'react-infinite-scroll-component'
 
 interface CommentProps {
   className?: string
   product_id: number
 }
 
-export const Comment = ({ className, product_id }: CommentProps) => {
+export const CommentTab = ({ className, product_id }: CommentProps) => {
   const { userInfo } = useUser({ shouldFetch: false })
   const commentInputRef = useRef<HTMLTextAreaElement>(null)
 
@@ -28,7 +28,7 @@ export const Comment = ({ className, product_id }: CommentProps) => {
     isCreateComment,
     deleteComment,
     hasMore,
-    hanldeLoadMore,
+    getMore,
   } = useComment({
     key: `${SWR_KEY.get_product_comment}_${product_id}`,
     params: {
@@ -79,6 +79,16 @@ export const Comment = ({ className, product_id }: CommentProps) => {
     textarea.style.height = `${textarea.scrollHeight}px`
   }
 
+  const renderCommentLoader = (number?: number, className?: string) => {
+    return (
+      <div className={classNames('', className)}>
+        {Array.from({ length: number || 7 }).map((_, index) => (
+          <CommentItemLoading key={index} />
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div className={twMerge(classNames(``, className))}>
       <div className="flex items-center bg-background p-4 px-12 rounded-[10px] mb-16">
@@ -115,32 +125,18 @@ export const Comment = ({ className, product_id }: CommentProps) => {
         </div>
       </div>
 
-      <div className='max-h-[50vh] overflow-scroll scrollbar-hide'>
+      <div className="max-h-[50vh] overflow-scroll scrollbar-hide">
         {isValidating || isArrayHasValue(comments) ? (
           <div>
             <InfiniteScroll
               dataLength={comments?.length || 0}
-              next={() =>
-                hanldeLoadMore({
-                  limit: DEFAULT_LIMIT,
-                })
-              }
+              next={() => getMore()}
               hasMore={hasMore}
-              loader={
-                hasMore ? (
-                  <div className="my-12">
-                    <Spinner />
-                  </div>
-                ) : null
-              }
+              loader={hasMore ? renderCommentLoader() : null}
             >
               <div>
                 {isValidating ? (
-                  <div className="">
-                    {Array.from({ length: 7 }).map((_, index) => (
-                      <CommentItemLoading key={index} />
-                    ))}
-                  </div>
+                  renderCommentLoader()
                 ) : (
                   <div>
                     {comments?.map((comment) => (

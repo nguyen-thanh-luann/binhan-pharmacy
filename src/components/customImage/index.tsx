@@ -1,6 +1,6 @@
 import React from 'react'
 import RImage, { ImageProps as RImageProps } from 'next/image'
-import { imageBlur } from '@/assets'
+import { empty, imageBlur } from '@/assets'
 import classNames from 'classnames'
 import { isRemoteImageUrl } from '@/helper'
 import { API_URL } from '@/constants'
@@ -15,7 +15,7 @@ export const CustomImage = ({ className, imageClassName, src, ...props }: Custom
   return (
     <div className={classNames('relative', className)}>
       <RImage
-        src={isRemoteImageUrl(src.toString()) ? src : `${API_URL}${src}`}
+        src={src ? (isRemoteImageUrl(src.toString()) ? src : `${API_URL}${src}`) : empty}
         width={1000}
         height={1000}
         className={classNames(imageClassName)}

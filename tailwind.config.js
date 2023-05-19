@@ -40,7 +40,7 @@ module.exports = {
       },
       colors: {
         'text-color': '#2C0434',
-        'border-1': '#e8e8e8',
+
         white: '#ffffff',
 
         black: '#000000',
@@ -92,6 +92,9 @@ module.exports = {
         violet: '#9B51E0',
 
         yellow: '#FFBC4E',
+
+        'att-viscera-odd-bg': '#FCE9FF',
+        'att-viscera-even-bg': '#FFF0D7',
       },
       spacing: {
         ['-8']: -8,
@@ -167,6 +170,7 @@ module.exports = {
         modal_auth_width: '800px',
         category_dropdown_height: '470px',
         cart_summary_mobile_height: '70px',
+        bottom_nav_height: '60px',
       },
       screens: {
         //mobile screen >= 300px

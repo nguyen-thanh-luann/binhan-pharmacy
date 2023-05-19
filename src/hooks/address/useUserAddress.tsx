@@ -1,7 +1,7 @@
 import { SWR_KEY } from '@/constants'
 import { userAPI } from '@/services'
 import { setOrderAddress } from '@/store'
-import { AddAddressHook, AddressDelete, ShippingAddress, UserDetail } from '@/types'
+import { AddAddressHook, AddressDelete, ShippingAddressV2 } from '@/types'
 import { toast } from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import useSWR from 'swr'
@@ -13,11 +13,11 @@ interface useAddressListProps {
 }
 
 interface UseAddressListRes {
-  data: UserDetail
+  data: ShippingAddressV2[] | undefined
   isValidating: boolean
   addAddress: ({ address, addressForm }: AddAddressHook) => Promise<any>
   deleteAddress: (address: AddressDelete) => Promise<any>
-  updateOrderAddress: (address: ShippingAddress) => void
+  updateOrderAddress: (address: ShippingAddressV2) => void
 }
 
 export const useUserAddress = ({
@@ -25,10 +25,8 @@ export const useUserAddress = ({
   shouldFetch = true,
 }: useAddressListProps): UseAddressListRes => {
   const { data, isValidating, mutate } = useSWR(
-    key ? key : SWR_KEY.get_user_address,
-    !shouldFetch
-      ? null
-      : () => userAPI.getDetailUser().then((res: any) => res?.result?.data?.info_customer),
+    key ? key : SWR_KEY.get_user_shipping_address,
+    !shouldFetch ? null : () => userAPI.getShippingAddressList().then((res) => res?.result?.data),
     {
       revalidateOnFocus: false,
       dedupingInterval: 600000,
@@ -39,37 +37,25 @@ export const useUserAddress = ({
   const partner_id = userInfo?.account.partner_id || 0
   const dispatch = useDispatch()
 
-  const addAddress = async ({ address, addressForm }: AddAddressHook) => {    
+  const addAddress = async ({ address, addressForm }: AddAddressHook) => {
     try {
       const res: any = await userAPI.addAddress(address)
 
-      
       if (res?.result?.success) {
         if (address.adress_id) {
-          mutate(
-            {
-              ...data,
-              shipping_adress: [...data.shipping_adress].map((item: ShippingAddress) =>
-                item.id === address.adress_id ? addressForm : item
-              ),
-            },
-            false
-          )
+          if (addressForm)
+            mutate(
+              [
+                ...(data || []).map((item) =>
+                  item.id === address?.adress_id ? addressForm : item
+                ),
+              ],
+              false
+            )
+
           toast.success('Chỉnh sửa địa chỉ thành công')
         } else {
-          mutate(
-            {
-              ...data,
-              shipping_adress: [
-                ...data.shipping_adress,
-                {
-                  ...addressForm,
-                  id: res.result.data?.[0]?.partner_shipping_id,
-                },
-              ],
-            },
-            false
-          )
+          if (addressForm) mutate([...(data || []), addressForm], false)
           toast.success('Thêm địa chỉ thành công')
         }
       } else {
@@ -87,26 +73,7 @@ export const useUserAddress = ({
         partner_id,
       })
       if (res?.result?.success) {
-        mutate(
-          {
-            ...(data as UserDetail),
-            shipping_adress: [...data.shipping_adress].filter(
-              (item) => item.id !== address.adress_id
-            ),
-          },
-          false
-        )
-
-        // if (addressDefault?.id === address.adress_id) {
-        //   dispatch(setAddressDefault(undefined))
-        // }
-
-        // if (orderAddress?.id === address.adress_id) {
-        //   dispatch(setOrderAddress(undefined))
-        //   if (addressDefault?.id !== orderAddress.id) {
-        //     dispatch(setOrderAddress(addressDefault))
-        //   }
-        // }
+        mutate([...(data || []).filter((item) => item.id !== address?.adress_id)], false)
       } else {
         toast.error(res?.result?.message || 'Có lỗi xảy ra')
       }
@@ -115,9 +82,9 @@ export const useUserAddress = ({
     }
   }
 
-  const updateOrderAddress = (address: ShippingAddress) => {
+  const updateOrderAddress = (address: ShippingAddressV2) => {
     if (!address.id) return
-    
+
     dispatch(setOrderAddress(address))
   }
 

@@ -39,7 +39,7 @@ export const AccountDrawerMenu = ({ className }: AccountMenuProps) => {
         {AccountMenuData.map((item, index) => (
           <div
             key={index}
-            className="group/child flex items-center mb-12 rounded-[6px] p-6 hover:bg-primary-100 cursor-pointer"
+            className="group/child flex items-center mb-12 last:mb-0 rounded-[6px] p-6 hover:bg-primary-100 cursor-pointer"
             onClick={() => handleMenuOptionClick(item.path)}
           >
             <div className="w-20 h-20 mr-6 !text-gray group-hover/child:!text-primary">

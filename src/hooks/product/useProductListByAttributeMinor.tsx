@@ -20,10 +20,10 @@ export const useProductListByAttributeMinor = ({
   shouldFetch = true,
   key,
   params,
-}: useProductListByAttributeMinorProps): useProductListByAttributeMinorPropsRes => {  
+}: useProductListByAttributeMinorProps): useProductListByAttributeMinorPropsRes => {
   const { data, isValidating, mutate } = useSWR(
     key,
-    !shouldFetch
+    !shouldFetch || !params?.attribute_id
       ? null
       : () => productAPI.getProductsByAttributeMinor(params).then((res: any) => res?.data || {}),
     {
@@ -33,6 +33,8 @@ export const useProductListByAttributeMinor = ({
   )
 
   const fetchByOtherAttrValues = async (params: GetProductByAttributeMinorParams) => {
+    if (!params?.attribute_id) return
+
     const res: any = await productAPI.getProductsByAttributeMinor(params)
     const dataRes = res?.data
     if (res?.success) {

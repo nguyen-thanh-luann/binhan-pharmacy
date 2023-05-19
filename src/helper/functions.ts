@@ -1,5 +1,3 @@
-import { error404 } from '@/assets'
-import { API_URL } from '@/constants'
 import {
   CartCategory,
   CartCompany,
@@ -190,10 +188,7 @@ export const formatMoneyVndString = (number: number): string => {
   return (number / 1000000000).toFixed(0) + ' tỷ'
 }
 
-export const toImageUrl = (url: string) => {
-  if (!url) return error404
-  return `${API_URL}${url}`
-}
+export const toImageUrl = (url: string) => `${process.env.NEXT_PUBLIC_API_URL}${url}`
 
 export const getActiveStringOrListString = (
   a: string[] | string,
@@ -364,8 +359,13 @@ export function isInvalidDate(data: string) {
   return isNaN(Date.parse(data))
 }
 
-export function getDiscountPercent(product: Product): number {
+export function calcDiscountPercent(product: Product): number {
   if (!product || product?.origin_price_unit >= product?.price_unit) return 0
 
   return (product?.price_unit / product?.origin_price_unit) * 100
+}
+
+export function getRatingContent(content: string): string {
+  if (!content) return ''
+  return content.includes('<p>') ? content.slice(3, content.length - 4) : content
 }

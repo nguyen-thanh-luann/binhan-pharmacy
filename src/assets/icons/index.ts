@@ -49,6 +49,7 @@ export * from './threeDotsIcon'
 export * from './logout'
 export * from './packageBoxOutline'
 export * from './telephone'
+export * from './telephoneOutline'
 export * from './notebookOutline'
 export * from './menu'
 export * from './email'
@@ -57,10 +58,7 @@ export * from './filterOutline'
 export * from './filterSolid'
 export * from './lockOutline'
 export * from './drugs'
-export * from './voucherFrame'
-export * from './voucherFrameActive'
-export * from './clockOutline'
-
-
-
-
+export * from './homeOutline'
+export * from './homeSolid'
+export * from './donation'
+export * from './menuSquareDotOutline'

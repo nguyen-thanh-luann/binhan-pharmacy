@@ -17,10 +17,11 @@ export interface AttributeMinor {
   filterable: boolean
 }
 
-
 export interface AttributeMinorValue {
   value_id: number
   code: string
   value_name: string
   value_icon: IconType
 }
+
+export interface VisceraAttribute extends AttributeMinorValue {}

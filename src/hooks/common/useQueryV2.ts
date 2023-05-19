@@ -3,13 +3,7 @@ import { useState } from 'react'
 import useSWR, { Key } from 'swr'
 
 import { removeEmptyValueFromObject } from '@/helper'
-import {
-  Fetcher,
-  FetcherPartialParams,
-  HTTPListResponse,
-  HTTPResponseV2,
-  QueryList
-} from '@/types'
+import { Fetcher, FetcherPartialParams, HTTPListResponse, HTTPResponseV2, QueryList } from '@/types'
 import { PublicConfiguration } from 'swr/_internal'
 
 export interface UseQueryListPropsV2<Data, Params extends QueryList = any> {
@@ -18,6 +12,7 @@ export interface UseQueryListPropsV2<Data, Params extends QueryList = any> {
   key: Key
   initialParams?: Params
   config?: Partial<PublicConfiguration<any, any, (args_0: string) => any>>
+  result_key?: string
 }
 
 export const useQueryListV2 = <Data = any, Params extends QueryList = any>({
@@ -25,7 +20,7 @@ export const useQueryListV2 = <Data = any, Params extends QueryList = any>({
   config,
   initialParams,
   fetcher,
-  mutateFetcherResponse
+  mutateFetcherResponse,
 }: UseQueryListPropsV2<Data, Params>) => {
   const { isValidating, data, error, mutate } = useSWR<HTTPListResponse<Data[]>, Params>(
     key,
@@ -40,7 +35,7 @@ export const useQueryListV2 = <Data = any, Params extends QueryList = any>({
     return {
       limit: 12,
       offset: 0,
-      ...initialParams
+      ...initialParams,
     } as Params
   }
 
@@ -48,14 +43,12 @@ export const useQueryListV2 = <Data = any, Params extends QueryList = any>({
     paginate: {
       limit: 0,
       offset: 0,
-      total: 0
+      total: 0,
     },
-    result: []
+    result: [],
   })
 
-  const getDataResponse = <Data>(
-    res: HTTPResponseV2<Data[]>
-  ): HTTPListResponse<Data[]> => {
+  const getDataResponse = <Data>(res: HTTPResponseV2<Data[]>): HTTPListResponse<Data[]> => {
     const response = res?.data
     return response || getDefaultResponse()
   }
@@ -86,13 +79,13 @@ export const useQueryListV2 = <Data = any, Params extends QueryList = any>({
       const newParams = removeEmptyValueFromObject<Params>({
         ...params,
         offset: offset + limit,
-        limit
+        limit,
       })
       setParams(newParams)
       const res = await fetcher(newParams)
       const dataRes = getDataResponse(res)
       mutate(
-        produce(data, (draft) => {
+        produce(data, (draft: any) => {
           draft.result.push(...(dataRes.result as Draft<Data[]>))
           draft.paginate = dataRes.paginate
         }),
@@ -111,16 +104,14 @@ export const useQueryListV2 = <Data = any, Params extends QueryList = any>({
     onSuccess?: (data: Data[]) => void,
     onError?: () => void
   ) => {
-    if (!data?.result?.length) return
-
     try {
       const newParams = removeEmptyValueFromObject<Params>({
         ...params,
         ...funcParams,
-        limit: data?.paginate,
-        offset: 0
+        offset: 0,
       })
       setParams(newParams)
+
       const res = await fetcher(newParams)
       const response = getDataResponse<Data>(res)
       mutate(response, false)
@@ -130,18 +121,25 @@ export const useQueryListV2 = <Data = any, Params extends QueryList = any>({
     }
   }
 
+  const _mutate = (params: Data[], shouldFetch?: boolean) => {
+    if (data) {
+      mutate({ paginate: data.paginate, result: params }, shouldFetch)
+    }
+  }
+
   return {
     data: data?.result || [],
     offset: data?.paginate?.offset || 0,
     limit: data?.paginate?.limit || 0,
     total: data?.paginate?.total || 0,
     isValidating,
+    isLoadingMore,
     error,
     hasMore,
     params,
-    mutate,
+    mutate: _mutate,
     filter,
     getMore,
-    refresh
+    refresh,
   }
 }

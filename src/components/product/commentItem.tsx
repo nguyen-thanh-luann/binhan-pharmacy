@@ -30,9 +30,9 @@ export const CommentItem = ({ data, className, onDelete }: CommentItemProps) => 
     <div className={twMerge(classNames(`flex gap-12 mb-12 last:mb-0 relative`, className))}>
       <div className="">
         <CustomImage
-          src={data?.author?.avatar_url?.image_url || ''}
+          src={data?.author?.avatar_url?.url || ''}
           className="w-32 h-32 rounded-full"
-          imageClassName="rounded-full"
+          imageClassName="rounded-full w-32 h-32"
         />
       </div>
 

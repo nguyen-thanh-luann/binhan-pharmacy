@@ -4,7 +4,7 @@ import { useProductListByAttributeMinor } from '@/hooks'
 import { AttributeMinor } from '@/types'
 import classNames from 'classnames'
 import { useEffect, useState } from 'react'
-import { toast } from 'react-hot-toast'
+import { useRouter } from 'next/router'
 import { twMerge } from 'tailwind-merge'
 import { CustomImage } from '../customImage'
 import { ProductItem, ProductItemLoading } from '../product'
@@ -22,6 +22,8 @@ export const ProductsByAttributeMinor = ({
   className,
   isValidating,
 }: ProductsByAttributeMinorProps) => {
+  const router = useRouter()
+
   const [currentTab, setCurrentTab] = useState<string>('')
   const [params, setParams] = useState<object>({})
 
@@ -62,7 +64,16 @@ export const ProductsByAttributeMinor = ({
 
   const handleTabChange = (val: string) => {
     if (val === 'more') {
-      toast.success('comming soon!')
+      // push to search page with attributes list
+      const query: any = { attributes: atribute?.value_ids.map((value) => value.value_id) }
+
+      query[`attributes_${atribute?.attribute_id}`] = query['attributes']
+      delete query['attributes']
+
+      router.push({
+        pathname: '/search',
+        query: query,
+      })
     } else {
       setCurrentTab(val)
       setParams({
@@ -89,7 +100,7 @@ export const ProductsByAttributeMinor = ({
   return (
     <div>
       <HomeSlide
-        className={twMerge(classNames(``, className))}
+        className={twMerge(classNames(`md:p-24`, className))}
         icon={
           atribute?.attribute_icon?.url ? (
             <CustomImage

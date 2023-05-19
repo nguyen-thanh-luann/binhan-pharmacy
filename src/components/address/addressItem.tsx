@@ -1,7 +1,8 @@
-import { PenIconSolid, TimesIcon, TrashIconOutline } from '@/assets'
+import { LocationOutlineIcon, PenIconSolid, TimesIcon, TrashIconOutline } from '@/assets'
+import { TelePhoneIconOutline } from '@/assets/icons/telephoneOutline'
 import { useModal, useUser, useUserAddress } from '@/hooks'
 import { setAddressForm } from '@/store'
-import { ShippingAddress } from '@/types'
+import { ShippingAddressV2 } from '@/types'
 import classNames from 'classnames'
 import { toast } from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
@@ -11,13 +12,13 @@ import { Modal, ModalConfirm } from '../modal'
 
 interface IAddressItem {
   isActive?: boolean
-  address: ShippingAddress
+  address: ShippingAddressV2
   className?: string
 }
 
 export const AddressItem = ({ isActive, address, className }: IAddressItem) => {
   const dispatch = useDispatch()
-  const {userInfo} = useUser({})
+  const { userInfo } = useUser({})
   const partner_id = userInfo?.account?.partner_id || 0
 
   const {
@@ -54,16 +55,21 @@ export const AddressItem = ({ isActive, address, className }: IAddressItem) => {
       toast.success('Xóa địa chỉ thành công!')
     })
   }
-  
+
   return (
     <div
       className={twMerge(
-        classNames(`bg-white p-16 mb-20 last:mb-0 border-b border-gray-200 last:border-none ${isActive ? '' : ''}`, className)
+        classNames(
+          `bg-white p-16 mb-20 last:mb-0 border-b border-gray-200 last:border-none ${
+            isActive ? '' : ''
+          }`,
+          className
+        )
       )}
     >
       <div className="relative">
         <div className="flex items-center justify-between">
-          <p className="text-lg flex-1 line-clamp-1">{address.name}</p>
+          <p className="text-lg flex-1 line-clamp-1 font-bold">{address.name}</p>
           <div className="flex items-center">
             <div
               onClick={() => {
@@ -85,14 +91,14 @@ export const AddressItem = ({ isActive, address, className }: IAddressItem) => {
           </div>
         </div>
 
-        <p className="text-base font-600">
-          <span className="text-gray">{`Địa chỉ: `}</span>
-          <span className="">{address.full_adress}</span>
-        </p>
+        <div className="flex items-center gap-8">
+          <LocationOutlineIcon className="min-w-[16px] w-[16px] h-[16px]" />
+          <p className="text-base font-semibold line-clamp-1">{address.full_adress}</p>
+        </div>
 
-        <p className="text-base font-600">
-          <span className="text-gray">{`Điện thoại: `}</span>
-          <span className="">{address.phone}</span>
+        <p className="flex items-center gap-8">
+          <TelePhoneIconOutline className="min-w-[16px] w-[16px] h-[16px]" />
+          <p className="text-base font-semibold line-clamp-1">{address.phone}</p>
         </p>
       </div>
 
@@ -119,9 +125,11 @@ export const AddressItem = ({ isActive, address, className }: IAddressItem) => {
           </div>
 
           <div className="max-h-[400px] h-fit overflow-scroll scrollbar-hide p-12">
-            <AddressForm onSubmit={() => {
-              closeModalUpdate()
-            }} />
+            <AddressForm
+              onSubmit={() => {
+                closeModalUpdate()
+              }}
+            />
           </div>
         </div>
       </Modal>

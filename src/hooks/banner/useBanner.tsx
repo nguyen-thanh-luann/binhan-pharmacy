@@ -1,32 +1,40 @@
-
-import { SWR_KEY } from '@/constants'
 import { bannerAPI } from '@/services'
-import { Banner, GetBannerParams, HTTPListRes } from '@/types'
-import useSWR from 'swr'
+import { Banner, GetBannerParams } from '@/types'
+import { useQueryListV2 } from '../common/useQueryV2'
 
 interface useBannerProps {
-  key?: string
+  key: string
   shouldFetch?: boolean
   params?: GetBannerParams
 }
 
 interface useBannerRes {
-  data: HTTPListRes<Banner[]>
+  data: Banner[]
   isValidating: boolean
+  isLoadingMore: boolean
+  hasMore: boolean
+  getMore: () => void
 }
 
-export const useBanner = ({ shouldFetch = true, key, params }: useBannerProps): useBannerRes => {
-  const { data, isValidating } = useSWR(
-    key ? key : SWR_KEY.get_banner_list,
-    !shouldFetch ? null : () => bannerAPI.getBanners(params).then((res: any) => res?.data),
-    {
+export const useBanner = ({ key, params }: useBannerProps): useBannerRes => {
+  const { data, isValidating, getMore, hasMore, isLoadingMore } = useQueryListV2<
+    Banner,
+    GetBannerParams
+  >({
+    key,
+    fetcher: bannerAPI.getBanners,
+    initialParams: params,
+    config: {
       revalidateOnFocus: false,
       dedupingInterval: 60000,
-    }
-  )
+    },
+  })
 
   return {
     data,
     isValidating,
+    isLoadingMore,
+    hasMore,
+    getMore,
   }
 }

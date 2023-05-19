@@ -1,9 +1,9 @@
-import { OrderLineDelivery, Payment, ShippingAddress } from '@/types'
+import { OrderLineDelivery, Payment, ShippingAddressV2 } from '@/types'
 import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from './store'
 
 interface OrderSlice {
-  address: ShippingAddress | undefined
+  address: ShippingAddressV2 | undefined
   payment: Payment | undefined
   orderLineDelivery: OrderLineDelivery | undefined
 }
@@ -18,8 +18,7 @@ const orderSlice = createSlice({
   name: 'order',
   initialState,
   reducers: {
-
-    setOrderAddress: (state, { payload }: { payload: ShippingAddress | undefined }) => {      
+    setOrderAddress: (state, { payload }: { payload: ShippingAddressV2 | undefined }) => {
       if (payload?.id) {
         state.address = payload
       } else {
@@ -36,7 +35,7 @@ const orderSlice = createSlice({
       state.orderLineDelivery = payload
     },
 
-    resetOrderData: (state) => {      
+    resetOrderData: (state) => {
       state.address = undefined
       state.payment = undefined
       state.orderLineDelivery = undefined

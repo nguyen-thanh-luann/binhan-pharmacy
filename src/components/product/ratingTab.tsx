@@ -1,44 +1,71 @@
+import { StarIconOutline, StarIconSolid } from '@/assets'
+import { DEFAULT_LIMIT, SWR_KEY } from '@/constants'
+import { isArrayHasValue } from '@/helper'
+import { useRating, useStatisticalRating } from '@/hooks'
+import { StarString } from '@/types'
 import classNames from 'classnames'
-import React, { useState } from 'react'
+import { useState } from 'react'
+import InfiniteScroll from 'react-infinite-scroll-component'
 import { twMerge } from 'tailwind-merge'
 import { NotFound } from '../notFound'
 import { Star } from '../star'
-import { StarIconOutline, StarIconSolid } from '@/assets'
-import { StarString } from '@/types'
-import { useStatisticalRating } from '@/hooks'
 import { RatingCount } from './ratingCount'
+import { RatingItem } from './ratingItem'
+import { RatingItemLoading } from './ratingItemLoading'
 
 interface RatingProps {
   className?: string
+  product_id: number
 }
 
-export const Rating = ({ className }: RatingProps) => {
-  const [starCounts, setStarCounts] = useState<StarString[]>([])
+export const Rating = ({ className, product_id }: RatingProps) => {
+  const [starCounts, setStarCounts] = useState<StarString[]>(['5'])
+
+  const { ratings, getMore, hasMore, isValidating, filter } = useRating({
+    key: `${SWR_KEY.get_product_rating}_${product_id}`,
+    params: {
+      product_id,
+      comment_type: ['rating'],
+    },
+  })
 
   const {
     data: { detail_star_rating: ratingGroup = [], rating_total = 0, star_avg = 0 } = { data: [] },
-  } = useStatisticalRating({ id: 0, shouldFetch: false })
-  console.log({ ratingGroup, rating_total });
-  
+  } = useStatisticalRating({ id: product_id })
 
   const isActive = (count: StarString) => starCounts?.includes(count)
 
   const toggleStarCounts = (count: StarString) => {
     if (starCounts?.includes(count)) {
       const newStarCounts = [...starCounts].filter((item) => item !== count)
+
       setStarCounts(newStarCounts)
-      // filterProductRatings({ product_tmpl_id: product_id, star_ratings: newStarCounts }, () => {
-      //   setStarCounts(newStarCounts)
-      //   if (offset) setOffset(0)
-      // })
+      filter({
+        comment_type: ['rating'],
+        product_id: product_id,
+        star_rating: newStarCounts,
+        limit: DEFAULT_LIMIT,
+      })
     } else {
       const newStarCounts = [...starCounts, count]
-      // filterProductRatings({ product_tmpl_id: product_id, star_ratings: newStarCounts }, () => {
-      //   setStarCounts(newStarCounts)
-      //   if (offset) setOffset(0)
-      // })
+      filter({
+        comment_type: ['rating'],
+        product_id: product_id,
+        star_rating: newStarCounts,
+        limit: DEFAULT_LIMIT,
+      })
       setStarCounts(newStarCounts)
     }
+  }
+
+  const rendeRatingLoader = (number?: number, className?: string) => {
+    return (
+      <div className={classNames('', className)}>
+        {Array.from({ length: number || 7 }).map((_, index) => (
+          <RatingItemLoading key={index} className="mb-12 last:mb-0" />
+        ))}
+      </div>
+    )
   }
 
   return (
@@ -46,29 +73,21 @@ export const Rating = ({ className }: RatingProps) => {
       <div className="flex gap-12 md:gap-24 flex-col md:flex-row mb-12">
         <div>
           <div className="flex items-center mb-12">
-            <p className="text-2xl text-orange mr-8">0</p>
+            <p className="text-2xl text-orange mr-8">{star_avg}</p>
             <div className="">
               <Star readonly size={18} ratingValue={star_avg * 20} className="mb-8" />
-              <p className="text-sm text-text-color">0 nhận xét</p>
+              <p className="text-sm text-text-color">{`${rating_total} đánh giá`}</p>
             </div>
           </div>
 
           <div>
-            {/* {ratingGroup?.length > 0 &&
+            {ratingGroup?.length > 0 &&
               ratingGroup?.map((rating, index) => (
                 <RatingCount
                   key={index}
                   star={Number(rating.star_rating) || 0}
                   starQuantity={Number(rating.rating_count) || 0}
                   totalQuantity={rating_total}
-                />
-              ))} */}
-            {[5,4,3,2,1].map((rating, index) => (
-                <RatingCount
-                  key={index}
-                  star={Number(rating) || 0}
-                  starQuantity={Number(index * 2) || 0}
-                  totalQuantity={index * 10}
                 />
               ))}
           </div>
@@ -93,7 +112,28 @@ export const Rating = ({ className }: RatingProps) => {
         </div>
       </div>
 
-      <NotFound notify="Không tìm thấy đánh giá nào cho sản phẩm" />
+      <div className="max-h-[50vh] overflow-scroll scrollbar-hide">
+        <InfiniteScroll
+          dataLength={ratings?.length || 0}
+          next={() => getMore()}
+          hasMore={hasMore}
+          loader={hasMore ? rendeRatingLoader() : null}
+        >
+          <div>
+            {isValidating ? (
+              rendeRatingLoader()
+            ) : isArrayHasValue(ratings) ? (
+              <div>
+                {ratings?.map((rating) => (
+                  <RatingItem data={rating} className="mb-12 last:mb-0" />
+                ))}
+              </div>
+            ) : (
+              <NotFound notify="Không tìm thấy đánh giá nào cho sản phẩm" />
+            )}
+          </div>
+        </InfiniteScroll>
+      </div>
     </div>
   )
 }

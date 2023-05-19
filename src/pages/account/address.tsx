@@ -8,12 +8,12 @@ import {
   Modal,
   NotFound,
 } from '@/components'
-import { isObjectHasValue } from '@/helper'
+import { isArrayHasValue } from '@/helper'
 import { useModal, useUserAddress } from '@/hooks'
 import { AccountContainer, Main } from '@/templates'
 
 const AddressPage = () => {
-  const { data: userDetail, isValidating } = useUserAddress({})
+  const { data, isValidating } = useUserAddress({})
 
   const {
     visible: showAddressForm,
@@ -56,9 +56,9 @@ const AddressPage = () => {
                   <AddressItemLoading key={index} />
                 ))}
               </div>
-            ) : isObjectHasValue(userDetail) ? (
+            ) : isArrayHasValue(data) ? (
               <div>
-                {userDetail?.shipping_adress?.map((item) => (
+                {data?.map((item) => (
                   <AddressItem key={item?.id} address={item} />
                 ))}
               </div>

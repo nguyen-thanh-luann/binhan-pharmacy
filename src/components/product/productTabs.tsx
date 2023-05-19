@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge'
 import { Tabs } from '../tabs'
 import { ProductDetailPageContainer } from '@/templates'
 import { Rating } from './ratingTab'
-import { Comment } from './commentTab'
+import { CommentTab } from './commentTab'
 
 interface ProductTabsProps {
   className?: string
@@ -30,10 +30,10 @@ export const ProductTabs = ({ className, product_id }: ProductTabsProps) => {
         />
 
         <div>
-          {currentTab === 'rating' ? <Rating /> : null}
-          
-          {currentTab === 'comment' ? <Comment product_id={product_id}/> : null}
-       </div>
+          {currentTab === 'rating' ? <Rating product_id={product_id} /> : null}
+
+          {currentTab === 'comment' ? <CommentTab product_id={product_id} /> : null}
+        </div>
       </div>
     </ProductDetailPageContainer>
   )

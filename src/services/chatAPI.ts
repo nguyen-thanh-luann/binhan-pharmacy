@@ -10,44 +10,10 @@ import {
   QueryCommonParams,
   SendMessage,
   UpdateRoomInfo,
-  UserRes
+  UserRes,
 } from '@/types'
 import { AxiosResponse } from 'axios'
 import axiosClient from '.'
-// import { store } from "../core"
-
-// const axiosClient = axios.create({
-//   baseURL: `${process.env.NEXT_PUBLIC_CHAT_API_URL}/api`,
-//   headers: {
-//     Accept: 'application/json',
-//     'Content-Type': 'application/json',
-//     Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDA5ODkwMDkyZDg4ZmJkODJjYjA2MzYiLCJ1c2VyX2lkIjoyMjcsInJvbGUiOiJudmtkIiwiaWF0IjoxNjc4MzQ3NjUzLCJleHAiOjE3MDQyNjc2NTN9.LeUgLKtOM6nM8jpRekyvOwSdo4QaYZAdPv0v58Kw-40`,
-//   },
-// })
-
-// axiosClient.interceptors.request.use(async (config) => {
-//   // const chatToken = store?.getState()?.user?.chatToken
-//   // if (chatToken) {
-//   //   if (config?.headers?.["Authorization"]) config.headers["Authorization"] = `Bearer ${chatToken}`
-//   // }
-//   return config
-// })
-
-// try {
-//   axiosClient.interceptors.response.use(
-//     async (response) => {
-//       if (response?.data) {
-//         return response.data
-//       }
-//       return response
-//     },
-//     (err) => {
-//       throw err
-//     }
-//   )
-// } catch (error) {
-//   console.log(error)
-// }
 
 const chatAPI = {
   createUser: (params: CreateUserParams): Promise<ChatAxiosResponse<UserRes>> => {
@@ -61,7 +27,6 @@ const chatAPI = {
   createGroupChat: (params: CreateGroupChat) => {
     return axiosClient.post('/chatDMS/api/room/group', params)
   },
-
 
   getMessageUnreadCount: (): Promise<AxiosResponse<MessageUnreadCountRes>> => {
     return axiosClient.get('/chatDMS/api/message/message_unread_count')
@@ -82,7 +47,9 @@ const chatAPI = {
     offset = 0,
     room_id,
   }: QueryCommonParams & { room_id: string }) => {
-    return axiosClient.get(`/chatDMS/api/room/${room_id}/messages_pinned?limit=${limit}&offset=${offset}`)
+    return axiosClient.get(
+      `/chatDMS/api/room/${room_id}/messages_pinned?limit=${limit}&offset=${offset}`
+    )
   },
 
   getMessagesInRoom: ({
@@ -205,4 +172,3 @@ const chatAPI = {
 }
 
 export { chatAPI }
-

@@ -20,7 +20,6 @@ export const AccountDrawer = ({ className }: AccountDrawerProps) => {
   //Have deviceCode => User not login yet
   //Do not have deviceCode => User logged
 
-
   const router = useRouter()
   const dispatch = useDispatch()
   const authOption: AUTH_OPTION = useSelector(selectAuthOption)
@@ -75,8 +74,6 @@ export const AccountDrawer = ({ className }: AccountDrawerProps) => {
             {authOption === 'resetPassword' ? (
               <ResetPasswordScreen onClose={handleCLoseModal} />
             ) : null}
-
-            {/* {authOption === 'signup' ? <SignupScreen onClose={handleCLoseModal} /> : null} */}
           </div>
         </ModalAuth>
       ) : null}

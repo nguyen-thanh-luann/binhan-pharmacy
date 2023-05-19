@@ -1,11 +1,11 @@
-import { PayloadType, ShippingAddress } from '@/types'
+import { PayloadType, ShippingAddressV2 } from '@/types'
 import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from './store'
 
 interface CommonSlice {
   backdropVisible: boolean
   previewImageUrl: string | undefined
-  addressForm: ShippingAddress | undefined
+  addressForm: ShippingAddressV2 | undefined
 }
 
 const initialState: CommonSlice = {
@@ -26,16 +26,14 @@ const commonSlice = createSlice({
       state.previewImageUrl = payload
     },
 
-    setAddressForm: (state, { payload }: { payload: ShippingAddress | undefined }) => {
+    setAddressForm: (state, { payload }: { payload: ShippingAddressV2 | undefined }) => {
       state.addressForm = payload
     },
   },
 })
 
-
 export const selectPreviewImageUrl = (state: RootState) => state.common.previewImageUrl
 export const selectAddressForm = (state: RootState) => state.common.addressForm
 
 export default commonSlice.reducer
-export const { setBackdropVisible, setAddressForm, setPreviewImageUrl } =
-  commonSlice.actions
+export const { setBackdropVisible, setAddressForm, setPreviewImageUrl } = commonSlice.actions

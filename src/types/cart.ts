@@ -1,8 +1,16 @@
 import { CategoryIdName } from './category'
 import { ImageId, ImageRes } from './common'
-import { HTTPListResponse, HTTPResponseDataV2, Pagination, QueryList } from './http'
+import { HTTPListResponse, Pagination, QueryList } from './http'
 import { CompanyIdName, ProductUom, ValueId } from './product'
-import { CategoryIdAndName, GetPromotionApplyOnCategoryReq, GetPromotionApplyOnCompanyReq, GetPromotionsAppliedOnProductReq, PromotionRes } from './promotion'
+import {
+  CategoryIdAndName,
+  GetPromotionApplyOnCategoryReq,
+  GetPromotionApplyOnCompany,
+  GetPromotionApplyOnCompanyReq,
+  GetPromotionApplyOnProduct,
+  GetPromotionsAppliedOnProductReq,
+  PromotionRes,
+} from './promotion'
 
 export interface GetShoppingCartReq extends QueryList {
   limit_category?: number
@@ -256,19 +264,6 @@ export interface RelProductRes {
 export type GetPromotionApplyOnCategory = {
   company_id: number
   category_id: CategoryIdAndName
-} & HTTPListResponse<PromotionRes[]>
-
-export type GetPromotionApplyOnCompany = {
-  company_id: number
-} & HTTPListResponse<PromotionRes[]>
-
-export type GetPromotionApplyOnCompanySingleRes = HTTPResponseDataV2<GetPromotionApplyOnCompany>
-
-export type GetPromotionApplyOnCompanyMultipleRes = HTTPResponseDataV2<GetPromotionApplyOnCompany[]>
-
-export type GetPromotionApplyOnProduct = {
-  product_id: RelProductRes
-  company_id: number
 } & HTTPListResponse<PromotionRes[]>
 
 export interface AppendPromotionsToCart {

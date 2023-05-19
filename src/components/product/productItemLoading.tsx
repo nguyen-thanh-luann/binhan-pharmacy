@@ -5,8 +5,8 @@ export const ProductItemLoading = () => {
       <div className="p-8">
         <div className="w-full mb-12 h-[10px] rounded-md bg-gray-300"></div>
         <div className="w-[30%] mb-12 h-[10px] rounded-md bg-gray-300"></div>
-        <div className="w-[30%] mb-12 h-[10px] rounded-md bg-gray-300"></div>
-        <div className="w-[50%] mb-12 h-[10px] rounded-md bg-gray-300"></div>
+        <div className="w-[60%] mb-12 h-[10px] rounded-md bg-gray-300"></div>
+        <div className="w-full mb-12 h-[10px] rounded-md bg-gray-300"></div>
       </div>
     </div>
   )

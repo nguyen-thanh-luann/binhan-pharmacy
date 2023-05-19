@@ -1,15 +1,10 @@
-import { encodeJWT } from '@/helper'
 import { useAuth, useGuest, useUser } from '@/hooks'
-import { authAPI } from '@/services'
 import { setAuthOption } from '@/store'
-import { GenerateChatTokenRes, LoginFormParams, UserInfo } from '@/types'
+import { LoginFormParams } from '@/types'
 import { useRouter } from 'next/router'
 import { useDispatch } from 'react-redux'
 import { LoginForm } from '../form'
 import { AuthScreen } from './authScreen'
-import { useSWRConfig } from 'swr'
-import { SWR_KEY } from '@/constants'
-import { toast } from 'react-hot-toast'
 
 interface LoginPasswordScreenProps {
   onClose?: () => void
@@ -24,45 +19,20 @@ export const LoginPasswordScreen = ({
   const router = useRouter()
   const { guestInfo } = useGuest()
   const deviceCode = guestInfo?.device_code || ''
-  const { mutate } = useSWRConfig()
-  const { getUserInfo, addGuestCartToShoppingCart } = useUser({})
-  const { loginWithPassword, generateChatToken } = useAuth()
+  const { addGuestCartToShoppingCart, mutateAccountData, generateChatServiceToken } = useUser({})
+  const { loginWithPassword } = useAuth()
 
   const handleLogin = (data: LoginFormParams) => {
     loginWithPassword({
       params: data,
       onSuccess: () => {
         onClose?.()
-        mutate(SWR_KEY.get_guest_information)
-        addGuestCartToShoppingCart(
-          deviceCode,
-          () => {
-            toast.success('Add guest data success')
-          },
-          () => {
-            toast.error('Add guest data fail')
-          }
-        )
-        handleGetUserInfo()
+
+        mutateAccountData()
+        // merge cart data of guest to user's cart
+        addGuestCartToShoppingCart(deviceCode)
+        generateChatServiceToken()
         router.push('/')
-      },
-    })
-  }
-
-  const handleGetUserInfo = () => {
-    getUserInfo((userInfo) => {
-      handleGenerateChatToken(userInfo)
-    })
-  }
-
-  const handleGenerateChatToken = async (userInfo: UserInfo) => {
-    generateChatToken({
-      token: encodeJWT({ user_id: userInfo.account?.partner_id }),
-      onSuccess: async (data: GenerateChatTokenRes) => {
-        const res: any = await authAPI.setChatToken(data)
-        if (res?.result?.success) {
-          console.log('set chat token success!')
-        }
       },
     })
   }

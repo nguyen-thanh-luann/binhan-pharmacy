@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from 'react'
 import { TimesIcon } from '@/assets'
 import { SearchField } from './searchField'
 import { AddressPicker } from './addressPicker'
+import { SWR_KEY } from '@/constants'
 
 interface SelectDrugStoreFormProps {
   className?: string
@@ -20,7 +21,8 @@ interface SelectDrugStoreFormProps {
 export const SelectDrugStoreForm = ({ className, onSelect, onClose }: SelectDrugStoreFormProps) => {
   const [params, setParams] = useState<GetDrugStoreParams>()
 
-  const { drugstores, filterStore } = useDrugstores({
+  const { drugstores, filter, hasMore, getMore } = useDrugstores({
+    key: `${SWR_KEY.get_drug_stores}`,
     params: {},
   })
 
@@ -36,7 +38,7 @@ export const SelectDrugStoreForm = ({ className, onSelect, onClose }: SelectDrug
   }
 
   useEffect(() => {
-    if (params) filterStore(params)
+    if (params) filter(params)
   }, [params])
 
   const searchStore = (data: string) => {
@@ -68,7 +70,7 @@ export const SelectDrugStoreForm = ({ className, onSelect, onClose }: SelectDrug
         <div className="mb-12">
           <SearchField
             onChangeWithDebounceValue={(val) => searchStore(val as string)}
-            className="border"
+            className="border p-8"
             placeholder="Nhập tên cửa hàng"
           />
         </div>
@@ -84,15 +86,10 @@ export const SelectDrugStoreForm = ({ className, onSelect, onClose }: SelectDrug
       <div className="">
         <InfiniteScroll
           dataLength={drugstores?.length || 0}
-          next={() =>
-            // hanldeLoadMore({
-            //   limit: DEFAULT_LIMIT,
-            // })
-            {}
-          }
+          next={() => getMore()}
           hasMore={false}
           loader={
-            false ? (
+            hasMore ? (
               <div className="my-12">
                 <Spinner />
               </div>

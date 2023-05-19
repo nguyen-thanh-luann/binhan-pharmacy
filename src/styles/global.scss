@@ -37,27 +37,27 @@ body {
 }
 
 h1 {
-  @apply text-text-color font-bold text-3xl;
+  @apply text-text-color font-bold text-3xl select-none;
 }
 
 h2 {
-  @apply text-text-color font-semibold text-xl;
+  @apply text-text-color font-semibold text-xl select-none;
 }
 
 h3 {
-  @apply text-text-color font-semibold text-lg;
+  @apply text-text-color font-semibold text-lg select-none;
 }
 
 h4 {
-  @apply text-text-color font-semibold text-md;
+  @apply text-text-color font-semibold text-md select-none;
 }
 
 h5 {
-  @apply text-text-color font-semibold text-base;
+  @apply text-text-color font-semibold text-base select-none;
 }
 
 p,
 li,
 div {
-  @apply text-text-color text-base font-medium;
+  @apply text-text-color text-base font-medium select-none;
 }

@@ -1,5 +1,3 @@
-import produce from 'immer'
-import { promotionAPI } from '@/services'
 import {
   AppendPromotionsToCart,
   ApplyPromotionOrder,
@@ -17,8 +15,9 @@ import {
   PromotionRange,
   PromotionRes,
 } from '@/types'
-import { checkAnyKeyInObjectHasValue } from './functions'
+import produce from 'immer'
 import _ from 'lodash'
+import { checkAnyKeyInObjectHasValue } from './functions'
 
 export const getProductsCheckedInCart = (
   cart: GetProductsInCartRes | undefined,

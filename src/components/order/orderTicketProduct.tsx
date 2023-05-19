@@ -17,7 +17,7 @@ export const OrderTicketProduct = ({ data, className }: OrderTicketProductProps)
     <div className={twMerge(classNames(`flex border-b border-gray-200 py-12`, className))}>
       <div className="mr-8">
         <Image
-          src={data?.image_url ? `${API_URL}${data?.image_url}` : empty}
+          src={data?.image_url?.length > 0 ? `${API_URL}${data?.image_url?.[0]}` : empty}
           imageClassName="w-[62px] h-[62px] object-cover"
         />
       </div>

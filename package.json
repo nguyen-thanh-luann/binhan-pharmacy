@@ -45,6 +45,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.5",
     "react-hot-toast": "^2.4.0",
+    "react-indiana-drag-scroll": "^3.0.3-alpha",
     "react-infinite-scroll-component": "^6.1.0",
     "react-linkify": "^1.0.0-alpha",
     "react-otp-input": "^3.0.0",

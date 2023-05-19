@@ -9,7 +9,7 @@ interface useCreateAttachmentProps {
 }
 
 export const useCreateAttachment = () => {
-  const { asyncHandler } = useAsync()
+  const { asyncHandler, isLoading } = useAsync()
 
   const createAttachment = ({
     file,
@@ -31,11 +31,14 @@ export const useCreateAttachment = () => {
       config: {
         showSuccessMsg: false,
         errorMsg: 'Có lỗi khi tải ảnh lên!',
+        setLoadingState: true,
+        showBackdrop: false,
       },
     })
   }
 
   return {
     createAttachment,
+    isLoading,
   }
 }

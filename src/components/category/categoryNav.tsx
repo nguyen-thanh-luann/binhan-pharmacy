@@ -8,6 +8,7 @@ import { useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Spinner } from '../spinner'
 import { CategoryNavDropDownMenu } from './categoryNavDropDownMenu'
+import { useRouter } from 'next/router'
 
 interface HeaderCategoryNavProps {
   className?: string
@@ -15,8 +16,10 @@ interface HeaderCategoryNavProps {
 
 export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
   const ref = useRef<HTMLDivElement>(null)
+  const router = useRouter()
   const [currentCategoryId, setCurrentCategoryId] = useState<number | undefined>()
   const [isCategoryMinor, setIsCategoryMinor] = useState<boolean>(false)
+
   const { categoryList, isValidating: categoryListLoading } = useCategoryList({
     key: SWR_KEY.get_category_list,
     params: {},
@@ -27,9 +30,12 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
     params: {},
   })
 
-  // useCategoryMinorList
-  const handleCategoryClick = (id: number) => {
-    setCurrentCategoryId(id)
+  const handleCategoryClick = (id: number, type: 'category' | 'minor_category') => {
+    if (type === 'category') {
+      router.push(`/search/?category_${id}=${id}`)
+    } else {
+      router.push(`/search/?minor_category_${id}=${id}`)
+    }
   }
 
   return (
@@ -46,14 +52,14 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
                 <div className="flex-1 flex h-header_nav_height gap-12 overflow-scroll scrollbar-hide">
                   {categoryList?.map((option, index) => (
                     <div
-                      onClick={() => handleCategoryClick(option?.category_id)}
+                      onClick={() => handleCategoryClick(option?.category_id, 'category')}
                       onMouseEnter={() => {
                         setCurrentCategoryId(option?.category_id)
                       }}
                       className="flex items-center gap-6 py-6 px-8 my-auto cursor-pointer min-w-fit"
                       key={index}
                     >
-                      <p className="title !text-white uppercase h-[22px] flex-center select-none">
+                      <p className="title !text-white uppercase h-[22px] flex-center">
                         {option?.category_name}
                       </p>
                       <div className="w-[22px] h-[22px] flex-center">
@@ -64,7 +70,7 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
 
                   {[...categoryMinorList].map((option, index) => (
                     <div
-                      onClick={() => handleCategoryClick(option?.category_id)}
+                      onClick={() => handleCategoryClick(option?.category_id, 'minor_category')}
                       onMouseEnter={() => {
                         setIsCategoryMinor(true)
                         setCurrentCategoryId(option?.category_id)

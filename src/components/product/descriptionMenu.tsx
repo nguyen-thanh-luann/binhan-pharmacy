@@ -1,8 +1,8 @@
 import { MenuIcon, RightIcon } from '@/assets'
 import { isArrayHasValue, isProductDescContainChild } from '@/helper'
-import { ProductDescription, ProductDescriptionChild } from '@/types'
+import { ProductDescription } from '@/types'
 import classNames from 'classnames'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 interface DescriptionMenuProps {
@@ -11,26 +11,36 @@ interface DescriptionMenuProps {
   isActive?: boolean
   currentDescId?: number
   onClick?: (data: ProductDescription) => void
-  onChildClick?: (data: ProductDescriptionChild) => void
+  toggleParentDescMenu?: (id: number) => void
 }
 
 export const DescriptionMenu = ({
   data,
   className,
-  currentDescId,
+  currentDescId = 0,
   onClick,
-  onChildClick,
 }: DescriptionMenuProps) => {
   const [showChilds, setShowChilds] = useState<boolean>(false)
+  const [activeDescId, setActiveDescId] = useState<number>(currentDescId)
 
   const handleParentCategoryClick = (data: ProductDescription) => {
-    
     if (!isArrayHasValue(data?.child || [])) {
       onClick?.(data)
     } else {
-      setShowChilds(!showChilds)
+      // toggle  children category menu
+      if (showChilds || activeDescId !== 0) {
+        setShowChilds(!showChilds)
+        setActiveDescId(0)
+      } else {
+        setShowChilds(true)
+        setActiveDescId(currentDescId)
+      }
     }
   }
+
+  useEffect(() => {
+    setActiveDescId(currentDescId)
+  }, [currentDescId])
 
   return (
     <div className={twMerge(classNames(`bg-white`, className))}>
@@ -42,65 +52,65 @@ export const DescriptionMenu = ({
 
       <div className="">
         {isArrayHasValue(data)
-          ? data?.map((category) => (
-              <div key={category.category_id}>
-                {/* parent category */}
-                <div
-                  onClick={() => handleParentCategoryClick(category)}
-                  className="flex-between border-b border-gray-200 p-10 cursor-pointer group"
-                >
-                  <p
-                    className={`text_md group-hover:text-primary duration-200 ease-in-out ${
-                      category.category_id === currentDescId ? '!text-primary' : ''
-                    }`}
+          ? data?.map((category) => {
+              const isVisible = isProductDescContainChild(category, activeDescId) || showChilds
+
+              return (
+                <div key={category.category_id}>
+                  {/* parent category */}
+                  <div
+                    onClick={() => handleParentCategoryClick(category)}
+                    className="flex-between border-b border-gray-200 p-10 cursor-pointer group"
                   >
-                    {category.category_name}
-                  </p>
+                    <p
+                      className={classNames(
+                        'text-md font-bold group-hover:text-primary duration-200 ease-in-out',
+                        category.category_id === activeDescId ? '!text-primary' : ''
+                      )}
+                    >
+                      {category.category_name}
+                    </p>
 
-                  {isArrayHasValue(category?.child) ? (
-                    <div className="w-[22px] h-[22px] flex-center duration-200 ease-in-out">
-                      <RightIcon
-                        className={`text-sm text-text-color duration-200 ease-in-out ${
-                          currentDescId === category.category_id ? 'rotate-90' : ''
-                        }`}
-                      />
-                    </div>
-                  ) : null}
+                    {isArrayHasValue(category?.child) ? (
+                      <div className="w-[22px] h-[22px] flex-center duration-200 ease-in-out">
+                        <RightIcon
+                          className={classNames(
+                            'text-sm text-text-color duration-200 ease-in-out',
+                            isVisible ? 'rotate-90' : ''
+                          )}
+                        />
+                      </div>
+                    ) : null}
+                  </div>
+
+                  {/* children category */}
+                  <div className={classNames('animate-fade', isVisible ? 'flex' : 'hidden')}>
+                    {isArrayHasValue(category.child) ? (
+                      <div className="px-12 w-full">
+                        {category?.child?.map((item) => {
+                          return (
+                            <div
+                              key={item.category_id}
+                              onClick={() => handleParentCategoryClick?.(item)}
+                              className="p-12 border-b last:border-none border-gray-200 w-full cursor-pointer group"
+                            >
+                              <p
+                                className={classNames(
+                                  'text_md group-hover:text-primary duration-200 ease-in-out',
+                                  activeDescId === item?.category_id ? '!text-primary' : ''
+                                )}
+                              >
+                                {item.category_name}
+                              </p>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    ) : null}
+                  </div>
                 </div>
-
-                {/* children category */}
-
-                <div
-                  className={
-                    currentDescId == category.category_id ||
-                    isProductDescContainChild(category, currentDescId || 0) ||
-                    showChilds
-                      ? 'flex'
-                      : 'hidden'
-                  }
-                >
-                  {isArrayHasValue(category.child) ? (
-                    <div className="px-12 w-full">
-                      {category?.child?.map((item) => (
-                        <div
-                          key={item.category_id}
-                          onClick={() => onChildClick?.(item)}
-                          className="p-12 border-b border-gray-200 w-full cursor-pointer group"
-                        >
-                          <p
-                            className={`text_md group-hover:text-primary duration-200 ease-in-out ${
-                              currentDescId === item?.category_id ? '!text-primary' : ''
-                            }`}
-                          >
-                            {item.category_name}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-            ))
+              )
+            })
           : null}
       </div>
     </div>

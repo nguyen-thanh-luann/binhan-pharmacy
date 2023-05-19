@@ -1,14 +1,14 @@
+import { SWR_KEY } from '@/constants'
 import { cartAPI } from '@/services'
 import { AddToCartReq, AddToCartRes, Product } from '@/types'
-import { useAsync } from '../common'
-import { useUserDetail } from '../user'
-import { useSWRConfig } from 'swr'
-import { SWR_KEY } from '@/constants'
 import { toast } from 'react-hot-toast'
+import { useSWRConfig } from 'swr'
+import { useAsync } from '../common'
+import { useUser } from '../user'
 
 export const useAddToCart = () => {
-  const { data: userDetail } = useUserDetail({})
-  const userCompany = userDetail?.company_id || 1
+  const { userInfo } = useUser({})
+  const userCompany = userInfo?.account?.company_id || 1
   const { asyncHandler, isLoading } = useAsync()
   const { mutate: swrConfigMutate } = useSWRConfig()
 

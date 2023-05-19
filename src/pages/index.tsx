@@ -1,43 +1,28 @@
-import { HomeBanner, HomePosts, ProductsByAttributeMinor, SectionBuyMedicine } from '@/components'
-import { DOMAIN_URL, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE, thumbnailImageUrl } from '@/constants'
-import { isArrayHasValue } from '@/helper'
-import { useAttributeMinor, useBanner } from '@/hooks'
+import {
+  HomeBanner,
+  HomePosts,
+  ListProductByAttributeMinor,
+  SectionBuyMedicine,
+  VisceraAttribute,
+} from '@/components'
+import { DOMAIN_URL, WEB_DESCRIPTION, WEB_TITTLE, thumbnailImageUrl } from '@/constants'
 import { Main } from '@/templates'
 
+// this is temp branch
 const HomePage = () => {
-  const { data: bannerList, isValidating } = useBanner({})
-
-  const { attributeMinors, isValidating: attributeMinorLoading } = useAttributeMinor({
-    key: SWR_KEY.get_attribute_minor_list,
-    params: {},
-  })
-
   return (
     <Main title={WEB_TITTLE} description={WEB_DESCRIPTION}>
       <div>
         <div className="mb-24">
-          <HomeBanner banners={bannerList?.result || null} isLoading={isValidating} />
+          <HomeBanner />
         </div>
 
         <div className="container px-12">
           <SectionBuyMedicine className="mb-24 hidden md:block" />
 
-          {/* productList by attribute minor */}
-          {attributeMinorLoading ? (
-            <ProductsByAttributeMinor
-              className="mb-24"
-              atribute={undefined}
-              isValidating={attributeMinorLoading}
-            />
-          ) : isArrayHasValue(attributeMinors) ? (
-            attributeMinors?.map((attribute) => (
-              <ProductsByAttributeMinor
-                className="mb-24"
-                key={attribute?.attribute_id}
-                atribute={attribute}
-              />
-            ))
-          ) : null}
+          <VisceraAttribute />
+
+          <ListProductByAttributeMinor />
 
           {/* post list */}
           <HomePosts />

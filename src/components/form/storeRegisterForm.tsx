@@ -1,11 +1,10 @@
 import { PhotoIcon } from '@/assets'
 import { DEFAULT_LIMIT, STORE_TYPE } from '@/constants'
-import { encodeJWT } from '@/helper'
-import { useAttachment, useAuth, useCreateAttachment, useModal, useUser } from '@/hooks'
+import { useAttachment, useAuth, useCreateAttachment, useGuest, useModal, useUser } from '@/hooks'
 import { storeRegisterSchema } from '@/schema'
-import { authAPI, userAPI } from '@/services'
+import { userAPI } from '@/services'
 import { setBackdropVisible } from '@/store'
-import { AddressPickerRes, CreateAttachmentRes, GenerateChatTokenRes, UserInfo } from '@/types'
+import { AddressPickerRes, CreateAttachmentRes } from '@/types'
 import { authentication } from '@/utils/firebase'
 import { yupResolver } from '@hookform/resolvers/yup'
 import classNames from 'classnames'
@@ -39,8 +38,11 @@ type certificatteTypeImage = 'businessCertificateImage' | 'gppCertificateImage'
 export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
   const dispatch = useDispatch()
   const router = useRouter()
-  const { loginPhoneNumber, generateChatToken } = useAuth()
-  const { updateUser, getUserInfo } = useUser({})
+  const { guestInfo } = useGuest()
+  const deviceCode = guestInfo?.device_code || ''
+  const { loginPhoneNumber } = useAuth()
+  const { updateUser, addGuestCartToShoppingCart, mutateAccountData, generateChatServiceToken } =
+    useUser({})
   const [formData, setFormData] = useState<any>()
 
   const { visible: showOtpForm, openModal: setShowOtpForm, closeModal: closeOtpForm } = useModal()
@@ -177,7 +179,10 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
                 establish_date: data?.establish_date,
               },
               () => {
-                handleGetUserInfo()
+                generateChatServiceToken()
+                // merge cart data of guest to user's cart
+                mutateAccountData()
+                addGuestCartToShoppingCart(deviceCode)
                 router.push('/')
               }
             )
@@ -185,24 +190,6 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
         })
       }
     )
-  }
-
-  const handleGetUserInfo = () => {
-    getUserInfo((userInfo) => {
-      handleGenerateChatToken(userInfo)
-    })
-  }
-
-  const handleGenerateChatToken = async (userInfo: UserInfo) => {
-    generateChatToken({
-      token: encodeJWT({ user_id: userInfo?.account?.partner_id }),
-      onSuccess: async (data: GenerateChatTokenRes) => {
-        const res: any = await authAPI.setChatToken(data)
-        if (res?.result?.success) {
-          console.log('set chat token success!')
-        }
-      },
-    })
   }
 
   const generateRecaptcha = () => {
@@ -305,7 +292,7 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
               name="password"
               label={`Mật khẩu`}
               placeholder={`nhập mật khẩu`}
-              inputClassName="p-12"
+              inputClassName=""
               required
             />
           </div>
@@ -316,7 +303,7 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
               name="confirmPassword"
               label={`Nhập lại mật khẩu`}
               placeholder={`nhập lại mật khẩu`}
-              inputClassName="p-12"
+              inputClassName=""
               required
             />
           </div>

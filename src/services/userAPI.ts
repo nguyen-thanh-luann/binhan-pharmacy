@@ -7,8 +7,13 @@ import type {
   FirebaseAuthParams,
   GenerateChatTokenParams,
   GetDrugStoreParams,
+  HTTPResponse,
+  HTTPResponseV2,
+  ResetPasswordParams,
+  ShippingAddressV2,
   StateId,
   UpdateUserParams,
+  UserAccount,
 } from '@/types'
 import { LoginFormParams } from '@/types'
 import axiosClient, { axiosInstance } from '.'
@@ -21,6 +26,10 @@ const userAPI = {
 
   loginPhoneNumber: (data: FirebaseAuthParams) => {
     return axiosClient.post('/login-phone-number', { params: data })
+  },
+
+  resetPassword: (data: ResetPasswordParams) => {
+    return axiosClient.post('/reset-password', { params: data })
   },
 
   loginGuest: () => {
@@ -109,14 +118,16 @@ const userAPI = {
     return axiosClient.get(`/wishlist_controller/unlike?product_id=${product_id}`)
   },
 
-  getDrugStoreList: ({ limit = DEFAULT_LIMIT, offset = 0, ...params }: GetDrugStoreParams) => {
-    return axiosClient.get(
-      `/user_information_controller/list_drugstore?limit=${limit}&offset=${offset}${
-        params?.drugstore_name ? `&drugstore_name=${params.drugstore_name}` : ''
-      }${params?.district_id ? `&district_id=${params?.district_id}` : ''}${
-        params?.province_id ? `&province_id=${params?.province_id}` : ''
-      }${params?.ward_id ? `&ward_id=${params?.ward_id}` : ''}`
-    )
+  getDrugStoreList: ({
+    limit = DEFAULT_LIMIT,
+    offset = 0,
+    ...params
+  }: GetDrugStoreParams): Promise<HTTPResponseV2<UserAccount[]>> => {
+    return axiosClient.get(`/user_information_controller/list_drugstore`, { params: params })
+  },
+
+  getShippingAddressList: (): Promise<HTTPResponse<ShippingAddressV2[]>> => {
+    return axiosClient.post('/api/v2.0/user/get_adress_by_partner', {})
   },
 }
 

@@ -1,25 +1,31 @@
-import { Banner } from '@/types'
+import { SWR_KEY } from '@/constants'
+import { isArrayHasValue } from '@/helper'
+import { useBanner } from '@/hooks'
+import classNames from 'classnames'
 import { Autoplay, Navigation, Pagination } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { twMerge } from 'tailwind-merge'
 import { CustomImage } from '../customImage'
 
 interface HomeBannerProps {
-  isLoading?: boolean
-  banners: Banner[] | null
+  className?: string
 }
 
-export const HomeBanner = ({ banners, isLoading }: HomeBannerProps) => {
-  
-  if (!isLoading && banners === null) return null
+export const HomeBanner = ({ className }: HomeBannerProps) => {
+  const { data: bannerList, isValidating } = useBanner({
+    key: `${SWR_KEY.get_banner_list}`,
+  })
+
+  if (!isValidating && !bannerList) return null
 
   return (
-    <div>
-      {isLoading ? (
+    <div className={twMerge(classNames('', className))}>
+      {isValidating ? (
         <div className="animate-pulse bg-gray-200 aspect-w-3 aspect-h-1"></div>
-      ) : banners !== null ? (
+      ) : isArrayHasValue(bannerList) ? (
         <Swiper
           slidesPerView={1}
           spaceBetween={1}
@@ -36,7 +42,7 @@ export const HomeBanner = ({ banners, isLoading }: HomeBannerProps) => {
           modules={[Autoplay, Pagination, Navigation]}
         >
           <div>
-            {banners.map((banner, index) => (
+            {bannerList.map((banner, index) => (
               <SwiperSlide key={index}>
                 <div className="">
                   <CustomImage

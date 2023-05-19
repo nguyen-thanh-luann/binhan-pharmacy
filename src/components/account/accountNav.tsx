@@ -14,7 +14,6 @@ export const AccountNav = ({ className }: AccountNavProps) => {
   const { logout } = useAuth()
   const { closeModal, openModal, visible: showModalConfirm } = useModal()
 
-
   const hanldeLogout = () => {
     logout(() => {
       router.reload()
@@ -24,32 +23,39 @@ export const AccountNav = ({ className }: AccountNavProps) => {
 
   return (
     <div className={twMerge(classNames(`p-12 bg-white`, className))}>
-      {accountNavData?.map((item, index) => (
-        <div
-          onClick={() => {
-            router.push(item.path)
-          }}
-          key={index}
-          className={`flex p-10 rounded-[10px] cursor-pointer group hover:bg-primary mb-12 last:mb-0 active:opacity-50 ${
-            router.pathname === item.path ? 'bg-primary' : ''
-          }`}
-        >
+      {accountNavData?.map((item, index) => {
+        const isActive = item.path === router.pathname
+
+        return (
           <div
-            className={`w-24 h-24 text-text-color flex-center text-lg group-hover:bg-primary group-hover:text-white ${
-              router.pathname === item.path ? '!text-white' : ''
-            }`}
+            onClick={() => {
+              router.push(item.path)
+            }}
+            key={index}
+            className={classNames(
+              `flex items-center p-10 rounded-[10px] cursor-pointer group hover:bg-primary mb-12 last:mb-0 isActive:opacity-50`,
+              isActive ? 'bg-primary' : ''
+            )}
           >
-            {item?.icon}
+            <div
+              className={classNames(
+                'w-24 h-24 text-text-color flex-center text-lg group-hover:bg-primary group-hover:text-white',
+                isActive ? '!text-white' : ''
+              )}
+            >
+              {item?.icon}
+            </div>
+            <p
+              className={classNames(
+                'ml-4 h-24 text-md group-hover:bg-primary group-hover:text-white',
+                isActive ? '!text-white' : ''
+              )}
+            >
+              {item?.title}
+            </p>
           </div>
-          <p
-            className={`ml-4 text-md group-hover:bg-primary group-hover:text-white ${
-              router.pathname === item.path ? '!text-white' : ''
-            }`}
-          >
-            {item?.title}
-          </p>
-        </div>
-      ))}
+        )
+      })}
 
       <div
         onClick={openModal}
