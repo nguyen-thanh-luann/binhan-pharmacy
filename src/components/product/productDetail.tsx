@@ -85,9 +85,13 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
   }
 
   const updateProductDescription = async (current_product_id: number, new_product_id: number) => {
-    const res: any = await productAPI.getProductDescription(new_product_id)
+    try {
+      const res: any = await productAPI.getProductDescription(new_product_id)
 
-    mutate(`${SWR_KEY.get_product_description}_${current_product_id}`, res?.data, false)
+      mutate(`${SWR_KEY.get_product_description}_${current_product_id}`, res?.data, false)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   const hanldeAttributeClick = (attribute_id: number, child_id: number, filterable: boolean) => {

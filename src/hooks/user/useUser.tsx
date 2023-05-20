@@ -40,19 +40,32 @@ export const useUser = ({ key, shouldFetch = true }: useUserProps): useUserRes =
   )
 
   const getUserInfo = async (onSuccess?: (props: UserInfo) => void) => {
-    const res: any = await userAPI.getUserInfo()
-    if (res?.success) {
-      mutate(res?.data)
-      onSuccess?.(res?.data)
-    } else {
-      mutate(undefined)
-    }
+    asyncHandler({
+      fetcher: userAPI.getUserInfo,
+      onSuccess: (res: any) => {
+        mutate(res)
+        onSuccess?.(res)
+      },
+      onError: () => {
+        mutate(undefined)
+      },
+      config: {
+        errorMsg: 'Get user info fail',
+        showBackdrop: false,
+        showSuccessMsg: false,
+        showErrorMsg: false,
+      },
+    })
   }
 
   const checkHasPassword = async (onSuccess?: (props: any) => void) => {
-    const res: any = await userAPI.checkHasPassword()
-    if (res?.success) {
-      onSuccess?.(res?.data)
+    try {
+      const res: any = await userAPI.checkHasPassword()
+      if (res?.success) {
+        onSuccess?.(res?.data)
+      }
+    } catch (err) {
+      console.log(err)
     }
   }
 
@@ -80,11 +93,16 @@ export const useUser = ({ key, shouldFetch = true }: useUserProps): useUserRes =
     onSuccess?: () => void,
     onError?: () => void
   ) => {
-    const res: any = await cartAPI.addGuestCartDataIntoShoppingCart(device_code)
-    if (res?.success) {
-      onSuccess?.()
-    } else {
+    try {
+      const res: any = await cartAPI.addGuestCartDataIntoShoppingCart(device_code)
+      if (res?.success) {
+        onSuccess?.()
+      } else {
+        onError?.()
+      }
+    } catch (err) {
       onError?.()
+      console.log(err)
     }
   }
 

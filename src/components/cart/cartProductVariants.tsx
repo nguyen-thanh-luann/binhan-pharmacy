@@ -106,7 +106,7 @@ export const CartProductVariants = ({
       <div className="p-12 max-h-[250px] overflow-scroll scrollbar-hide">
         {data?.product_id?.rel_attribute_ids?.map((item, index) => (
           <div className="mb-12" key={index}>
-            <p className="text-base text-text-color mb-8">{`${item?.attribute_id?.attribute_name}:`}</p>
+            <p className="text-base font-bold text-text-color mb-8">{`${item?.attribute_id?.attribute_name}:`}</p>
             <div className="flex gap-12 flex-wrap">
               {item?.attribute_value?.map((value, index) => {
                 const isActive = variants?.some?.(
@@ -198,11 +198,15 @@ export const CartProductVariants = ({
               {renderVariantOptions()}
 
               <div className="flex justify-end gap-12 p-12">
-                <Button title="Trở lại" className="w-[100px]" onClick={closeVariantModal} />
+                <Button
+                  title="Trở lại"
+                  className="w-[100px]"
+                  onClick={closeVariantModal}
+                />
 
                 <Button
                   title="Xác nhận"
-                  className="w-[100px] border border-primary rounded-lg bg-primary"
+                  className="w-[100px] border border-primary rounded-lg bg-primary font-bold"
                   textClassName="text-white"
                   onClick={changeVariant}
                 />

@@ -56,11 +56,15 @@ export const useComment = ({ key, params }: useCommentProps): useCommentRes => {
   }
 
   const deleteComment = async (comment_id: number, cb?: () => void) => {
-    const res: any = await ratingAPI.deleteComment(comment_id)
+    try {
+      const res: any = await ratingAPI.deleteComment(comment_id)
 
-    if (res?.success) {
-      mutate([...data.filter((comment) => comment.comment_id !== comment_id)], false)
-      cb?.()
+      if (res?.success) {
+        mutate([...data.filter((comment) => comment.comment_id !== comment_id)], false)
+        cb?.()
+      }
+    } catch (err) {
+      console.log(err)
     }
   }
 

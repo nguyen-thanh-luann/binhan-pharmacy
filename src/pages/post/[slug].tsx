@@ -14,13 +14,21 @@ type IPostUrl = {
 }
 
 export const getStaticPaths: GetStaticPaths<IPostUrl> = async () => {
-  const res: any = await postAPI.getPostList({})
+  try {
+    const res: any = await postAPI.getPostList({})
 
-  return {
-    paths: res?.data?.data?.map((post: Post) => ({
-      params: { slug: post?.id },
-    })),
-    fallback: false,
+    return {
+      paths: res?.data?.data?.map((post: Post) => ({
+        params: { slug: post?.id },
+      })),
+      fallback: false,
+    }
+  } catch (err) {
+    console.log(err)
+    return {
+      paths: [],
+      fallback: false,
+    }
   }
 }
 

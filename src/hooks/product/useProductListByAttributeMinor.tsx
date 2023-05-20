@@ -35,18 +35,22 @@ export const useProductListByAttributeMinor = ({
   const fetchByOtherAttrValues = async (params: GetProductByAttributeMinorParams) => {
     if (!params?.attribute_id) return
 
-    const res: any = await productAPI.getProductsByAttributeMinor(params)
-    const dataRes = res?.data
-    if (res?.success) {
-      if (isObject(res?.data) && data) {
-        mutate(
-          produce(data, (draft: any) => {
-            draft.result = dataRes?.result
-            draft.paginate = dataRes?.paginate
-          }),
-          false
-        )
+    try {
+      const res: any = await productAPI.getProductsByAttributeMinor(params)
+      const dataRes = res?.data
+      if (res?.success) {
+        if (isObject(res?.data) && data) {
+          mutate(
+            produce(data, (draft: any) => {
+              draft.result = dataRes?.result
+              draft.paginate = dataRes?.paginate
+            }),
+            false
+          )
+        }
       }
+    } catch (err) {
+      console.log(err)
     }
   }
 

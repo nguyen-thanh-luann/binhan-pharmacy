@@ -109,11 +109,15 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
     onExist?: () => void,
     onNotExist?: () => void
   ) => {
-    const res: any = await userAPI.checkUserAccountExist(phone)
-    if (res?.success) {
-      onExist?.()
-    } else {
-      onNotExist?.()
+    try {
+      const res: any = await userAPI.checkUserAccountExist(phone)
+      if (res?.success) {
+        onExist?.()
+      } else {
+        onNotExist?.()
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 

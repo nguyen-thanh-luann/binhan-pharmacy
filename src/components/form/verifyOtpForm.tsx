@@ -131,11 +131,15 @@ export const VerifyOtpForm = ({ firstOption, secondOption, type }: VerifyOtpForm
     onExist?: () => void,
     onNotExist?: () => void
   ) => {
-    const res: any = await userAPI.checkUserAccountExist(phone)
-    if (res?.success) {
-      onExist?.()
-    } else {
-      onNotExist?.()
+    try {
+      const res: any = await userAPI.checkUserAccountExist(phone)
+      if (res?.success) {
+        onExist?.()
+      } else {
+        onNotExist?.()
+      }
+    } catch (err) {
+      console.log(err)
     }
   }
 

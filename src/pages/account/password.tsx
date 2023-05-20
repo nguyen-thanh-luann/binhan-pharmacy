@@ -40,34 +40,42 @@ const PasswordPage = () => {
 
   const handleChangePassword = async (data: any) => {
     if (hasPassword) {
-      // change password
-      const res: any = await userAPI.changePassword({
-        old_password: data.password,
-        password: data.newPassword,
-        re_password: data.reNewPassword,
-      })
+      try {
+        // change password
+        const res: any = await userAPI.changePassword({
+          old_password: data.password,
+          password: data.newPassword,
+          re_password: data.reNewPassword,
+        })
 
-      if (res?.success) {
-        toast.success('Cập nhật mật khẩu thành công!')
-        resetForm()
-        router.push('/account/profile')
-      } else {
-        toast.error(res?.message || 'Có lỗi xảy ra!')
+        if (res?.success) {
+          toast.success('Cập nhật mật khẩu thành công!')
+          resetForm()
+          router.push('/account/profile')
+        } else {
+          toast.error(res?.message || 'Có lỗi xảy ra!')
+        }
+      } catch (err) {
+        console.log(err)
       }
     } else {
-      // create new password when account does not have a password
-      const res: any = await userAPI.createPassword({
-        password: data.newPassword,
-        re_password: data.reNewPassword,
-      })
+      try {
+        // create new password when account does not have a password
+        const res: any = await userAPI.createPassword({
+          password: data.newPassword,
+          re_password: data.reNewPassword,
+        })
 
-      if (res?.success) {
-        toast.success('Tạo mật khẩu thành công!')
-        resetForm()
-        getUserInfo()
-        router.push('/account/profile')
-      } else {
-        toast.error(res?.message || 'Có lỗi xảy ra!')
+        if (res?.success) {
+          toast.success('Tạo mật khẩu thành công!')
+          resetForm()
+          getUserInfo()
+          router.push('/account/profile')
+        } else {
+          toast.error(res?.message || 'Có lỗi xảy ra!')
+        }
+      } catch (err) {
+        console.log(err)
       }
     }
   }

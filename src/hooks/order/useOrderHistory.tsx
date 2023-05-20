@@ -17,16 +17,20 @@ interface OrderHistorySWR {
 }
 
 const fetcher = async (limit = DEFAULT_LIMIT, offset = 0) => {
-  const res: any = await orderAPI.getOrderHistoryList({
-    limit,
-    offset: offset * limit,
-  })
-  return isObjectHasValue(res?.result?.data)
-    ? res.result.data
-    : {
-        sales_summary: { total_sale: 0, total_amount: 0 },
-        sale_orders: [],
-      }
+  try {
+    const res: any = await orderAPI.getOrderHistoryList({
+      limit,
+      offset: offset * limit,
+    })
+    return isObjectHasValue(res?.result?.data)
+      ? res.result.data
+      : {
+          sales_summary: { total_sale: 0, total_amount: 0 },
+          sale_orders: [],
+        }
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 const useOrderHistory = (limit = DEFAULT_LIMIT): OrderHistorySWR => {
@@ -41,9 +45,13 @@ const useOrderHistory = (limit = DEFAULT_LIMIT): OrderHistorySWR => {
   )
 
   const filterOrderHistory = async (props: OrderFilterParams) => {
-    const res: any = await orderAPI.getOrderHistoryList({ booking_type: 'state', ...props })
-    if (res?.result?.success) {
-      mutate(res?.result?.data, false)
+    try {
+      const res: any = await orderAPI.getOrderHistoryList({ booking_type: 'state', ...props })
+      if (res?.result?.success) {
+        mutate(res?.result?.data, false)
+      }
+    } catch (err) {
+      console.log(err)
     }
   }
 

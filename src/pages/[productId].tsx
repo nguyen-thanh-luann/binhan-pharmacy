@@ -21,13 +21,21 @@ import { useDispatch } from 'react-redux'
 import { addViewedProduct } from '@/store'
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const res: any = await productAPI.filterProduct({ product_type: 'product_product' })
+  try {
+    const res: any = await productAPI.filterProduct({ product_type: 'product_product' })
 
-  return {
-    paths: res?.data?.product_data.map((item: Product) => ({
-      params: { productId: item.product_id + '' },
-    })),
-    fallback: true,
+    return {
+      paths: res?.data?.result.map((item: Product) => ({
+        params: { productId: item.product_id + '' },
+      })),
+      fallback: true,
+    }
+  } catch (err) {
+    console.log(err)
+    return {
+      paths: [],
+      fallback: true,
+    }
   }
 }
 
@@ -84,7 +92,7 @@ const ProductDetailPage = () => {
             />
 
             <div className="mb-24">
-              <ProductTabs product_id={data?.product_data?.product_id || 0}/>
+              <ProductTabs product_id={data?.product_data?.product_id || 0} />
             </div>
 
             <ViewedProducts className="mb-24" />

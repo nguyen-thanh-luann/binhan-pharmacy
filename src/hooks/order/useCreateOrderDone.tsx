@@ -14,7 +14,7 @@ import {
   OrderLineDelivery,
   Payment,
   ShippingAddressV2,
-  createOrderDoneFunction
+  createOrderDoneFunction,
 } from '@/types'
 import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
@@ -83,36 +83,43 @@ export const useCreateOrderDone = () => {
 
     const order_id = orders.filter((item) => item.order_id)?.map((item) => item.order_id)
     dispatch(dispatch(setBackdropVisible(true)))
-    const res: any = await orderAPI?.updateOrderDraft({
-      order_id,
-      partner_shipping_id: orderAddress?.id || null,
-    })
-    dispatch(dispatch(setBackdropVisible(false)))
 
-    if (!res?.result) {
-      toast.error(res?.result?.message || 'Có lỗi xảy ra')
-      return
-    }
-
-    asyncHandler({
-      fetcher: orderAPI.createOrderDone({
+    try {
+      const res: any = await orderAPI?.updateOrderDraft({
         order_id,
-        date_order: date_order,
-        note,
-        tag_ids: tag_ids?.length ? tag_ids.map((item) => item.id) : [],
-      }),
-      onSuccess: (data: any) => {
-        cb?.(data)
-        dispatch(resetOrderData())
-        deleteCheckedProducts()
-        setTimeout(() => {
-          mutate(SWR_KEY.orders, [], false)
-        }, 4000)
-      },
-      config: {
-        successMsg: 'Tạo đơn hàng thành công',
-      },
-    })
+        partner_shipping_id: orderAddress?.id || null,
+      })
+      
+      dispatch(dispatch(setBackdropVisible(false)))
+
+      if (!res?.result) {
+        toast.error(res?.result?.message || 'Có lỗi xảy ra')
+        return
+      }
+
+      asyncHandler({
+        fetcher: orderAPI.createOrderDone({
+          order_id,
+          date_order: date_order,
+          note,
+          tag_ids: tag_ids?.length ? tag_ids.map((item) => item.id) : [],
+        }),
+        onSuccess: (data: any) => {
+          cb?.(data)
+          dispatch(resetOrderData())
+          deleteCheckedProducts()
+          setTimeout(() => {
+            mutate(SWR_KEY.orders, [], false)
+          }, 4000)
+        },
+        config: {
+          successMsg: 'Tạo đơn hàng thành công',
+        },
+      })
+    } catch (e) {
+      console.log(e)
+      dispatch(dispatch(setBackdropVisible(false)))
+    }
   }
 
   return {

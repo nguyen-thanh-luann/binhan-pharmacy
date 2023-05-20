@@ -20,20 +20,28 @@ export const useGuest = (): useGuestRes => {
   )
 
   const loginGuest = async (handleSuccess?: (data: LoginRes) => void) => {
-    const res: any = await userAPI.loginGuest()
+    try {
+      const res: any = await userAPI.loginGuest()
 
-    if (res?.result?.success) {
-      mutate(res?.result?.data)
-      handleSuccess?.(res?.result?.data)
+      if (res?.result?.success) {
+        mutate(res?.result?.data)
+        handleSuccess?.(res?.result?.data)
+      }
+    } catch (err) {
+      console.error(err)
     }
   }
 
   const getGuestInfo = async (handleSuccess?: (props: LoginRes) => void) => {
-    const res: any = await userAPI.getGuestInfo()
+    try {
+      const res: any = await userAPI.getGuestInfo()
 
-    if (res?.result?.success) {
-      mutate(res?.result?.data)
-      handleSuccess?.(res?.result?.data)
+      if (res?.result?.success) {
+        mutate(res?.result?.data)
+        handleSuccess?.(res?.result?.data)
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 
