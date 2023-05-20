@@ -1,9 +1,10 @@
 import { ArrowLeftIcon, UpIcon } from '@/assets'
 import { formatMoneyVND, isObjectHasValue } from '@/helper'
 import { useOrderHistoryDetail } from '@/hooks'
+import { OrderHistoryDetail as IOrderHistoryDetail } from '@/types'
 import classNames from 'classnames'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { CustomImage } from '../customImage'
 import { Spinner } from '../spinner'
@@ -13,10 +14,15 @@ interface OrderHistoryDetailProps {
   type?: 'history' | 'order'
   sale_order_id: number
   className?: string
+  cb?: (params: IOrderHistoryDetail) => void
 }
 
-export const OrderHistoryDetail = ({ sale_order_id, className }: OrderHistoryDetailProps) => {
+export const OrderHistoryDetail = ({ sale_order_id, className, cb: om }: OrderHistoryDetailProps) => {
   const { data: order, isValidating } = useOrderHistoryDetail({ sale_order_id })
+
+  useEffect(() => {
+    if (order) om?.(order)
+  }, [order])
 
   const RenderOrderDetail = () => {
     const [viewOrderDetail, setViewOrderDetail] = useState(true)
@@ -35,16 +41,18 @@ export const OrderHistoryDetail = ({ sale_order_id, className }: OrderHistoryDet
             >
               <p className="text-md font-bold mr-8">Chi tiết đơn hàng</p>
               <UpIcon
-                className={`${
+                className={classNames(
+                  'duration-200 ease-in-out text-md',
                   viewOrderDetail ? '' : 'rotate-180'
-                } duration-200 ease-in-out text-md`}
+                )}
               />
             </div>
 
             <table
-              className={`hidden ${
+              className={classNames(
+                'hidden animate-fade product_table w-full transition',
                 viewOrderDetail ? 'md:table' : ''
-              } product_table w-full transition duration-300 ease-in-out`}
+              )}
             >
               <thead>
                 <tr className="">

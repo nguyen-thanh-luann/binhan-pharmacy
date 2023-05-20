@@ -27,25 +27,26 @@ export const OrderSummary = ({ className }: CartSummaryProps) => {
     })
   }
 
-  const { totalProduct, totalPromotion } = useMemo(() => {
-    let totalProduct = 0
+  const { totalPromotion, amountSubtotal, amountTotal } = useMemo(() => {
     let totalPromotion = 0
+    let amountSubtotal = 0
+    let amountTotal = 0
 
     if (!data?.sale_orders?.length) {
       return {
-        totalProduct,
         totalPromotion,
+        amountSubtotal,
+        amountTotal,
       }
     }
 
     data.sale_orders.forEach((item) => {
+      amountSubtotal += item.amount_subtotal
       totalPromotion += item.promotion_total
-      item?.detail_order?.order_line?.forEach(() => {
-        totalProduct += 1
-      })
+      amountTotal += item.amount_total
     })
 
-    return { totalProduct, totalPromotion }
+    return { totalPromotion, amountSubtotal, amountTotal }
   }, [data])
 
   if (!data?.sale_orders?.length) return null
@@ -62,7 +63,7 @@ export const OrderSummary = ({ className }: CartSummaryProps) => {
       <div className="flex-between p-16 border-b border-gray-200">
         <p className="text-text-color text-lg font-semibold leading-9">{`Đơn hàng tạm tính`}</p>
         <p className="text-text-color text-lg font-semibold leading-9">
-          {formatMoneyVND(data?.amount_total || 0)}
+          {formatMoneyVND(amountSubtotal)}
         </p>
       </div>
 
@@ -90,13 +91,13 @@ export const OrderSummary = ({ className }: CartSummaryProps) => {
       <div className="flex-between p-16">
         <p className="text-text-color text-lg font-semibold leading-9">{`Thanh toán`}</p>
         <p className="text-primary text-lg font-semibold leading-9">
-          {formatMoneyVND(data?.amount_total - totalPromotion)}
+          {formatMoneyVND(amountTotal)}
         </p>
       </div>
 
       <div className="p-16">
         <Button
-          title={`Đặt hàng (${totalProduct})`}
+          title="Đặt hàng"
           className="bg-primary rounded-[10px] py-10 w-full"
           textClassName="text-md font-medium leading-9 text-white"
           onClick={handleCreateOrder}

@@ -31,6 +31,9 @@ const ShoppingCartPage = () => {
     toggleCheckAllProductsInCompany,
   } = useCarts()
 
+  console.log({addressList});
+  
+
   useEffect(() => {
     if (!orderAddress && isArrayHasValue(addressList)) {
       dispatch(setOrderAddress(addressList?.[0]))

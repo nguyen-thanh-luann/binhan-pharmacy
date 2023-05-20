@@ -6,12 +6,14 @@ interface CommonSlice {
   backdropVisible: boolean
   previewImageUrl: string | undefined
   addressForm: ShippingAddressV2 | undefined
+  previousRoute: string | undefined | null
 }
 
 const initialState: CommonSlice = {
   backdropVisible: false,
   previewImageUrl: undefined,
   addressForm: undefined,
+  previousRoute: undefined,
 }
 
 const commonSlice = createSlice({
@@ -29,6 +31,10 @@ const commonSlice = createSlice({
     setAddressForm: (state, { payload }: { payload: ShippingAddressV2 | undefined }) => {
       state.addressForm = payload
     },
+
+    setPreviousRoute: (state, { payload }: { payload: string | undefined | null }) => {
+      state.previousRoute = payload
+    },
   },
 })
 
@@ -36,4 +42,5 @@ export const selectPreviewImageUrl = (state: RootState) => state.common.previewI
 export const selectAddressForm = (state: RootState) => state.common.addressForm
 
 export default commonSlice.reducer
-export const { setBackdropVisible, setAddressForm, setPreviewImageUrl } = commonSlice.actions
+export const { setBackdropVisible, setAddressForm, setPreviewImageUrl, setPreviousRoute } =
+  commonSlice.actions

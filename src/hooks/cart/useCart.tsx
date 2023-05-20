@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { SWR_KEY } from '@/constants'
 import { getProductsCheckedInCart } from '@/helper'
 import { useAsync } from '@/hooks'
 import { cartAPI } from '@/services'
+import { RootState } from '@/store'
 import {
   CartCategory,
   CartCompany,
@@ -16,35 +18,34 @@ import {
 import produce from 'immer'
 import _ from 'lodash'
 import { useCallback, useState } from 'react'
+import { useSelector } from 'react-redux'
 import useSWR, { useSWRConfig } from 'swr'
 import { useApplyPromotionToCart } from './useApplyPromotionToCart'
-import { useRouter } from 'next/router'
 
 const LIMIT_COMPANY = 1
 const LIMIT_CATEGORY = 4
 const LIMIT_PRODUCT = 12
 
 export const useCarts = () => {
-  const router = useRouter()
   const userInfo = useSWR<UserInfo>(SWR_KEY.get_user_information)?.data?.account
+  const previousRoute = useSelector((state: RootState) => state.common.previousRoute)
   const customer_id = userInfo?.partner_id
   const { mutate: mutateRemote, cache } = useSWRConfig()
   const { asyncHandler } = useAsync()
   const { applyPromotionsToCart: applyPromotionsToCartHook } = useApplyPromotionToCart()
   const { data, isValidating, mutate } = useSWR<GetProductsInCartRes, any>(
-    router?.isReady ? SWR_KEY.cart_list : null,
-    router.isReady
-      ? router.query.previous?.includes('/checkout')
-        ? null
-        : () => fetcherHandler()
-      : null
+    SWR_KEY.cart_list,
+    previousRoute?.includes('/checkout')
+      ? null
+      : () => {
+          mutateRemote(SWR_KEY.cartSummary, 0, false)
+          return fetcherHandler()
+        }
   )
-
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false)
   const [hasMore, setHasMore] = useState<boolean>(true)
   const isCheckAll = !!data?.paginate?.total && data.total_company_checked === data.paginate.total
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const applyPromotionsToCart = useCallback(_.debounce(applyPromotionsToCartHook, 2000), [])
 
   async function fetcherHandler(
@@ -501,7 +502,6 @@ export const useCarts = () => {
 
   const toggleCheckAllProductsInCart = async () => {
     const data = getCartData()
-    console.log({ data })
     if (!data?.result?.length) return
 
     const { total_company_checked, paginate } = data

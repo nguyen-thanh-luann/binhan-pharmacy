@@ -20,9 +20,7 @@ export const PromotionItem = ({
   active,
   disabled,
   className,
-  onPress,
   onToggle,
-  onViewDetail,
 }: PromotionItemProps) => {
   return (
     <div

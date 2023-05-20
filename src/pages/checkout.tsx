@@ -11,26 +11,28 @@ import {
 } from '@/components'
 import { SWR_KEY } from '@/constants'
 import { isArrayHasValue } from '@/helper'
-import { useBackRouter } from '@/hooks'
 import { orderAPI } from '@/services'
+import { RootState } from '@/store'
 import { MainNoFooter } from '@/templates'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import useSWR from 'swr'
 
 const CheckoutPage = () => {
-  const router = useRouter()
-  const { query, isReady } = useRouter()
+  const previousRoute = useSelector((state: RootState) => state.common.previousRoute)
+  const { query, isReady, push } = useRouter()
   const { data, isValidating } = useSWR(
     !isReady ? null : SWR_KEY.orders,
     !isReady ? null : () => fetcherHandler()
   )
 
-  useBackRouter({
-    cb: () => {
-      router.replace({ query: { previous: router.pathname } })
-    },
-  })
+  useEffect(() => {
+    if (previousRoute?.includes('/checkout-success')) {
+      push('/')
+    }
+  }, [previousRoute, push])
 
   async function fetcherHandler() {
     const orderIdsQuery = query?.order_ids

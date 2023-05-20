@@ -246,10 +246,23 @@ export const sumMoneyAndTotalProductInCart = (cart: GetProductsInCartRes | undef
 
   let totalAmount = 0
   let totalProduct = 0
+  let isLoading = false
 
   cart.result.forEach((item) => {
+    if (!isLoading) {
+      isLoading = !!item?.is_promotion_loading
+    }
+
     item?.shopping_cart_category.forEach((category) => {
+      if (!isLoading) {
+        isLoading = !!item?.is_promotion_loading
+      }
+
       category.shopping_cart_product.forEach((product) => {
+        if (!isLoading) {
+          isLoading = !!item?.is_promotion_loading
+        }
+
         if (product.is_check) {
           totalProduct += 1
           totalAmount += product.quantity * product.price_unit
@@ -258,7 +271,7 @@ export const sumMoneyAndTotalProductInCart = (cart: GetProductsInCartRes | undef
     })
   })
 
-  return { totalAmount, totalProduct }
+  return { totalAmount, totalProduct, isLoading }
 }
 
 export const selectPromotionsCanApply = (_promotions: PromotionRes[]) => {

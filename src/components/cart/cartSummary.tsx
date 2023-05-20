@@ -27,7 +27,7 @@ export const CartSummary = ({ className }: CartSummaryProps) => {
     { revalidateOnMount: false }
   )
 
-  const { totalAmount, totalProduct } = useMemo(() => {
+  const { totalAmount, totalProduct, isLoading } = useMemo(() => {
     return sumMoneyAndTotalProductInCart(shoppingcart)
   }, [shoppingcart])
 
@@ -106,6 +106,8 @@ export const CartSummary = ({ className }: CartSummaryProps) => {
 
       <div className="p-16">
         <Button
+          disabled={isLoading}
+          loading={isLoading}
           title={`Đặt hàng (${totalProduct})`}
           className="bg-primary rounded-[10px] py-10 w-full"
           textClassName="text-md font-medium leading-9 text-white"

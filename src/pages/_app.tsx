@@ -1,22 +1,27 @@
-import { useGuest } from '@/hooks'
+import { useGuest, usePreviousRoute } from '@/hooks'
 import '../styles/global.scss'
 
-import { persistor, store } from '@/store'
+import { persistor, setPreviousRoute, store } from '@/store'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
+import { useEffect } from 'react'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { SWRConfig } from 'swr'
-import { useEffect } from 'react'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const { openGraphData = [] } = pageProps as any
   const { loginGuest } = useGuest()
+  const previousRoute = usePreviousRoute()
 
   // login guest account when user visit web
   useEffect(() => {
     loginGuest()
   }, [])
+
+  useEffect(() => {
+    store.dispatch(setPreviousRoute(previousRoute))
+  }, [previousRoute])
 
   return (
     <>

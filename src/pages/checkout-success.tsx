@@ -1,21 +1,12 @@
 import { orderDoneIcon } from '@/assets'
 import { Button, Image, OrderConfirmTicket } from '@/components'
 import { WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
-import { useBackRouter } from '@/hooks'
 import { MainNoFooter } from '@/templates'
 import { useRouter } from 'next/router'
 
 const CheckoutSuccessPage = () => {
   const router = useRouter()
   const { sale_order_id } = router.query
-
-  useBackRouter({
-    cb: (route) => {
-      if (route?.includes('/checkout')) {
-        router.push('/')
-      }
-    },
-  })
 
   return (
     <MainNoFooter title={WEB_TITTLE} description={WEB_DESCRIPTION}>

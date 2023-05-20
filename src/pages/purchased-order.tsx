@@ -9,17 +9,17 @@ import {
 import { DEFAULT_LIMIT } from '@/constants'
 import { useClickOutside, useDevice, useModal, useOrderHistory } from '@/hooks'
 import { AccountContainer, Main } from '@/templates'
-import { OrderFilterParams } from '@/types'
+import { OrderHistoryDetail as IOrderHistoryDetail, OrderFilterParams } from '@/types'
+import moment from 'moment'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
-import moment from 'moment'
 
 // date picker library
-import 'react-date-range/dist/styles.css' // main style file
-import 'react-date-range/dist/theme/default.css' // theme css file
-import { DateRangePicker } from 'react-date-range'
 import { addDays } from 'date-fns'
 import { vi } from 'date-fns/locale'
+import { DateRangePicker } from 'react-date-range'
+import 'react-date-range/dist/styles.css' // main style file
+import 'react-date-range/dist/theme/default.css' // theme css file
 
 const PurchasedOrderPage = () => {
   const {
@@ -33,6 +33,7 @@ const PurchasedOrderPage = () => {
   const { sale_order_id, state } = router.query
   const [currentTab, setCurrentTab] = useState<string>(state?.toString() || 'all')
   const [params, setParams] = useState<OrderFilterParams>({})
+  const [orderDetailData, setOrderDetailData] = useState<IOrderHistoryDetail | undefined>()
 
   const datePickerRef = useRef<HTMLDivElement>(null)
   const {
@@ -40,6 +41,12 @@ const PurchasedOrderPage = () => {
     closeModal: closeDatePickerModal,
     openModal: openDatePicker,
   } = useModal()
+
+  useEffect(() => {
+    if (!sale_order_id) {
+      setOrderDetailData(undefined)
+    }
+  }, [router])
 
   useClickOutside([datePickerRef], closeDatePickerModal)
 
@@ -98,20 +105,39 @@ const PurchasedOrderPage = () => {
   return (
     <Main title={'Đơn hàng'} description="">
       <div className="container">
-        <Breadcrumb
-          breadcrumbList={[
-            {
-              path: '/',
-              name: 'Đơn hàng',
-            },
-          ]}
-        />
+        {orderDetailData ? (
+          <Breadcrumb
+            breadcrumbList={[
+              {
+                path: '/purchased-order',
+                name: 'Đơn hàng',
+              },
+              {
+                path: '/',
+                name: `${orderDetailData.name}`,
+              },
+            ]}
+          />
+        ) : (
+          <Breadcrumb
+            breadcrumbList={[
+              {
+                path: '/',
+                name: 'Đơn hàng',
+              },
+            ]}
+          />
+        )}
       </div>
 
       <AccountContainer className="container mb-32">
         <div>
           {sale_order_id ? (
-            <OrderHistoryDetail type="order" sale_order_id={Number(sale_order_id)} />
+            <OrderHistoryDetail
+              cb={(data) => setOrderDetailData(data)}
+              type="order"
+              sale_order_id={Number(sale_order_id)}
+            />
           ) : (
             <div>
               <div className="bg-white p-12 mb-12 rounded-[10px] shadow-shadow-1">

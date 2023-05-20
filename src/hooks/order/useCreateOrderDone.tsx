@@ -13,8 +13,8 @@ import {
   GetOrderDraftRes,
   OrderLineDelivery,
   Payment,
-  ShippingAddress,
-  createOrderDoneFunction,
+  ShippingAddressV2,
+  createOrderDoneFunction
 } from '@/types'
 import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
@@ -25,10 +25,11 @@ export const useCreateOrderDone = () => {
   const { mutate, cache } = useSWRConfig()
   const { asyncHandler } = useAsync()
   const dispatch = useDispatch()
-  const orderAddress: ShippingAddress = useSelector(selectOrderAddress)
+  const orderAddress: ShippingAddressV2 = useSelector(selectOrderAddress)
   const orderLineDelivery: OrderLineDelivery = useSelector(selectOrderLineDelivery)
   const orderPayment: Payment = useSelector(selectOrderPayment)
   const orders = useSWR<GetOrderDraftRes>(SWR_KEY.orders)?.data?.sale_orders
+  console.log({ orderAddress })
 
   const checkDataValid = (): boolean => {
     if (!checkOrderAddressValid(orderAddress)) {
@@ -49,12 +50,12 @@ export const useCreateOrderDone = () => {
     return true
   }
 
-  const checkOrderAddressValid = (orderAddress: ShippingAddress) => {
+  const checkOrderAddressValid = (orderAddress: ShippingAddressV2) => {
     if (
       orderAddress.id &&
-      orderAddress.state_name_id &&
-      orderAddress.district_name_id &&
-      orderAddress.ward_name_id
+      orderAddress.state_id.id &&
+      orderAddress.district_id.id &&
+      orderAddress.ward_id.id
     ) {
       return true
     }
