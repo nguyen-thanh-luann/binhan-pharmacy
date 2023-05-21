@@ -24,10 +24,10 @@ export const ProductGiftItem = ({ data, className }: Props) => {
           </div>
         </div>
         <div className="flex-1">
-          <p className="text-sm line-clamp-2">{data.product_name}</p>
+          <p className="text-sm font-bold line-clamp-2">{data.product_name}</p>
           <div className="flex items-center">
-            <p className="text-xs mr-8">Đơn vị: {data.uom_id.uom_name}</p>
-            <p className="text-xs">x {data.quantity}</p>
+            <p className="text-sm mr-8">Đơn vị: {data.uom_id.uom_name}</p>
+            <p className="text-sm">x {data.quantity}</p>
           </div>
         </div>
       </div>

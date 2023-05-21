@@ -85,7 +85,7 @@ export const FilterByCategory = () => {
         <div>
           {categoryList?.map((category) => {
             const isShow = showCategories?.findIndex((c) => c === category?.category_id) !== -1
-
+            
             return (
               <div key={category?.category_id} className="bg-white">
                 {isArrayHasValue(category?.child_ids) ? (

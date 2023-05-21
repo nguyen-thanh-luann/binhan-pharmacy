@@ -56,7 +56,7 @@ const ShoppingCartPage = () => {
                 Giỏ hàng
               </p>
 
-              <div className="grid md:grid-cols-3 gap-24 px-12">
+              <div className="grid md:grid-cols-3 gap-24">
                 <div className="md:col-span-2">
                   <CartPageNav
                     className="mb-24"

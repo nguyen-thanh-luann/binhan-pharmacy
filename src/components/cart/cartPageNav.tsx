@@ -59,7 +59,7 @@ export const CartPageNav = ({
     <div
       className={twMerge(
         classNames(
-          `bg-white p-16 rounded-[10px] shadow-shadow-1 z-10 sticky top-header_group_height`,
+          `bg-white p-16 rounded-[10px] shadow-shadow-1 z-10 sticky top-header_mobile_height md:top-header_group_height`,
           className
         )
       )}
@@ -84,17 +84,17 @@ export const CartPageNav = ({
         </div>
 
         {/* price unit column */}
-        <div className={`w-[15%] text-start hidden md:block`}>
+        <div className={`w-[115px] text-start hidden md:block`}>
           <p className="title_md line-clamp-1">Đơn giá</p>
         </div>
 
         {/* quantity column */}
-        <div className={`w-[15%] text-start hidden md:block`}>
+        <div className={`w-[115px] text-start hidden md:block`}>
           <p className="title_md line-clamp-1">Số lượng</p>
         </div>
 
         {/* uom column */}
-        <div className={`w-[15%] text-start hidden md:block`}>
+        <div className={`w-[115px] text-start hidden md:block`}>
           <p className="title_md line-clamp-1">Đơn vị</p>
         </div>
 

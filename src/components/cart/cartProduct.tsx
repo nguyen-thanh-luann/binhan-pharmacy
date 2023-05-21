@@ -136,21 +136,15 @@ export const CartProduct = ({
   // console.log({ data })
 
   return (
-    <div className={className}>
+    <div className={classNames('p-16', className)}>
       {data?.has_promotion ? (
         <CartProductPromotion {...indexes} companyId={company_id} product={data} />
       ) : null}
 
-      <div
-        className={twMerge(
-          classNames(
-            'border-b border-gray-200 last:border-none bg-white p-16 flex md:gap-24 items-center'
-          )
-        )}
-      >
+      <div className={twMerge(classNames('bg-white py-16 flex md:gap-24 items-center'))}>
         {/* product info */}
         <div className="flex-1 flex items-center">
-          <div className="w-32 mr-10">
+          <div className="w-32">
             {isToggleChecking ? (
               <Spinner />
             ) : (
@@ -171,14 +165,16 @@ export const CartProduct = ({
             />
           </div>
 
-          <div className="w-full">
+          <div className="w-full flex-1">
             {/* just for product - update later for combo's slug   */}
-            <Link
-              href={productSlug}
-              className="text-base text-text-color font-medium leading-8 line-clamp-2 hover:text-primary mb-8"
-            >
-              {isProduct ? data?.product_id?.product_name : data?.combo_id?.combo_name}
-            </Link>
+            <p>
+              <Link
+                href={productSlug}
+                className="text-base text-text-color font-medium leading-8 line-clamp-2 hover:text-primary mb-8"
+              >
+                {isProduct ? data?.product_id?.product_name : data?.combo_id?.combo_name}
+              </Link>
+            </p>
 
             {/* attribute */}
             <div>
@@ -237,14 +233,14 @@ export const CartProduct = ({
         </div>
 
         {/* price */}
-        <div className="w-[15%] text-start hidden md:block">
+        <div className="w-[115px] text-start hidden md:block">
           <p className="text-md text-primary font-bold leading-8 line-clamp-1">
             {formatMoneyVND(data.product_id?.price_unit)}
           </p>
         </div>
 
         {/* quantity */}
-        <div className="w-[15%] text-start hidden md:block">
+        <div className="w-[115px] text-start hidden md:block">
           <InputQuantity
             minusIconClassName="text-md text-white"
             plusIconClassName="text-base text-white"
@@ -256,7 +252,7 @@ export const CartProduct = ({
         </div>
 
         {/* uom */}
-        <div className="w-[15%] text-start hidden md:block">
+        <div className="w-[115px] text-start hidden md:block">
           {data?.rel_uom_ids?.length > 1 ? (
             <Select
               isSearchable={false}
@@ -277,21 +273,18 @@ export const CartProduct = ({
           )}
         </div>
 
-        <div
-          className="hidden md:flex items-center justify-center w-32 cursor-pointer"
-          onClick={openModal}
-        >
+        <div className="hidden md:flex w-32 cursor-pointer" onClick={openModal}>
           <TrashIconOutline className="text-red w-16 h-16 active:opacity-50 " />
         </div>
-
-        <ModalConfirm
-          visible={visible}
-          title={`Xóa sản phẩm đã chọn?`}
-          denyTitle="Hủy"
-          onConfirm={hanldeDeleteCartProduct}
-          onDeny={closeModal}
-        />
       </div>
+      
+      <ModalConfirm
+        visible={visible}
+        title={`Xóa sản phẩm đã chọn?`}
+        denyTitle="Hủy"
+        onConfirm={hanldeDeleteCartProduct}
+        onDeny={closeModal}
+      />
     </div>
   )
 }
