@@ -96,10 +96,10 @@ export const AddressItem = ({ isActive, address, className }: IAddressItem) => {
           <p className="text-base font-semibold line-clamp-1">{address.full_adress}</p>
         </div>
 
-        <p className="flex items-center gap-8">
+        <div className="flex items-center gap-8">
           <TelePhoneIconOutline className="min-w-[16px] w-[16px] h-[16px]" />
           <p className="text-base font-semibold line-clamp-1">{address.phone}</p>
-        </p>
+        </div>
       </div>
 
       {/* modal confirm delete */}

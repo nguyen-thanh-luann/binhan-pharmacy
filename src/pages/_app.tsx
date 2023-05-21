@@ -1,5 +1,6 @@
 import { useGuest, usePreviousRoute } from '@/hooks'
-import '../styles/global.scss'
+import '../styles/global.scss' // any scss custom styles
+import 'react-indiana-drag-scroll/dist/style.css' //style of ScrollContainer library (react-indiana-drag-scroll) use to scroll div with mouse
 
 import { persistor, setPreviousRoute, store } from '@/store'
 import type { AppProps } from 'next/app'

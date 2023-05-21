@@ -149,9 +149,10 @@ export const AddressPickerV2 = forwardRef(
             }}
           >
             <RightIcon
-              className={`w-12 h-12 text-gray duration-200 ease-in-out ${
+              className={classNames(
+                'w-12 h-12 text-gray duration-200 ease-in-out',
                 showAddressModal ? `rotate-90` : ``
-              }`}
+              )}
             />
           </div>
         </div>

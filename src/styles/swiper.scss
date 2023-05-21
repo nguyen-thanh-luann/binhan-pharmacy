@@ -66,31 +66,31 @@
   .swiper {
     &-button-prev,
     &-button-next {
-      &::after {
-        color: $black;
-        opacity: 1;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background-color: $primary-200;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+      display: none;
+      // &::after {
+      //   color: $black;
+      //   opacity: 1;
+      //   width: 40px;
+      //   height: 40px;
+      //   border-radius: 50%;
+      //   background-color: $primary-200;
+      //   display: flex;
+      //   align-items: center;
+      //   justify-content: center;
+      // }
 
-      &:hover {
-        &::after {
-          opacity: 1;
-        }
-      }
+      // &:hover {
+      //   &::after {
+      //     opacity: 1;
+      //   }
+      // }
     }
   }
 }
 
-
 // custom for product item
-.product-item{
-    .swiper {
+.product-item {
+  .swiper {
     &-button-prev,
     &-button-next {
       display: none;

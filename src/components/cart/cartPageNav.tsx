@@ -58,7 +58,10 @@ export const CartPageNav = ({
   return (
     <div
       className={twMerge(
-        classNames(`bg-white p-16 rounded-[10px] shadow-shadow-1 z-10 sticky top-header_group_height`, className)
+        classNames(
+          `bg-white p-16 rounded-[10px] shadow-shadow-1 z-10 sticky top-header_group_height`,
+          className
+        )
       )}
     >
       <div className={`flex gap-24 items-center`}>

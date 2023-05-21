@@ -9,6 +9,7 @@ import { NotFound } from '../notFound'
 import { Spinner } from '../spinner'
 import { CategoryNavChilds } from './categoryNavChilds'
 import { ProductsOnNavCategory } from '../home'
+import { useRouter } from 'next/router'
 
 interface CategoryNavDropDownMenuProps {
   parent_category_id?: number
@@ -21,6 +22,8 @@ export const CategoryNavDropDownMenu = ({
   className,
   isMinorCategory = false,
 }: CategoryNavDropDownMenuProps) => {
+  const router = useRouter()
+
   const [currentCategoryId, setCurrentCategoryId] = useState<number | undefined>(0)
 
   const { categoryList, isValidating: categoryListLoading } = useCategoryList({
@@ -31,7 +34,7 @@ export const CategoryNavDropDownMenu = ({
     },
   })
 
-  const {categoryMinorList, isValidating: categoryMinorListLoading } = useCategoryMinorList({
+  const { categoryMinorList, isValidating: categoryMinorListLoading } = useCategoryMinorList({
     key: `${SWR_KEY.get_category_minor_list}_${parent_category_id}`,
     shouldFetch: parent_category_id !== undefined && isMinorCategory,
     params: {
@@ -40,10 +43,16 @@ export const CategoryNavDropDownMenu = ({
   })
 
   useEffect(() => {
-    setCurrentCategoryId(
-      categoryList?.[0]?.category_id || categoryMinorList?.[0]?.category_id
-    )
+    setCurrentCategoryId(categoryList?.[0]?.category_id || categoryMinorList?.[0]?.category_id)
   }, [categoryList, parent_category_id])
+
+  const handleCategoryClick = (id: number, type: 'category' | 'minor_category') => {
+    if (type === 'category') {
+      router.push(`/search/?category_${id}=${id}`)
+    } else {
+      router.push(`/search/?minor_category_${id}=${id}`)
+    }
+  }
 
   return (
     <div
@@ -71,7 +80,7 @@ export const CategoryNavDropDownMenu = ({
                   }}
                 >
                   <CategoryItem
-                    onClick={() => setCurrentCategoryId(category.category_id)}
+                    onClick={() => handleCategoryClick(category?.category_id, 'category')}
                     data={category}
                     isActive={category.category_id === currentCategoryId}
                     className="p-10 border-b border-r border-gray-100 cursor-pointer"
@@ -88,7 +97,7 @@ export const CategoryNavDropDownMenu = ({
                   }}
                 >
                   <CategoryItem
-                    onClick={() => setCurrentCategoryId(category.category_id)}
+                    onClick={() => handleCategoryClick(category?.category_id, 'minor_category')}
                     data={category}
                     isActive={category.category_id === currentCategoryId}
                     className="p-10 border-b border-r border-gray-100 cursor-pointer"
@@ -101,10 +110,7 @@ export const CategoryNavDropDownMenu = ({
             <div className="col-span-3 h-category_dropdown_height overflow-scroll scrollbar-hide">
               {/* child category list */}
               <div>
-                <CategoryNavChilds
-                  onChildCategoryClick={(data) => console.log(data.category_id)}
-                  parent_category_id={currentCategoryId}
-                />
+                <CategoryNavChilds parent_category_id={currentCategoryId} />
               </div>
 
               {/* product list */}

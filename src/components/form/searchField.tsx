@@ -74,7 +74,7 @@ export const SearchField = ({
 
       {showSearchIcon && (
         <button onClick={handleSubmit} className="">
-          <SearchIcon className="text-gray text-xs" />
+          <SearchIcon className="text-gray text-base" />
         </button>
       )}
     </div>

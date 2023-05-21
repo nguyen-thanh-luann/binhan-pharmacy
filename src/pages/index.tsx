@@ -8,7 +8,7 @@ import {
 import { DOMAIN_URL, WEB_DESCRIPTION, WEB_TITTLE, thumbnailImageUrl } from '@/constants'
 import { Main } from '@/templates'
 
-// this is temp branch
+// this is checkout branch
 const HomePage = () => {
   return (
     <Main title={WEB_TITTLE} description={WEB_DESCRIPTION}>

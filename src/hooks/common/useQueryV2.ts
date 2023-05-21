@@ -5,6 +5,7 @@ import useSWR, { Key } from 'swr'
 import { removeEmptyValueFromObject } from '@/helper'
 import { Fetcher, FetcherPartialParams, HTTPListResponse, HTTPResponseV2, QueryList } from '@/types'
 import { PublicConfiguration } from 'swr/_internal'
+import { DEFAULT_LIMIT } from '@/constants'
 
 export interface UseQueryListPropsV2<Data, Params extends QueryList = any> {
   fetcher: Fetcher<Params, Data> | FetcherPartialParams<Params, Data>
@@ -33,7 +34,7 @@ export const useQueryListV2 = <Data = any, Params extends QueryList = any>({
 
   function getDefaultParams(): Params {
     return {
-      limit: 12,
+      limit: initialParams?.limit || DEFAULT_LIMIT,
       offset: 0,
       ...initialParams,
     } as Params

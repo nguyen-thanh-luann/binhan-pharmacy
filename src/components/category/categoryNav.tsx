@@ -9,14 +9,15 @@ import { twMerge } from 'tailwind-merge'
 import { Spinner } from '../spinner'
 import { CategoryNavDropDownMenu } from './categoryNavDropDownMenu'
 import { useRouter } from 'next/router'
+import ScrollContainer from 'react-indiana-drag-scroll'
 
 interface HeaderCategoryNavProps {
   className?: string
 }
 
 export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
-  const ref = useRef<HTMLDivElement>(null)
   const router = useRouter()
+  const ref = useRef<HTMLDivElement>(null)
   const [currentCategoryId, setCurrentCategoryId] = useState<number | undefined>()
   const [isCategoryMinor, setIsCategoryMinor] = useState<boolean>(false)
 
@@ -42,14 +43,14 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
     <div ref={ref} className={twMerge(classNames(`bg-primary`, className))}>
       <div className="container px-12">
         <div className="relative" onMouseLeave={() => setCurrentCategoryId(undefined)}>
-          <div className="flex items-center justify-between">
-            <div className="flex-1 flex h-header_nav_height gap-24 overflow-scroll scrollbar-hide">
+          <div className="flex-between">
+            <div className="flex-1 h-header_nav_height">
               {categoryListLoading || categoryMinorListLoading ? (
-                <div className="flex-1 flex-center">
+                <div className="flex-1 flex-center h-header_nav_height">
                   <Spinner />
                 </div>
               ) : isArrayHasValue(categoryList || categoryMinorList) ? (
-                <div className="flex-1 flex h-header_nav_height gap-12 overflow-scroll scrollbar-hide">
+                <ScrollContainer className="flex-1 flex h-header_nav_height gap-12">
                   {categoryList?.map((option, index) => (
                     <div
                       onClick={() => handleCategoryClick(option?.category_id, 'category')}
@@ -68,7 +69,7 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
                     </div>
                   ))}
 
-                  {[...categoryMinorList].map((option, index) => (
+                  {categoryMinorList.map((option, index) => (
                     <div
                       onClick={() => handleCategoryClick(option?.category_id, 'minor_category')}
                       onMouseEnter={() => {
@@ -87,11 +88,11 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
                       </div>
                     </div>
                   ))}
-                </div>
+                </ScrollContainer>
               ) : null}
             </div>
 
-            <div className="flex items-center ml-12">
+            <div className="flex min-w-fit items-center ml-12">
               <Link href="/" className="title !text-white">
                 Góc nhà thuốc
               </Link>

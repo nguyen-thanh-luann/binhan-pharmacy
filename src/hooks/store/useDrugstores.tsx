@@ -15,10 +15,11 @@ interface useDrugstoresRes {
   hasMore: boolean
   isLoadingMore: boolean
   getMore: () => void
+  total: number
 }
 
 export const useDrugstores = ({ key, params }: useDrugstoresProps): useDrugstoresRes => {
-  const { data, isValidating, getMore, hasMore, isLoadingMore, filter } = useQueryListV2<
+  const { data, isValidating, getMore, hasMore, isLoadingMore, filter, total } = useQueryListV2<
     UserAccount,
     GetDrugStoreParams
   >({
@@ -38,5 +39,6 @@ export const useDrugstores = ({ key, params }: useDrugstoresProps): useDrugstore
     hasMore,
     getMore,
     isLoadingMore,
+    total
   }
 }
