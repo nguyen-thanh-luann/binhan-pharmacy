@@ -1,8 +1,9 @@
 import { convertViToEn } from '@/helper'
 import { categoryFormSchema } from '@/schema'
-import { RootState } from '@/store'
+import { selectPostCategoryForm } from '@/store'
 import { CreatePostCategory, OptionType } from '@/types'
 import { yupResolver } from '@hookform/resolvers/yup'
+import classNames from 'classnames'
 import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import { Button } from '../button'
@@ -14,9 +15,7 @@ interface PostCategoryFormProps {
 }
 
 export const PostCategoryForm = ({ onSubmit, categoryOptions }: PostCategoryFormProps) => {
-  const currentPostCategory = useSelector(
-    (state: RootState) => state?.postCategory?.currentPostCategory
-  )
+  const currentPostCategory = useSelector(selectPostCategoryForm)
 
   const {
     handleSubmit,
@@ -28,6 +27,8 @@ export const PostCategoryForm = ({ onSubmit, categoryOptions }: PostCategoryForm
   })
 
   const onSubmitHandler = (data: CreatePostCategory) => {
+    console.log({ data })
+
     onSubmit &&
       onSubmit({
         ...data,
@@ -88,10 +89,11 @@ export const PostCategoryForm = ({ onSubmit, categoryOptions }: PostCategoryForm
         <Button
           type="submit"
           title={!currentPostCategory ? 'Tạo mới' : 'Cập nhật'}
-          className={`w-[50%] md:w-[20%] py-6 ${
+          className={classNames(
+            `w-[50%] md:w-[20%] py-6 border border-primary`,
             isValid ? '' : 'cursor-default opacity-50 hover:opacity-50'
-          }`}
-          textClassName={`text-white title_md`}
+          )}
+          textClassName={`text-primary`}
         />
       </div>
     </form>

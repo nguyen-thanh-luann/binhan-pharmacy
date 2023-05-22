@@ -27,7 +27,7 @@ export const SelectField = ({
 	return (
     <div>
       {label ? (
-        <label htmlFor={name} className={`mb-12 text-md leading-22`}>
+        <label htmlFor={name} className={`text`}>
           {label}
           <span className="text-red font-bold">{attributes?.required ? ' * ' : ''}</span>
         </label>
@@ -45,7 +45,7 @@ export const SelectField = ({
         value={value}
         {...attributes}
       />
-      {error?.message && <div className="text-sm leading-6 text-red">{error.message}</div>}
+      {error?.message && <div className="text text-red">{error.message}</div>}
     </div>
   )
 };

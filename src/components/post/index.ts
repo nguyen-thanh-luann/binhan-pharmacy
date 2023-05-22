@@ -1,3 +1,5 @@
 export * from './postItem'
 export * from './postItemLoading'
 export * from './postDetail'
+export * from './postCategoryItem'
+export * from './postCategoryItemLoading'

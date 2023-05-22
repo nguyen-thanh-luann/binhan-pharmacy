@@ -18,6 +18,7 @@ export const SWR_KEY = {
 
   get_post_list: 'get_post_list',
   get_post_detail: 'get_post_detail',
+  get_post_category_list: 'get_post_category_list',
 
   get_room_list: 'get_room_list',
   get_room_detail: 'get_room_detail',

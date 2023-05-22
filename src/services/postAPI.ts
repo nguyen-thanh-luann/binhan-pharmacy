@@ -27,7 +27,7 @@ const postAPI = {
   getPostCategoryList: (
     params: GetPostCategoryListParams
   ): Promise<HTTPListResV2<PostCategory[]>> => {
-    return axiosClient.get(`/chatDMS/api/post/category`, { params })
+    return axiosClient.get(`/chatDMS/api/category`, { params })
   },
 
   createCategory: (params: CreatePostCategory) => {
@@ -40,7 +40,7 @@ const postAPI = {
   },
 
   deleteCategory: (id: string) => {
-    return axiosClient.delete(`/chatDMS/category/${id}`)
+    return axiosClient.delete(`/chatDMS/api/category/${id}`)
   },
 
   createPost: (params: CreatePost) => {

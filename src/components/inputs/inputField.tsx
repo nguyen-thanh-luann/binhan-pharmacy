@@ -10,7 +10,7 @@ type InputFieldProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInp
   label?: string
   className?: string
   inputClassName?: string
-  labelClassName?: string 
+  labelClassName?: string
   messageClassName?: string
 }
 
@@ -55,10 +55,8 @@ export const InputField = ({
           ref={ref}
           className={twMerge(
             classNames(
-              `border border-gray-200 w-full p-8 text rounded-md outline-none 
-            ${error ? 'border-red bg-red-100' : ''} 
-
-            `,
+              `border border-gray-200 w-full p-8 text rounded-md outline-none`,
+              error ? 'border-red bg-red-100' : '',
               inputClassName
             )
           )}
