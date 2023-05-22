@@ -77,6 +77,20 @@ export const loginSchema = Yup.object().shape({
     .required('Vui lòng nhập mật khẩu'),
 })
 
+export const signupPostAdminSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, 'Tên phải có tối thiểu 2 ký tự')
+    .max(30, 'Tên không vượt quá 30 ký tự')
+    .required('Vui lòng nhập tên'),
+  password: Yup.string()
+    .min(8, 'Mật khẩu phải có ít nhất 8 ký tự')
+    .required('Vui lòng nhập mật khẩu'),
+  confirmPassword: Yup.string()
+    .min(8, 'Mật khẩu phải có ít nhất 8 ký tự')
+    .oneOf([Yup.ref('password')], 'Mật khẩu không khớp')
+    .required('Vui lòng nhập mật khẩu xác nhận'),
+})
+
 export const userInfoSchema = Yup.object().shape({
   email: Yup.string().matches(
     /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
@@ -235,4 +249,12 @@ export const storeReceiveSchema = Yup.object().shape({
     .required('Vui lòng nhập số điện thoại'),
 
   drugstore_id: Yup.number().required('Vui lòng chọn cửa hàng!'),
+})
+
+export const categoryFormSchema = Yup.object().shape({
+  name: Yup.string().required('Vui lòng nhập trường này'),
+  slug: Yup.string().required('Vui lòng nhập trường này'),
+  parent_id: Yup.string().nullable(),
+  image: Yup.string().nullable(),
+  desc: Yup.string().nullable(),
 })

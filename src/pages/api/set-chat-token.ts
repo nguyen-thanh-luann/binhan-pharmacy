@@ -5,8 +5,8 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 export default function handler(req: NextApiRequest, res: NextApiResponse<HTTPResponse<any>>) {
   const cookies = new Cookies(req, res)
 
-  console.log(req.body);
-  
+  console.log('set chat token req', req.body)
+
   const { access_token, refresh_token, data } = req.body
   cookies.set('chat_access_token', access_token?.token)
   cookies.set('chat_refresh_token', refresh_token?.token)

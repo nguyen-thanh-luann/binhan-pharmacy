@@ -29,17 +29,7 @@ export interface HTTPListRes<T> {
   }
 }
 
-export interface HTTPListRes2<T> {
-  message: string
-  success: boolean
-  status_code: number
-  data: {
-    limit: number
-    offset: number
-    total: number
-    data: T
-  }
-}
+
 
 export interface HTTPConfig {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
@@ -134,7 +124,28 @@ export type HTTPResultResponse<T> = {
   result: T
 }
 
+export type HTTPListResV2<T> = {
+  message: string
+  success: boolean
+  status_code: number
+  data: {
+    limit: number
+    offset: number
+    total: number
+    data: T
+  }
+}
+
+export type HTTPResV2<T>  = {
+  limit: number
+  offset: number
+  total: number
+  data: T
+}
+
 export type Fetcher<Params, Data> = (params: Params) => Promise<HTTPResponseV2<Data[]>>
+
+export type FetcherListResV2<Params, Data> = (params: Params) => Promise<HTTPListResV2<Data[]>>
 
 export type FetcherPartialParams<Params, Data> = (
   params: Partial<Params>

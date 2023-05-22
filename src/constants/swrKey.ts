@@ -22,6 +22,8 @@ export const SWR_KEY = {
   get_room_list: 'get_room_list',
   get_room_detail: 'get_room_detail',
 
+  get_chat_token: 'get_chat_token',
+
   get_messages_in_room: 'get_messages_in_room',
   get_user_information: 'get_user_information',
   get_guest_information: 'get_guest_information',

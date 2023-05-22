@@ -141,8 +141,9 @@ const PurchasedOrderPage = () => {
           ) : (
             <div>
               <div className="bg-white p-12 mb-12 rounded-[10px] shadow-shadow-1">
-                <div className="border-b border-gray-200 pb-12 mb-18 flex-between">
+                <div className="border-b border-gray-200 pb-12 mb-18 flex-between flex-wrap">
                   <p className="text-xl capitalize font-semibold">Đơn hàng</p>
+
                   <div ref={datePickerRef} className="">
                     <div className="relative">
                       <div

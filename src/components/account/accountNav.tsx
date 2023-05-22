@@ -1,6 +1,6 @@
 import { LogoutIconOutline } from '@/assets'
 import { accountIconStyle, accountNavData } from '@/data'
-import { useAuth, useModal } from '@/hooks'
+import { useAuth, useModal, useUser } from '@/hooks'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import { twMerge } from 'tailwind-merge'
@@ -12,6 +12,7 @@ interface AccountNavProps {
 export const AccountNav = ({ className }: AccountNavProps) => {
   const router = useRouter()
   const { logout } = useAuth()
+  const { userInfo } = useUser({})
   const { closeModal, openModal, visible: showModalConfirm } = useModal()
 
   const hanldeLogout = () => {
@@ -34,7 +35,8 @@ export const AccountNav = ({ className }: AccountNavProps) => {
             key={index}
             className={classNames(
               `flex items-center p-10 rounded-[10px] cursor-pointer group hover:bg-primary mb-12 last:mb-0 isActive:opacity-50`,
-              isActive ? 'bg-primary' : ''
+              isActive ? 'bg-primary' : '',
+              item?.access_rules?.includes(userInfo?.account?.account_type || '') ? '' : 'hidden'
             )}
           >
             <div

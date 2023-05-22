@@ -48,7 +48,7 @@ const userAPI = {
     return axiosClient.post('/logout', {})
   },
 
-  getUserInfo: () => {
+  getUserInfo: () => {    
     return axiosClient.get('/user_information_controller/get_account_information')
   },
 
@@ -86,9 +86,11 @@ const userAPI = {
     })
   },
 
+  // handle generateToken in local
   generateChatToken: (params: GenerateChatTokenParams) => {
     return axiosClient.post(`/chatDMS/generate-token`, { params })
   },
+
 
   getDetailUser: () => {
     return axiosClient.post('/api/v2.0/information_customers/get_info_customer', { params: {} })

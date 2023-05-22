@@ -1,3 +1,5 @@
+export type AccountType = 'th' | 'nvkd' | 'npp' | 'gsbh' | 'asm'
+
 export interface LoginPasswordReq {
   phone: string
   password: string
@@ -18,6 +20,11 @@ export interface TokenReq {
 
 export type TokenRes = TokenReq & {
   expires_in?: number
+}
+
+export type GetChatTokenRes = {
+  chat_access_token: string
+  chat_refresh_token: string
 }
 
 export interface LoginRes {
@@ -74,18 +81,26 @@ export interface GenerateChatTokenRes {
   offline_at: Date
   is_yourself: boolean
   message_unread_count: number
-  access_token: {
-    token: string
-    expires_in: number
-  }
-  refresh_token: {
-    token: string
-    expires_in: 7776000000
-  }
+  access_token: ChatTokenRes
+  refresh_token: ChatTokenRes
+}
+
+export interface ChatTokenRes {
+  token: string
+  expires_in: number
 }
 
 export interface GenerateChatTokenParams {
   token: string
   onSuccess?: (_: GenerateChatTokenRes) => void
   onError?: () => void
+}
+
+export interface SingupNewChatAccountParams {
+  user_id: number
+  password: string
+  user_name: string
+  role: 'npp'
+  phone: string
+  avatar?: string
 }

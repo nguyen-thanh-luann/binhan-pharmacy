@@ -1,5 +1,5 @@
 import { UserCircleIcon } from '@/assets'
-import { useGuest } from '@/hooks'
+import { useGuest, useUser } from '@/hooks'
 import { selectAuthOption, setAuthOption } from '@/store'
 import { AUTH_OPTION } from '@/types'
 import classNames from 'classnames'
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { twMerge } from 'tailwind-merge'
 import { LoginPasswordScreen, ResetPasswordScreen } from '../auth'
 import { LoginOTPScreen } from '../auth/loginOTPScreen'
+import { CustomImage } from '../customImage'
 import { ModalAuth } from '../modal'
 import { AccountDrawerMenu } from './accountDrawerMenu'
 
@@ -24,6 +25,7 @@ export const AccountDrawer = ({ className }: AccountDrawerProps) => {
   const dispatch = useDispatch()
   const authOption: AUTH_OPTION = useSelector(selectAuthOption)
   const { guestInfo } = useGuest()
+  const { userInfo } = useUser({})
 
   const deviceCode = guestInfo?.device_code
 
@@ -47,7 +49,16 @@ export const AccountDrawer = ({ className }: AccountDrawerProps) => {
           className="min-w-header_tab_width h-header_tab_height flex p-8 gap-8 rounded-[8px] items-center shadow-shadow-1 cursor-pointer group bg-background hover:bg-primary-100"
         >
           <div className="w-20 h-20">
-            <UserCircleIcon className="text-gray w-20 h-20 group-hover:text-primary" />
+            {deviceCode ? (
+              <UserCircleIcon className="text-gray w-20 h-20 group-hover:text-primary" />
+            ) : (
+              <div>
+                <CustomImage
+                  src={userInfo?.account?.avatar_url?.url || ''}
+                  imageClassName="w-[20px] h-[20px] object-cover rounded-full"
+                />
+              </div>
+            )}
           </div>
 
           <div className="hidden md:block">

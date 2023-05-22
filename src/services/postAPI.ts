@@ -4,7 +4,7 @@ import {
   GetPostCategoryListParams,
   GetPostDetailParams,
   GetPostListParams,
-  HTTPListRes2,
+  HTTPListResV2,
   ListRes,
   Post,
   PostCategory,
@@ -26,7 +26,7 @@ const postAPI = {
 
   getPostCategoryList: (
     params: GetPostCategoryListParams
-  ): Promise<HTTPListRes2<PostCategory[]>> => {
+  ): Promise<HTTPListResV2<PostCategory[]>> => {
     return axiosClient.get(`/chatDMS/api/post/category`, { params })
   },
 

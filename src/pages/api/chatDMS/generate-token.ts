@@ -14,14 +14,15 @@ export const config = {
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   return new Promise(async (resolve) => {
     const cookies = new Cookies(req, res, { secure: process.env.NODE_ENV !== 'development' })
-    
+
     try {
       const response: any = await authAPI.generateChatToken(req.body.params.token)
-      
+
       if (!response?.success) {
         return res.status(400).json({
           result: {
-            message: response?.result?.message || 'Login fail',
+            message:
+              response?.result?.message || response?.message || 'Generated chat token faild!',
             success: false,
             code: 400,
             data: response?.result?.data || undefined,
@@ -43,15 +44,15 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
       res.status(response?.status_code || 200).json({
         result: {
-          message: 'Login success',
+          message: response?.message || response?.result?.message || 'Generate token success!',
           success: true,
           code: 200,
-          data: response?.data,
+          data: response?.data || response?.result?.data,
         },
       })
-    } catch (error: any) {   
-      console.log(error);
-      
+    } catch (error: any) {
+      console.log(error)
+
       res.status(500).send('Internal Server Error.')
     }
 

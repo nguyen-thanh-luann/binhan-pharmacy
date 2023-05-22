@@ -1,4 +1,15 @@
-import type { FirebaseAuthParams, GenerateChatTokenRes, HTTPResponse, LoginPasswordReq, LoginRes, ResetPasswordParams, TokenReq, TokenRes } from '@/types'
+import type {
+  FirebaseAuthParams,
+  GenerateChatTokenRes,
+  GetChatTokenRes,
+  HTTPResponse,
+  LoginPasswordReq,
+  LoginRes,
+  ResetPasswordParams,
+  SingupNewChatAccountParams,
+  TokenReq,
+  TokenRes
+} from '@/types'
 import { AxiosPromise } from 'axios'
 import axiosClient from '.'
 import { axiosInstance } from './axiosInstance'
@@ -40,6 +51,10 @@ const authAPI = {
     return axiosClient.post('/set-chat-token', params)
   },
 
+  getChatToken: (): Promise<HTTPResponse<GetChatTokenRes>> => {
+    return axiosClient.post('/get-chat-token')
+  },
+
   resetPassword: (params: ResetPasswordParams) => {
     return axiosClient.post('/user_information_controller/reset-password', {
       params,
@@ -52,10 +67,14 @@ const authAPI = {
     })
   },
 
+  // generate token from api
   generateChatToken: (token: string) => {
     return axiosClient.post(`/chatDMS/api/auth/generate_token`, { token })
+  },
+
+  signupChatServiceAccount: (params: SingupNewChatAccountParams) => {
+    return axiosClient.post('/chatDMS/api/auth/register', params)
   },
 }
 
 export { authAPI }
-

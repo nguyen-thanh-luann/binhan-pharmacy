@@ -1,10 +1,10 @@
 import { SWR_KEY } from '@/constants'
-import { authAPI, cartAPI, userAPI } from '@/services'
-import { CheckPasswordRes, GenerateChatTokenRes, UpdateUserParams, UserInfo } from '@/types'
-import useSWR, { useSWRConfig } from 'swr'
-import { useAsync } from '../common'
-import { useAuth } from '../auth'
 import { encodeJWT } from '@/helper'
+import { cartAPI, userAPI } from '@/services'
+import { CheckPasswordRes, UpdateUserParams, UserInfo } from '@/types'
+import useSWR, { useSWRConfig } from 'swr'
+import { useAuth } from '../auth'
+import { useAsync } from '../common'
 
 interface useUserProps {
   shouldFetch?: boolean
@@ -43,6 +43,7 @@ export const useUser = ({ key, shouldFetch = true }: useUserProps): useUserRes =
     asyncHandler({
       fetcher: userAPI.getUserInfo,
       onSuccess: (res: any) => {
+        console.log('on success getUserInfo')
         mutate(res)
         onSuccess?.(res)
       },
@@ -109,27 +110,23 @@ export const useUser = ({ key, shouldFetch = true }: useUserProps): useUserRes =
   const mutateAccountData = () => {
     mutateConfig(SWR_KEY.get_guest_information)
     mutateConfig(SWR_KEY.get_cart_length)
+    mutateConfig(SWR_KEY.get_user_information)
   }
 
-  const generateChatServiceToken = () => {
-    getUserInfo((userInfo) => {
-      handleGenerateChatToken(userInfo)
-    })
+  const generateChatServiceToken = async () => {
+    try {
+      const res: any = await userAPI.getUserInfo()
+      if (res.success || res?.result?.success) {
+        handleGenerateChatToken(res?.data)
+      }
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   const handleGenerateChatToken = async (userInfo: UserInfo) => {
     generateChatToken({
-      token: encodeJWT({ user_id: userInfo.account?.partner_id }),
-      onSuccess: async (data: GenerateChatTokenRes) => {
-        try {
-          const res: any = await authAPI.setChatToken(data)
-          if (res?.result?.success) {
-            console.log('set chat token success!')
-          }
-        } catch (error) {
-          console.log(error)
-        }
-      },
+      token: encodeJWT({ user_id: userInfo?.account?.partner_id }),
     })
   }
 

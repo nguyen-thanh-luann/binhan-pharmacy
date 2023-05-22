@@ -1,4 +1,5 @@
 import { Country, District, Province, ShippingAddress, Ward } from './address'
+import { AccountType } from './auth'
 import { ImageRes, URLRes } from './common'
 import { QueryList } from './http'
 
@@ -30,6 +31,7 @@ export interface UserAccount {
   phone: string
   gender: UserGenderType
   avatar_url: URLRes
+  account_type: AccountType
   medicine_account_type: UserMedicineAccountType
   business_type: UserBusinessType
   gpp_certification_image_url: URLRes

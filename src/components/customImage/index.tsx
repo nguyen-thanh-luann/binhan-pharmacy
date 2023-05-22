@@ -15,7 +15,7 @@ export const CustomImage = ({ className, imageClassName, src, ...props }: Custom
   return (
     <div className={classNames('relative', className)}>
       <RImage
-        src={src ? (isRemoteImageUrl(src.toString()) ? src : `${API_URL}${src}`) : empty}
+        src={src && src !== '' ? (isRemoteImageUrl(src.toString()) ? src : `${API_URL}${src}`) : empty}
         width={1000}
         height={1000}
         className={classNames(imageClassName)}
