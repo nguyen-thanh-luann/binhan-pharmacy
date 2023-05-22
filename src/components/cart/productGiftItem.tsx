@@ -12,14 +12,15 @@ type Props = {
 export const ProductGiftItem = ({ data, className }: Props) => {
   return (
     <div className={classNames(className)}>
-      <div className="flex items-start">
+      <div className="flex items-start border w-fit px-12 py-4 rounded-lg border-primary bg-primary-100">
         <div className="flex items-center">
           <Image src={giftIcon} className="w-20 h-20 object-contain mr-8" alt="" />
-          <div className="w-[50px] h-[50px] mr-12">
+
+          <div className="mr-12">
             <Image
               src={toImageUrl(data?.representation_image?.image_url)}
               alt=""
-              className="w-full h-full object-cover"
+              className="w-[38px] h-[38px] object-cover"
             />
           </div>
         </div>

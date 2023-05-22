@@ -77,7 +77,7 @@ const DrugstorePage = () => {
 
   const renderFilerOptions = () => {
     return (
-      <div>
+      <div className="bg-white">
         <div>
           <SearchField
             placeholder="Nhập tên nhà thuốc"
@@ -156,14 +156,15 @@ const DrugstorePage = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-24">
           <div className="hidden md:block col-span-1">
-            <div className="rounded-[10px] shadow-shadow-1 p-12">
+            <div className="rounded-[10px] shadow-shadow-1 p-12 bg-white">
               <p className="text-md text-text-color font-bold mb-12">Tìm kiếm nhà thuốc</p>
 
               {renderFilerOptions()}
             </div>
           </div>
           <div className="col-span-3 md:col-span-2">
-            <div className="rounded-[10px] shadow-shadow-1 p-12">
+            <div className="rounded-[10px] shadow-shadow-1 p-12 bg-white">
+              {/* mobile */}
               <div className="md:hidden mb-12">
                 <p className="text-md text-text-color font-bold mb-12">Tìm kiếm nhà thuốc</p>
 

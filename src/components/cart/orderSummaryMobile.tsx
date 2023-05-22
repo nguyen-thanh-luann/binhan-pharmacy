@@ -1,23 +1,19 @@
 import { UpIcon } from '@/assets'
 import { SWR_KEY } from '@/constants'
-import { formatMoneyVND, sumMoneyAndTotalProductInCart } from '@/helper'
+import { formatMoneyVND } from '@/helper'
+import { useCreateOrderDone } from '@/hooks'
 import { cartAPI } from '@/services'
+import { GetOrderDraftRes } from '@/types'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
 import useSWR from 'swr'
-import { CartSummaryMobileDetail } from './cartSummaryMobileDetail'
 import { Button } from '../button'
-import { useCreateOrder } from '@/hooks'
-import { GetShoppingCartRes } from '@/types'
+import { OrderSummaryMobileDetail } from './orderSummaryMobileDetail'
 
-export const CartSummaryMobile = () => {
+export const OrderSummaryMobile = () => {
   const router = useRouter()
   const [showCartSummaryDetail, setShowCartSummaryDetail] = useState<boolean>(false)
-  const { data: shoppingcart } = useSWR<GetShoppingCartRes>(SWR_KEY.cart_list)
-
-  const { totalAmount, totalProduct, isLoading } = useMemo(() => {
-    return sumMoneyAndTotalProductInCart(shoppingcart)
-  }, [shoppingcart])
+  const { data } = useSWR<GetOrderDraftRes>(SWR_KEY.orders)
 
   const { data: cartLength } = useSWR(SWR_KEY.get_cart_length, () =>
     cartAPI.getCartLength().then((res) => res?.data?.cart_product_count)
@@ -27,23 +23,43 @@ export const CartSummaryMobile = () => {
     setShowCartSummaryDetail(!showCartSummaryDetail)
   }
 
-  const { createOrderDraft } = useCreateOrder()
+  const { amountSubtotal } = useMemo(() => {
+    let totalPromotion = 0
+    let amountSubtotal = 0
+    let amountTotal = 0
 
-  const hanldeCreateOrderDraft = () => {
-    createOrderDraft((orders) => {
-      router.push({
-        pathname: `/checkout`,
-        query: { order_ids: orders.map((item) => item.order_id) },
-      })
+    if (!data?.sale_orders?.length) {
+      return {
+        totalPromotion,
+        amountSubtotal,
+        amountTotal,
+      }
+    }
+
+    data.sale_orders.forEach((item) => {
+      amountSubtotal += item.amount_subtotal
+      totalPromotion += item.promotion_total
+      amountTotal += item.amount_total
+    })
+
+    return { totalPromotion, amountSubtotal, amountTotal }
+  }, [data])
+
+  const { createOrderDone } = useCreateOrderDone()
+
+  const hanldeCreateOrder = () => {
+    createOrderDone({}, (data) => {
+      let query = ''
+      data?.sale_order_id.forEach((item) => (query += `sale_order_id=${item.sale_order_id}&`))
+      router.push(`/checkout-success?${query.slice(0, query.length - 1)}`)
     })
   }
-
 
   return (
     <div className={`fixed w-full z-40 bottom-bottom_nav_height `}>
       <div>
         {showCartSummaryDetail ? (
-          <CartSummaryMobileDetail
+          <OrderSummaryMobileDetail
             onClose={() => {
               toggleCartSummaryDetail()
             }}
@@ -60,7 +76,7 @@ export const CartSummaryMobile = () => {
             }}
             className="flex-1 flex items-center"
           >
-            <p className="text-base text-text-color font-bold">{formatMoneyVND(totalAmount)}</p>
+            <p className="text-base text-text-color font-bold">{formatMoneyVND(amountSubtotal)}</p>
 
             {cartLength || 0 > 0 ? (
               <div className="cursor-pointer">
@@ -74,12 +90,10 @@ export const CartSummaryMobile = () => {
           </div>
 
           <Button
-            disabled={isLoading}
-            loading={isLoading}
-            title={`Đặt hàng (${totalProduct})`}
+            title={`Đặt hàng`}
             className="bg-primary rounded-[10px] py-10 flex-1"
             textClassName="text-base font-medium leading-9 text-white"
-            onClick={hanldeCreateOrderDraft}
+            onClick={hanldeCreateOrder}
           />
         </div>
       </div>

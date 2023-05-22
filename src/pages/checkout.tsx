@@ -1,13 +1,13 @@
 import {
   Breadcrumb,
   CartEmpty,
-  CartSummaryMobile,
   CheckoutCarrierMethod,
   CheckoutPaymentMethod,
   CompanyOrderItem,
   DeliveryAddress,
   OrderSummary,
-  Spinner,
+  OrderSummaryMobile,
+  Spinner
 } from '@/components'
 import { SWR_KEY } from '@/constants'
 import { isArrayHasValue } from '@/helper'
@@ -100,7 +100,7 @@ const CheckoutPage = () => {
                 </div>
               </div>
               <div className="block md:hidden">
-                <CartSummaryMobile />
+                <OrderSummaryMobile />
               </div>
             </div>
           ) : (

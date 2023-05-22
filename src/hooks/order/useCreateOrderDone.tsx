@@ -29,7 +29,6 @@ export const useCreateOrderDone = () => {
   const orderLineDelivery: OrderLineDelivery = useSelector(selectOrderLineDelivery)
   const orderPayment: Payment = useSelector(selectOrderPayment)
   const orders = useSWR<GetOrderDraftRes>(SWR_KEY.orders)?.data?.sale_orders
-  console.log({ orderAddress })
 
   const checkDataValid = (): boolean => {
     if (!checkOrderAddressValid(orderAddress)) {
@@ -52,10 +51,10 @@ export const useCreateOrderDone = () => {
 
   const checkOrderAddressValid = (orderAddress: ShippingAddressV2) => {
     if (
-      orderAddress.id &&
-      orderAddress.state_id.id &&
-      orderAddress.district_id.id &&
-      orderAddress.ward_id.id
+      orderAddress?.id &&
+      orderAddress?.state_id.id &&
+      orderAddress?.district_id.id &&
+      orderAddress?.ward_id.id
     ) {
       return true
     }

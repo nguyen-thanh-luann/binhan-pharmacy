@@ -131,7 +131,7 @@ export const CartProductVariants = ({
                     key={index}
                   >
                     <p
-                      className={`text-center ${isActive ? 'text-primary' : ''}`}
+                      className={`text-sm text-center ${isActive ? 'text-primary' : ''}`}
                     >{`${value?.value_name}`}</p>
                   </div>
                 )
@@ -178,7 +178,7 @@ export const CartProductVariants = ({
           {renderVariantOptions()}
 
           <div className="flex justify-end gap-12 p-12">
-            <Button title="Trở lại" className="w-[100px]" onClick={closeVariantModal} />
+            <Button title="Trở lại" className="w-[100px] border border-gray-100" onClick={closeVariantModal} />
 
             <Button
               title="Xác nhận"

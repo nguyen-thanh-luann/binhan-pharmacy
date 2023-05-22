@@ -167,14 +167,12 @@ export const CartProduct = ({
 
           <div className="w-full flex-1">
             {/* just for product - update later for combo's slug   */}
-            <p>
-              <Link
-                href={productSlug}
-                className="text-base text-text-color font-medium leading-8 line-clamp-2 hover:text-primary mb-8"
-              >
-                {isProduct ? data?.product_id?.product_name : data?.combo_id?.combo_name}
-              </Link>
-            </p>
+            <Link
+              href={productSlug}
+              className="text-base text-text-color font-bold leading-8 line-clamp-2 hover:text-primary mb-8"
+            >
+              {isProduct ? data?.product_id?.product_name : data?.combo_id?.combo_name}
+            </Link>
 
             {/* attribute */}
             <div>
@@ -277,7 +275,7 @@ export const CartProduct = ({
           <TrashIconOutline className="text-red w-16 h-16 active:opacity-50 " />
         </div>
       </div>
-      
+
       <ModalConfirm
         visible={visible}
         title={`Xóa sản phẩm đã chọn?`}
