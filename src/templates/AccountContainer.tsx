@@ -10,7 +10,7 @@ interface AccountContainerProps {
 
 export const AccountContainer = ({children, className}: AccountContainerProps) => {
   return (
-    <div className={twMerge(classNames(`flex gap-24 mb-38 min-h-[60vh]`, className))}>
+    <div className={twMerge(classNames(`flex gap-24 mb-38 min-h-[80vh]`, className))}>
       <div className="w-[200px] min-w-[200px] hidden md:block">
         <AccountNav className="sticky top-header_group_height shadow-shadow-1 rounded-[10px]" />
       </div>

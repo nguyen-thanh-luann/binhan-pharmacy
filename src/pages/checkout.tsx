@@ -52,7 +52,7 @@ const CheckoutPage = () => {
   return (
     <MainNoFooter title={'Thanh toán'} description="">
       <div className="mb-24">
-        <div className="container min-h-[80vh]">
+        <div className="container min-h-[100vh] mb-mobile_bottom_distance_default md:mb-0">
           {isValidating ? (
             <div className="flex-center my-24">
               <Spinner />

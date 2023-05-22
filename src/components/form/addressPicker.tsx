@@ -63,8 +63,8 @@ export const AddressPicker = ({
   }
 
   useImperativeHandle(ref, () => {
-    console.log('call use Imperative');
-    
+    console.log('call use Imperative')
+
     resetData()
   })
 
@@ -115,7 +115,7 @@ export const AddressPicker = ({
   }
 
   return (
-    <div ref={addressModalRef} className={twMerge(classNames(``, className))}>
+    <div ref={addressModalRef} className={twMerge(classNames(`relative bg-white`, className))}>
       <div
         className={`flex items-center border-gray-200  p-8 ${
           showAddressModal ? `border-b` : `rounded-lg border`
@@ -132,7 +132,7 @@ export const AddressPicker = ({
           }}
           value={
             state || district || ward
-              ? `${state?.label} ${district?.label || ''} ${ward?.label || ''}`
+              ? `${ward?.label || ''} ${district?.label || ''} ${state?.label}  `
               : undefined
           }
           defaultValue={defaultValue}
@@ -156,7 +156,7 @@ export const AddressPicker = ({
       <div
         className={twMerge(
           classNames(
-            `border mt-4 border-gray-200 ${showAddressModal ? `block animate-fade` : `hidden`}`,
+            `absolute z-50 left-0 right-0 bg-white border border-gray-200 border-t-0 animate-fade ${showAddressModal ? `block` : `hidden`}`,
             modalClassName
           )
         )}
@@ -169,7 +169,7 @@ export const AddressPicker = ({
           ]}
           tabActive={currentTab}
           onChange={(val: string) => handleTabChange(val)}
-          className="bg-white"
+          className="bg-white border-gray-100 border-b"
           labelClassName="flex-1 p-8 text-base text-center"
           tabActiveClassName="border-b border-primary"
         />
@@ -178,7 +178,7 @@ export const AddressPicker = ({
           ref={searchFieldRef}
           showSearchIcon={false}
           placeholder="Tìm kiếm"
-          className="border-b border-gray-200 px-12"
+          className="border-b border-gray-100 px-12 py-8"
           onChangeWithDebounceValue={(val) => setSearchValue(val.toUpperCase())}
         />
 

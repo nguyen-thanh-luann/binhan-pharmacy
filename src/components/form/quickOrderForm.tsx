@@ -19,18 +19,23 @@ import { SelectProductItem } from '../product'
 import { AddressPickerV2 } from './addressPickerV2'
 import { SelectDrugStoreForm } from './selectDrugStoreForm'
 import { SelectProductForm } from './selectProductForm'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectPreviewImageUrl, setPreviewImageUrl } from '@/store'
+import { ImageShower } from '../imageShower'
 
 interface QuickOrderFormProps {
   className?: string
 }
 
 export const QuickOrderForm = ({ className }: QuickOrderFormProps) => {
+  const dispatch = useDispatch()
   const { createQuickOrder } = useQuickOrder()
   const addressPickerRef = useRef<any>(null)
   const { getBase64Images } = useAttachment({ limit: DEFAULT_LIMIT })
   const [prescriptionPhotos, setPrescriptionPhotos] = useState<CreateAttachmentRes[]>()
   const [productSelected, setProductSelected] = useState<Product[]>([])
-  const { createAttachment } = useCreateAttachment()
+  const { createAttachment, isLoading: isLoadAttachment } = useCreateAttachment()
+  const previewImageUrl = useSelector(selectPreviewImageUrl)
 
   const {
     visible: showSelectStore,
@@ -170,16 +175,21 @@ export const QuickOrderForm = ({ className }: QuickOrderFormProps) => {
     <div className={twMerge(classNames(`px-12 md:px-24`, className))}>
       <form onSubmit={handleSubmit(handleSubmitForm)}>
         <div className=" mb-18 flex flex-wrap flex-col md:flex-row gap-24 border border-dotted items-center rounded-md p-12">
-          <div className="flex-1 flex-center flex-col cursor-pointer" onClick={openSelectProduct}>
-            <DrugsIcon className="w-[96px] h-[96px] mb-8 text-gray" />
-            <p className="text-base bg-primary text-white rounded-full p-4 px-12 cursor-pointer active:opacity-50 duration-200">
+          <div
+            className="md:flex-1 flex-start md:flex-center flex- flex-row md:flex-col cursor-pointer w-full"
+            onClick={openSelectProduct}
+          >
+            <DrugsIcon className="w-[40px] h-[40px] md:w-[96px] md:h-[96px] md:mb-8 text-gray" />
+            <p className="text-base md:bg-primary font-bold md:text-white rounded-full p-4 px-12 cursor-pointer active:opacity-50 duration-200 line-clamp-1">
               Nhập theo tên thuốc
             </p>
           </div>
 
-          <Divider className="hidden md:block h-[100px]" />
+          <Divider className="hidden md:block md:h-[100px]" />
 
-          <div className="flex-1">
+          <div className="md:hidden block min-w-[132px] w-[80%] h-[1px] border border-t border-gray-300"></div>
+
+          <div className="md:flex-1 w-full">
             <input
               onChange={(e) => handleUploadPhoto(e)}
               hidden
@@ -189,18 +199,28 @@ export const QuickOrderForm = ({ className }: QuickOrderFormProps) => {
               id="prescriptionPhotos"
               accept="image/*"
             />
-            <label htmlFor="prescriptionPhotos" className="flex-center flex-col">
-              <PhotoIcon className="w-[96px] h-[96px] mb-8 text-gray" />
-              <p className="text-base bg-primary text-white rounded-full p-4 px-12 cursor-pointer active:opacity-50 duration-200">
+            <label
+              htmlFor="prescriptionPhotos"
+              className="flex-start md:flex-center flex- flex-row md:flex-col cursor-pointer w-full"
+            >
+              <PhotoIcon className="w-[40px] h-[40px] md:w-[96px] md:h-[96px] md:mb-8 text-gray" />
+              <p className="text-base md:bg-primary font-bold md:text-white rounded-full p-4 px-12 cursor-pointer active:opacity-50 duration-200 line-clamp-1">
                 Gửi ảnh chụp đơn thuốc
               </p>
             </label>
           </div>
         </div>
 
-        {isArrayHasValue(prescriptionPhotos) ? (
+        {isArrayHasValue(prescriptionPhotos) || isLoadAttachment ? (
           <div className="max-h-[400px] overflow-scroll scrollbar-hide mb-12 border p-8 rounded-md border-gray-200">
             <p className="mb-12 text-md font-bold">Ảnh chụp đơn thuốc</p>
+
+            {isLoadAttachment ? (
+              <div className="flex items-center gap-12 animate-pulse rounded-md bg-white mb-12">
+                <div className="rounded-md w-[45px] h-[45px] bg-gray-300"></div>
+                <div className="w-full mb-12 h-[20px] rounded-md bg-gray-300"></div>
+              </div>
+            ) : null}
 
             {prescriptionPhotos?.map((photo, index) => (
               <div
@@ -208,13 +228,23 @@ export const QuickOrderForm = ({ className }: QuickOrderFormProps) => {
                 className="rounded-md p-8 border border-gray-200 flex-between mb-12 last:mb-0"
               >
                 <CustomImage
+                  onClick={() => {
+                    dispatch(setPreviewImageUrl(photo?.url || ''))
+                  }}
                   src={photo?.url || ''}
-                  className="flex-1"
+                  className="flex-1 cursor-pointer"
                   imageClassName="w-[45px] h-[45px] object-cover rounded-md"
                 />
 
                 <div className="flex-center">
-                  <p className="text-base text-primary cursor-pointer font-bold">Xem ảnh</p>
+                  <p
+                    onClick={() => {
+                      dispatch(setPreviewImageUrl(photo?.url || ''))
+                    }}
+                    className="text-base text-primary cursor-pointer font-bold"
+                  >
+                    Xem ảnh
+                  </p>
                   <Divider />
                   <p
                     onClick={() => handleDeletePhoto(photo)}
@@ -359,6 +389,8 @@ export const QuickOrderForm = ({ className }: QuickOrderFormProps) => {
           defaultProductSelected={productSelected}
         />
       </Modal>
+
+      {previewImageUrl ? <ImageShower url={previewImageUrl} /> : null}
     </div>
   )
 }

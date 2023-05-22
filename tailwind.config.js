@@ -171,6 +171,7 @@ module.exports = {
         category_dropdown_height: '470px',
         cart_summary_mobile_height: '70px',
         bottom_nav_height: '60px',
+        mobile_bottom_distance_default: '130px', // = cart_summary_mobile_height + bottom_nav_height
       },
       screens: {
         //mobile screen >= 300px

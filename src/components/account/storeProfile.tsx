@@ -77,11 +77,11 @@ export const StoreProfile = ({ data, className }: StoreProfileProps) => {
         date_of_birth: isInvalidDate(newUserInfo?.dateOfBirth)
           ? moment(new Date()).format('YYYY-MM-DD')
           : newUserInfo?.dateOfBirth,
-        
+
         establish_date: isInvalidDate(newUserInfo?.establishDate)
           ? moment(new Date()).format('YYYY-MM-DD')
           : newUserInfo?.establishDate,
-        
+
         province_id: newUserInfo?.state?.value,
         district_id: newUserInfo?.district?.value,
         ward_id: newUserInfo?.ward?.value,
@@ -244,7 +244,7 @@ export const StoreProfile = ({ data, className }: StoreProfileProps) => {
               onSubmit={(data: AddressPickerRes) => handleSelectAddress(data)}
               defaultValue={
                 data
-                  ? `${data?.account?.province_id?.province_name} ${data?.account?.district_id?.district_name} ${data?.account?.ward_id?.ward_name}`
+                  ? `${data?.account?.ward_id?.ward_name} ${data?.account?.district_id?.district_name} ${data?.account?.province_id?.province_name} `
                   : ``
               }
             />

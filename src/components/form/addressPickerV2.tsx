@@ -117,7 +117,7 @@ export const AddressPickerV2 = forwardRef(
     }
 
     return (
-      <div ref={addressModalRef} className={twMerge(classNames(``, className))}>
+      <div ref={addressModalRef} className={twMerge(classNames(`relative bg-white`, className))}>
         <div
           className={`flex items-center border-gray-200  p-8 ${
             showAddressModal ? `border-b` : `rounded-lg border`
@@ -135,7 +135,7 @@ export const AddressPickerV2 = forwardRef(
             }}
             value={
               state || district || ward
-                ? `${state?.label} ${district?.label || ''} ${ward?.label || ''}`
+                ? `${ward?.label || ''} ${district?.label || ''} ${state?.label}  `
                 : undefined
             }
             defaultValue={defaultValue}
@@ -160,7 +160,9 @@ export const AddressPickerV2 = forwardRef(
         <div
           className={twMerge(
             classNames(
-              `border mt-4 border-gray-200 ${showAddressModal ? `block animate-fade` : `hidden`}`,
+              `absolute z-50 left-0 right-0 bg-white border border-gray-200 border-t-0 animate-fade ${
+                showAddressModal ? `block` : `hidden`
+              }`,
               modalClassName
             )
           )}

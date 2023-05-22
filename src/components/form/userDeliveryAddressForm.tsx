@@ -1,4 +1,4 @@
-import { LocationOutlineIcon, UserCircleIcon } from '@/assets'
+import { LocationOutlineIcon, UserDoubleCircleIcon } from '@/assets'
 import { SWR_KEY } from '@/constants'
 import { isObjectHasValue } from '@/helper'
 import { useUser, useUserAddress } from '@/hooks'
@@ -140,7 +140,7 @@ export const UserDeliveryAddressForm = ({
       <div className="">
         <div className="mb-12">
           <div className="flex items-center mb-12">
-            <UserCircleIcon className="text-lg mr-8 w-24 h-24" />
+            <UserDoubleCircleIcon className="text-lg mr-8 w-24 h-24" />
             <p className="text-text-color text-lg font-bold">Thông tin người nhận</p>
           </div>
 
@@ -180,9 +180,9 @@ export const UserDeliveryAddressForm = ({
               onSubmit={(data: AddressPickerRes) => handleSelectAddress(data)}
               defaultValue={
                 orderAddress
-                  ? `${orderAddress?.state_id?.name || ''} ${
-                      orderAddress?.district_id?.name || ''
-                    } ${orderAddress?.ward_id.name || ''}`
+                  ? `${orderAddress?.ward_id.name || ''} ${orderAddress?.district_id?.name || ''} ${
+                      orderAddress?.state_id?.name || ''
+                    }`
                   : ``
               }
             />

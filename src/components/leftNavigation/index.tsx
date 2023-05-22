@@ -10,6 +10,7 @@ import { useCategoryList, useCategoryMinorList } from '@/hooks'
 import { SWR_KEY } from '@/constants'
 import { Spinner } from '../spinner'
 import { isArrayHasValue } from '@/helper'
+import { useRouter } from 'next/router'
 interface LeftNavigationProps {
   className?: string
   onClose?: () => void
@@ -18,14 +19,14 @@ interface LeftNavigationProps {
 export const LeftNavigation = ({ className, onClose }: LeftNavigationProps) => {
   const [currentCategoryId, setCurrentCategoryId] = useState<number>()
   const [isCategoryMinor, setIsCategoryMinor] = useState<boolean>(false)
-
+  const router = useRouter()
 
   const { categoryList, isValidating: categoryListLoading } = useCategoryList({
     key: SWR_KEY.get_category_list,
     params: {},
   })
 
-  const {categoryMinorList, isValidating: categoryMinorListLoading } = useCategoryMinorList({
+  const { categoryMinorList, isValidating: categoryMinorListLoading } = useCategoryMinorList({
     key: SWR_KEY.get_category_minor_list,
     params: {},
   })
@@ -36,6 +37,14 @@ export const LeftNavigation = ({ className, onClose }: LeftNavigationProps) => {
       return
     }
     setCurrentCategoryId(id)
+  }
+
+  const handleChildCategoryClick = (id: number, type: 'category' | 'minor_category') => {
+    if (type === 'category') {
+      router.push(`/search/?category_${id}=${id}`)
+    } else {
+      router.push(`/search/?minor_category_${id}=${id}`)
+    }
   }
 
   return (
@@ -85,8 +94,17 @@ export const LeftNavigation = ({ className, onClose }: LeftNavigationProps) => {
                 </div>
 
                 {/* childrent category */}
-                <div className={currentCategoryId === category?.category_id ? `flex animate-fade` : `hidden`}>
-                  <LeftNavCategoryDropDown parent_category_id={currentCategoryId} />
+                <div
+                  className={
+                    currentCategoryId === category?.category_id ? `flex animate-fade` : `hidden`
+                  }
+                >
+                  <LeftNavCategoryDropDown
+                    handleClick={(id) => {
+                      handleChildCategoryClick(id, 'category')
+                    }}
+                    parent_category_id={currentCategoryId}
+                  />
                 </div>
               </div>
             ))}
@@ -115,16 +133,20 @@ export const LeftNavigation = ({ className, onClose }: LeftNavigationProps) => {
 
                 {/* childrent category */}
                 <div
-                  className={`${currentCategoryId === category?.category_id ? `flex animate-fade` : `hidden`}`}
+                  className={`${
+                    currentCategoryId === category?.category_id ? `flex animate-fade` : `hidden`
+                  }`}
                 >
                   <LeftNavCategoryDropDown
                     parent_category_id={currentCategoryId}
                     isMinorCategory={isCategoryMinor}
+                    handleClick={(id) => {
+                      handleChildCategoryClick(id, 'minor_category')
+                    }}
                   />
                 </div>
               </div>
             ))}
-              {/* <p className='hover:animate-wiggle'>tesst</p> */}
           </div>
         ) : (
           <div></div>

@@ -165,7 +165,7 @@ export const AddressForm = ({ onSubmit: onExternalSubmit, className }: AddressFo
             onSubmit={(data: AddressPickerRes) => handleSelectAddress(data)}
             defaultValue={
               addressForm
-                ? `${addressForm?.state_id?.name} ${addressForm?.district_id?.name} ${addressForm?.ward_id?.name}`
+                ? `${addressForm?.ward_id?.name} ${addressForm?.district_id?.name} ${addressForm?.state_id?.name}`
                 : ``
             }
           />

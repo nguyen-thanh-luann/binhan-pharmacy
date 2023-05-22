@@ -91,9 +91,9 @@ const DrugstorePage = () => {
         </div>
 
         <div className="mb-12 flex-center">
-          <div className="hidden lg:block min-w-[132px] w-[10%] h-[1px] border border-t border-gray-300"></div>
+          <div className="hidden md:block min-w-[132px] w-[10%] h-[1px] border border-t border-gray-300"></div>
           <p className="title-lg text-center capitalize mx-12">Hoặc</p>
-          <div className="hidden lg:block min-w-[132px] w-[10%] h-[1px] border border-t border-gray-300"></div>
+          <div className="hidden md:block min-w-[132px] w-[10%] h-[1px] border border-t border-gray-300"></div>
         </div>
 
         <div className="mb-12 z-60">

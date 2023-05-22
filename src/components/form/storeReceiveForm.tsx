@@ -1,4 +1,4 @@
-import { LocationOutlineIcon, UserCircleIcon } from '@/assets'
+import { LocationOutlineIcon, UserDoubleCircleIcon } from '@/assets'
 import { SWR_KEY } from '@/constants'
 import { isArrayHasValue } from '@/helper'
 import { useDrugstores, useUser, useUserAddress } from '@/hooks'
@@ -134,7 +134,7 @@ export const StoreReceiveForm = () => {
         <div className="">
           <div className="mb-12">
             <div className="flex items-center mb-12">
-              <UserCircleIcon className="text-lg mr-8 w-24 h-24" />
+              <UserDoubleCircleIcon className="text-lg mr-8 w-24 h-24" />
               <p className="text-text-color text-lg font-bold">Thông tin người nhận</p>
             </div>
 
@@ -171,8 +171,9 @@ export const StoreReceiveForm = () => {
 
             <div className="mb-12">
               <SearchField
+                
                 onChangeWithDebounceValue={(val) => searchStore(val as string)}
-                className="border"
+                className="border p-8"
                 placeholder="Nhập tên nhà thuốc"
               />
             </div>
