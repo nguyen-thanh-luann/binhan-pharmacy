@@ -66,7 +66,7 @@ const cartAPI = {
     params: GetCartCategoriesInCompanyReq
   ): Promise<HTTPResponseV2<CartCategory[]>> => {
     return axiosClient.get(
-      `/shopping_cart_controller/list_category_in_company?${
+      `/shopping_cart_controller/list_category_minor_in_company?${
         params?.shopping_cart_id ? `&shopping_cart_id=${params?.shopping_cart_id}` : ''
       }${params?.limit_product ? `&limit_product=${params.limit_product}` : ''}`
     )

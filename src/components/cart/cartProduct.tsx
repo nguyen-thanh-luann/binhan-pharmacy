@@ -52,10 +52,10 @@ export const CartProduct = ({
   const { asyncHandler: updateQuantityHandler, isLoading: isQuantityUpdating } = useAsync()
   const { asyncHandler: updateProductHandler } = useAsync()
 
-  const productSlug = generateProductSlug(
+  const productSlug = `/${generateProductSlug(
     data?.product_id?.product_name,
     data?.product_id?.product_id
-  )
+  )}`
 
   const [currentProductUom, setCurrentProductUom] = useState(data?.uom_id)
 
@@ -208,7 +208,7 @@ export const CartProduct = ({
                 />
               ) : (
                 <div>
-                  <p className="text-md">{data?.uom_id?.uom_name}</p>
+                  <p className="text-base line-clamp-1">{data?.uom_id?.uom_name}</p>
                 </div>
               )}
             </div>
@@ -266,7 +266,7 @@ export const CartProduct = ({
             />
           ) : (
             <div>
-              <p className="text-md">{data?.uom_id?.uom_name}</p>
+              <p className="text-base line-clamp-1">{data?.uom_id?.uom_name}</p>
             </div>
           )}
         </div>

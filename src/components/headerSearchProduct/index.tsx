@@ -47,7 +47,7 @@ export const HeaderSearchProduct = () => {
   }
 
   const handleClickSearchResultItem = (name: string, id: number) => {
-    router.push(generateProductSlug(name, id))
+    router.push(`/${generateProductSlug(name, id)}`)
   }
 
   const handleDeleteSearchResultItem = (id: number) => {

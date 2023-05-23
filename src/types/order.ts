@@ -269,6 +269,7 @@ export interface OrderHistory {
   state_paid: string
   state_return_delivery_name: string
   state_return_paid_name: string
+  product: ProductOrderHistory[]
 }
 
 export interface OrderHistoryDetail {

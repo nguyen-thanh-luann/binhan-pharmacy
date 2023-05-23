@@ -274,7 +274,7 @@ export const getCartProductIndexFromCategory = (
 }
 
 export const generateProductSlug = (name: string, id: number | string): string => {
-  return `/${convertViToEn(name).replaceAll(' ', '-')}-${id}`
+  return `${convertViToEn(name).replaceAll(' ', '-')}-${id}`
 }
 
 export const fromProductSlugToProductId = (slug: string): string => {

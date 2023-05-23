@@ -56,10 +56,10 @@ export const OrderHistoryDetail = ({ sale_order_id, className, cb: om }: OrderHi
             >
               <thead>
                 <tr className="">
-                  <th className="text-start">Sản phẩm</th>
-                  <th className="text-start">Đơn vị</th>
-                  <th className="text-start">Số lượng</th>
-                  <th className="text-start">Giá</th>
+                  <th className="text-start text-md">Sản phẩm</th>
+                  <th className="text-start text-md">Đơn vị</th>
+                  <th className="text-start text-md">Số lượng</th>
+                  <th className="text-start text-md">Giá</th>
                 </tr>
               </thead>
               <tbody>
@@ -70,15 +70,16 @@ export const OrderHistoryDetail = ({ sale_order_id, className, cb: om }: OrderHi
                         <div className="">
                           <CustomImage
                             src={item.image_url?.[0] || ''}
-                            className="w-[40px] h-[40px] object-cover"
+                            className="w-[40px] h-[40px]"
+                            imageClassName="w-[40px] h-[40px] object-cover rounded-lg aspect-1"
                           />
                         </div>
-                        <p className="title-sm line-clamp-1">{item.name}</p>
+                        <p className="title-md font-bold line-clamp-1">{item.name}</p>
                       </div>
                     </td>
                     <td className="text-md">{item.product_uom}</td>
                     <td className="text-md">{item.quantity}</td>
-                    <td className="title-sm">{formatMoneyVND(item.price)}</td>
+                    <td className="text-md">{formatMoneyVND(item.price)}</td>
                   </tr>
                 ))}
               </tbody>

@@ -1,13 +1,20 @@
-import { empty } from '@/assets'
-import { Breadcrumb, Image, PostDetail, Spinner } from '@/components'
-import { SWR_KEY } from '@/constants'
-import { fromProductSlugToProductId, isObjectHasValue } from '@/helper'
-import { usePostDetail } from '@/hooks'
+import {
+  Breadcrumb,
+  PostCategoryMenu,
+  PostDetail,
+  PostItemLoading,
+  PostListItemHorizontal,
+  Spinner,
+} from '@/components'
+import { DEFAULT_LIMIT, SWR_KEY } from '@/constants'
+import { fromProductSlugToProductId, isArrayHasValue, isObjectHasValue } from '@/helper'
+import { usePostDetail, usePostList } from '@/hooks'
 import { postAPI } from '@/services'
 import { Main } from '@/templates'
 import { Post } from '@/types'
-import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
+import type { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 type IPostUrl = {
   slug: string
@@ -40,15 +47,35 @@ export const getStaticProps: GetStaticProps<IPostUrl, IPostUrl> = async ({ param
   }
 }
 
-const PostDetailPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
+const PostDetailPage = () => {
   const router = useRouter()
-  console.log({ props })
-
   const post_id = fromProductSlugToProductId((router.query.slug as string) || '')
   const { data: postDetail, isValidating } = usePostDetail({
     key: `${SWR_KEY.get_post_detail}_${post_id}`,
     params: { post_id },
   })
+
+  const {
+    data: postList,
+    isValidating: isLoadingPostList,
+    getMore,
+    hasMore,
+  } = usePostList({
+    key: `${SWR_KEY.get_post_list}`,
+    params: {
+      limit: DEFAULT_LIMIT,
+    },
+  })
+
+  const renderderPostLoading = () => {
+    return (
+      <div>
+        {Array.from({ length: 4 }).map((_, index) => (
+          <PostItemLoading key={index} />
+        ))}
+      </div>
+    )
+  }
 
   return (
     <Main title="" description="">
@@ -71,19 +98,38 @@ const PostDetailPage = (props: InferGetStaticPropsType<typeof getStaticProps>) =
             <div className="flex gap-24">
               <div className="w-[300px] hidden md:block ">
                 <div className="bg-white p-12 sticky top-header_group_height">
-                  {Array?.from({ length: 5 })?.map((_, index) => (
-                    <div
-                      key={index}
-                      className="py-12 border-b border-gray-200 last:border-none flex items-center"
-                    >
-                      <Image src={empty} imageClassName="w-32 h-32 rounded-full mr-12" />
-                      <p className="text-md">{`Danh mục ${index}`}</p>
-                    </div>
-                  ))}
+                  <PostCategoryMenu />
                 </div>
               </div>
               <div className="flex-1 bg-white overflow-scroll scrollbar-hide">
                 <PostDetail data={postDetail} />
+
+                <div className="mt-32">
+                  {isLoadingPostList || isArrayHasValue(postList) ? (
+                    <div>
+                      <p className="mb-12 text-2xl font-bold capitalize border-b-2 border-primary">Xem thêm bài viết</p>
+
+                      <InfiniteScroll
+                        dataLength={postList?.length || 0}
+                        next={() => getMore()}
+                        hasMore={hasMore}
+                        loader={hasMore ? renderderPostLoading() : null}
+                      >
+                        <div>
+                          {isLoadingPostList ? (
+                            <div>{renderderPostLoading()}</div>
+                          ) : (
+                            <div>
+                              {postList?.map((post) =>
+                                post?.id !== post_id ? <PostListItemHorizontal data={post} /> : null
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </InfiniteScroll>
+                    </div>
+                  ) : null}
+                </div>
               </div>
             </div>
           </div>

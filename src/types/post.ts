@@ -31,7 +31,7 @@ export interface Post {
   thumbnail: PostImage
   content: string
   short_content: string
-  tags: []  
+  tags: []
   category_id: string
   category_name: string
   created_at: Date
@@ -61,6 +61,8 @@ export interface PostCategory {
   name: string
   parent_id: number
   updated_at: Date
+  children: PostCategory[]
+  children_count: number
 }
 
 export interface CreatePostCategory {

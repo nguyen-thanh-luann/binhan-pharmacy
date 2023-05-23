@@ -16,7 +16,7 @@ interface PostItemProps {
   shortContentClassName?: string
 }
 
-export const PostItem = ({
+export const PostListItemVertical = ({
   data,
   className,
   imageClassName,
@@ -27,22 +27,24 @@ export const PostItem = ({
   const postSlug = `/post/${generateProductSlug(data?.title, data?.id)}`
 
   return (
-    <div className={twMerge(classNames(`group rounded-[10px] overflow-hidden`, className))}>
+    <div
+      className={twMerge(classNames(`group rounded-[10px] overflow-hidden bg-white`, className))}
+    >
       <Link href={postSlug}>
         <div>
           <Image
             src={data?.thumbnail?.thumbnail_url}
             imageClassName={classNames(
-              'object-cover aspect-1 rounded-[10px] hover:scale-110 duration-200 ease-in-out',
+              'object-cover aspect-1 rounded-[10px] hover:scale-110 duration-200 ease-in-out h-[390px]',
               imageClassName
             )}
             className={classNames(
-              'h-[210px] overflow-hidden rounded-[10px] mb-12',
+              'h-[390px] overflow-hidden rounded-[10px] mb-12',
               imagePhotoClassName
             )}
           />
 
-          <div className="">
+          <div className="px-12">
             <p className="text-gray text-sm">{moment(data?.created_at).format('DD/MM/YYYY')}</p>
             <p
               className={classNames(

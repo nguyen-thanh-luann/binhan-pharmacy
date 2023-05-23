@@ -93,13 +93,13 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
             </div>
 
             <div className="flex min-w-fit items-center ml-12">
-              <Link href="/" className="title !text-white">
+              <Link href="/post-list" className="title !text-white">
                 Góc nhà thuốc
               </Link>
 
               <div className={`border-l border-white h-[18px] mx-12`}></div>
 
-              <Link href="/" className="title !text-white">
+              <Link href="/post-list" className="title !text-white">
                 Sống khỏe mỗi ngày
               </Link>
             </div>

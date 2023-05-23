@@ -40,7 +40,7 @@ export interface ProductPropertyClick {
 }
 
 export const ProductItem = ({ data, className, isLoading }: ProductItemProps) => {
-  const productSlug = generateProductSlug(data?.product_name, data?.product_id)
+  const productSlug = `/${generateProductSlug(data?.product_name, data?.product_id)}`
   const router = useRouter()
   const dispatch = useDispatch()
   const { addToCart } = useAddToCart()
