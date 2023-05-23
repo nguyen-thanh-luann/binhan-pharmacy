@@ -115,10 +115,20 @@
 
 // custom effect
 
-.effect-in-out{
-  @apply duration-200 ease-in-out
+.effect-in-out {
+  @apply duration-200 ease-in-out;
 }
 
-.effect-linear{
-  @apply duration-200 ease-linear
+.effect-linear {
+  @apply duration-200 ease-linear;
+}
+
+// custom image in post content detail
+
+.post-content {
+  img {
+    max-width: 300px !important;
+    max-height: 500px !important;
+    object-fit: cover;
+  }
 }

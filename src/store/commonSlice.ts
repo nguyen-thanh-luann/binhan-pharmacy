@@ -1,4 +1,4 @@
-import { PayloadType, PostCategory, ShippingAddressV2 } from '@/types'
+import { PayloadType, Post, PostCategory, ShippingAddressV2 } from '@/types'
 import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from './store'
 
@@ -8,6 +8,7 @@ interface CommonSlice {
   addressForm: ShippingAddressV2 | undefined
   previousRoute: string | undefined | null
   postCategoryForm: PostCategory | undefined
+  postForm: Post | undefined
 }
 
 const initialState: CommonSlice = {
@@ -16,6 +17,7 @@ const initialState: CommonSlice = {
   addressForm: undefined,
   previousRoute: undefined,
   postCategoryForm: undefined,
+  postForm: undefined
 }
 
 const commonSlice = createSlice({
@@ -41,12 +43,17 @@ const commonSlice = createSlice({
     setPostCategoryForm: (state, { payload }: { payload: PostCategory | undefined }) => {
       state.postCategoryForm = payload
     },
+
+    setPostForm: (state, { payload }: { payload: Post | undefined}) => {
+      state.postForm = payload
+    }
   },
 })
 
 export const selectPreviewImageUrl = (state: RootState) => state.common.previewImageUrl
 export const selectAddressForm = (state: RootState) => state.common.addressForm
 export const selectPostCategoryForm = (state: RootState) => state.common.postCategoryForm
+export const selectPostForm = (state: RootState) => state.common.postForm
 
 export default commonSlice.reducer
 export const {
@@ -55,4 +62,5 @@ export const {
   setPreviewImageUrl,
   setPreviousRoute,
   setPostCategoryForm,
+  setPostForm
 } = commonSlice.actions

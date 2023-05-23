@@ -50,7 +50,7 @@ const CreatePostPage = () => {
           breadcrumbList={[
             {
               path: '/',
-              name: 'Thêm tin tức',
+              name: `Thêm tin tức`,
             },
           ]}
         />
@@ -59,7 +59,7 @@ const CreatePostPage = () => {
       <AccountContainer className="container mb-32">
         <div className="bg-white p-24 rounded-[10px] shadow-shadow-1">
           <div className="flex-between flex-wrap border-b border-gray-200 pb-12 mb-24">
-            <p className="text-xl capitalize font-semibold">Thêm Tin tức</p>
+            <p className="text-xl capitalize font-semibold">Thêm tin tức</p>
           </div>
 
           {chatToken ? (
@@ -84,7 +84,7 @@ const CreatePostPage = () => {
           >
             <div>
               <div className="flex-between p-12">
-                <p className="text-md">Thêm danh mục</p>
+                <p className="text-md">Tạo tin tức mới</p>
                 <div
                   className="cursor-pointer"
                   onClick={() => {

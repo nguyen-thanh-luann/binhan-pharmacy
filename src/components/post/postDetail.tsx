@@ -10,8 +10,8 @@ interface PostDetailProps {
 
 export const PostDetail = ({data, className}: PostDetailProps) => {
   return (
-    <div className={twMerge(classNames(`bg-white p-12`, className))}>
-        <div dangerouslySetInnerHTML={{__html: data?.content + ''}}></div>
+    <div className={twMerge(classNames(`post-content bg-white p-12`, className))}>
+      <div dangerouslySetInnerHTML={{ __html: data?.content + '' }}></div>
     </div>
   )
 }

@@ -68,12 +68,11 @@ export const usePostList = ({ key, params }: usePostListProps): usePostListRes =
       const res: any = await postAPI.deletePost(id)
 
       dispatch(setBackdropVisible(false))
-      console.log({ res })
 
       if (res?.success) {
         handleSuccess?.()
 
-        // mutate()
+        mutate([...data.filter((post) => post.id !== id)], false)
       } else {
         handleError?.()
       }
@@ -93,11 +92,10 @@ export const usePostList = ({ key, params }: usePostListProps): usePostListRes =
     try {
       dispatch(setBackdropVisible(true))
       const res: any = await postAPI.updatePost(params)
-      console.log({ res })
 
       if (res?.success) {
         handleSuccess?.()
-        // mutate()
+        mutate(data, true)
       } else {
         handleError?.()
       }

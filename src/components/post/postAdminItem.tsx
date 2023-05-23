@@ -1,7 +1,11 @@
-import { EyeIconSolid, PenIconSolid, TrashIconOutline } from '@/assets'
+import { EyeIconSolid, PenIconSolid, ThreeDotsIcon, TrashIconOutline } from '@/assets'
 import { Post } from '@/types'
 import moment from 'moment'
 import { Image } from '../image'
+import { PostAdminItemLoading } from './postAdminItemLoading'
+import { useClickOutside, useModal } from '@/hooks'
+import classNames from 'classnames'
+import { useRef } from 'react'
 
 interface PostItemProps {
   post: Post
@@ -19,38 +23,81 @@ const PostAdminItem = ({
   onClickEdit,
 }: PostItemProps) => {
   if (isLoading) {
-    return (
-      <div className="flex mb-[24px]">
-        <div className="skeleton w-[100px] h-[100px]"></div>
-        <div className="flex-1 ml-[12px]">
-          <div className="skeleton rounded-[4px] h-[20px] mb-[8px]"></div>
-          <div className="skeleton rounded-[4px] h-[25px] mb-[12px]"></div>
-          <div className="max-w-[200px] w-full skeleton h-[15px]"></div>
-        </div>
-      </div>
-    )
+    return <PostAdminItemLoading />
   }
 
+  const { visible, openModal, closeModal, toggle } = useModal()
+  const optionModalRef = useRef<HTMLDivElement>(null)
+
+  useClickOutside([optionModalRef], closeModal)
+
   return (
-    <div key={post.id} className="flex mb-12 last:mb-0">
+    <div key={post.id} className="relative flex mb-12 last:mb-0">
       <div className="relative h-[100px] w-[100px] ">
-        <Image src={post?.thumbnail?.thumbnail_url} imageClassName="object-cover aspect-1" />
+        <Image
+          src={post?.thumbnail?.thumbnail_url}
+          imageClassName="object-cover aspect-1 rounded-lg"
+        />
       </div>
       <div className="flex-1 mx-[12px]">
         <div className="">
           <p className="title_md line-clamp-1">{post?.title}</p>
           <p className="text_md line-clamp-2">{post?.short_content}</p>
           <p className="text">
-            <span>{moment(post?.created_at).fromNow()}</span>
-            <span className="ml-[10px]">
+            <p className="">
               Đăng bởi: <span className="title">{post?.author_name}</span>
-            </span>
+            </p>
+            <p className="text-sm">{moment(post?.created_at).fromNow()}</p>
           </p>
           <p></p>
         </div>
       </div>
 
-      <div className="flex flex-col h-full">
+      <div
+        ref={optionModalRef}
+        className="absolute right-0"
+        onMouseEnter={openModal}
+        onMouseLeave={closeModal}
+      >
+        <div className="relative">
+          <button onClick={toggle} className="border border-gray rounded-lg p-8">
+            <ThreeDotsIcon className="text-gray" />
+          </button>
+
+          <div
+            className={classNames(
+              visible ? 'block' : 'hidden',
+              'absolute z-50 right-0 rounded-lg p-8 shadow-shadow-1 bg-white min-w-[120px]'
+            )}
+          >
+            <button
+              onClick={() => onClickEdit && onClickEdit()}
+              className="flex items-center gap-12 border border-blue-600 text-blue-600 px-8 py-4 rounded-lg w-full mb-12"
+            >
+              <PenIconSolid className="text-base text-blue-600" />
+              <p className="text-base text-blue-600">Cập nhật</p>
+            </button>
+
+            <button
+              onClick={() => onClickDetail && onClickDetail()}
+              className="flex items-center gap-12 border  border-blue-400 text-blue-400 px-8 py-4 rounded-lg w-full mb-12"
+            >
+              <EyeIconSolid className="text-base text-blue-400" />
+              <p className="text-base text-blue-400">Chi tiết</p>
+            </button>
+
+            <button
+              onClick={() => onClickDelete && onClickDelete()}
+              className="flex items-center gap-12 border border-red px-8 py-4 rounded-lg w-full mb-12"
+            >
+              <TrashIconOutline className="text-base text-red" />
+              <p className="text-base text-red">Xóa</p>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* <div className="flex flex-col h-full">
         <button
           onClick={() => onClickEdit && onClickEdit()}
           className="bg-blue-600 flex-center w-[40px] h-[40px] title_md !text-white hover:opacity-80 ease-in-out"
@@ -69,7 +116,7 @@ const PostAdminItem = ({
         >
           <TrashIconOutline className="text-white-color" />
         </button>
-      </div>
+      </div> */}
     </div>
   )
 }

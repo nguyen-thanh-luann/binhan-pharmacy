@@ -1,34 +1,79 @@
-import { PlusIcon } from '@/assets'
+import { PlusIcon, TimesIcon } from '@/assets'
 import {
   Breadcrumb,
   Button,
+  Modal,
+  ModalConfirm,
   NotFound,
   PostAdminItem,
+  PostAdminItemLoading,
+  PostContentDetail,
   SignupPostAdminForm,
-  Spinner,
 } from '@/components'
+import EditPost from '@/components/post/editPost'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
 import { isArrayHasValue } from '@/helper'
 import { useChatAccount, usePostList } from '@/hooks'
+import { selectPostForm, setPostForm } from '@/store'
 import { AccountContainer, Main } from '@/templates'
-import InfiniteScroll from 'react-infinite-scroll-component'
+import { Post } from '@/types'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { toast } from 'react-hot-toast'
+import InfiniteScroll from 'react-infinite-scroll-component'
+import { useDispatch, useSelector } from 'react-redux'
 
 const PostPage = () => {
   const router = useRouter()
+  const dispatch = useDispatch()
   const { data: chatToken } = useChatAccount()
+  const [currentPostId, setCurrentPostId] = useState<string | undefined>()
+  const [currentPostContent, setCurrentPostContent] = useState<string | undefined>()
+  const postForm: Post = useSelector(selectPostForm)
 
   const {
     data: postList,
     isValidating,
     getMore,
     hasMore,
+    deletePost,
   } = usePostList({
     key: `${SWR_KEY.get_post_list}`,
     params: {
       limit: DEFAULT_LIMIT,
     },
   })
+
+  const handleDeletePost = (id: string) => {
+    deletePost(
+      id,
+      () => {
+        setCurrentPostId(undefined)
+        toast.success('Xóa tin tức thành công!')
+      },
+      () => {
+        toast.error('Có lỗi xảy ra!')
+      }
+    )
+  }
+
+  const handleEditPostClick = (post: Post) => {
+    dispatch(setPostForm(post))
+  }
+
+  const resetPostForm = () => {
+    dispatch(setPostForm(undefined))
+  }
+
+  const renderPostLoading = () => {
+    return (
+      <div>
+        {Array.from({ length: 4 }).map((_, index) => (
+          <PostAdminItemLoading key={index} />
+        ))}
+      </div>
+    )
+  }
 
   return (
     <Main title={WEB_TITTLE} description={WEB_DESCRIPTION}>
@@ -67,17 +112,25 @@ const PostPage = () => {
                     dataLength={postList?.length || 0}
                     next={() => getMore()}
                     hasMore={hasMore}
-                    loader={hasMore ? <Spinner /> : null}
+                    loader={hasMore ? renderPostLoading() : null}
                   >
                     <div>
                       {isValidating ? (
-                        <div>
-                          <Spinner />
-                        </div>
+                        <div>{renderPostLoading()}</div>
                       ) : (
                         <div>
                           {postList?.map((post) => (
-                            <PostAdminItem post={post} key={post.id} />
+                            <PostAdminItem
+                              post={post}
+                              key={post.id}
+                              onClickDelete={() => {
+                                setCurrentPostId(post?.id)
+                              }}
+                              onClickDetail={() => {
+                                setCurrentPostContent(post?.content)
+                              }}
+                              onClickEdit={() => handleEditPostClick(post)}
+                            />
                           ))}
                         </div>
                       )}
@@ -87,6 +140,63 @@ const PostPage = () => {
               ) : (
                 <NotFound notify="Không tìm thấy danh mục nào!" />
               )}
+
+              {/* modal confirm delete post */}
+              <ModalConfirm
+                title="Bạn có chắc muốn xóa bài viết?"
+                onConfirm={() => {
+                  if (currentPostId) handleDeletePost(currentPostId)
+                }}
+                onDeny={() => setCurrentPostId(undefined)}
+                visible={currentPostId !== undefined}
+              />
+
+              {/* show post detail */}
+              <Modal
+                visible={currentPostContent !== undefined}
+                modalClassName={`h-[90%] w-[90%] md:w-[60%] mx-auto`}
+                animationType="slideUp"
+                header={
+                  <div className="flex-between p-18">
+                    <p className="text-lg font-bold capitalize">Xem trước thông tin</p>
+
+                    <div
+                      className="cursor-pointer hover:opacity-50 duration-150 ease-in-out"
+                      onClick={() => {
+                        setCurrentPostContent(undefined)
+                      }}
+                    >
+                      <TimesIcon className="w-18 h-18 text-gray-500" />
+                    </div>
+                  </div>
+                }
+              >
+                <div className="relative">
+                  <PostContentDetail content={currentPostContent || ''} />
+                </div>
+              </Modal>
+
+              {/* modal edit post */}
+              <Modal
+                visible={postForm !== undefined}
+                modalClassName={`h-[90%] w-[90%] md:w-[60%] mx-auto`}
+                animationType="slideUp"
+                header={
+                  <div className="flex-between p-18">
+                    <p className="text-lg font-bold capitalize">Cập nhật thông tin</p>
+                    <div
+                      className="cursor-pointer hover:opacity-50 duration-150 ease-in-out"
+                      onClick={() => resetPostForm()}
+                    >
+                      <TimesIcon className="w-18 h-18 text-gray-500" />
+                    </div>
+                  </div>
+                }
+              >
+                <div className="relative">
+                  <EditPost onSuccess={() => resetPostForm()} />
+                </div>
+              </Modal>
             </div>
           ) : (
             <SignupPostAdminForm className="md:w-[60%] mx-auto" />

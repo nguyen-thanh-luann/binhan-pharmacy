@@ -8,6 +8,7 @@ import { Button } from '../button'
 import { Modal } from '../modal'
 import { PostContentDetail } from '../post'
 import { Spinner } from '../spinner'
+import classNames from 'classnames'
 
 const ReactQuill: any = dynamic(
   async () => {
@@ -112,7 +113,7 @@ const PostEditor = ({ onSubmit, defaultValue, btnLabel, validating = false }: bl
 
   return (
     <div className="relative">
-      <div className="pb-[64px]">
+      <div className="pb-[64px] post-content">
         <ReactQuill
           forwardedRef={quillRef}
           value={text}
@@ -122,13 +123,14 @@ const PostEditor = ({ onSubmit, defaultValue, btnLabel, validating = false }: bl
         />
       </div>
 
-      <div className="flex-center sticky bottom-0 z-50 bg-white">
+      <div className="flex-center sticky bottom-0 z-50 bg-white py-12">
         <Button
           title={btnLabel || 'Tiếp tục'}
-          className={`bg-primary px-20 py-4 ${
+          className={classNames(
+            `border border-primary px-20 py-4`,
             !text ? 'opacity-50 hover:opacity-50 cursor-default' : ''
-          }`}
-          textClassName={`title_md !text-white`}
+          )}
+          textClassName={`title-base font-bold text-primary`}
           onClick={() => onSubmit && onSubmit(text)}
         />
 
@@ -149,7 +151,7 @@ const PostEditor = ({ onSubmit, defaultValue, btnLabel, validating = false }: bl
 
       <Modal
         visible={showQuickView}
-        modalClassName={`h-[90%] w-[90%]`}
+        modalClassName={`h-[90vh] w-[90%] md:w-[60%] mx-auto`}
         animationType="slideUp"
         header={
           <div className="flex justify-end p-18">

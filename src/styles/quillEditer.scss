@@ -6,6 +6,12 @@
   .ql-editor {
     min-height: 500px;
     outline: none;
+
+    img {
+      max-width: 300px!important;
+      max-height: 500px!important;
+      object-fit: cover;
+    }
   }
 
   .ql-toolbar {
