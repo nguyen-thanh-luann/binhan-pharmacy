@@ -6,15 +6,18 @@ import {
   NotFound,
   PostCategoryForm,
   PostCategoryItem,
+  PostCategoryItemLoading,
+  SearchField,
   SignupPostAdminForm,
-  Spinner,
 } from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
 import { isArrayHasValue } from '@/helper'
 import { useChatAccount, useModal, usePostCategory } from '@/hooks'
 import { selectPostCategoryForm, setPostCategoryForm } from '@/store'
 import { AccountContainer, Main } from '@/templates'
-import { CreatePostCategory, PostCategory } from '@/types'
+import { CreatePostCategory, OptionType, PostCategory } from '@/types'
+import classNames from 'classnames'
+import { useMemo } from 'react'
 import { toast } from 'react-hot-toast'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useDispatch, useSelector } from 'react-redux'
@@ -39,6 +42,7 @@ const PostCategoryPage = () => {
     getMore,
     deletePostCategory,
     updateCategory,
+    filter,
   } = usePostCategory({
     key: `${SWR_KEY.get_post_category_list}`,
     params: {
@@ -85,6 +89,13 @@ const PostCategoryPage = () => {
     )
   }
 
+  const categoryOptions: OptionType<string>[] | undefined = useMemo(() => {
+    return postCategoryList?.map((item) => ({
+      label: item.name,
+      value: item.id,
+    }))
+  }, [postCategoryList])
+
   const handleSelectCategoryItemEdit = (item: PostCategory) => {
     dispatch(setPostCategoryForm(item))
   }
@@ -115,35 +126,49 @@ const PostCategoryPage = () => {
             />
           </div>
 
+          <div>
+            <SearchField
+              placeholder="Tìm theo tên danh mục"
+              className={classNames('border rounded-lg p-8 mb-12')}
+              onChangeWithDebounceValue={(val) =>
+                filter({
+                  keyword: val,
+                })
+              }
+            />
+          </div>
+
           {chatToken ? (
             <div>
               {isValidating || isArrayHasValue(postCategoryList) ? (
                 <div>
-                  <InfiniteScroll
-                    dataLength={postCategoryList?.length || 0}
-                    next={() => getMore()}
-                    hasMore={hasMore}
-                    loader={hasMore ? <Spinner /> : null}
-                  >
-                    <div>
-                      {isValidating ? (
-                        <div>
-                          <Spinner />
-                        </div>
-                      ) : (
-                        <div>
-                          {postCategoryList?.map((category) => (
-                            <PostCategoryItem
-                              data={category}
-                              key={category.id}
-                              onDelete={hanldeDeleteCategory}
-                              onEdit={handleSelectCategoryItemEdit}
-                            />
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </InfiniteScroll>
+                  <div className="max-h-[80vh] overflow-scroll">
+                    <InfiniteScroll
+                      dataLength={postCategoryList?.length || 0}
+                      next={() => getMore()}
+                      hasMore={hasMore}
+                      loader={hasMore ? <PostCategoryItemLoading /> : null}
+                    >
+                      <div>
+                        {isValidating ? (
+                          <div>
+                            <PostCategoryItemLoading />
+                          </div>
+                        ) : (
+                          <div>
+                            {postCategoryList?.map((category) => (
+                              <PostCategoryItem
+                                data={category}
+                                key={category.id}
+                                onDelete={hanldeDeleteCategory}
+                                onEdit={handleSelectCategoryItemEdit}
+                              />
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </InfiniteScroll>
+                  </div>
                 </div>
               ) : (
                 <NotFound notify="Không tìm thấy danh mục nào!" />
@@ -168,7 +193,10 @@ const PostCategoryPage = () => {
               </div>
 
               <div className="max-h-[400px] h-fit overflow-scroll scrollbar-hide p-12">
-                <PostCategoryForm onSubmit={handleCreatePostCategory} />
+                <PostCategoryForm
+                  onSubmit={handleCreatePostCategory}
+                  categoryOptions={categoryOptions}
+                />
               </div>
             </div>
           </Modal>
@@ -194,7 +222,10 @@ const PostCategoryPage = () => {
               </div>
 
               <div className="max-h-[400px] h-fit overflow-scroll scrollbar-hide p-12">
-                <PostCategoryForm onSubmit={handleUpdateCategory} />
+                <PostCategoryForm
+                  onSubmit={handleUpdateCategory}
+                  categoryOptions={categoryOptions}
+                />
               </div>
             </div>
           </Modal>

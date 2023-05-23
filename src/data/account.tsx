@@ -1,12 +1,14 @@
 import {
+  DonationIconOutline,
+  FeatherOutlineIcon,
   LocationOutlineIcon,
-  PackageBoxIconOutline,
-  UserCircleIcon,
-  LogoutIconOutline,
   LockIconOutline,
-  StarIconOutline,
-  NotebookIconOutline,
+  LogoutIconOutline,
+  MenuSquareDotOutlineIcon,
   NotebookIconOutlinePlus,
+  PackageBoxIconOutline,
+  StarIconOutline,
+  UserCircleIcon
 } from '@/assets'
 
 export const accountIconStyle = 'w-[20px] h-[20px]'
@@ -30,21 +32,21 @@ export const accountNavData = [
   },
   {
     path: '/account/add-post',
-    icon: <NotebookIconOutlinePlus className={accountIconStyle} />,
+    icon: <FeatherOutlineIcon className={accountIconStyle} />,
     title: 'Thêm tin tức',
     // access_rules: AdminAccessRule,
     access_rules: PublicAccessRule,
   },
   {
     path: '/account/post-category',
-    icon: <NotebookIconOutline className={accountIconStyle} />,
+    icon: <MenuSquareDotOutlineIcon className={accountIconStyle} />,
     title: 'Danh mục tin tức',
     // access_rules: AdminAccessRule,
     access_rules: PublicAccessRule,
   },
   {
     path: '/purchased-order',
-    icon: <PackageBoxIconOutline className={accountIconStyle} />,
+    icon: <DonationIconOutline className={accountIconStyle} />,
     title: 'Đơn hàng',
     access_rules: PublicAccessRule,
   },

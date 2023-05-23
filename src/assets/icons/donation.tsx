@@ -8,7 +8,7 @@ export const DonationIconOutline = ({ className = '' }) => {
       viewBox="0 0 23 22"
       fill="none"
     >
-      <g filter="url(#filter0_i_3691_28126)">
+      <g>
         <rect
           x="12.4167"
           y="2.75"

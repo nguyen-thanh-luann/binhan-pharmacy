@@ -45,7 +45,7 @@ export const SelectField = ({
         value={value}
         {...attributes}
       />
-      {error?.message && <div className="text text-red">{error.message}</div>}
+      {error?.message && <div className="text !text-red">{error.message}</div>}
     </div>
   )
 };

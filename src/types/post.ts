@@ -6,6 +6,7 @@ export interface GetPostCategoryListParams extends QueryList {
 
 export interface GetPostListParams extends QueryList {
   category_id?: string
+  keyword?: string
 }
 
 export interface GetPostDetailParams {

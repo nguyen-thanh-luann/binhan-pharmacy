@@ -2,7 +2,7 @@ import {
   DonationIconOutline,
   HomeIconOutline,
   MenuSquareDotOutlineIcon,
-  UserCircleIcon
+  UserCircleIcon,
 } from '@/assets'
 
 const iconStyle = 'w-[20px] h-[20px]'

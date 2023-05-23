@@ -18,12 +18,13 @@ interface usePostListRes {
   createPost: (params: CreatePost, handleSuccess?: () => void, handleError?: () => void) => void
   updatePost: (params: UpdatePost, handleSuccess?: () => void, handleError?: () => void) => void
   deletePost: (id: string, handleSuccess?: () => void, handleError?: () => void) => void
+  filter: (props: GetPostListParams) => void
 }
 
 export const usePostList = ({ key, params }: usePostListProps): usePostListRes => {
   const dispatch = useDispatch()
 
-  const { data, isValidating, getMore, hasMore, isLoadingMore, mutate } = useListQuery<
+  const { data, isValidating, getMore, hasMore, isLoadingMore, mutate, filter } = useListQuery<
     Post,
     GetPostListParams
   >({
@@ -117,5 +118,6 @@ export const usePostList = ({ key, params }: usePostListProps): usePostListRes =
     createPost,
     deletePost,
     updatePost,
+    filter,
   }
 }

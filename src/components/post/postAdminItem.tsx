@@ -55,12 +55,12 @@ const PostAdminItem = ({
 
       <div
         ref={optionModalRef}
-        className="absolute right-0"
+        className="absolute right-12"
         onMouseEnter={openModal}
         onMouseLeave={closeModal}
       >
         <div className="relative">
-          <button onClick={toggle} className="border border-gray rounded-lg p-8">
+          <button onClick={toggle} className="border border-gray rounded-lg p-8 bg-white">
             <ThreeDotsIcon className="text-gray" />
           </button>
 

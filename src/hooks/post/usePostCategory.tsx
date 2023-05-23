@@ -26,12 +26,13 @@ interface usePostCategoryRes {
     handleSuccess?: () => void,
     handleError?: () => void
   ) => void
+  filter: (props: GetPostListParams) => void
 }
 
 export const usePostCategory = ({ key, params }: usePostListProps): usePostCategoryRes => {
   const dispatch = useDispatch()
 
-  const { data, isValidating, getMore, hasMore, isLoadingMore, mutate } = useListQuery<
+  const { data, isValidating, getMore, hasMore, isLoadingMore, mutate, filter } = useListQuery<
     PostCategory,
     GetPostListParams
   >({
@@ -130,5 +131,6 @@ export const usePostCategory = ({ key, params }: usePostListProps): usePostCateg
     createCategory,
     deletePostCategory,
     updateCategory,
+    filter,
   }
 }

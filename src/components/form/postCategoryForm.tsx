@@ -11,7 +11,7 @@ import { InputField, SelectField } from '../inputs'
 
 interface PostCategoryFormProps {
   onSubmit?: (params: CreatePostCategory) => void
-  categoryOptions?: OptionType<number>[]
+  categoryOptions?: OptionType<string>[]
 }
 
 export const PostCategoryForm = ({ onSubmit, categoryOptions }: PostCategoryFormProps) => {
@@ -26,13 +26,12 @@ export const PostCategoryForm = ({ onSubmit, categoryOptions }: PostCategoryForm
     mode: 'all',
   })
 
-  const onSubmitHandler = (data: CreatePostCategory) => {
-    console.log({ data })
-
+  const onSubmitHandler = (data: any) => {
     onSubmit &&
       onSubmit({
         ...data,
         slug: convertViToEn(data.slug.trim().toLowerCase()).replace(/\s+/g, '-'),
+        parent_id: data?.parent_id?.value || undefined,
       })
   }
 
@@ -64,7 +63,7 @@ export const PostCategoryForm = ({ onSubmit, categoryOptions }: PostCategoryForm
         <div className="mb-12">
           <SelectField
             defaultValue={categoryOptions?.find(
-              (item: any) => item.value === currentPostCategory?._id
+              (item: any) => item.value === currentPostCategory?.id
             )}
             control={control}
             name="parent_id"
