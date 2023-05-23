@@ -14,5 +14,6 @@ export * from './comment'
 export * from './store'
 export * from './promotion'
 export * from './rating'
+export * from './upload'
 
 

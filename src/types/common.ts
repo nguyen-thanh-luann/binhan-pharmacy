@@ -75,3 +75,10 @@ export interface AddressPickerRes {
   district: OptionType<number>
   ward: OptionType<number>
 }
+
+export interface uploadImageRes {
+  id: string
+  thumbnail_url: string
+  url: string
+  type: string
+}

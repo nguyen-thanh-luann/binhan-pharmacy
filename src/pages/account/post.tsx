@@ -1,11 +1,34 @@
 import { PlusIcon } from '@/assets'
-import { Breadcrumb, Button, SignupPostAdminForm } from '@/components'
-import { WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
-import { useChatAccount } from '@/hooks'
+import {
+  Breadcrumb,
+  Button,
+  NotFound,
+  PostAdminItem,
+  SignupPostAdminForm,
+  Spinner,
+} from '@/components'
+import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
+import { isArrayHasValue } from '@/helper'
+import { useChatAccount, usePostList } from '@/hooks'
 import { AccountContainer, Main } from '@/templates'
+import InfiniteScroll from 'react-infinite-scroll-component'
+import { useRouter } from 'next/router'
 
 const PostPage = () => {
+  const router = useRouter()
   const { data: chatToken } = useChatAccount()
+
+  const {
+    data: postList,
+    isValidating,
+    getMore,
+    hasMore,
+  } = usePostList({
+    key: `${SWR_KEY.get_post_list}`,
+    params: {
+      limit: DEFAULT_LIMIT,
+    },
+  })
 
   return (
     <Main title={WEB_TITTLE} description={WEB_DESCRIPTION}>
@@ -30,13 +53,40 @@ const PostPage = () => {
               className="py-8 px-20 active:opacity-50 duration-200 border border-primary"
               textClassName="text-primary"
               icon={<PlusIcon className="text-primary" />}
-              // onClick={()}
+              onClick={() => {
+                router.push('/account/add-post')
+              }}
             />
           </div>
 
           {chatToken ? (
             <div>
-              <p>content here</p>
+              {isValidating || isArrayHasValue(postList) ? (
+                <div>
+                  <InfiniteScroll
+                    dataLength={postList?.length || 0}
+                    next={() => getMore()}
+                    hasMore={hasMore}
+                    loader={hasMore ? <Spinner /> : null}
+                  >
+                    <div>
+                      {isValidating ? (
+                        <div>
+                          <Spinner />
+                        </div>
+                      ) : (
+                        <div>
+                          {postList?.map((post) => (
+                            <PostAdminItem post={post} key={post.id} />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </InfiniteScroll>
+                </div>
+              ) : (
+                <NotFound notify="Không tìm thấy danh mục nào!" />
+              )}
             </div>
           ) : (
             <SignupPostAdminForm className="md:w-[60%] mx-auto" />

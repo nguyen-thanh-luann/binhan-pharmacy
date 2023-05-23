@@ -29,6 +29,13 @@ export const accountNavData = [
     access_rules: PublicAccessRule,
   },
   {
+    path: '/account/add-post',
+    icon: <NotebookIconOutlinePlus className={accountIconStyle} />,
+    title: 'Thêm tin tức',
+    // access_rules: AdminAccessRule,
+    access_rules: PublicAccessRule,
+  },
+  {
     path: '/account/post-category',
     icon: <NotebookIconOutline className={accountIconStyle} />,
     title: 'Danh mục tin tức',

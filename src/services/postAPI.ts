@@ -5,18 +5,17 @@ import {
   GetPostDetailParams,
   GetPostListParams,
   HTTPListResV2,
-  ListRes,
   Post,
   PostCategory,
   PostDetail,
   UpdateCategory,
-  UpdatePost,
+  UpdatePost
 } from '@/types'
 import { AxiosPromise } from 'axios'
 import axiosClient from '.'
 
 const postAPI = {
-  getPostList: (params: GetPostListParams): AxiosPromise<ListRes<Post[]>> => {
+  getPostList: (params: GetPostListParams): Promise<HTTPListResV2<Post[]>> => {
     return axiosClient.get(`/chatDMS/api/post`, { params })
   },
 
@@ -44,16 +43,16 @@ const postAPI = {
   },
 
   createPost: (params: CreatePost) => {
-    return axiosClient.post(`/chatDMS/post`, params)
+    return axiosClient.post(`/chatDMS/api/post`, params)
   },
 
   deletePost: (id: string) => {
-    return axiosClient.delete(`/chatDMS/post/${id}`)
+    return axiosClient.delete(`/chatDMS/api/post/${id}`)
   },
 
   updatePost: (params: UpdatePost) => {
     const { id, ...req } = params
-    return axiosClient.patch(`/chatDMS/post/${id}`, req)
+    return axiosClient.patch(`/chatDMS/api/post/${id}`, req)
   },
 }
 

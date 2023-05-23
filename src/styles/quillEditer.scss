@@ -1,0 +1,17 @@
+.quill {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  .ql-editor {
+    min-height: 500px;
+    outline: none;
+  }
+
+  .ql-toolbar {
+    position: sticky !important;
+    top: 0;
+    background-color: white;
+    z-index: 10;
+  }
+}

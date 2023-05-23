@@ -35,7 +35,7 @@ export const HomePosts = ({ className }: HomePostsProps) => {
 
   return (
     <div className={twMerge(classNames(`mb-24`, className))}>
-      {isArrayHasValue(postList?.data) ? (
+      {isArrayHasValue(postList) ? (
         <HomeSlide
           title="Sống khỏe mỗi ngày"
           icon={<NotebookIconOutline className="text-primary w-[34px] h-[34px]" />}
@@ -67,7 +67,7 @@ export const HomePosts = ({ className }: HomePostsProps) => {
             }}
           >
             <div>
-              {postList?.data.map((post: Post) => (
+              {postList?.map((post: Post) => (
                 <SwiperSlide key={post.id}>
                   <PostItem data={post} />
                 </SwiperSlide>

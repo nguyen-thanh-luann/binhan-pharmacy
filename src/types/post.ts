@@ -30,7 +30,7 @@ export interface Post {
   thumbnail: PostImage
   content: string
   short_content: string
-  tags: []
+  tags: []  
   category_id: string
   category_name: string
   created_at: Date

@@ -50,6 +50,7 @@
     "react-linkify": "^1.0.0-alpha",
     "react-otp-input": "^3.0.0",
     "react-paginate": "^8.1.4",
+    "react-quill": "^2.0.0",
     "react-redux": "^8.0.5",
     "react-responsive": "^9.0.2",
     "react-select": "^5.7.2",
