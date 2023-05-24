@@ -1,4 +1,4 @@
-import { TrashIconOutline } from '@/assets'
+import { TrashIconOutline, empty } from '@/assets'
 import { API_URL } from '@/constants'
 import {
   changeProductUomTypeToReactSelectType,
@@ -21,7 +21,7 @@ import { useState } from 'react'
 import Select from 'react-select'
 import { twMerge } from 'tailwind-merge'
 import { Image } from '../image'
-import { InputCheckbox, InputQuantity } from '../inputs'
+import { InputCheckbox, InputQuantity, InputQuantityV2 } from '../inputs'
 import { ModalConfirm } from '../modal'
 import { Spinner } from '../spinner'
 import { CartProductVariants } from './cartProductVariants'
@@ -71,6 +71,7 @@ export const CartProduct = ({
     updateProductHandler({
       fetcher: cartAPI.deleteCartProduct({
         cart_product_ids: [data.shopping_cart_product_id],
+        category_type: 'category_minor'
       }),
       onSuccess: () => onDelete?.(data),
       config: { method: 'GET', showErrorMsg: true, showBackdrop: true },
@@ -133,6 +134,8 @@ export const CartProduct = ({
     })
   }
 
+  const hasImage =
+    data?.product_id.representation_image.image_url || data?.combo_id?.attachment_cloud_id?.url
   // console.log({ data })
 
   return (
@@ -157,11 +160,15 @@ export const CartProduct = ({
               alt=""
               className="w-60 h-60"
               imageClassName="w-60 h-60 object-cover"
-              src={`${API_URL}${
-                isProduct
-                  ? data?.product_id.representation_image.image_url || ''
-                  : data?.combo_id?.attachment_cloud_id?.url || ''
-              }`}
+              src={
+                hasImage
+                  ? `${API_URL}${
+                      isProduct
+                        ? data?.product_id.representation_image.image_url || ''
+                        : data?.combo_id?.attachment_cloud_id?.url || ''
+                    }`
+                  : empty
+              }
             />
           </div>
 
@@ -239,7 +246,7 @@ export const CartProduct = ({
 
         {/* quantity */}
         <div className="w-[115px] text-start hidden md:block">
-          <InputQuantity
+          <InputQuantityV2
             minusIconClassName="text-md text-white"
             plusIconClassName="text-base text-white"
             inputClassName={`text-base text-text-color text-center outline-none`}

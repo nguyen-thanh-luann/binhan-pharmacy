@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { SWR_KEY } from '@/constants'
+import { LIMIT_PRODUCT_IN_CATEGORY, SWR_KEY } from '@/constants'
 import { getProductsCheckedInCart } from '@/helper'
 import { useAsync } from '@/hooks'
 import { cartAPI } from '@/services'
@@ -60,7 +60,8 @@ export const useCarts = () => {
       const res = await cartAPI.getShoppingCart({
         limit: LIMIT_COMPANY,
         limit_category: LIMIT_CATEGORY,
-        limit_product: LIMIT_PRODUCT,
+        limit_product: LIMIT_PRODUCT_IN_CATEGORY,
+        category_type: 'category_minor',
         ...params,
       })
 
@@ -434,6 +435,7 @@ export const useCarts = () => {
     asyncHandler({
       fetcher: cartAPI.deleteCartProduct({
         cart_product_ids: productsChecked.map((item) => item.shopping_cart_product_id),
+        category_type: 'category_minor'
       }),
       onSuccess: () => {
         deleteCartItemHandler((product) => product.is_check)

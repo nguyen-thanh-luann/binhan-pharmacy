@@ -68,6 +68,7 @@ export const useCreateOrderDone = () => {
       cartAPI
         .deleteCartProduct({
           cart_product_ids: products.map((item) => item.shopping_cart_product_id),
+          category_type: 'category_minor'
         })
         .then(() => mutate(SWR_KEY.cart_count))
         .catch((err) => console.log(err))

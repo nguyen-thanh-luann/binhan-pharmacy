@@ -19,6 +19,7 @@ export const RESEND_OTP_TIMEOUT = 60
 export const LIMIT_CART_CATEGORY = 4
 export const LIMIT_CART_COMPANY = 4
 export const LIMIT_ATTACHMENT = 5
+export const LIMIT_PRODUCT_IN_CATEGORY = 30
 
 export const CHAT_POPOVER_HEIGHT = 700
 export const HEADER_HEIGHT = 90

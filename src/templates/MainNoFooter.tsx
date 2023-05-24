@@ -31,7 +31,7 @@ export const MainNoFooter = ({ children, ...attributes }: IMainProps) => {
         }}
       />
 
-      <div className="mb-bottom_nav_height md:mb-12">{children}</div>
+      <div className="mb-bottom_nav_height md:mb-0">{children}</div>
 
       <BottomNavigation />
     </div>

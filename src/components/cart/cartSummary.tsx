@@ -76,16 +76,6 @@ export const CartSummary = ({ className }: CartSummaryProps) => {
         </p>
       </div>
 
-      {/* <div className="flex-between p-16 border-b border-gray-200">
-        <p className="text-text-color text-base font-medium leading-9">{`CK đơn nhóm thường dùng`}</p>
-        <p className="text-text-color text-base font-medium leading-9">{formatMoneyVND(0)}</p>
-      </div>
-
-      <div className="flex-between p-16 border-b border-gray-200">
-        <p className="text-text-color text-base font-medium leading-9">{`Ck đơn nhóm tư vấn`}</p>
-        <p className="text-text-color text-base font-medium leading-9">{formatMoneyVND(0)}</p>
-      </div> */}
-
       <div className="flex-between p-16 border-b border-gray-200">
         <p className="text-text-color text-base font-medium leading-9">{`Khuyến mãi`}</p>
         {isValidating ? (

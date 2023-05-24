@@ -61,36 +61,37 @@ export const OrderSummary = ({ className }: CartSummaryProps) => {
       )}
     >
       <div className="flex-between p-16 border-b border-gray-200">
-        <p className="text-text-color text-lg font-semibold leading-9">{`Đơn hàng tạm tính`}</p>
-        <p className="text-text-color text-lg font-semibold leading-9">
+        <p className="text-text-color text-lg font-bold leading-9">{`Đơn hàng tạm tính`}</p>
+        <p className="text-text-color text-lg font-bold leading-9">
           {formatMoneyVND(amountSubtotal)}
         </p>
       </div>
 
-      {/* <div className="flex-between p-16 border-b border-gray-200">
-        <p className="text-text-color text-base font-medium leading-9">{`CK đơn nhóm thường dùng`}</p>
-        <p className="text-text-color text-base font-medium leading-9">{formatMoneyVND(0)}</p>
-      </div>
+      {data?.sale_orders?.map((saleOrder) =>
+        saleOrder?.category_minor_promotion?.map((promotion) => (
+          <div key={promotion?.category_id} className="flex-between p-16 border-b border-gray-200">
+            <p className="text-text-color text-base font-semibold leading-9">{`${promotion?.category_name} (-${promotion?.percent}%)`}</p>
+            <p className="text-text-color text-base font-semibold leading-9">{`-${formatMoneyVND(
+              promotion?.promotion_total
+            )}`}</p>
+          </div>
+        ))
+      )}
 
       <div className="flex-between p-16 border-b border-gray-200">
-        <p className="text-text-color text-base font-medium leading-9">{`Ck đơn nhóm tư vấn`}</p>
-        <p className="text-text-color text-base font-medium leading-9">{formatMoneyVND(0)}</p>
-      </div> */}
-
-      <div className="flex-between p-16 border-b border-gray-200">
-        <p className="text-text-color text-base font-medium leading-9">{`Khuyến mãi`}</p>
+        <p className="text-text-color text-base font-semibold leading-9">{`Khuyến mãi`}</p>
         {isValidating ? (
           <Spinner />
         ) : (
-          <p className="text-text-color text-lg font-semibold leading-9">
+          <p className="text-text-color text-base font-semibold leading-9">
             {formatMoneyVND(totalPromotion)}
           </p>
         )}
       </div>
 
       <div className="flex-between p-16">
-        <p className="text-text-color text-lg font-semibold leading-9">{`Thanh toán`}</p>
-        <p className="text-primary text-lg font-semibold leading-9">
+        <p className="text-text-color text-lg font-bold leading-9">{`Thanh toán`}</p>
+        <p className="text-primary text-lg font-bold leading-9">
           {formatMoneyVND(amountTotal)}
         </p>
       </div>

@@ -41,6 +41,8 @@ export const useApplyPromotionToCart = () => {
   }
 
   const applyPromotionsToCart = async (params: Omit<MutateCartSummary, 'cart'>) => {
+
+    
     const { customer_id, ...rest } = params
     const cart = getCartData()
     if (!customer_id || !cart?.result?.length) return
@@ -49,6 +51,8 @@ export const useApplyPromotionToCart = () => {
       cart,
       customer_id,
     })
+
+    
     if (!promoCanApplyParams) {
       mutate(SWR_KEY.cartSummary)
       return
@@ -64,23 +68,34 @@ export const useApplyPromotionToCart = () => {
       const response = await promotionsApplyToCartFetcher(promoCanApplyParams)
       if (!response) return
 
+
       // Phải lấy lại dữ liệu của cart mới nhất vì trên nó là 1 Promise (nếu vẫn lấy data ở trên kia thì dữ liệu sẽ không được đúng nữa)
       const cart = getCartData()
       if (!cart?.result?.length) return
 
+      console.log({ cart });
+      console.log({response});
+      
+      
       const [productResult, categoryResult, companyResult] = response
+    
       const cartResult = getCartResultAfterAppendPromotions({
         cart,
         productResult: productResult as GetPromotionApplyOnProduct[],
         categoryResult: categoryResult as GetPromotionApplyOnCategory[],
         companyResult: companyResult as GetPromotionApplyOnCompany[],
       })
+      console.log({cartResult});
+      
       if (cartResult) {
         mutate(SWR_KEY.cart_list, cartResult, false)
         mutate(SWR_KEY.cartSummary)
       }
     } catch (error) {
       const cart = getCartData()
+
+      console.log({cart});
+      
       if (cart?.result?.length) {
         mutate(SWR_KEY.cart_list, resetPromotionsLoadingInCart(cart), false)
       }

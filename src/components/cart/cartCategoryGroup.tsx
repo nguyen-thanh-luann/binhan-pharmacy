@@ -8,6 +8,9 @@ import classNames from 'classnames'
 import { twMerge } from 'tailwind-merge'
 import { CartCategoryPromotion } from './cartCategoryPromotion'
 import { CartProduct } from './cartProduct'
+import { Button } from '../button'
+import { useCartCategoryList } from '@/hooks'
+import { Spinner } from '../spinner'
 
 interface CartCategoryGroupProps {
   data: CartCategory
@@ -30,6 +33,8 @@ export const CartCategoryGroup = ({
   onToggleCheckProduct,
   onUpdateProduct,
 }: CartCategoryGroupProps) => {
+  const { getMoreProductsInCategory, categoryLoadingId } = useCartCategoryList()
+
   return (
     <div className={twMerge(classNames('bg-white rounded-[10px] shadow-shadow-1', className))}>
       {data?.has_promotion ? (
@@ -72,6 +77,28 @@ export const CartCategoryGroup = ({
             }
           />
         ))}
+
+        {categoryLoadingId === data.cart_category_id ? (
+          <div className='flex-center my-12'>
+            <Spinner />
+          </div>
+        ) : data.shopping_cart_product?.length < data?.paginate?.total ? (
+          <div className="flex-center">
+            <Button
+              onClick={() =>
+                !data?.is_promotion_category_loading &&
+                getMoreProductsInCategory({
+                  category: data,
+                  categoryIndex,
+                  companyIndex,
+                })
+              }
+              title="Xem thêm"
+              className="border border-primary rounded-lg px-8"
+              textClassName="text-primary"
+            />
+          </div>
+        ) : null}
       </div>
 
       {/* group promotion */}

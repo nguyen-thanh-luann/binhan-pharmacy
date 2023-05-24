@@ -1,3 +1,4 @@
+import { URLRes } from './common'
 import { QueryList } from './http'
 import { PromotionOrderRes } from './promotion'
 import { UserGenderType } from './user'
@@ -70,6 +71,15 @@ export interface OrderDraftRes {
   discount: PromotionOrderRes[]
   promotion_total: number
   amount_subtotal: number
+  category_minor_promotion: OrderDraftCategoryMinorPromotion[]
+}
+
+export interface OrderDraftCategoryMinorPromotion {
+  category_id: number
+  category_name: string
+  category_icon: URLRes
+  percent: number
+  promotion_total: number
 }
 
 export interface DraftOrderLine {

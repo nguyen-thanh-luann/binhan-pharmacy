@@ -15,6 +15,7 @@ import {
 export interface GetShoppingCartReq extends QueryList {
   limit_category?: number
   limit_product?: number
+  category_type?: 'category_major' | 'category_minor'
 }
 
 export interface GetCartLengthRes {
@@ -32,6 +33,7 @@ export interface DeleteCartProductParams {
 //use in api's params
 export interface DeleteCartProductReq {
   cart_product_ids: number[] | number
+  category_type?: 'category_major' | 'category_minor'
 }
 
 export interface AddToCartReq {
@@ -73,6 +75,7 @@ export interface CheckProductsInCartReq {
   shopping_cart_ids?: number[]
   cart_category_ids?: number[]
   is_check: boolean
+  category_type?: 'category_major' | 'category_major'
 }
 
 export interface DeleteCartProductsReq {

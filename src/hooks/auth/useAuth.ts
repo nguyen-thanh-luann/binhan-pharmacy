@@ -135,7 +135,7 @@ export const useAuth = () => {
     token: _token,
   }: GenerateChatTokenParams) => {
     if (!_token) return
-    console.log('generateChatToken req: ', _token)
+    // console.log('generateChatToken req: ', _token)
 
     try {
       const res: any = await userAPI.generateChatToken({

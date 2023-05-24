@@ -75,11 +75,7 @@ const cartAPI = {
   getCartProductsInCategory: (
     params: GetCartProductsInCategoryReq
   ): Promise<HTTPResponseV2<CartProduct[]>> => {
-    return axiosClient.get(
-      `/shopping_cart_controller/list_product_in_category${
-        params?.cart_category_id ? `&cart_category_id=${params?.cart_category_id}` : ''
-      }`
-    )
+    return axiosClient.get(`/shopping_cart_controller/list_product_in_category_minor`, { params })
   },
 
   updateCartItem: (params: UpdateCartItemReq): Promise<HTTPResponseV2<CartProduct>> => {

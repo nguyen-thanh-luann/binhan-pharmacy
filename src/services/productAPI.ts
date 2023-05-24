@@ -87,6 +87,17 @@ const productAPI = {
           : ``
       }`
     )
+
+    // return axiosClient.get(`/category_controller/list_product_by_attribute_minor`, {
+    //   params: {
+    //     limit,
+    //     offset,
+    //     attribute_value_ids: params?.attribute_value_ids
+    //       ? `[${params?.attribute_value_ids?.join(', ')}]`
+    //       : undefined,
+    //     ...params,
+    //   },
+    // })
   },
 
   getProductsByCategoryMinor: ({

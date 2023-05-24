@@ -5,6 +5,7 @@ import { twMerge } from 'tailwind-merge'
 import { Image } from '../image'
 import { API_URL } from '@/constants'
 import { formatMoneyVND } from '@/helper'
+import { empty } from '@/assets'
 
 interface OrderLineProductItemProps {
   data: DraftOrderLine
@@ -12,6 +13,7 @@ interface OrderLineProductItemProps {
 }
 
 export const OrderLineProductItem = ({ data, className }: OrderLineProductItemProps) => {
+ 
   return (
     <div
       className={twMerge(
@@ -22,7 +24,7 @@ export const OrderLineProductItem = ({ data, className }: OrderLineProductItemPr
         <Image
           className="w-60 h-60"
           imageClassName="w-60 h-60 object-cover"
-          src={`${API_URL}${data?.image || ''}`}
+          src={data?.image ? `${API_URL}${data?.image || ''}`: empty}
         />
       </div>
 

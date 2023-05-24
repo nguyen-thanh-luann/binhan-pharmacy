@@ -49,26 +49,39 @@ export const OrderSummaryMobileDetail = ({ onClose }: ICartSummaryMobileDetail) 
           </div>
         </div>
 
-        {/* subtotal */}
-        <div className="flex items-center justify-between mb-12 title-md">
-          <p className="text-base text-text-color font-semibold">{`Tạm tính`}</p>
-          <p className="text-base text-text-color font-semibold">
-            {formatMoneyVND(amountSubtotal)}
-          </p>
-        </div>
+        <div className="max-h-[40vh] overflow-scroll">
+          {/* subtotal */}
+          <div className="flex items-center justify-between mb-12 title-md">
+            <p className="text-base text-text-color font-semibold">{`Tạm tính`}</p>
+            <p className="text-base text-text-color font-semibold">
+              {formatMoneyVND(amountSubtotal)}
+            </p>
+          </div>
 
-        {/* total promotion */}
-        <div className="flex items-center justify-between mb-12 title-md">
-          <p className="text-base text-text-color font-semibold">{`Khuyến mãi`}</p>
-          <p className="text-base text-text-color font-semibold">
-            {formatMoneyVND(totalPromotion)}
-          </p>
-        </div>
+          {data?.sale_orders?.map((saleOrder) =>
+            saleOrder?.category_minor_promotion?.map((promotion) => (
+              <div key={promotion?.category_id} className="flex-between mb-12 title-md">
+                <p className="text-text-color text-base font-semibold leading-9">{`${promotion?.category_name} (-${promotion?.percent}%)`}</p>
+                <p className="text-text-color text-base font-semibold leading-9">{`-${formatMoneyVND(
+                  promotion?.promotion_total
+                )}`}</p>
+              </div>
+            ))
+          )}
 
-        {/* total */}
-        <div className="flex items-center justify-between mb-12 title-md">
-          <p className="text-base text-text-color font-semibold">{`Tổng`}</p>
-          <p className="text-base text-text-color font-semibold">{formatMoneyVND(amountTotal)}</p>
+          {/* total promotion */}
+          <div className="flex items-center justify-between mb-12 title-md">
+            <p className="text-base text-text-color font-semibold">{`Khuyến mãi`}</p>
+            <p className="text-base text-text-color font-semibold">
+              {formatMoneyVND(totalPromotion)}
+            </p>
+          </div>
+
+          {/* total */}
+          <div className="flex items-center justify-between mb-12 title-md">
+            <p className="text-base text-text-color font-semibold">{`Tổng`}</p>
+            <p className="text-base text-text-color font-semibold">{formatMoneyVND(amountTotal)}</p>
+          </div>
         </div>
       </div>
     </div>
