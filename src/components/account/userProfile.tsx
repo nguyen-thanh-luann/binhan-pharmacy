@@ -45,7 +45,6 @@ export const UserProfile = ({ data, className }: UserProfileProps) => {
 
   const handleChangeAvatar = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e?.target?.files) return
-
     getBase64Images(e.target.files, (images) => {
       if (!images?.[0]) return
 

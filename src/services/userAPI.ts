@@ -1,3 +1,4 @@
+import { DEFAULT_LIMIT } from '@/constants'
 import type {
   AddressAdd,
   AddressDelete,
@@ -13,11 +14,10 @@ import type {
   ShippingAddressV2,
   StateId,
   UpdateUserParams,
-  UserAccount,
+  UserAccount
 } from '@/types'
 import { LoginFormParams } from '@/types'
 import axiosClient, { axiosInstance } from '.'
-import { DEFAULT_LIMIT } from '@/constants'
 
 const userAPI = {
   login: (data: LoginFormParams) => {
@@ -48,7 +48,11 @@ const userAPI = {
     return axiosClient.post('/logout', {})
   },
 
-  getUserInfo: () => {    
+  refreshToken: () => {
+    return axiosClient.post('/refresh-token')
+  },
+
+  getUserInfo: () => {
     return axiosClient.get('/user_information_controller/get_account_information')
   },
 
@@ -90,7 +94,6 @@ const userAPI = {
   generateChatToken: (params: GenerateChatTokenParams) => {
     return axiosClient.post(`/chatDMS/generate-token`, { params })
   },
-
 
   getDetailUser: () => {
     return axiosClient.post('/api/v2.0/information_customers/get_info_customer', { params: {} })

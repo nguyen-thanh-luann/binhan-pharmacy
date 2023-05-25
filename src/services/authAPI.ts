@@ -7,7 +7,6 @@ import type {
   LoginRes,
   ResetPasswordParams,
   SingupNewChatAccountParams,
-  TokenReq,
   TokenRes
 } from '@/types'
 import { AxiosPromise } from 'axios'
@@ -29,9 +28,11 @@ const authAPI = {
     return axiosClient.get('/user_information_controller/logout_guest_account')
   },
 
-  refreshToken: (params: TokenReq): AxiosPromise<HTTPResponse<TokenRes>> => {
+  refreshToken: (refresh_token: string): AxiosPromise<HTTPResponse<TokenRes>> => {
+    console.log({ refresh_token })
+
     return axiosInstance.get(
-      `/user_information_controller/refresh_token?refresh_token=${params?.refresh_token}`
+      `/user_information_controller/refresh_token?refresh_token=${refresh_token}`
     )
   },
 

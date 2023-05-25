@@ -38,14 +38,14 @@ export const IntroPopUp = ({ className }: PopUpProps) => {
               <Button
                 title="Tôi Đồng Ý"
                 onClick={handleClose}
-                className="bg-primary rounded-full border border-primary px-12 hover:bg-white group"
+                className="bg-primary rounded-full border border-primary px-12 py-6 hover:bg-white group"
                 textClassName="text-white text-md group-hover:text-primary"
               />
 
               <Button
                 title="Tôi Không Đồng Ý"
                 onClick={openModal}
-                className="bg-orange rounded-full opacity-50 hover:opacity-100 px-12"
+                className="bg-orange rounded-full opacity-50 hover:opacity-100 px-12 py-6"
                 textClassName="text-white text-md"
               />
             </div>

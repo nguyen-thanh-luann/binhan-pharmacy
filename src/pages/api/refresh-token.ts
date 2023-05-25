@@ -1,52 +1,65 @@
-import { HTTPResponse, TokenRes } from '@/types'
+import { authAPI } from '@/services'
 import Cookies from 'cookies'
-import httpProxy, { ProxyResCallback } from 'http-proxy'
+import httpProxy from 'http-proxy'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: true,
   },
 }
 
 const proxy = httpProxy.createProxyServer()
 
-export default function handler(req: NextApiRequest, res: NextApiResponse<HTTPResponse<any>>) {
-  const cookies = new Cookies(req, res, { secure: process.env.NODE_ENV !== 'development' })
-
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
   return new Promise(async (resolve) => {
-    const refreshTokenHandler: ProxyResCallback = (proxyRes, _, res) => {
-      let body = ''
+    const cookies = new Cookies(req, res, { secure: process.env.NODE_ENV !== 'development' })
 
-      proxyRes.on('data', (chunk) => {
-        body += chunk
-      })
-      proxyRes.on('end', () => {
-        try {
-          const data: HTTPResponse<TokenRes> = JSON.parse(body)
-          const tokenRes = data?.result?.data
-          console.log('data: ', data)
-          console.log('token res: ', tokenRes)
+    const refresh_token_req =
+      cookies.get('refresh_token') || cookies.get('guest_refresh_token') || ''
 
-          if (data?.result?.success) {
-            cookies.set('token', tokenRes?.token)
-            cookies.set('refresh_token', tokenRes?.refresh_token)
-          }
-          ;(res as NextApiResponse).status(200).send(data)
-        } catch (error) {
-          ;(res as NextApiResponse).status(500).send({
-            message: 'something went wrong',
+    console.log({refresh_token_req});
+    
+    try {
+      const response: any = await authAPI.refreshToken(refresh_token_req)
+
+      if (!response?.success) {
+        return res.status(400).json({
+          result: {
+            message: response?.message || 'Refresh token fail',
             success: false,
-            response: {},
-            status: 500,
-          })
-        }
+            code: 400,
+            data: response?.data || undefined,
+          },
+        })
+      }
 
-        resolve(true)
+      const { token, refresh_token } = response?.data
+
+      cookies.set('token', token, {
+        httpOnly: true,
+        sameSite: 'lax',
       })
-    }
 
-    proxy.once('proxyRes', refreshTokenHandler)
+      cookies.set('refresh_token', refresh_token, {
+        httpOnly: true,
+        sameSite: 'lax',
+      })
+
+      res.status(response?.code || 200).json({
+        result: {
+          message: 'Refresh token success',
+          success: true,
+          code: 200,
+          data: response?.data,
+        },
+      })
+    } catch (err) {
+      res.status(500).send(err || 'Internal Server Error.')
+    }
+    proxy.once('proxyRes', () => {
+      resolve(true)
+    })
 
     proxy.web(req, res, {
       target: process.env.NEXT_PUBLIC_API_URL,

@@ -22,7 +22,7 @@
     span,
     li,
     div {
-      @apply select-text break-all;
+      @apply select-text break-words;
 
     }
   }

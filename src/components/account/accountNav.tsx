@@ -61,9 +61,9 @@ export const AccountNav = ({ className }: AccountNavProps) => {
 
       <div
         onClick={openModal}
-        className={`flex p-10 cursor-pointer rounded-[10px] border border-white hover:border-red group`}
+        className={`flex items-center p-10 cursor-pointer rounded-[10px] border border-white hover:border-red group`}
       >
-        <div className="w-24 h-24 text-text-color flex-center text-lg group-hover:text-red">
+        <div className="w-20 h-20 text-text-color flex-center text-lg group-hover:text-red">
           <LogoutIconOutline className={accountIconStyle} />
         </div>
         <p className="ml-4 text-md text-text-color group-hover:text-red">Đăng xuất</p>

@@ -21,6 +21,7 @@ const ProfilePage = () => {
 
       <AccountContainer className="container mb-32">
         <div className="bg-white p-24 rounded-[10px] shadow-shadow-1">
+          
           <p className="text-xl capitalize font-semibold border-b border-gray-200 pb-12 mb-24">
             Hồ sơ cá nhân
           </p>

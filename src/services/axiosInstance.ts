@@ -1,8 +1,7 @@
 import { setBackdropVisible, store } from '@/store'
-import { TokenReq } from '@/types'
 import axios from 'axios'
 import mem from 'mem'
-import { authAPI } from './authAPI'
+import { userAPI } from './userAPI'
 
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -25,10 +24,15 @@ try {
   axiosInstance.interceptors.response.use(
     async (response) => {
       if (response?.data) {
-        if (response?.data?.code === 401 || response?.data?.code === 403) {
-          await memoizedRefreshToken()
+        const code = response?.data?.code || response?.data?.result?.code
+
+        if (code === 401 || code === 403) {
+          const res = await memoizedRefreshToken()
+          if (res) {
+            axiosInstance(response.config)
+          }
+
           return
-          // return axiosInstance(response.config)
         }
         return response.data
       }
@@ -44,25 +48,14 @@ try {
 
 const refreshToken = async () => {
   try {
-    const tokenData: TokenReq = {}
-
-    const tokenRes = await authAPI.getToken()
-    const data = tokenRes?.result?.data
-    if (data?.token) {
-      ;(tokenData.token = data.token), (tokenData.refresh_token = data.refresh_token)
-    } else {
-      const guestTokenRes = await authAPI.getGuestToken()
-      const data = guestTokenRes?.result?.data
-      if (data?.token) {
-        ;(tokenData.token = data.token), (tokenData.refresh_token = data.refresh_token)
-      }
-    }
-
-    const res: any = await authAPI.refreshToken(tokenData)
+    const res: any = await userAPI.refreshToken()
     store.dispatch(setBackdropVisible(false))
-    if (!res?.success) {
+
+    if (!res?.result?.success) {
       await logoutHandler()
     }
+
+    return res?.result?.data
   } catch (error) {
     store.dispatch(setBackdropVisible(false))
     await logoutHandler()
@@ -71,8 +64,6 @@ const refreshToken = async () => {
 
 const logoutHandler = async () => {
   await axios.post(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/logout`)
-  // Router.push('/' , {})
-  // window.location.reload();
 }
 
 const memoizedRefreshToken = mem(refreshToken, {

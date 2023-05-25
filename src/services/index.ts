@@ -1,8 +1,7 @@
 import { setBackdropVisible, store } from '@/store'
-import { TokenReq } from '@/types'
 import axios from 'axios'
 import mem from 'mem'
-import { authAPI } from './authAPI'
+import { userAPI } from './userAPI'
 
 const axiosClient = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api`,
@@ -24,11 +23,16 @@ axiosClient.interceptors.request.use(
 try {
   axiosClient.interceptors.response.use(
     async (response) => {
-      // console.log('axios client res: ', response);
+      // console.log('axios client code: ', response.data)
 
       if (response?.data) {
-        if (response?.data?.code === 401 || response?.data?.code === 403) {
-          await memoizedRefreshToken()
+        const code = response?.data?.code || response?.data?.result?.code
+        if (code === 401 || code === 403) {
+          const res = await memoizedRefreshToken()
+          if (res) {
+            axiosClient(response.config)
+          }
+
           return
         }
 
@@ -46,20 +50,14 @@ try {
 
 const refreshToken = async () => {
   try {
-    const tokenRes: any = await authAPI.getToken()
-    const guestTokenRes: any = await authAPI.getGuestToken()
-
-    const tokenData: TokenReq = {
-      token: tokenRes?.result?.data?.token || guestTokenRes?.result?.data?.guest_token,
-      refresh_token:
-        tokenRes?.result?.data?.refresh_token || guestTokenRes?.result?.data?.guest_refresh_token,
-    }
-    
-    const res: any = await authAPI.refreshToken(tokenData)
+    const res: any = await userAPI.refreshToken()
     store.dispatch(setBackdropVisible(false))
-    if (!res?.success) {
+
+    if (!res?.result?.success) {
       await logoutHandler()
     }
+
+    return res?.result?.data
   } catch (error) {
     store.dispatch(setBackdropVisible(false))
     await logoutHandler()
@@ -67,6 +65,8 @@ const refreshToken = async () => {
 }
 
 const logoutHandler = async () => {
+  // console.log('call logoutHandler')
+
   await axios.post(`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/logout`)
 }
 
@@ -83,8 +83,7 @@ export * from './chatAPI'
 export * from './orderAPI'
 export * from './postAPI'
 export * from './productAPI'
+export * from './promotionAPI'
 export * from './ratingAPI'
 export * from './uploadAPI'
 export * from './userAPI'
-export * from './promotionAPI'
-

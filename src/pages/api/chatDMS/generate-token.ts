@@ -51,9 +51,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         },
       })
     } catch (error: any) {
-      console.log(error)
-
-      res.status(500).send('Internal Server Error.')
+      res.status(500).send(error || 'Error generating token')
     }
 
     proxy.once('proxyRes', () => {
