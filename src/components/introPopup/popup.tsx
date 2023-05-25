@@ -29,7 +29,7 @@ export const IntroPopUp = ({ className }: PopUpProps) => {
           visible={isOpen}
           animationType="fade"
           headerClassName="hidden"
-          modalClassName="p-20 w-[512px] max-w-[90%] h-fit rounded-[10px]"
+          modalClassName="p-20 w-[512px] max-w-[90%] h-fit max-h-[80vh] rounded-[10px]"
         >
           <div ref={modalRef} className="bg-white">
             <p className="text-md text-text-color mb-12">{POPUP_NOTIFICATION}</p>
