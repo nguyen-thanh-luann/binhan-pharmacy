@@ -1,4 +1,4 @@
-import { ProductCartIcon, error404 } from '@/assets'
+import { ProductCartIcon, empty } from '@/assets'
 import { API_URL } from '@/constants'
 import {
   calcDiscountPercent,
@@ -97,7 +97,7 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
                   src={
                     data?.representation_image?.image_url
                       ? `${API_URL}${data?.representation_image?.image_url}`
-                      : error404
+                      : empty
                   }
                   imageClassName="object-cover w-full hover:scale-110 duration-200 ease-in-out aspect-[1/1]"
                   className=""

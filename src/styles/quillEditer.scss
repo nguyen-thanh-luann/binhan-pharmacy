@@ -22,7 +22,8 @@
     span,
     li,
     div {
-      @apply select-text;
+      @apply select-text break-all;
+
     }
   }
 

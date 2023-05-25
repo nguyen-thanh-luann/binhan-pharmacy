@@ -69,7 +69,7 @@ export const HeaderSearchProduct = () => {
       />
 
       <div
-        className={`absolute shadow-shadow-1 rounded-bl-[10px] rounded-br-[10px] w-full z-40 bg-background ${
+        className={`absolute shadow-shadow-1 rounded-bl-[10px] rounded-br-[10px] w-full z-50 bg-background ${
           visible ? 'block' : 'hidden'
         }`}
       >

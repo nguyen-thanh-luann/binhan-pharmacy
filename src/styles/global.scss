@@ -41,27 +41,27 @@ body {
 }
 
 h1 {
-  @apply text-text-color font-bold text-3xl select-none;
+  @apply text-text-color font-bold text-3xl select-none break-all;
 }
 
 h2 {
-  @apply text-text-color font-semibold text-xl select-none;
+  @apply text-text-color font-semibold text-xl select-none break-all;
 }
 
 h3 {
-  @apply text-text-color font-semibold text-lg select-none;
+  @apply text-text-color font-semibold text-lg select-none break-all;
 }
 
 h4 {
-  @apply text-text-color font-semibold text-md select-none;
+  @apply text-text-color font-semibold text-md select-none break-all;
 }
 
 h5 {
-  @apply text-text-color font-semibold text-base select-none;
+  @apply text-text-color font-semibold text-base select-none break-all;
 }
 
 p,
 li,
 div {
-  @apply text-text-color text-base font-medium select-none;
+  @apply text-text-color text-base font-medium select-none break-all;
 }
