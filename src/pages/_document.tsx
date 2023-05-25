@@ -1,3 +1,4 @@
+import { ZALO_OA_ID } from '@/constants'
 import { AppConfig } from '@/utils'
 import Document, { Head, Html, Main, NextScript } from 'next/document'
 
@@ -7,11 +8,19 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang={AppConfig.locale}>
-        <Head>
-
-        </Head>
+        <Head></Head>
         <body>
+          <div
+            className="zalo-chat-widget border-none outline-none"
+            data-oaid={ZALO_OA_ID}
+            data-welcome-message="Rất vui khi được hỗ trợ bạn!"
+            data-autopopup="0"
+            data-width=""
+            data-height=""
+          />
+
           <Main />
+          <script src="https://sp.zalo.me/plugins/sdk.js"></script>
           <NextScript />
         </body>
       </Html>

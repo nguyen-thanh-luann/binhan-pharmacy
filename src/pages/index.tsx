@@ -1,6 +1,7 @@
 import {
   HomeBanner,
   HomePosts,
+  IntroPopUp,
   ListProductByAttributeMinor,
   SectionBuyMedicine,
   VisceraAttribute,
@@ -28,6 +29,7 @@ const HomePage = () => {
           <HomePosts />
         </div>
 
+        <IntroPopUp />
         {/* <ChatButton /> */}
       </div>
     </Main>
