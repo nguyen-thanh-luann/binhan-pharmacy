@@ -1,12 +1,13 @@
-import { MenuIcon, RightIcon } from '@/assets'
+import { MenuIcon, RightIcon, TrashIconOutline } from '@/assets'
 import { DEFAULT_LIMIT, SWR_KEY } from '@/constants'
-import { generateProductSlug, isArrayHasValue } from '@/helper'
+import { generateProductSlug, isArrayHasValue, isObjectHasValue } from '@/helper'
 import { usePostCategory } from '@/hooks'
 import classNames from 'classnames'
 import { useState } from 'react'
 import { Spinner } from '../spinner'
 import { PostCategory } from '@/types'
 import { useRouter } from 'next/router'
+import { Button } from '../button'
 
 interface PostCategoryMenuProps {
   className?: string
@@ -15,6 +16,7 @@ interface PostCategoryMenuProps {
 export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
   const [expandCategory, setExpandCategory] = useState<string>()
   const router = useRouter()
+  const showResetFilterBtn = isObjectHasValue(router?.query)
 
   const { data: postCategoryList, isValidating } = usePostCategory({
     key: `${SWR_KEY.get_post_category_list}`,
@@ -35,6 +37,7 @@ export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
     }
 
     router.push({
+      pathname: '/post-list',
       query: {
         post_id: generateProductSlug(cate.name, cate.id),
       },
@@ -43,7 +46,12 @@ export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
 
   return (
     <div className={classNames('bg-white', className)}>
-      <div className="p-10 flex items-center gap-12 border-b border-gray-200">
+      <div
+        onClick={() => {
+          router.push('/post-list')
+        }}
+        className="p-10 flex items-center gap-12 border-b border-gray-200 cursor-pointer"
+      >
         <MenuIcon className="text-text-color w-32 h-32" />
 
         <p className="title_lg">{`Danh mục sống khỏe`}</p>
@@ -97,6 +105,20 @@ export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
           })}
         </div>
       )}
+
+      <div>
+        {showResetFilterBtn ? (
+          <Button
+            title="Xóa bộ lọc"
+            icon={<TrashIconOutline className="text-red text-base" />}
+            className="bg-white p-8 rounded-lg w-full"
+            textClassName="text-red text-base"
+            onClick={() => {
+              router.push('/post-list')
+            }}
+          />
+        ) : null}
+      </div>
     </div>
   )
 }

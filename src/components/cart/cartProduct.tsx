@@ -71,7 +71,7 @@ export const CartProduct = ({
     updateProductHandler({
       fetcher: cartAPI.deleteCartProduct({
         cart_product_ids: [data.shopping_cart_product_id],
-        category_type: 'category_minor'
+        category_type: 'category_minor',
       }),
       onSuccess: () => onDelete?.(data),
       config: { method: 'GET', showErrorMsg: true, showBackdrop: true },
@@ -203,7 +203,7 @@ export const CartProduct = ({
               {data?.rel_uom_ids?.length > 1 ? (
                 <Select
                   isSearchable={false}
-                  className="text-base flex-center min-w-[80px] border-primary"
+                  className="text-base min-w-[80px] border-primary"
                   components={{ IndicatorSeparator: () => null }}
                   defaultValue={changeProductUomTypeToReactSelectType(data?.uom_id)}
                   options={data?.rel_uom_ids.map((productUom) =>
@@ -261,7 +261,7 @@ export const CartProduct = ({
           {data?.rel_uom_ids?.length > 1 ? (
             <Select
               isSearchable={false}
-              className="text-base flex-center min-w-[80px] border-primary"
+              className="text-base min-w-[80px] border-primary"
               components={{ IndicatorSeparator: () => null }}
               defaultValue={changeProductUomTypeToReactSelectType(data?.uom_id)}
               options={data?.rel_uom_ids.map((productUom) =>

@@ -7,9 +7,12 @@ import { useState } from 'react'
 import { CategoryItemLoading } from '../category/categoryItemLoading'
 
 export const FilterByCategory = () => {
-  const [showCategories, setShowCategories] = useState<number[]>([])
-
   const router = useRouter()
+  const [showCategories, setShowCategories] = useState<number[]>(
+    Object?.values(router?.query)?.map((id) => Number(id))
+  )
+
+  console.log(Object.values(router?.query))
 
   const { categoryList, isValidating: categoryListLoading } = useCategoryList({
     key: SWR_KEY.get_category_list,
@@ -20,6 +23,11 @@ export const FilterByCategory = () => {
     const _category_id = category_id.toString()
     const category = `category_${_category_id}`
     const categories: any = router.query?.[category]
+    if (showCategories.includes(category_id)) {
+      setShowCategories(showCategories.filter((id) => id !== category_id))
+    } else {
+      setShowCategories([...showCategories, category_id])
+    }
 
     let query = router.query
 
@@ -49,6 +57,8 @@ export const FilterByCategory = () => {
   }
 
   const hanldeShowCategories = (category_id: number) => {
+    console.log('call hanldeShowCategories')
+
     const index = showCategories?.findIndex((c) => c === category_id)
 
     if (index !== -1) {
@@ -71,6 +81,18 @@ export const FilterByCategory = () => {
     }
   }
 
+  // const checkShowCategoriesContainActiveCate = (category: Category, child?: CategoryChild) => {
+  //   if (child) {
+  //     const childIndex = category.child_ids?.findIndex(
+  //       (child) => child.category_id === child.category_id
+  //     )
+
+      
+  //   } else {
+  //     return showCategories.includes(category.category_id)
+  //   }
+  // }
+
   return (
     <div>
       {categoryListLoading ? (
@@ -84,8 +106,8 @@ export const FilterByCategory = () => {
       ) : isArrayHasValue(categoryList) ? (
         <div>
           {categoryList?.map((category) => {
-            const isShow = showCategories?.findIndex((c) => c === category?.category_id) !== -1
-            
+            const isShow = showCategories?.includes(category?.category_id)
+
             return (
               <div key={category?.category_id} className="bg-white">
                 {isArrayHasValue(category?.child_ids) ? (

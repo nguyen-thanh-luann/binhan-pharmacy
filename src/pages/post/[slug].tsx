@@ -61,7 +61,7 @@ const PostDetailPage = () => {
     getMore,
     hasMore,
   } = usePostList({
-    key: `${SWR_KEY.get_post_list}`,
+    key: `${SWR_KEY.get_post_list_related}`,
     params: {
       limit: DEFAULT_LIMIT,
     },

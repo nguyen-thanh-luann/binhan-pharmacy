@@ -12,7 +12,7 @@ import { FilterByAttributeMinor } from './filterByAttributeMinor'
 interface ProductFilterSidebarProps {
   className?: string
 }
-
+ 
 export const ProductFilterSidebar = ({ className }: ProductFilterSidebarProps) => {
   const router = useRouter()
 

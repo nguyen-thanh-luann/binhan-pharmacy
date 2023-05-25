@@ -17,6 +17,7 @@ export const SWR_KEY = {
   get_viscera_attribute: 'get_viscera_attribute',
 
   get_post_list: 'get_post_list',
+  get_post_list_related: 'get_post_list_related',
   get_post_detail: 'get_post_detail',
   get_post_category_list: 'get_post_category_list',
 
