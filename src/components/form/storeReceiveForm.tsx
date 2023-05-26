@@ -94,7 +94,6 @@ export const StoreReceiveForm = () => {
         state_id: storeSelected?.province_id?.province_id || 0,
         district_id: storeSelected?.district_id?.district_id || 0,
         ward_id: storeSelected?.ward_id?.ward_id || 0,
-        country_id: storeSelected?.country_id?.country_id || 0,
       },
     }
 
@@ -104,10 +103,6 @@ export const StoreReceiveForm = () => {
       full_adress: storeSelected?.full_address || '',
       id: orderAddress?.id || 0,
       street: storeSelected?.street || '',
-      country_id: {
-        id: storeSelected?.country_id?.country_id || 0,
-        name: storeSelected?.country_id?.country_name || '',
-      },
       district_id: {
         id: storeSelected?.district_id.district_id || 0,
         name: storeSelected?.district_id.district_name || '',
@@ -171,7 +166,6 @@ export const StoreReceiveForm = () => {
 
             <div className="mb-12">
               <SearchField
-                
                 onChangeWithDebounceValue={(val) => searchStore(val as string)}
                 className="border p-8"
                 placeholder="Nhập tên nhà thuốc"

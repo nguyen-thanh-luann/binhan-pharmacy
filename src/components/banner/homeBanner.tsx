@@ -27,7 +27,7 @@ export const HomeBanner = ({ className }: HomeBannerProps) => {
   return (
     <div className={twMerge(classNames('', className))}>
       {isValidating ? (
-        <div className="animate-pulse bg-gray-200 aspect-w-3 aspect-h-1"></div>
+        <div className="animate-pulse bg-gray-200 aspect-[2/1] md:aspect-[4/1]"></div>
       ) : isArrayHasValue(bannerList) ? (
         <Swiper
           slidesPerView={1}
@@ -52,7 +52,7 @@ export const HomeBanner = ({ className }: HomeBannerProps) => {
                     // src={`${banners?.[0]?.banner_cloud_storage_id?.url}`}
                     src={`${banner?.banner_cloud_storage_id?.url || ''}`}
                     alt="banner"
-                    imageClassName="object-cover w-full aspect-[3/1] md:aspect-[4/1]"
+                    imageClassName="object-cover w-full aspect-[2/1] md:aspect-[4/1]"
                   />
                 </div>
               </SwiperSlide>
@@ -60,7 +60,7 @@ export const HomeBanner = ({ className }: HomeBannerProps) => {
           </div>
         </Swiper>
       ) : (
-        <div className="animate-pulse bg-gray-200 aspect-w-3 aspect-h-1"></div>
+        <div className="animate-pulse bg-gray-200 aspect-[2/1] md:aspect-[4/1]"></div>
       )}
     </div>
   )

@@ -1,11 +1,11 @@
 import { SWR_KEY } from '@/constants'
-import { useAttributeMinor, useBanner } from '@/hooks'
-import React from 'react'
-import { ProductsByAttributeMinor } from './productsByAttributeMinor'
 import { isArrayHasValue } from '@/helper'
-import { twMerge } from 'tailwind-merge'
+import { useAttributeMinor, useBanner } from '@/hooks'
 import classNames from 'classnames'
+import { twMerge } from 'tailwind-merge'
 import { ProductItemLoading } from '../product'
+import { ProductsByAttributeMinor } from './productsByAttributeMinor'
+import { ProductSlideBanner } from '../banner'
 
 interface ListProductByAttributeMinorProps {
   className?: string
@@ -26,10 +26,8 @@ export const ListProductByAttributeMinor = ({ className }: ListProductByAttribut
 
   console.log({ bannerList })
 
-  console.log({ isValidating });
-  
-  // nếu 
-  
+  console.log({ isValidating })
+
   return (
     <div className={twMerge(classNames(``, className))}>
       {attributeMinorLoading ? (
@@ -39,12 +37,18 @@ export const ListProductByAttributeMinor = ({ className }: ListProductByAttribut
           ))}
         </div>
       ) : isArrayHasValue(attributeMinors) ? (
-        attributeMinors?.map((attribute) => (
-          <ProductsByAttributeMinor
-            className="mb-24"
-            key={attribute?.attribute_id}
-            atribute={attribute}
-          />
+        attributeMinors?.map((attribute, index) => (
+          <div>
+            <ProductsByAttributeMinor
+              className="mb-24"
+              key={attribute?.attribute_id}
+              atribute={attribute}
+            />
+
+            {bannerList?.[index] && (
+              <ProductSlideBanner data={bannerList?.[index]} className="hidden md:block" />
+            )}
+          </div>
         ))
       ) : null}
     </div>

@@ -31,7 +31,7 @@ export interface Address {
   ward_id: number
   district_id: number
   state_id: number
-  country_id: number
+  country_id?: number
 }
 
 export interface AddressAdd {
@@ -81,7 +81,7 @@ export interface ShippingAddressV2 {
     id: number
     name: string
   }
-  country_id: {
+  country_id?: {
     id: number
     name: string
   }
