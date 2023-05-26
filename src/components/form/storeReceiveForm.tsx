@@ -3,7 +3,7 @@ import { SWR_KEY } from '@/constants'
 import { isArrayHasValue } from '@/helper'
 import { useDrugstores, useUser, useUserAddress } from '@/hooks'
 import { storeReceiveSchema } from '@/schema'
-import { selectOrderAddress, setOrderAddress } from '@/store'
+import { setOrderAddress } from '@/store'
 import {
   AddressAdd,
   AddressPickerRes,
@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useSWRConfig } from 'swr'
 import { Button } from '../button'
 import { InputCheckbox, InputField } from '../inputs'
@@ -33,7 +33,7 @@ export const StoreReceiveForm = () => {
     key: `${SWR_KEY.get_drug_stores}`,
     params: {},
   })
-  const orderAddress = useSelector(selectOrderAddress)
+  // const orderAddress = useSelector(selectOrderAddress)
   const dispatch = useDispatch()
   const { mutate } = useSWRConfig()
   const { userInfo } = useUser({})
@@ -86,7 +86,7 @@ export const StoreReceiveForm = () => {
 
     const newAddress: AddressAdd = {
       partner_id: userInfo?.account?.partner_id || 0,
-      adress_id: orderAddress?.id || false,
+      // adress_id: orderAddress?.id || false,
       address_new: {
         name: data.name,
         phone: data.phone,
@@ -101,7 +101,7 @@ export const StoreReceiveForm = () => {
       name: data?.name,
       phone: data?.phone,
       full_adress: storeSelected?.full_address || '',
-      id: orderAddress?.id || 0,
+      id: 0,
       street: storeSelected?.street || '',
       district_id: {
         id: storeSelected?.district_id.district_id || 0,
@@ -117,9 +117,13 @@ export const StoreReceiveForm = () => {
       },
     }
 
-    addAddress({ address: newAddress, addressForm: addressRes }).then(() => {
-      dispatch(setOrderAddress(addressRes))
-      mutate(SWR_KEY.get_user_address)
+    addAddress({
+      address: newAddress,
+      addressForm: addressRes,
+      onSuccess: (data) => {
+        dispatch(setOrderAddress(data))
+        mutate(SWR_KEY.get_user_address)
+      },
     })
   }
 
