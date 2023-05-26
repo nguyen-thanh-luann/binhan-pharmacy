@@ -93,7 +93,7 @@ export const UserDeliveryAddressForm = ({
 
     const newAddress: AddressAdd = {
       partner_id: userInfo?.account?.partner_id || 0,
-      adress_id: orderAddress?.id || false,
+      // adress_id: orderAddress?.id || false,
       address_new: {
         name: data.name,
         phone: data.phone,
@@ -110,7 +110,7 @@ export const UserDeliveryAddressForm = ({
       phone: data?.phone,
       full_adress: `${data.street}, ${data.ward.label}, ${data.district.label},
                ${data.state.label}`,
-      id: orderAddress?.id || 0,
+      id: 0, // setId = 0
       street: data?.street,
       country_id: {
         id: data?.country_id,
@@ -130,10 +130,15 @@ export const UserDeliveryAddressForm = ({
       },
     }
 
-    addAddress({ address: newAddress, addressForm: addressRes }).then(() => {
-      dispatch(setOrderAddress(addressRes))
-      mutate(SWR_KEY.get_user_address)
-      onExternalSubmit?.()
+
+    addAddress({
+      address: newAddress,
+      addressForm: addressRes,
+      onSuccess: (data) => {
+        dispatch(setOrderAddress(data))
+        mutate(SWR_KEY.get_user_address)
+        onExternalSubmit?.()
+      },
     })
   }
 

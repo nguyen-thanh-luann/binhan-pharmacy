@@ -98,7 +98,6 @@ export const AddressForm = ({ onSubmit: onExternalSubmit, className }: AddressFo
       },
     }
 
-    // change....
     const addressRes: ShippingAddressV2 = {
       name: data?.name,
       phone: data?.phone,

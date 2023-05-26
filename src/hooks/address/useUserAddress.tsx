@@ -15,7 +15,7 @@ interface useAddressListProps {
 interface UseAddressListRes {
   data: ShippingAddressV2[] | undefined
   isValidating: boolean
-  addAddress: ({ address, addressForm }: AddAddressHook) => Promise<any>
+  addAddress: ({ address, addressForm, onSuccess }: AddAddressHook) => Promise<any>
   deleteAddress: (address: AddressDelete) => Promise<any>
   updateOrderAddress: (address: ShippingAddressV2) => void
 }
@@ -37,7 +37,7 @@ export const useUserAddress = ({
   const partner_id = userInfo?.account.partner_id || 0
   const dispatch = useDispatch()
 
-  const addAddress = async ({ address, addressForm }: AddAddressHook) => {
+  const addAddress = async ({ address, addressForm, onSuccess }: AddAddressHook) => {
     try {
       const res: any = await userAPI.addAddress(address)
 
@@ -53,9 +53,20 @@ export const useUserAddress = ({
               false
             )
 
+          addressForm && onSuccess?.(addressForm)
           toast.success('Chỉnh sửa địa chỉ thành công')
         } else {
-          if (addressForm) mutate([...(data || []), addressForm], false)
+          if (addressForm)
+            mutate(
+              [
+                ...(data || []),
+                { ...addressForm, id: res?.result?.data?.[0]?.partner_shipping_id },
+              ],
+              false
+            )
+          addressForm &&
+            onSuccess?.({ ...addressForm, id: res?.result?.data?.[0]?.partner_shipping_id })
+
           toast.success('Thêm địa chỉ thành công')
         }
       } else {

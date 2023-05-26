@@ -16,7 +16,7 @@ interface HomeBannerProps {
 
 export const HomeBanner = ({ className }: HomeBannerProps) => {
   const { data: bannerList, isValidating } = useBanner({
-    key: `${SWR_KEY.get_banner_list}`,
+    key: `${SWR_KEY.get_main_banner}`,
     params: {
       banner_size: '4:1'
     }

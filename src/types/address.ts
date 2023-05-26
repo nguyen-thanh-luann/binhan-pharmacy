@@ -91,6 +91,7 @@ export interface ShippingAddressV2 {
 export interface AddAddressHook {
   address: AddressAdd
   addressForm?: ShippingAddressV2
+  onSuccess?: (res: ShippingAddressV2) => void // when add address is successful => response just return new partner shipping id,
 }
 
 export interface AddressPickerI {

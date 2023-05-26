@@ -129,6 +129,8 @@ export const OrderHistoryDetail = ({ sale_order_id, className, cb: om }: OrderHi
 
   if (!order) return null
 
+  console.log({order});
+  
   return (
     <div className={twMerge(classNames(`bg-white p-24 rounded-[10px] shadow-shadow-1`, className))}>
       {isObjectHasValue(order) ? (
@@ -136,7 +138,7 @@ export const OrderHistoryDetail = ({ sale_order_id, className, cb: om }: OrderHi
           <div className="grid grid-cols-1  lg:grid-cols-3 gap-12 mb-12">
             <div className="bg-white p-16 rounded-sm">
               <p className="text-text-color font-bold text-lg mb-4">Địa chỉ người nhận</p>
-              <p className="text-text-color font-bold text-md mb-4">{order.partner_name}</p>
+              <p className="text-text-color font-bold text-md mb-4">{order.delivery_name}</p>
               <p className="text-text-color font-semibold text-md mb-4">{`Địa chỉ: ${order.delivery_address}`}</p>
               <p className="text-text-color font-semibold text-md">{`Số điện thoại: ${order.delivery_phone}`}</p>
             </div>
