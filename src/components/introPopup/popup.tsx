@@ -1,9 +1,9 @@
 import { POPUP_NOTIFICATION } from '@/constants'
-import { useModal } from '@/hooks'
 import classNames from 'classnames'
 import { useRef, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import { Button } from '../button'
-import { Modal, ModalConfirm } from '../modal'
+import { Modal } from '../modal'
 
 interface PopUpProps {
   className?: string
@@ -11,7 +11,6 @@ interface PopUpProps {
 
 export const IntroPopUp = ({ className }: PopUpProps) => {
   const [isOpen, setOpen] = useState<boolean>(() => !sessionStorage.getItem('is_open_popup'))
-  const { visible, openModal, closeModal } = useModal()
 
   const modalRef = useRef<HTMLDivElement>(null)
 
@@ -20,6 +19,10 @@ export const IntroPopUp = ({ className }: PopUpProps) => {
   const handleClose = () => {
     setOpen(false)
     sessionStorage.setItem('is_open_popup', 'true')
+  }
+
+  const hanldeDeny = () => {
+    toast.error('Bạn phải đồng ý điều khoản để sử dụng dịch vụ của chúng tôi!')
   }
 
   return (
@@ -44,7 +47,7 @@ export const IntroPopUp = ({ className }: PopUpProps) => {
 
               <Button
                 title="Tôi Không Đồng Ý"
-                onClick={openModal}
+                onClick={hanldeDeny}
                 className="bg-orange rounded-full opacity-50 hover:opacity-100 px-12 py-6"
                 textClassName="text-white text-md"
               />
@@ -52,13 +55,6 @@ export const IntroPopUp = ({ className }: PopUpProps) => {
           </div>
         </Modal>
       ) : null}
-
-      <ModalConfirm
-        visible={visible}
-        title="Bạn phải đồng ý điều khoản để sử dụng dịch vụ của chúng tôi!"
-        onConfirm={handleClose}
-        onDeny={closeModal}
-      />
     </div>
   )
 }
