@@ -38,7 +38,7 @@ export const UserDeliveryAddressForm = ({
 
   const orderAddress: ShippingAddressV2 = useSelector(selectOrderAddress)
 
-  console.log({ orderAddress })
+  // console.log({ orderAddress })
 
   const { userInfo } = useUser({})
   const dispatch = useDispatch()
@@ -51,7 +51,7 @@ export const UserDeliveryAddressForm = ({
 
     setValue('name', orderAddress?.name)
     setValue('phone', orderAddress?.phone)
-    setValue('street', orderAddress?.street)
+    setValue('street', orderAddress?.street || '')
     setValue('state', {
       label: orderAddress?.state_id?.name,
       value: orderAddress?.state_id?.id,
@@ -137,8 +137,7 @@ export const UserDeliveryAddressForm = ({
     })
   }
 
-  const defaultStreet = orderAddress?.street ? orderAddress?.street : 'Địa chỉ chi tiết'
-  console.log({ defaultStreet })
+  const defaultStreet = orderAddress?.street || 'Địa chỉ chi tiết'
 
   return (
     <form className={twMerge(classNames(``, className))} onSubmit={handleSubmit(handleAddAddress)}>

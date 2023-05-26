@@ -19,7 +19,7 @@ export const useAuth = () => {
   const { mutate: swrConfigMutate } = useSWRConfig()
   const dispatch = useDispatch()
 
-  const socket = useSelector((state: RootState) => state.chat.socket)
+  const socket: any = useSelector((state: RootState) => state.chat.socket)
 
   const loginWithPassword = async (_params: UseParams<LoginFormParams, LoginRes>) => {
     const { onSuccess, params, onError } = _params

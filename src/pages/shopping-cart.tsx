@@ -7,8 +7,9 @@ import {
   CartSummaryMobile,
   Spinner,
 } from '@/components'
+import { SWR_KEY } from '@/constants'
 import { isArrayHasValue } from '@/helper'
-import { useCarts, useUserAddress } from '@/hooks'
+import { useCarts, useUser, useUserAddress } from '@/hooks'
 import { selectOrderAddress, setOrderAddress } from '@/store'
 import { MainNoFooter } from '@/templates'
 import { useEffect } from 'react'
@@ -16,7 +17,10 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const ShoppingCartPage = () => {
   const dispatch = useDispatch()
-  const { data: addressList } = useUserAddress({})
+  const { userInfo } = useUser({})
+  const { data: addressList } = useUserAddress({
+    key: `${SWR_KEY.get_user_shipping_address}_${userInfo?.account?.partner_id}`,
+  })
   const orderAddress = useSelector(selectOrderAddress)
   const {
     data,
