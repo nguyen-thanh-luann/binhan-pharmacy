@@ -13,7 +13,7 @@ import {
 
 export const accountIconStyle = 'w-[20px] h-[20px]'
 
-export const PublicAccessRule = ['th', 'nvkd', 'npp', 'gsbh', 'asm']
+export const PublicAccessRule = ['th', 'nvkd', 'npp', 'gsbh', 'asm', '']
 export const AdminAccessRule = ['npp']
 
 export const accountNavData = [
@@ -27,22 +27,22 @@ export const accountNavData = [
     path: '/account/post',
     icon: <NotebookIconOutlinePlus className={accountIconStyle} />,
     title: 'Tin tức',
-    // access_rules: AdminAccessRule,
-    access_rules: PublicAccessRule,
+    access_rules: AdminAccessRule,
+    // access_rules: PublicAccessRule,
   },
   {
     path: '/account/add-post',
     icon: <FeatherOutlineIcon className={accountIconStyle} />,
     title: 'Thêm tin tức',
-    // access_rules: AdminAccessRule,
-    access_rules: PublicAccessRule,
+    access_rules: AdminAccessRule,
+    // access_rules: PublicAccessRule,
   },
   {
     path: '/account/post-category',
     icon: <MenuSquareDotOutlineIcon className={accountIconStyle} />,
     title: 'Danh mục tin tức',
-    // access_rules: AdminAccessRule,
-    access_rules: PublicAccessRule,
+    access_rules: AdminAccessRule,
+    // access_rules: PublicAccessRule,
   },
   {
     path: '/purchased-order',

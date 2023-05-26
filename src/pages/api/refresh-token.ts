@@ -14,12 +14,13 @@ const proxy = httpProxy.createProxyServer()
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   return new Promise(async (resolve) => {
     const cookies = new Cookies(req, res, { secure: process.env.NODE_ENV !== 'development' })
-
-    const refresh_token_req =
-      cookies.get('refresh_token') || cookies.get('guest_refresh_token') || ''
+    const refresh_token_req = cookies.get('refresh_token')
+    const guest_refresh_token_req = cookies.get('guest_refresh_token')
 
     try {
-      const response: any = await authAPI.refreshToken(refresh_token_req)
+      const response: any = await authAPI.refreshToken(
+        refresh_token_req || guest_refresh_token_req || ''
+      )
 
       if (!response?.success) {
         return res.status(400).json({
@@ -34,12 +35,12 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
       const { token, refresh_token } = response?.data
 
-      cookies.set('token', token, {
+      cookies.set(refresh_token_req ? 'token' : 'guest_token', token, {
         httpOnly: true,
         sameSite: 'lax',
       })
 
-      cookies.set('refresh_token', refresh_token, {
+      cookies.set(refresh_token_req ? 'refresh_token' : 'guest_refresh_token', refresh_token, {
         httpOnly: true,
         sameSite: 'lax',
       })
