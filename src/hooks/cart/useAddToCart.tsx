@@ -39,12 +39,14 @@ export const useAddToCart = () => {
       },
       config: {
         showSuccessMsg: false,
+        setLoadingState: true,
+        showBackdrop: false,
       },
     })
   }
 
   return {
-    isLoading,
+    isAddingTocart: isLoading,
     addToCart,
   }
 }

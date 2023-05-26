@@ -18,6 +18,7 @@ import { Star } from '../star'
 import ProductImg from './productImage'
 import { ProductVariants } from './productVariants'
 import WishlistBtn from './wishlistBtn'
+import { Spinner } from '../spinner'
 
 interface ProductDetailProps {
   data: IProductDetail
@@ -32,7 +33,7 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
 
   const { userInfo } = useUser({ shouldFetch: false })
   const { addWhishlist, deleteWhishlist, isLoading: isToggleWishlist } = useWishlist({})
-  const { addToCart } = useAddToCart()
+  const { addToCart, isAddingTocart } = useAddToCart()
 
   const [quantity, setQuantity] = useState<number>(1)
   const [currentProduct, setCurrentProduct] = useState<IProductDetail>(data)
@@ -252,7 +253,8 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
 
           <Button
             onClick={() => handleAddToCart(currentProduct)}
-            title="Chọn mua"
+            title={isAddingTocart ? '' : 'Chọn mua'}
+            icon={isAddingTocart ? <Spinner className="!text-white !fill-primary" /> : undefined}
             className="rounded-[8px] p-10 bg-primary border border-primary min-w-[167px] max-w-[30%]"
             textClassName="text-white text-md"
           />

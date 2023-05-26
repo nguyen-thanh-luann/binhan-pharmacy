@@ -10,15 +10,18 @@ class MyDocument extends Document {
       <Html lang={AppConfig.locale}>
         <Head></Head>
         <body>
+          <Main />
+
+          {/* zalo chat button */}
           <div
-            className="zalo-chat-widget border-none outline-none"
+            className="zalo-chat-widget !border-none !outline-none"
             data-oaid={ZALO_OA_ID}
             data-welcome-message="Rất vui khi được hỗ trợ bạn!"
             data-autopopup="0"
             data-width=""
             data-height=""
           />
-          <Main />
+
           <script src="https://sp.zalo.me/plugins/sdk.js"></script>
 
           {/* facebook messenger chat button */}
@@ -54,7 +57,7 @@ class MyDocument extends Document {
             (document, 'script', 'facebook-jssdk'));
             `}
           </script>
-          
+
           <NextScript />
         </body>
       </Html>

@@ -23,6 +23,7 @@ import { ModalProductDetail } from '../modal'
 import { Star } from '../star'
 import { ProductDiscountBadge } from './productDiscountBadge'
 import { ProductItemLoading } from './productItemLoading'
+import { Spinner } from '../spinner'
 
 interface ProductItemProps {
   data: Product
@@ -43,7 +44,7 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
   const productSlug = `/${generateProductSlug(data?.product_name, data?.product_id)}`
   const router = useRouter()
   const dispatch = useDispatch()
-  const { addToCart } = useAddToCart()
+  const { addToCart, isAddingTocart } = useAddToCart()
   const {
     visible: showProductDetailModal,
     closeModal: closeProductDetailModal,
@@ -51,6 +52,8 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
   } = useModal()
 
   const handleAddToCart = (product: Product) => {
+    if (isAddingTocart) return
+
     if (product.has_variant) {
       hanldeOpenModalDetail()
     } else {
@@ -192,7 +195,11 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
                   onClick={() => handleAddToCart(data)}
                   className=" bg-primary h-[30px] w-[30px] min-w-[30px] rounded-full flex-center cursor-pointer"
                 >
-                  <ProductCartIcon className="text-white w-16 h-16" />
+                  {isAddingTocart ? (
+                    <Spinner className="!text-primary !fill-white" />
+                  ) : (
+                    <ProductCartIcon className="text-white w-16 h-16" />
+                  )}
                 </div>
               </div>
 

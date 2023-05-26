@@ -2,7 +2,7 @@ import { URLRes } from './common'
 import { QueryList } from './http'
 
 export interface GetBannerParams extends QueryList {
-  aspect?: string //yêu cầu api bổ sung cái này
+  banner_size?: '4:1' | '3:1'
 }
 
 export interface Banner {
