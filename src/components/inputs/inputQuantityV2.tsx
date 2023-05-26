@@ -94,13 +94,6 @@ export const InputQuantityV2 = ({
     onFocus?.()
   }
 
-  useEffect(() => {
-    console.log({
-      inputQuantity,
-      tempQuantity,
-    })
-  }, [inputQuantity, tempQuantity])
-
   return (
     <div
       className={twMerge(

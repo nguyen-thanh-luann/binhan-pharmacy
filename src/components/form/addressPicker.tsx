@@ -2,7 +2,7 @@ import { RightIcon } from '@/assets'
 import { useAddress, useClickOutside, useModal } from '@/hooks'
 import { OptionType } from '@/types'
 import classNames from 'classnames'
-import { useImperativeHandle, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Tabs } from '../tabs'
 import { SearchField } from './searchField'
@@ -24,7 +24,6 @@ export const AddressPicker = ({
   inputClassName,
   modalClassName,
   defaultValue,
-  ref,
 }: AddressPickerProps) => {
   const {
     visible: showAddressModal,
@@ -51,22 +50,6 @@ export const AddressPicker = ({
   const focusSearchField = () => {
     searchFieldRef?.current?.focus()
   }
-
-  const resetData = () => {
-    console.log('reset address picker data')
-
-    defaultValue = ''
-
-    setState(undefined)
-    setDistrict(undefined)
-    setWard(undefined)
-  }
-
-  useImperativeHandle(ref, () => {
-    console.log('call use Imperative')
-
-    resetData()
-  })
 
   const handleSelectState = (state: OptionType<number>) => {
     setState(state)
@@ -115,7 +98,7 @@ export const AddressPicker = ({
   }
 
   return (
-    <div ref={addressModalRef} className={twMerge(classNames(`relative bg-white`, className))}>
+    <div className={twMerge(classNames(`relative bg-white`, className))}>
       <div
         className={`flex items-center border-gray-200  p-8 ${
           showAddressModal ? `border-b` : `rounded-lg border`
@@ -156,7 +139,9 @@ export const AddressPicker = ({
       <div
         className={twMerge(
           classNames(
-            `absolute z-50 left-0 right-0 bg-white border border-gray-200 border-t-0 animate-fade ${showAddressModal ? `block` : `hidden`}`,
+            `absolute z-50 left-0 right-0 bg-white border border-gray-200 border-t-0 animate-fade ${
+              showAddressModal ? `block` : `hidden`
+            }`,
             modalClassName
           )
         )}

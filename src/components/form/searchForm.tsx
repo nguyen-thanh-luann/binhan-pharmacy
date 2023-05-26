@@ -80,7 +80,7 @@ export const SearchForm = ({
         className={twMerge(
           classNames(
             'relative bg-background group text-gray min-w-fit py-8 px-16 rounded-tr-full rounded-br-full',
-            attributes.buttonClassName
+            attributes?.buttonClassName
           )
         )}
       >

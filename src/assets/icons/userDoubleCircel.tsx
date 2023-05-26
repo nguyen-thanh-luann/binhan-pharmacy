@@ -14,16 +14,16 @@ export const UserDoubleCircleIcon = ({ className = '' }) => {
         rx="7"
         ry="3.5"
         stroke={'currentColor'}
-        stroke-width="1.5"
-        stroke-linejoin="round"
+       strokeWidth="1.5"
+        strokeLinejoin="round"
       />
       <circle
         cx="12"
         cy="7"
         r="4"
         stroke={'currentColor'}
-        stroke-width="1.5"
-        stroke-linejoin="round"
+       strokeWidth="1.5"
+        strokeLinejoin="round"
       />
     </svg>
   )

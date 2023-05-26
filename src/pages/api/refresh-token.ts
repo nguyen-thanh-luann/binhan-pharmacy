@@ -18,8 +18,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     const refresh_token_req =
       cookies.get('refresh_token') || cookies.get('guest_refresh_token') || ''
 
-    console.log({refresh_token_req});
-    
     try {
       const response: any = await authAPI.refreshToken(refresh_token_req)
 

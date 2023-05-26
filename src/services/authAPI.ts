@@ -29,8 +29,6 @@ const authAPI = {
   },
 
   refreshToken: (refresh_token: string): AxiosPromise<HTTPResponse<TokenRes>> => {
-    console.log({ refresh_token })
-
     return axiosInstance.get(
       `/user_information_controller/refresh_token?refresh_token=${refresh_token}`
     )

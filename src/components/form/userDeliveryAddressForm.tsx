@@ -38,6 +38,8 @@ export const UserDeliveryAddressForm = ({
 
   const orderAddress: ShippingAddressV2 = useSelector(selectOrderAddress)
 
+  console.log({ orderAddress })
+
   const { userInfo } = useUser({})
   const dispatch = useDispatch()
   const { mutate } = useSWRConfig()
@@ -135,6 +137,9 @@ export const UserDeliveryAddressForm = ({
     })
   }
 
+  const defaultStreet = orderAddress?.street ? orderAddress?.street : 'Địa chỉ chi tiết'
+  console.log({ defaultStreet })
+
   return (
     <form className={twMerge(classNames(``, className))} onSubmit={handleSubmit(handleAddAddress)}>
       <div className="">
@@ -193,7 +198,7 @@ export const UserDeliveryAddressForm = ({
               control={control}
               name="street"
               placeholder="Địa chỉ chi tiết"
-              defaultValue={orderAddress ? orderAddress?.street : ''}
+              defaultValue={defaultStreet}
             />
           </div>
         </div>

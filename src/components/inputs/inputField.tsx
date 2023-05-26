@@ -13,7 +13,7 @@ type InputFieldProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInp
   labelClassName?: string
   messageClassName?: string
 }
-
+ 
 export const InputField = ({
   className = '',
   inputClassName,
@@ -27,7 +27,6 @@ export const InputField = ({
   onChange: externalOnChange,
   onBlur: externalOnBlur,
   ref: externalRef,
-  value: externalValue,
   ...attributes
 }: InputFieldProps) => {
   const {
