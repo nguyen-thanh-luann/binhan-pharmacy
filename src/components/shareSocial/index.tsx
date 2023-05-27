@@ -1,13 +1,12 @@
-import React from 'react'
-import { Image } from '../image'
-import { toast } from 'react-hot-toast'
 import { facebookIcon, linkedIcon, zaloIcon } from '@/assets'
-import { Divider } from '../divider'
-import { twMerge } from 'tailwind-merge'
+import { DOMAIN_URL } from '@/constants'
+import { generateProductSlug } from '@/helper'
 import classNames from 'classnames'
 import { FacebookShareButton, LinkedinShareButton } from 'react-share'
-import { generateProductSlug } from '@/helper'
-import { DOMAIN_URL } from '@/constants'
+import { twMerge } from 'tailwind-merge'
+import { Divider } from '../divider'
+import { Image } from '../image'
+// import ZaloSDK from 'zalo-sdk'
 
 interface ShareSocialProps {
   className?: string
@@ -17,6 +16,16 @@ interface ShareSocialProps {
 
 export const ShareSocial = ({ className, product_id, name }: ShareSocialProps) => {
   const slug = `${DOMAIN_URL}/${generateProductSlug(name, product_id)}`
+
+  const handleShareZalo = () => {
+    // Open Zalo Share dialog
+    window.open(
+      `https://zalo.me/share?url=${encodeURIComponent(slug)}`,
+      'zaloshare',
+      'width=600,height=600'
+    )
+  }
+
   return (
     <div className={twMerge(classNames(`flex items-center`, className))}>
       <FacebookShareButton
@@ -31,13 +40,12 @@ export const ShareSocial = ({ className, product_id, name }: ShareSocialProps) =
 
       <Divider />
 
-      <Image
-        src={zaloIcon}
-        onClick={() => {
-          toast.success('comming soon')
-        }}
-        className="w-32 h-32 object-cover cursor-pointer"
-      />
+      <div onClick={handleShareZalo}>
+        <Image
+          src={zaloIcon}
+          className="w-32 h-32 object-cover cursor-pointer"
+        />
+      </div>
 
       <Divider />
 

@@ -31,7 +31,7 @@ export const HomeSlide = ({
           <div className={twMerge(classNames('mr-12', iconClassName))}>{icon}</div>
           <p
             className={twMerge(
-              classNames('capitalize text-text-color font-bold text-xl', titleClassName)
+              classNames('text-text-color font-bold text-xl', titleClassName)
             )}
           >
             {title}

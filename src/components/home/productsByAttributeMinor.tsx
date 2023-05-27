@@ -105,7 +105,7 @@ export const ProductsByAttributeMinor = ({
           atribute?.attribute_icon?.url ? (
             <CustomImage
               src={atribute?.attribute_icon?.url || ''}
-              imageClassName="w-[32px] h-[32px] object-cover"
+              imageClassName="w-[32px] h-[32px] object-cover rounded-full"
             />
           ) : (
             <UserCircleIcon className="text-primary w-[32px] h-[32px]" />
