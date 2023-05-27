@@ -12,9 +12,8 @@ class MyDocument extends Document {
         <body>
           <Main />
 
-          {/* zalo chat button */}
           <div
-            className="zalo-chat-widget !border-none !outline-none"
+            className="zalo-chat-widget"
             data-oaid={ZALO_OA_ID}
             data-welcome-message="Rất vui khi được hỗ trợ bạn!"
             data-autopopup="0"
@@ -23,13 +22,9 @@ class MyDocument extends Document {
           />
 
           <script src="https://sp.zalo.me/plugins/sdk.js"></script>
-
           {/* facebook messenger chat button */}
-
           <div id="fb-root"></div>
-
           <div id="fb-customer-chat" className="fb-customerchat"></div>
-
           <script>
             {` 
             var chatbox = document.getElementById('fb-customer-chat');
@@ -37,7 +32,6 @@ class MyDocument extends Document {
             chatbox.setAttribute("attribution", "biz_inbox");
             `}
           </script>
-
           <script>
             {`
                window.fbAsyncInit = function() {
@@ -57,7 +51,6 @@ class MyDocument extends Document {
             (document, 'script', 'facebook-jssdk'));
             `}
           </script>
-
           <NextScript />
         </body>
       </Html>

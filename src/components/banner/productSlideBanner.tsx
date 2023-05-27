@@ -23,7 +23,7 @@ export const ProductSlideBanner = ({ data, className }: ProductSlideBanner) => {
           className=""
         />
 
-        <div className="absolute bottom-[14px] m-auto left-0 right-0 w-fit">
+        <div className="absolute bottom-[24px] m-auto left-0 right-0 w-fit">
           <Button
             title="Xem thêm"
             className="min-w-fit w-[110px] border rounded-lg border-primary bg-primary-100"

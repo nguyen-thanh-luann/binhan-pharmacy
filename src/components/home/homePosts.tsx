@@ -37,6 +37,7 @@ export const HomePosts = ({ className }: HomePostsProps) => {
     <div className={twMerge(classNames(`mb-24`, className))}>
       {isArrayHasValue(postList) ? (
         <HomeSlide
+          className='md:p-24'
           title="Sống khỏe mỗi ngày"
           icon={<NotebookIconOutline className="text-primary w-[34px] h-[34px]" />}
         >
