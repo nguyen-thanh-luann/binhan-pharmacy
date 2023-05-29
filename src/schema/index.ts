@@ -208,34 +208,32 @@ export const getAdviceSchema = Yup.object().shape({
     .matches(PHONE_SCHEMA, 'Vui lòng nhập số điện thoại hợp lệ')
     .required('Vui lòng nhập số điện thoại'),
 
-  state: Yup.object()
-    .shape({
-      value: Yup.number().required(),
-      label: Yup.string().required(),
-    })
-    .required('Vui lòng chọn điạ tỉnh thành phố'),
+  state: Yup.object().shape({
+    value: Yup.number(),
+    label: Yup.string(),
+  }),
+  // .required('Vui lòng chọn điạ tỉnh thành phố'),
 
-  district: Yup.object()
-    .shape({
-      value: Yup.number().required(),
-      label: Yup.string().required(),
-    })
-    .required('Vui lòng chọn điạ chỉ quận huyện'),
+  district: Yup.object().shape({
+    value: Yup.number(),
+    label: Yup.string(),
+  }),
+  // .required('Vui lòng chọn điạ chỉ quận huyện'),
 
-  ward: Yup.object()
-    .shape({
-      value: Yup.number().required(),
-      label: Yup.string().required(),
-    })
-    .required('Vui lòng chọn điạ chỉ phường xã'),
+  ward: Yup.object().shape({
+    value: Yup.number(),
+    label: Yup.string(),
+  }),
+  // .required('Vui lòng chọn điạ chỉ phường xã'),
 
-  gender: Yup.string().oneOf(['male', 'female', 'other']).required('Vui lòng chọn giới tính'),
+  gender: Yup.string().oneOf(['male', 'female', 'other']).optional(),
   drugstore_id: Yup.object()
     .shape({
       label: Yup.string(),
-      value: Yup.number().required(),
+      value: Yup.number(),
     })
-    .required('Vui lòng chọn cửa hàng!'),
+    .optional(),
+  note: Yup.string().optional(),
 })
 
 export const storeReceiveSchema = Yup.object().shape({

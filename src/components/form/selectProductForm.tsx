@@ -84,7 +84,7 @@ export const SelectProductForm = ({
     <div ref={ref} className={twMerge(classNames(`relative rounded-md bg-white`, className))}>
       <div className="p-12 sticky top-0 z-40 bg-white">
         <div className="flex-between mb-12">
-          <p className="text-lg font-bold text-center capitalize">Nhập theo tên thuốc</p>
+          <p className="text-lg font-bold text-center capitalize">Chọn sản phẩm</p>
 
           <button onClick={() => onClose?.()} className="">
             <TimesIcon className="text-gray" />
@@ -92,8 +92,8 @@ export const SelectProductForm = ({
         </div>
 
         <SearchField
-          className="border"
-          placeholder="Vui lòng nhập tên thuốc cần tìm"
+          className="border p-8"
+          placeholder="Vui lòng nhập tên sản phẩm cần tìm"
           onChangeWithDebounceValue={(val) => searchProducts(val as string)}
         />
       </div>

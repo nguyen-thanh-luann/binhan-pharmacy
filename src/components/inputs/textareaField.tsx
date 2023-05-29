@@ -52,7 +52,7 @@ export const TextareaField = ({
             className={`border border-gray-200 p-8 rounded-md w-full outline-none ${
               error ? 'border-red bg-red-100' : ''
             }`}
-            defaultValue={'abc 123'}
+            // defaultValue={}
             value={valueProps || value}
             {...attributes}
           />

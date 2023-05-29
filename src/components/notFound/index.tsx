@@ -1,8 +1,7 @@
-import { empty } from '@/assets'
-import React from 'react'
-import { Image } from '../image'
+import { companyIconSm } from '@/assets'
 import classNames from 'classnames'
 import { twMerge } from 'tailwind-merge'
+import { Image } from '../image'
 
 interface NotFoundProps {
   notify?: string
@@ -22,8 +21,8 @@ export const NotFound = ({
   return (
     <div className={twMerge(classNames('flex flex-col items-center justify-center', className))}>
       <Image
-        src={image || empty}
-        className={twMerge(classNames('w-[200px] h-[200px]', imageClassName))}
+        src={image || companyIconSm}
+        className={twMerge(classNames('w-[200px] h-[200px] mb-12', imageClassName))}
       />
 
       <p className={twMerge(classNames('title text-center', notifyClassName))}>{notify || ''}</p>

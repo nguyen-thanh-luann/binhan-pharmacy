@@ -88,7 +88,7 @@ export const ProductsOnNavCategory = ({
         </Swiper>
       ) : (
         <div>
-          <NotFound notify="Không tìm thấy sản phẩm nào!" />
+          <NotFound notify="Sản phẩm đang được cập nhật!" />
         </div>
       )}
     </div>

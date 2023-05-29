@@ -91,7 +91,7 @@ export const GetAdviceForm = ({ className }: GetAdviceFormProps) => {
         province_id: data?.state?.value,
         district_id: data?.district?.value,
         ward_id: data?.ward?.value,
-        street: data?.addressDetail,
+        note: data?.note,
         gender: data?.gender,
       },
       () => {
@@ -158,7 +158,6 @@ export const GetAdviceForm = ({ className }: GetAdviceFormProps) => {
               placeholder={`Chọn nhà thuốc`}
               labelClassName="!text-lg !font-bold"
               inputClassName="p-12"
-              required
               readOnly
               onClick={openSelectStore}
               value={getValues('drugstore_id.label')}
@@ -177,7 +176,11 @@ export const GetAdviceForm = ({ className }: GetAdviceFormProps) => {
           </div>
 
           <div>
-            <TextareaField control={control} name="addressDetail" placeholder="Địa chỉ chi tiết" />
+            <TextareaField
+              control={control}
+              name="note"
+              placeholder="Nhập nội dung ghi chú của bạn"
+            />
           </div>
         </div>
 

@@ -140,7 +140,7 @@ export const QuickOrderForm = ({ className }: QuickOrderFormProps) => {
         label: ' ',
         value: 0,
       },
-      addressDetail: '',
+      note: '',
     })
     addressPickerRef.current?.resetData()
     setPrescriptionPhotos([])
@@ -159,7 +159,7 @@ export const QuickOrderForm = ({ className }: QuickOrderFormProps) => {
         province_id: data?.state?.value,
         district_id: data?.district?.value,
         ward_id: data?.ward?.value,
-        street: data?.addressDetail,
+        note: data?.note,
         gender: data?.gender,
         medical_order_image_url: getOrderPrescriptionPhotos(prescriptionPhotos),
         order_line: getOrderProductsData(productSelected),
@@ -181,7 +181,7 @@ export const QuickOrderForm = ({ className }: QuickOrderFormProps) => {
           >
             <DrugsIcon className="w-[40px] h-[40px] md:w-[96px] md:h-[96px] md:mb-8 text-gray" />
             <p className="text-base md:bg-primary font-bold md:text-white rounded-full p-4 px-12 cursor-pointer active:opacity-50 duration-200 line-clamp-1">
-              Nhập theo tên thuốc
+              Chọn theo tên
             </p>
           </div>
 
@@ -205,7 +205,7 @@ export const QuickOrderForm = ({ className }: QuickOrderFormProps) => {
             >
               <PhotoIcon className="w-[40px] h-[40px] md:w-[96px] md:h-[96px] md:mb-8 text-gray" />
               <p className="text-base md:bg-primary font-bold md:text-white rounded-full p-4 px-12 cursor-pointer active:opacity-50 duration-200 line-clamp-1">
-                Gửi ảnh chụp đơn thuốc
+                Gửi ảnh chụp sản phẩm, đơn hàng cần mua
               </p>
             </label>
           </div>
@@ -328,7 +328,6 @@ export const QuickOrderForm = ({ className }: QuickOrderFormProps) => {
               placeholder={`Chọn nhà thuốc`}
               labelClassName="!text-lg !font-bold"
               inputClassName="p-12"
-              required
               readOnly
               onClick={openSelectStore}
               value={getValues('drugstore_id.label')}
@@ -347,7 +346,11 @@ export const QuickOrderForm = ({ className }: QuickOrderFormProps) => {
           </div>
 
           <div>
-            <TextareaField control={control} name="addressDetail" placeholder="Địa chỉ chi tiết" />
+            <TextareaField
+              control={control}
+              name="note"
+              placeholder="Nhập nội dung ghi chú của bạn"
+            />
           </div>
         </div>
 

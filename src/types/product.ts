@@ -73,6 +73,7 @@ export interface Product {
   attribute_minor_ids: AttributeMinor[]
   rel_uom_ids: ProductUom[]
   packaging_specifications: string
+  promotion_category: string
   attribute_ids: ProductAttribute[]
   rel_attribute_ids: ProductRelAttribute[]
   has_variant: boolean

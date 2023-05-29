@@ -115,7 +115,7 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
               } z-10 min-w-[40px] max-w-[86px] max-h-[35px] overflow-scroll scrollbar-hide rounded-[10px] border border-primary px-4 py-2 bg-white bg-opacity-70`}
             >
               <p className="text-xs font-medium line-clamp-2 flex-center h-full">
-                {data?.packaging_specifications || data?.uom_id?.uom_name}
+                {data?.packaging_specifications || ''}
               </p>
             </div>
 
@@ -169,11 +169,17 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
                       category_id: data?.category_id?.category_id,
                     })
                   }
-                  className="text-primary min-w-fit h-fit  bg-primary-100 p-4 px-6 rounded-full cursor-pointer font-medium text-xs md:text-sm leading-7 line-clamp-1"
+                  className="text-primary min-w-fit h-fit  bg-primary-100 p-4 px-6 rounded-full cursor-pointer font-medium text-xs md:text-sm leading-7 mr-8 line-clamp-1"
                 >
                   {data?.category_id?.category_name}
                 </p>
               ) : null}
+
+              {data?.promotion_category && (
+                <p className="text-primary min-w-fit h-fit  bg-primary-100 p-4 px-6 rounded-full cursor-pointer font-medium text-xs md:text-sm leading-7 line-clamp-1">
+                  {data?.promotion_category}
+                </p>
+              )}
             </ScrollContainer>
 
             <div className="relative">

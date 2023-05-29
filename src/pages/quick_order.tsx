@@ -7,8 +7,8 @@ export type OrderTabOption = 'order' | 'advise'
 
 const QuickOrder = () => {
   const registerTabs = [
-    { label: 'Đã có đơn thuốc', value: 'order' },
-    { label: 'Chưa có, cần tư vấn', value: 'advise' },
+    { label: 'Đặt mua nhanh hơn', value: 'order' },
+    { label: 'Đăng ký tư vấn sản phẩm', value: 'advise' },
   ]
 
   const [currentTab, setCurrentTab] = useState<OrderTabOption>('order')
@@ -16,6 +16,9 @@ const QuickOrder = () => {
     <MainNoFooter title={WEB_TITTLE} description={WEB_DESCRIPTION}>
       <div className="container min-h-[80vh] w-[90%] md:w-[50%] mx-auto">
         <div className="bg-white p-12 md:p-24 rounded-lg shadow-shadow-1 my-32">
+
+          <p className='text-md font-bold uppercase text-center mb-12'>Hỗ trợ tư vấn, đặt mua sản phẩm</p>
+
           <Tabs
             list={registerTabs}
             tabActive={currentTab}

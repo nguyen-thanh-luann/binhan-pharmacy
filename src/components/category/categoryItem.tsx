@@ -1,11 +1,10 @@
+import { companyIconSm } from '@/assets'
+import { API_URL } from '@/constants'
+import { isRemoteImageUrl } from '@/helper'
 import { Category } from '@/types'
 import classNames from 'classnames'
-import React from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Image } from '../image'
-import { API_URL } from '@/constants'
-import { empty } from '@/assets'
-import { isRemoteImageUrl } from '@/helper'
 
 interface DropDownCategoryItemProps {
   data: Category
@@ -41,7 +40,7 @@ export const CategoryItem = ({
             ? isRemoteImageUrl(data?.icon?.url || data?.category_icon?.url || '')
               ? data?.icon?.url || data?.category_icon?.url
               : `${API_URL}${data?.icon?.url || data?.category_icon?.url || ''}`
-            : empty
+            : companyIconSm
         }
         imageClassName={twMerge(classNames(`w-32 h-32 mr-10`, iconClassName))}
       />

@@ -394,12 +394,13 @@ export interface CreateOpportunityParams {
   gender?: UserGenderType
   contact_name: string
   phone: string
-  drugstore_id: number
+  drugstore_id?: number
   country_id?: number
   province_id?: number
   district_id?: number
   ward_id?: number
   street?: string
+  note?: string
   medical_order_image_url?: number[]
   order_line?: ProductLineOpportunityParams[]
 }
