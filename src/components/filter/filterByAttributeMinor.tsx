@@ -84,15 +84,17 @@ export const FilterByAttributeMinor = () => {
                           handleSelectAttribute(attribute?.attribute_id, child.value_id)
                         }
                       >
-                        <InputCheckbox
-                          isChecked={isActive(
-                            attribute?.attribute_id.toString(),
-                            child?.value_id.toString()
-                          )}
-                          onCheck={() =>
-                            handleSelectAttribute(attribute?.attribute_id, child.value_id)
-                          }
-                        />
+                        <div className="min-w-[20px]">
+                          <InputCheckbox
+                            isChecked={isActive(
+                              attribute?.attribute_id.toString(),
+                              child?.value_id.toString()
+                            )}
+                            onCheck={() =>
+                              handleSelectAttribute(attribute?.attribute_id, child.value_id)
+                            }
+                          />
+                        </div>
 
                         <p className="text-text-color font-semibold text-md">{child?.value_name}</p>
                       </div>

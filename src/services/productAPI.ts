@@ -8,8 +8,7 @@ import {
   GetProductByCategoryParams,
   HTTPListRes,
   HTTPResponseV2,
-  Product,
-  VisceraAttribute,
+  Product
 } from '@/types'
 import { AxiosPromise } from 'axios'
 import axiosClient from '.'
@@ -61,7 +60,7 @@ const productAPI = {
     )
   },
 
-  getListVisceraAttribute: (): Promise<HTTPResponseV2<VisceraAttribute[]>> => {
+  getListVisceraAttribute: () => {
     return axiosClient.get('/category_controller/list_viscera_attribute_value')
   },
 

@@ -4,15 +4,15 @@ import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import { twMerge } from 'tailwind-merge'
 import { Button } from '../button'
+import { FilterByAttributeMinor } from './filterByAttributeMinor'
 import { FilterByCategory } from './filterByCategory'
 import { FilterByCategoryMinor } from './filterByCategoryMinor'
 import { FilterByPrice } from './filterByPrice'
-import { FilterByAttributeMinor } from './filterByAttributeMinor'
 
 interface ProductFilterSidebarProps {
   className?: string
 }
- 
+
 export const ProductFilterSidebar = ({ className }: ProductFilterSidebarProps) => {
   const router = useRouter()
 

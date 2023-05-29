@@ -1,34 +1,35 @@
-import { VisceraAttribute } from '@/types'
+import { SWR_KEY } from '@/constants'
 import { productAPI } from '@/services'
-import { useQueryListV2 } from '../common'
+import { VisceraAttributeRes } from '@/types'
+import useSWR from 'swr'
 
 interface useViceraAttributeProps {
   key: string
+  shouldFetch?: boolean
 }
 
 interface useAttributeMinorRes {
-  data: VisceraAttribute[]
+  data: VisceraAttributeRes[]
   isValidating: boolean
-  isLoadingMore: boolean
-  hasMore: boolean
-  getMore: () => void
 }
 
-export const useViceraAttribute = ({ key }: useViceraAttributeProps): useAttributeMinorRes => {
-  const { data, isValidating, getMore, hasMore, isLoadingMore } = useQueryListV2<VisceraAttribute>({
-    key,
-    fetcher: productAPI.getListVisceraAttribute,
-    config: {
+export const useViceraAttribute = ({
+  key,
+  shouldFetch = true,
+}: useViceraAttributeProps): useAttributeMinorRes => {
+  const { data, isValidating } = useSWR(
+    key ? key : SWR_KEY.get_viscera_attribute,
+    !shouldFetch
+      ? null
+      : () => productAPI.getListVisceraAttribute().then((res: any) => res?.data || []),
+    {
       revalidateOnFocus: false,
-      dedupingInterval: 60000,
-    },
-  })
+      dedupingInterval: 600000,
+    }
+  )
 
   return {
-    data,
+    data: data || [],
     isValidating,
-    getMore,
-    hasMore,
-    isLoadingMore,
   }
 }

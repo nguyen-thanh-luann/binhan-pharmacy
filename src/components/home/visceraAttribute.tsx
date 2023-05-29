@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge'
 
 import { NotebookIconOutline } from '@/assets'
 import { isArrayHasValue } from '@/helper'
-import { VisceraAttribute as IVisceraAttribute } from '@/types'
+import { VisceraAttribute as IVisceraAttribute, VisceraAttributeRes } from '@/types'
 import { Autoplay, Navigation, Pagination } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
@@ -25,6 +25,8 @@ export const VisceraAttribute = ({ className }: VisceraAttributeProps) => {
     key: `${SWR_KEY.get_viscera_attribute}`,
   })
 
+  const viewAttribute: VisceraAttributeRes | undefined = data?.[0]
+
   if (isValidating) {
     return (
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-12">
@@ -39,7 +41,7 @@ export const VisceraAttribute = ({ className }: VisceraAttributeProps) => {
     <div className={twMerge(classNames('', className))}>
       {isArrayHasValue(data) ? (
         <HomeSlide
-          title="Danh mục sản phẩm"
+          title={viewAttribute?.attribute_name || 'Danh mục sản phẩm'}
           icon={<NotebookIconOutline className="text-primary w-[34px] h-[34px]" />}
           className="bg-white rounded-[10px] mb-24 md:p-24"
           sectionClassName=""
@@ -71,20 +73,23 @@ export const VisceraAttribute = ({ className }: VisceraAttributeProps) => {
             }}
           >
             <div>
-              {data.map((att: IVisceraAttribute, index) => (
-                <SwiperSlide key={att.value_id}>
-                  <VisceraAttributeItem
-                    data={att}
-                    className={classNames(
-                      'cursor-pointer',
-                      index % 2 === 0 ? 'bg-att-viscera-even-bg' : 'bg-att-viscera-odd-bg'
-                    )}
-                    onClick={(item) => {
-                      router.push(`/search/?category_${item?.value_id}=${item?.value_id}`)
-                    }}
-                  />
-                </SwiperSlide>
-              ))}
+              {data &&
+                data?.[0]?.value_ids.map((att: IVisceraAttribute, index) => (
+                  <SwiperSlide key={att.value_id}>
+                    <VisceraAttributeItem
+                      data={att}
+                      className={classNames(
+                        'cursor-pointer',
+                        index % 2 === 0 ? 'bg-att-viscera-even-bg' : 'bg-att-viscera-odd-bg'
+                      )}
+                      onClick={() => {
+                        router.push(
+                          `/search?attributes_${viewAttribute?.attribute_id}=${att.value_id}`
+                        )
+                      }}
+                    />
+                  </SwiperSlide>
+                ))}
             </div>
           </Swiper>
         </HomeSlide>

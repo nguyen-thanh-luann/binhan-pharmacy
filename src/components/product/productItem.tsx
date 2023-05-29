@@ -87,7 +87,7 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
         <div
           className={twMerge(
             classNames(
-              'product-item group rounded-[6px] bg-product-item-background hover:shadow-shadow-3 overflow-hidden duration-200 ease-in-out',
+              'product-item rounded-[6px] bg-product-item-background hover:shadow-shadow-3 overflow-hidden duration-200 ease-in-out',
               className
             )
           )}
@@ -110,9 +110,11 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
 
             {/* packing rule */}
             <div
-              className={`absolute top-3  ${
-                discount > 0 ? 'right-25' : 'right-3'
-              } z-10 min-w-[40px] max-w-[86px] max-h-[35px] overflow-scroll scrollbar-hide rounded-[10px] border border-primary px-4 py-2 bg-white bg-opacity-70`}
+              className={classNames(
+                'absolute top-3',
+                discount > 0 ? 'right-25' : 'right-3',
+                'z-10 min-w-[40px] max-w-[86px] max-h-[35px] overflow-scroll scrollbar-hide rounded-[10px] border border-primary px-4 py-2 bg-white bg-opacity-70'
+              )}
             >
               <p className="text-xs font-medium line-clamp-2 flex-center h-full">
                 {data?.packaging_specifications || ''}
@@ -128,11 +130,21 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
 
           {/*product info*/}
           <div className="px-8 md:px-16 pb-8 md:pb-16 relative">
-            <Link href={productSlug}>
-              <p className="h-[43px] line-clamp-2 w-full text-text-color text-base md:text-md font-bold leading-9 mb-8 group-hover:text-primary duration-200 ease-in-out">
-                {data?.product_name}
-              </p>
-            </Link>
+            <div className="relative group">
+              <Link href={productSlug}>
+                <p className="h-[43px] line-clamp-2 w-full text-text-color text-base md:text-md font-bold leading-9 mb-8 group-hover:text-primary duration-200 ease-in-out">
+                  {data?.product_name}
+                </p>
+              </Link>
+
+              <div
+                className={classNames(
+                  'z-50 bg-primary-10 p-4 rounded-md animate-fade hidden group-hover:block absolute max-h-[250px] overflow-scroll'
+                )}
+              >
+                <p className="text-base">{data?.product_name}</p>
+              </div>
+            </div>
 
             {/* properties list */}
             <ScrollContainer className="flex h-[30px]">
@@ -175,11 +187,11 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
                 </p>
               ) : null}
 
-              {data?.promotion_category && (
+              {/* {data?.promotion_category && (
                 <p className="text-primary min-w-fit h-fit  bg-primary-100 p-4 px-6 rounded-full cursor-pointer font-medium text-xs md:text-sm leading-7 line-clamp-1">
                   {data?.promotion_category}
                 </p>
-              )}
+              )} */}
             </ScrollContainer>
 
             <div className="relative">

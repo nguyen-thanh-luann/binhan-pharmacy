@@ -12,7 +12,7 @@ export const FilterByCategory = () => {
     Object?.values(router?.query)?.map((id) => Number(id))
   )
 
-  console.log(Object.values(router?.query))
+  // console.log(Object.values(router?.query))
 
   const { categoryList, isValidating: categoryListLoading } = useCategoryList({
     key: SWR_KEY.get_category_list,
