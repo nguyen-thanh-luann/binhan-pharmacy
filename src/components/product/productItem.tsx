@@ -130,21 +130,22 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
 
           {/*product info*/}
           <div className="px-8 md:px-16 pb-8 md:pb-16 relative">
-            <div className="relative group">
-              <Link href={productSlug}>
+            <Link href={productSlug}>
+              <div className="relative group">
                 <p className="h-[43px] line-clamp-2 w-full text-text-color text-base md:text-md font-bold leading-9 mb-8 group-hover:text-primary duration-200 ease-in-out">
                   {data?.product_name}
                 </p>
-              </Link>
 
-              <div
-                className={classNames(
-                  'z-50 bg-primary-10 p-4 rounded-md animate-fade hidden group-hover:block absolute max-h-[250px] overflow-scroll'
-                )}
-              >
-                <p className="text-base">{data?.product_name}</p>
+                <div
+                  className={classNames(
+                    'z-50 bg-primary-10 p-4 rounded-md animate-fade hidden  absolute max-h-[250px] overflow-scroll',
+                    data?.product_name?.length > 20 ? 'group-hover:block' : ''
+                  )}
+                >
+                  <p className="text-base">{data?.product_name}</p>
+                </div>
               </div>
-            </div>
+            </Link>
 
             {/* properties list */}
             <ScrollContainer className="flex h-[30px]">
