@@ -35,6 +35,15 @@ export const Main = ({ children, ...attributes }: IMainProps) => {
         {children}
 
         <Footer />
+
+        {/* <div
+          className="zalo-chat-widget"
+          data-oaid={ZALO_OA_ID}
+          data-welcome-message="Rất vui khi được hỗ trợ bạn!"
+          data-autopopup="0"
+          data-width=""
+          data-height=""
+        /> */}
       </div>
 
       <BottomNavigation />

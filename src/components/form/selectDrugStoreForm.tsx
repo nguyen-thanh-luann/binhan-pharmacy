@@ -58,8 +58,8 @@ export const SelectDrugStoreForm = ({ className, onSelect, onClose }: SelectDrug
 
   return (
     <div ref={ref} className={twMerge(classNames(`relative`, className))}>
-      <div className="mb-12 sticky top-0 z-40 bg-white">
-        <div className="flex-between mb-12">
+      <div className="sticky top-0 z-40 bg-white">
+        <div className="flex-between p-12">
           <p className="text-lg font-bold text-center capitalize">Chọn nhà thuốc</p>
 
           <button onClick={() => onClose?.()} className="">
@@ -67,7 +67,7 @@ export const SelectDrugStoreForm = ({ className, onSelect, onClose }: SelectDrug
           </button>
         </div>
 
-        <div className="mb-12">
+        <div className="p-12">
           <SearchField
             onChangeWithDebounceValue={(val) => searchStore(val as string)}
             className="border p-8"
@@ -75,7 +75,7 @@ export const SelectDrugStoreForm = ({ className, onSelect, onClose }: SelectDrug
           />
         </div>
 
-        <div>
+        <div className='p-12'>
           <AddressPicker
             placeHolder="Tìm theo địa chỉ"
             onSubmit={(data: AddressPickerRes) => addressFilter(data)}
@@ -83,7 +83,7 @@ export const SelectDrugStoreForm = ({ className, onSelect, onClose }: SelectDrug
         </div>
       </div>
 
-      <div className="">
+      <div className="p-12">
         <InfiniteScroll
           dataLength={drugstores?.length || 0}
           next={() => getMore()}

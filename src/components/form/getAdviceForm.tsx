@@ -198,7 +198,7 @@ export const GetAdviceForm = ({ className }: GetAdviceFormProps) => {
         visible={showSelectStore}
         animationType="fade"
         headerClassName="hidden"
-        modalClassName="p-20 h-fit max-h-[450px] w-[500px] max-w-[90%] rounded-[10px] overflow-scroll scrollbar-hide"
+        modalClassName="h-fit max-h-[450px] w-[500px] max-w-[90%] rounded-[10px] overflow-scroll scrollbar-hide"
       >
         <SelectDrugStoreForm
           onClose={closeSelectStore}

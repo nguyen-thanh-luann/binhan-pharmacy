@@ -189,22 +189,22 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
 
         {/* attribute */}
         {currentProduct?.attribute_minor_ids?.length > 0 ? (
-          <div className="mb-16">
+          <div className="mb-16 overflow-scroll">
             {currentProduct?.attribute_minor_ids?.map((attribute) => {
               const filterable = attribute?.filterable
 
               return (
-                <div key={attribute?.attribute_id} className="flex items-center gap-8 mb-8">
-                  <p className="title_md !font-semibold">{attribute?.attribute_name}: </p>
+                <div key={attribute?.attribute_id} className="flex flex-wrap gap-8 mb-8">
+                  <p className="title_md !font-semibold min-w-fit">{attribute?.attribute_name}: </p>
 
-                  <div className="flex items-center gap-8">
+                  <div className="flex flex-1 flex-wrap items-center gap-8">
                     {attribute?.value_ids?.map((value) => (
                       <p
                         onClick={() =>
                           hanldeAttributeClick(attribute?.attribute_id, value?.value_id, filterable)
                         }
                         key={value?.value_id}
-                        className={`text_md ${
+                        className={`text_md min-w-fit ${
                           filterable ? '!text-primary cursor-pointer active:opacity-50' : ''
                         }`}
                       >

@@ -38,11 +38,7 @@ const productAPI = {
     offset = 0,
     ...params
   }: GetCategoryParams): AxiosPromise<HTTPListRes<Category[]>> => {
-    return axiosClient.get(
-      `/category_controller/list_category_major?limit=${limit}&offset=${offset}${
-        params?.category_parent_id ? `&category_parent_id=${params?.category_parent_id}` : ''
-      }`
-    )
+    return axiosClient.get(`/category_controller/list_category_major`, { params })
   },
 
   getCategoryMinorList: ({
@@ -50,11 +46,7 @@ const productAPI = {
     offset = 0,
     ...params
   }: GetCategoryParams): AxiosPromise<HTTPListRes<Category[]>> => {
-    return axiosClient.get(
-      `/category_controller/list_category_minor?limit=${limit}&offset=${offset}${
-        params?.category_parent_id ? `&category_parent_id=${params?.category_parent_id}` : ''
-      }`
-    )
+    return axiosClient.get('/category_controller/list_category_minor', { params })
   },
 
   getListAtributeMinor: ({

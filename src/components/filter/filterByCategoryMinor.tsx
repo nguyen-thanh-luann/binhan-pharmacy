@@ -12,8 +12,10 @@ export const FilterByCategoryMinor = () => {
   const router = useRouter()
 
   const { categoryMinorList, isValidating: categoryMinorListLoading } = useCategoryMinorList({
-    key: SWR_KEY.get_category_minor_list,
-    params: {},
+    key: SWR_KEY.get_category_minor_list_filter,
+    params: {
+      position_view: 'left_menu',
+    },
   })
 
   const hanldeCategorySelect = (category_id: number) => {
