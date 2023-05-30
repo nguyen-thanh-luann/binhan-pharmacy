@@ -1,6 +1,6 @@
 import { AttributeMinor } from './attribute'
 import { Category } from './category'
-import { ImageId, ImageRes } from './common'
+import { ImageId } from './common'
 import { Pagination, QueryList } from './http'
 import { StarRatingRange, StarRatingRangeReq, StarString } from './rating'
 
@@ -65,6 +65,7 @@ export interface Product {
   product_code: string
   product_name: string
   representation_image: ImageId
+  image_ids: ImageId[]
   price_unit: number
   origin_price_unit: number
   sold_quantity: number
@@ -119,7 +120,6 @@ export interface ListAttributeId {
 
 export interface ProductDetail extends Product {
   rel_product_ids: Product[]
-  image_urls: ImageRes
   liked: boolean
   liked_count: number
 }
@@ -200,7 +200,6 @@ export interface TagRating {
 }
 
 export type TIME_TYPE = 'day' | 'second' | 'hour' | 'minute' | 'year' | 'month' | 'week'
-
 
 export type ProductListRes = {
   descendants_structor: Category[]

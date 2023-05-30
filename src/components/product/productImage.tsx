@@ -8,24 +8,26 @@ import { API_URL } from '@/constants'
 import { ImageShower } from '../imageShower'
 import { twMerge } from 'tailwind-merge'
 import classNames from 'classnames'
+import { ImageId } from '@/types'
 
 interface IProductImage {
-  images: Array<string>
+  images_ids?: ImageId[]
+  representation_image: ImageId
   type: 'modal' | 'detail' | 'variation'
   isStock?: boolean
   className?: string
 }
 
-export const ProductImg = ({ images, type, className }: IProductImage) => {
+export const ProductImg = ({ type, className, representation_image, images_ids = [] }: IProductImage) => {
   const dispatch = useDispatch()
   const [swiper, setSwiper] = useState<any>({})
   const [activeIndex, setActiveIndex] = useState<number>(0)
   const previewImageUrl = useSelector(selectPreviewImageUrl)
+  const imageList = [representation_image, ...images_ids]
 
   return (
     <>
       <div className={twMerge(classNames(`relative ${type === 'modal' ? '' : ''}`, className))}>
-
         <div className="mb-12">
           <Swiper
             slidesPerView={1}
@@ -36,16 +38,20 @@ export const ProductImg = ({ images, type, className }: IProductImage) => {
             }}
             onSlideChange={(e) => setActiveIndex(e.activeIndex)}
           >
-            {isArrayHasValue(images)
-              ? images.map((img, index) => (
+            {isArrayHasValue(imageList)
+              ? imageList.map((img, index) => (
                   <SwiperSlide
                     className="cursor-pointer mx-auto"
-                    onClick={() => dispatch(setPreviewImageUrl(`${img}`))}
+                    onClick={() => dispatch(setPreviewImageUrl(`${img?.image_url}`))}
                     key={index}
                   >
                     <div>
                       <Image
-                        src={isRemoteImageUrl(img) ? img : `${API_URL}${img}`}
+                        src={
+                          isRemoteImageUrl(img?.image_url || '')
+                            ? img?.image_url || ''
+                            : `${API_URL}${img?.image_url}`
+                        }
                         className="rounded-md object-cover w-[440px] h-[440px] aspect-1 mx-auto"
                       />
                     </div>
@@ -56,7 +62,7 @@ export const ProductImg = ({ images, type, className }: IProductImage) => {
         </div>
 
         <div className="flex gap-12 overflow-scroll scrollbar-hide">
-          {images.map((img, index) => {
+          {imageList.map((img, index) => {
             return (
               <div
                 key={index}
@@ -68,7 +74,11 @@ export const ProductImg = ({ images, type, className }: IProductImage) => {
                 }`}
               >
                 <Image
-                  src={isRemoteImageUrl(img) ? img : `${API_URL}${img}`}
+                  src={
+                    isRemoteImageUrl(img?.image_url || '')
+                      ? img?.image_url || ''
+                      : `${API_URL}${img?.image_url}`
+                  }
                   className="rounded-lg object-cover h-[64px]"
                   imageClassName="rounded-lg object-cover"
                 />

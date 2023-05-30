@@ -1,4 +1,4 @@
-import { NoteIconOutline, empty } from '@/assets'
+import { NoteIconOutline, companyIconSm } from '@/assets'
 import { DOMAIN_URL, SWR_KEY } from '@/constants'
 import { formatMoneyVND, isObjectHasValue } from '@/helper'
 import { useAddToCart, useUser, useWishlist } from '@/hooks'
@@ -14,11 +14,11 @@ import { Divider } from '../divider'
 import { Image } from '../image'
 import { InputQuantity } from '../inputs'
 import { ShareSocial } from '../shareSocial'
+import { Spinner } from '../spinner'
 import { Star } from '../star'
 import ProductImg from './productImage'
 import { ProductVariants } from './productVariants'
 import WishlistBtn from './wishlistBtn'
-import { Spinner } from '../spinner'
 
 interface ProductDetailProps {
   data: IProductDetail
@@ -69,6 +69,7 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
       product_id: product.product_id,
       product_name: product?.product_name,
       representation_image: product?.representation_image,
+      image_ids: product?.image_ids,
       star_rating: product?.star_rating,
       rating_count: product?.rating_count,
       sold_quantity: product?.sold_quantity,
@@ -115,12 +116,13 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
         <div className="mb-12">
           {currentProduct?.representation_image?.image_url ? (
             <ProductImg
-              images={[currentProduct?.representation_image?.image_url]}
+              representation_image={currentProduct?.representation_image}
+              images_ids={currentProduct?.image_ids}
               type="detail"
               className="w-full md:w-[440px]"
             />
           ) : (
-            <Image src={empty} imageClassName="w-[440px] h-[440px] object-cover" />
+            <Image src={companyIconSm} imageClassName="w-[440px] h-[440px] object-cover" />
           )}
         </div>
 

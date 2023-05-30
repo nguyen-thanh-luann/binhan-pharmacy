@@ -71,7 +71,7 @@ export const DescriptionMenuMobile = ({
         <div>
           <div
             onClick={toggleExpand}
-            className="p-10 flex-between gap-12 border-b border-gray-200 cursor-pointer duration-150 ease-in-out bg-primary-100"
+            className="p-10 flex-between gap-12 border-b border-gray-200 cursor-pointer duration-150 ease-in-out bg-gray-100"
           >
             <p className="text-md">{activeTitle}</p>
 
