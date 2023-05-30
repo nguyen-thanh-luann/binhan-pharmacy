@@ -8,6 +8,7 @@ export const SWR_KEY = {
   get_product_description: 'get_product_description',
   search_product: 'search_product',
   filter_product: 'filter_product',
+  get_accessory_product: 'get_accessory_product',
 
   get_category_list: 'get_category_list',
   get_category_minor_list: 'get_category_minor_list',

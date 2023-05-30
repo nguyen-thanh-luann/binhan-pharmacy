@@ -189,7 +189,7 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
 
         {/* attribute */}
         {currentProduct?.attribute_minor_ids?.length > 0 ? (
-          <div className="mb-16 overflow-scroll">
+          <div className="mb-16 overflow-scroll scrollbar-hide">
             {currentProduct?.attribute_minor_ids?.map((attribute) => {
               const filterable = attribute?.filterable
 

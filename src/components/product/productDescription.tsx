@@ -55,7 +55,6 @@ export const ProductDescription = ({ product_id, className }: ProductDescription
       setCurrentTab(currentDescCategory?.tab?.[0]?.tab_id.toString() || '')
       setCurrentDesc(
         `${currentDescCategory?.tab?.[0]?.content || ''} 
-        <br/>
         ${currentDescCategory?.tab?.[0]?.extra_content || ''}`
       )
     } else {
@@ -69,7 +68,6 @@ export const ProductDescription = ({ product_id, className }: ProductDescription
     if (tabIndex !== -1) {
       setCurrentDesc(
         `${currentDescCategory?.tab?.[tabIndex]?.content || ''} 
-        <br/>
         ${currentDescCategory?.tab?.[tabIndex]?.extra_content || ''}`
       )
     }

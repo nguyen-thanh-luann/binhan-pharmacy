@@ -1,7 +1,7 @@
 import { AttributeMinor } from './attribute'
 import { Category } from './category'
 import { ImageId, ImageRes } from './common'
-import { QueryList } from './http'
+import { Pagination, QueryList } from './http'
 import { StarRatingRange, StarRatingRangeReq, StarString } from './rating'
 
 //use in api v2
@@ -200,3 +200,11 @@ export interface TagRating {
 }
 
 export type TIME_TYPE = 'day' | 'second' | 'hour' | 'minute' | 'year' | 'month' | 'week'
+
+
+export type ProductListRes = {
+  descendants_structor: Category[]
+  category_child: Category[]
+  product_data: Product[]
+  paginate: Pagination
+}

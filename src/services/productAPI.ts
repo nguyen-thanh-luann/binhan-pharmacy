@@ -8,7 +8,8 @@ import {
   GetProductByCategoryParams,
   HTTPListRes,
   HTTPResponseV2,
-  Product
+  Product,
+  ProductParams,
 } from '@/types'
 import { AxiosPromise } from 'axios'
 import axiosClient from '.'
@@ -91,24 +92,30 @@ const productAPI = {
     // })
   },
 
-  getProductsByCategoryMinor: ({
-    limit = DEFAULT_LIMIT,
-    offset = 0,
-    category_id,
-  }: GetProductByCategoryParams) => {
-    return axiosClient.get(
-      `/product_controller/list_product_by_category_minor?limit=${limit}&offset=${offset}&category_id=${category_id}&product_type=["product_product"]`
-    )
+  getProductsByCategoryMinor: (params: GetProductByCategoryParams) => {
+    return axiosClient.get(`/product_controller/list_product_by_category_minor`, {
+      params: {
+        ...params,
+        product_type: `["product_product"]`,
+      },
+    })
   },
 
-  getProductsByCategoryMajor: ({
-    limit = DEFAULT_LIMIT,
-    offset = 0,
-    category_id,
-  }: GetProductByCategoryParams) => {
-    return axiosClient.get(
-      `/product_controller/list_product_by_category_major?limit=${limit}&offset=${offset}&category_id=${category_id}&product_type=["product_product"]`
-    )
+  getProductsByCategoryMajor: (
+    params: GetProductByCategoryParams
+  ): Promise<HTTPResponseV2<Product[]>> => {
+    return axiosClient.get(`/product_controller/list_product_by_category_major`, {
+      params: {
+        ...params,
+        product_type: `["product_product"]`,
+      },
+    })
+  },
+
+  getAccessoryProduct: (params: ProductParams): Promise<HTTPResponseV2<Product[]>> => {
+    return axiosClient.get(`/product_controller/list_accessory_product`, {
+      params,
+    })
   },
 }
 

@@ -15,15 +15,15 @@
     &p,
     li,
     span {
-      @apply text-base font-medium leading-8;
+      @apply text-md font-medium leading-8;
     }
 
     h1 {
-      @apply text-2xl font-bold leading-10;
+      @apply text-xl font-bold leading-10;
     }
 
     h2 {
-      @apply text-xl font-bold leading-10;
+      @apply text-lg font-bold leading-10;
     }
 
     h3 {
@@ -35,7 +35,7 @@
     }
 
     h5 {
-      @apply text-base font-semibold leading-9;
+      @apply text-md font-semibold leading-9;
     }
   }
 }

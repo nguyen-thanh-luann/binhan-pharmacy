@@ -1,5 +1,6 @@
 import { AxiosPromise } from 'axios'
 import type { KeyedMutator } from 'swr'
+import { ProductListRes } from './product'
 
 export type HTTPResponse<T> = {
   jsonrpc?: string
@@ -28,8 +29,6 @@ export interface HTTPListRes<T> {
     total: number
   }
 }
-
-
 
 export interface HTTPConfig {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
@@ -136,7 +135,7 @@ export type HTTPListResV2<T> = {
   }
 }
 
-export type HTTPResV2<T>  = {
+export type HTTPResV2<T> = {
   limit: number
   offset: number
   total: number
@@ -150,3 +149,5 @@ export type FetcherListResV2<Params, Data> = (params: Params) => Promise<HTTPLis
 export type FetcherPartialParams<Params, Data> = (
   params: Partial<Params>
 ) => Promise<HTTPResponseV2<Data[]>>
+
+export type HTTPProductListRes = HTTPResponseDataV2<ProductListRes>

@@ -6,19 +6,21 @@ import type { GetStaticPaths, GetStaticPropsContext } from 'next'
 import { useRouter } from 'next/router'
 
 import {
+  AccessoryProduct,
   Breadcrumb,
   NotFound,
   ProductDescription,
   ProductDetail,
   ProductDetailLoading,
   ProductTabs,
+  RelatedProducts,
   ViewedProducts,
 } from '@/components'
 import { SWR_KEY, WEB_TITTLE } from '@/constants'
 import { fromProductSlugToProductId, isArrayHasValue, isObjectHasValue } from '@/helper'
+import { addViewedProduct } from '@/store'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { addViewedProduct } from '@/store'
 
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
@@ -86,7 +88,6 @@ const ProductDetailPage = () => {
 
             <ProductDetail data={data?.product_data} className="mb-24" />
 
-
             <ProductDescription
               product_id={data?.product_data?.product_id || 0}
               className="mb-24"
@@ -95,6 +96,13 @@ const ProductDetailPage = () => {
             <div className="mb-24">
               <ProductTabs product_id={data?.product_data?.product_id || 0} />
             </div>
+
+            <AccessoryProduct className="mb-24" product_id={data?.product_data?.product_id || 0} />
+
+            <RelatedProducts
+              className="mb-24"
+              category_id={data?.descendants_structor?.[1]?.category_id || 0}
+            />
 
             <ViewedProducts className="mb-24" />
           </div>
