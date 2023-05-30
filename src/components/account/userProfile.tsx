@@ -1,6 +1,6 @@
 import { EmailIcon, PenIconSolid, TelePhoneIcon } from '@/assets'
 import { Button, CustomImage, InputField, RadioField } from '@/components'
-import { DATA_GENDER, DEFAULT_LIMIT } from '@/constants'
+import { DATA_GENDER, LIMIT_ATTACHMENT } from '@/constants'
 import { useAttachment, useCreateAttachment, useUser } from '@/hooks'
 import { userInfoSchema } from '@/schema'
 import { CreateAttachmentRes, UserInfo } from '@/types'
@@ -18,7 +18,7 @@ interface UserProfileProps {
 
 export const UserProfile = ({ data, className }: UserProfileProps) => {
   const { updateUser } = useUser({})
-  const { getBase64Images } = useAttachment({ limit: DEFAULT_LIMIT })
+  const { getBase64Images } = useAttachment({ limit: LIMIT_ATTACHMENT })
   const { createAttachment } = useCreateAttachment()
 
   const {

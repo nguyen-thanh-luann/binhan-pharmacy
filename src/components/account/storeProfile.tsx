@@ -7,7 +7,7 @@ import {
   InputField,
   TextareaField,
 } from '@/components'
-import { DEFAULT_LIMIT } from '@/constants'
+import { LIMIT_ATTACHMENT } from '@/constants'
 import { isInvalidDate } from '@/helper'
 import { useAttachment, useCreateAttachment, useUser } from '@/hooks'
 import { storeInfoSchema } from '@/schema'
@@ -27,7 +27,7 @@ interface StoreProfileProps {
 
 export const StoreProfile = ({ data, className }: StoreProfileProps) => {
   const { updateUser } = useUser({})
-  const { getBase64Images } = useAttachment({ limit: DEFAULT_LIMIT })
+  const { getBase64Images } = useAttachment({ limit: LIMIT_ATTACHMENT })
   const { createAttachment } = useCreateAttachment()
 
   const {

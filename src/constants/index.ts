@@ -12,13 +12,14 @@ export const ZALO_OA_ID = process.env.NEXT_PUBLIC_ZALO_OA_ID
 export const PHONE_SCHEMA = /((^(\+84|84|0|0084){1})(3|5|7|8|9))+([0-9]{8})$/
 
 export const DEFAULT_LIMIT = 30
+export const DEFAULT_LIMIT_PRODUCT = 20
 export const LIMIT_MESSAGES = 30
 export const LIMIT_ROOM_CHAT = 20
 export const LIMIT_DRUG_STORES = 20
 export const RESEND_OTP_TIMEOUT = 60
 export const LIMIT_CART_CATEGORY = 4
 export const LIMIT_CART_COMPANY = 4
-export const LIMIT_ATTACHMENT = 5
+export const LIMIT_ATTACHMENT = 10
 export const LIMIT_PRODUCT_IN_CATEGORY = 30
 
 export const CHAT_POPOVER_HEIGHT = 700
@@ -34,6 +35,7 @@ export const WEB_TITTLE = 'Nhà thuốc Bình An'
 export const WEB_DESCRIPTION = 'Nhà thuốc Bình An - chuyên cup cấp thuốc sỉ và lẻ'
 export const CONTACT_PHONE_NUMBER = '02963958186'
 export const thumbnailImageUrl = 'https://tinyurl.com/bddj6utd'
+
 export const POPUP_NOTIFICATION = `Sàn giao dịch thương mại điện tử duocbinhan.vn được thiết lập để các thành viên tham gia mua bán sỉ các sản phẩm dược phẩm, vật tư y tế, mỹ phẩm và các sản phẩm được phép lưu hành tại Việt Nam.
  Thành viên tham gia Sàn Giao Dịch là các công ty, tổ chức, nhà thuốc, quầy thuốc, phòng khám được cấp quyền phân phối dược phẩm, vật tư y tế và các sản phẩm khác; và phải có người phụ trách chuyên môn theo quy định của pháp luật. Các thông tin về giá cả, thông tin sản phẩm thuốc đăng tải lên Sàn Giao Dịch nhằm mục đích cung cấp thông tin cho thành viên có quyền mua hàng có thể xác định các đặc tính của hàng hóa để đưa ra quyết định mua. 
 Việc sử dụng thuốc kê đơn hay chữa bệnh phải tuyệt đối tuân thủ theo sự hướng dẫn của người có chuyên môn về y dược. Sàn Giao Dịch không chịu trách nhiệm cho bất cứ hậu quả nào xảy ra do tự ý dùng thuốc dựa trên các thông tin trên và các trường hợp thành viên mua thuốc cho mục đích tiêu dùng.`

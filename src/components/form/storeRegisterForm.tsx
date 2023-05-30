@@ -1,5 +1,5 @@
 import { PhotoIcon } from '@/assets'
-import { DEFAULT_LIMIT, STORE_TYPE } from '@/constants'
+import { LIMIT_ATTACHMENT, STORE_TYPE } from '@/constants'
 import { useAttachment, useAuth, useCreateAttachment, useGuest, useModal, useUser } from '@/hooks'
 import { storeRegisterSchema } from '@/schema'
 import { userAPI } from '@/services'
@@ -57,7 +57,7 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
     mode: 'all',
   })
 
-  const { getBase64Images } = useAttachment({ limit: DEFAULT_LIMIT })
+  const { getBase64Images } = useAttachment({ limit: LIMIT_ATTACHMENT })
   const { createAttachment } = useCreateAttachment()
 
   const [businessCerImage, setBusinessCerImage] = useState<CreateAttachmentRes>()

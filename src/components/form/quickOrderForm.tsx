@@ -1,27 +1,27 @@
 import { DrugsIcon, PhotoIcon } from '@/assets'
-import { DATA_GENDER, DEFAULT_LIMIT } from '@/constants'
+import { DATA_GENDER, LIMIT_ATTACHMENT } from '@/constants'
 import { isArrayHasValue } from '@/helper'
 import { useAttachment, useCreateAttachment, useModal, useQuickOrder } from '@/hooks'
 import { getAdviceSchema } from '@/schema'
+import { selectPreviewImageUrl, setPreviewImageUrl } from '@/store'
 import { AddressPickerRes, CreateAttachmentRes, Product, UserAccount } from '@/types'
 import { yupResolver } from '@hookform/resolvers/yup'
 import classNames from 'classnames'
 import { ChangeEvent, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
+import { useDispatch, useSelector } from 'react-redux'
 import { twMerge } from 'tailwind-merge'
 import { Button } from '../button'
 import { CustomImage } from '../customImage'
 import { Divider } from '../divider'
+import { ImageShower } from '../imageShower'
 import { InputField, RadioField, TextareaField } from '../inputs'
 import { Modal } from '../modal'
 import { SelectProductItem } from '../product'
 import { AddressPickerV2 } from './addressPickerV2'
 import { SelectDrugStoreForm } from './selectDrugStoreForm'
 import { SelectProductForm } from './selectProductForm'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectPreviewImageUrl, setPreviewImageUrl } from '@/store'
-import { ImageShower } from '../imageShower'
 
 interface QuickOrderFormProps {
   className?: string
@@ -31,7 +31,7 @@ export const QuickOrderForm = ({ className }: QuickOrderFormProps) => {
   const dispatch = useDispatch()
   const { createQuickOrder } = useQuickOrder()
   const addressPickerRef = useRef<any>(null)
-  const { getBase64Images } = useAttachment({ limit: DEFAULT_LIMIT })
+  const { getBase64Images } = useAttachment({ limit: LIMIT_ATTACHMENT })
   const [prescriptionPhotos, setPrescriptionPhotos] = useState<CreateAttachmentRes[]>()
   const [productSelected, setProductSelected] = useState<Product[]>([])
   const { createAttachment, isLoading: isLoadAttachment } = useCreateAttachment()

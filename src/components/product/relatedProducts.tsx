@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { twMerge } from 'tailwind-merge'
 
-import { DEFAULT_LIMIT, SWR_KEY } from '@/constants'
+import { DEFAULT_LIMIT_PRODUCT, SWR_KEY } from '@/constants'
 import { useProductByCategoryMajor } from '@/hooks'
 import { Product } from '@/types'
 import { Autoplay, Navigation, Pagination } from 'swiper'
@@ -24,7 +24,7 @@ export const RelatedProducts = ({ className, category_id }: ViewedProductsProps)
     key: `${SWR_KEY.get_product_list_by_category_major}_${category_id}`,
     params: {
       category_id,
-      limit: DEFAULT_LIMIT,
+      limit: DEFAULT_LIMIT_PRODUCT,
     },
   })
 

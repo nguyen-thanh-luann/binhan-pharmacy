@@ -1,4 +1,4 @@
-import { DEFAULT_LIMIT } from '@/constants'
+import { DEFAULT_LIMIT, DEFAULT_LIMIT_PRODUCT } from '@/constants'
 import {
   Category,
   FilterProductParams,
@@ -66,7 +66,7 @@ const productAPI = {
   },
 
   getProductsByAttributeMinor: ({
-    limit = DEFAULT_LIMIT,
+    limit = DEFAULT_LIMIT_PRODUCT,
     offset = 0,
     ...params
   }: GetProductByAttributeMinorParams) => {
