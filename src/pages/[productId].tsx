@@ -86,6 +86,7 @@ const ProductDetailPage = () => {
 
             <ProductDetail data={data?.product_data} className="mb-24" />
 
+
             <ProductDescription
               product_id={data?.product_data?.product_id || 0}
               className="mb-24"

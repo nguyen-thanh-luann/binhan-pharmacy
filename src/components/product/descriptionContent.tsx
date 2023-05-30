@@ -3,13 +3,13 @@ import { useRouter } from 'next/router'
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 
 interface DescriptionContentProps {
-  data: string
+  content: string // the main content of the description
   onUserScroll?: (data: number) => void
   className?: string
 }
 
 export const DescriptionContent = forwardRef(
-  ({ data, onUserScroll, className }: DescriptionContentProps, ref) => {
+  ({ content: data, onUserScroll, className }: DescriptionContentProps, ref) => {
     const router = useRouter()
     const [show, setShow] = useState<boolean>(false)
     const [contentHeight, setContentHeight] = useState<number>(0)

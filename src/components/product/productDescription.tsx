@@ -15,6 +15,7 @@ import { Spinner } from '../spinner'
 import { Tabs } from '../tabs'
 import { DescriptionContent } from './descriptionContent'
 import { DescriptionMenu } from './descriptionMenu'
+import { DescriptionMenuMobile } from './descriptionMenuMobile'
 
 interface ProductDescriptionProps {
   product_id: number
@@ -81,42 +82,52 @@ export const ProductDescription = ({ product_id, className }: ProductDescription
           <Spinner />
         </div>
       ) : isArrayHasValue(data) ? (
-        <ProductDetailPageContainer
-          leftChildren={
-            <DescriptionMenu
-              currentDescId={currentDescId}
-              data={data || []}
-              onClick={handleCategoryClick}
-              className="sticky top-header_group_height"
-            />
-          }
-        >
           <div>
-            {isArrayHasValue(currentDescCategory?.tab) ? (
-              <div className={`product_desc`}>
-                <Tabs
-                  list={(currentDescCategory as IProductDescription)?.tab?.map((tab) => ({
-                    label: tab?.tab_name,
-                    value: tab?.tab_id.toString(),
-                  }))}
-                  tabActive={currentTab}
-                  onChange={(val) => {
-                    setCurrentTab(val)
-                  }}
-                  className="border-b border-gray-200 py-12 text-gray w-full overflow-scroll scrollbar-hide"
-                  labelClassName="text-lg font-bold border-r last:border-none border-gray-200 px-12 hover:text-primary"
-                  tabActiveClassName="!text-primary"
-                />
-              </div>
-            ) : null}
-          </div>
-
-          <DescriptionContent
-            ref={descriptionContentRef}
-            data={currentDesc + ''}
-            onUserScroll={(id) => setCurrentDescId(id)}
+            
+          {/* Description menu in mobile */}
+          <DescriptionMenuMobile
+            className="sticky block md:hidden top-header_mobile_height bg-white z-30 shadow-sm"
+            data={data || []}
+            currentDescId={currentDescId}
           />
-        </ProductDetailPageContainer>
+
+          <ProductDetailPageContainer
+            leftChildren={
+              <DescriptionMenu
+                currentDescId={currentDescId}
+                data={data || []}
+                onClick={handleCategoryClick}
+                className="sticky top-header_group_height"
+              />
+            }
+          >
+            <div className="relative">
+              {isArrayHasValue(currentDescCategory?.tab) ? (
+                <div className={`product_desc`}>
+                  <Tabs
+                    list={(currentDescCategory as IProductDescription)?.tab?.map((tab) => ({
+                      label: tab?.tab_name,
+                      value: tab?.tab_id.toString(),
+                    }))}
+                    tabActive={currentTab}
+                    onChange={(val) => {
+                      setCurrentTab(val)
+                    }}
+                    className="border-b border-gray-200 py-12 text-gray w-full overflow-scroll scrollbar-hide"
+                    labelClassName="text-lg font-bold border-r last:border-none border-gray-200 px-12 hover:text-primary"
+                    tabActiveClassName="!text-primary"
+                  />
+                </div>
+              ) : null}
+            </div>
+
+            <DescriptionContent
+              ref={descriptionContentRef}
+              content={currentDesc + ''}
+              onUserScroll={(id) => setCurrentDescId(id)}
+            />
+          </ProductDetailPageContainer>
+        </div>
       ) : null}
     </div>
   )

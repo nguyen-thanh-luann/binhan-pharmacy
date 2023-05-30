@@ -41,27 +41,27 @@ body {
 }
 
 h1 {
-  @apply text-text-color font-bold text-3xl select-none break-words;
+  @apply text-text-color font-bold text-3xl break-words;
 }
 
 h2 {
-  @apply text-text-color font-semibold text-xl select-none break-words;
+  @apply text-text-color font-semibold text-xl break-words;
 }
 
 h3 {
-  @apply text-text-color font-semibold text-lg select-none break-words;
+  @apply text-text-color font-semibold text-lg break-words;
 }
 
 h4 {
-  @apply text-text-color font-semibold text-md select-none break-words;
+  @apply text-text-color font-semibold text-md break-words;
 }
 
 h5 {
-  @apply text-text-color font-semibold text-base select-none break-words;
+  @apply text-text-color font-semibold text-base break-words;
 }
 
 p,
 li,
 div {
-  @apply text-text-color text-base font-medium select-none break-words;
+  @apply text-text-color text-base font-medium break-words;
 }
