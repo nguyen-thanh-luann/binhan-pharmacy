@@ -102,12 +102,14 @@ const PostDetailPage = () => {
                 </div>
               </div>
               <div className="flex-1 overflow-scroll scrollbar-hide">
-                <PostDetail className='mb-32 bg-white' data={postDetail} />
+                <PostDetail className="mb-32 bg-white" data={postDetail} />
 
                 <div className="bg-white p-12">
                   {isLoadingPostList || isArrayHasValue(postList) ? (
                     <div>
-                      <p className="mb-12 text-2xl font-bold capitalize border-b-2 border-primary">Xem thêm bài viết</p>
+                      <p className="mb-12 text-2xl font-bold capitalize border-b-2 border-primary">
+                        Xem thêm bài viết
+                      </p>
 
                       <InfiniteScroll
                         dataLength={postList?.length || 0}

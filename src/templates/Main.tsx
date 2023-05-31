@@ -1,6 +1,13 @@
 import { ReactNode } from 'react'
 
-import { Backdrop, BottomNavigation, Footer, HeaderGroup, HeaderMobile } from '@/components'
+import {
+  Backdrop,
+  BottomNavigation,
+  ContactOptions,
+  Footer,
+  HeaderGroup,
+  HeaderMobile,
+} from '@/components'
 import type { MetaProps } from '@/layouts'
 import { Meta } from '@/layouts'
 import { Toaster } from 'react-hot-toast'
@@ -35,16 +42,8 @@ export const Main = ({ children, ...attributes }: IMainProps) => {
         {children}
 
         <Footer />
-
-        {/* <div
-          className="zalo-chat-widget"
-          data-oaid={ZALO_OA_ID}
-          data-welcome-message="Rất vui khi được hỗ trợ bạn!"
-          data-autopopup="0"
-          data-width=""
-          data-height=""
-        /> */}
       </div>
+      <ContactOptions />
 
       <BottomNavigation />
     </div>

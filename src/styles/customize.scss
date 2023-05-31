@@ -133,6 +133,13 @@
   }
 }
 
-.zalo-chat-widget{
-  bottom: 60px !important
+.zalo-chat-widget {
+  bottom: 70px !important;
+  right: 25px !important;
+  border: none !important;
+  outline: none !important;
+  
+  @include responsive(md-screen) {
+     bottom: 120px !important;
+  }
 }

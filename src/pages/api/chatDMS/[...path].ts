@@ -16,10 +16,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<HTTPRe
   const cookies = new Cookies(req, res)
   const chatToken = cookies.get('chat_access_token')
 
-
-  // console.log({chatToken});
-  
-
   if (chatToken) {
     req.headers.Authorization = `Bearer ${chatToken}`
   }
