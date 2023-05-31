@@ -11,13 +11,13 @@ export const Footer = () => {
       <div className="container px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-40">
         <div className="col-span-1 z-10">
           <div className="mb-24">
-            <Image src={logoSm} imageClassName="w-full max-w-[210px] object-cover" />
+            <Image src={logoSm} imageClassName="w-full max-w-[180px] object-cover" />
           </div>
 
           <p className="text-md text-text-color font-normal mb-12">DƯỢC PHẨM BINHAN PHARMACY</p>
 
           <p className="text-md text-text-color font-normal mb-12">
-            Địa chỉ: Căn 3305 tòa C2 Dự án D’Capitale, số 119 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà
+            Địa chỉ: Căn 3305 tòa C2 Dự án D'Capitale, số 119 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà
             Nội, Việt Nam
           </p>
           <p className="text-md text-text-color font-normal mb-12">GPĐKKD: 0105659294-003</p>

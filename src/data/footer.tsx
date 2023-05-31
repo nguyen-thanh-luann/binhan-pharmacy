@@ -13,16 +13,8 @@ export const WebCategoryData = [
   },
   {
     title: 'Góc nhà thuốc',
-    path: '',
-  },
-  {
-    title: 'Sống khỏe mỗi ngày',
-    path: '',
-  },
-  {
-    title: 'Thuốc',
-    path: '',
-  },
+    path: '/post-list',
+  }
 ]
 
 export const AboutUsData = [

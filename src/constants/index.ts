@@ -12,7 +12,7 @@ export const ZALO_OA_ID = process.env.NEXT_PUBLIC_ZALO_OA_ID
 export const PHONE_SCHEMA = /((^(\+84|84|0|0084){1})(3|5|7|8|9))+([0-9]{8})$/
 
 export const DEFAULT_LIMIT = 30
-export const DEFAULT_LIMIT_PRODUCT = 20
+export const DEFAULT_LIMIT_PRODUCT = 10
 export const LIMIT_MESSAGES = 30
 export const LIMIT_ROOM_CHAT = 20
 export const LIMIT_DRUG_STORES = 20

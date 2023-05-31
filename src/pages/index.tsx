@@ -29,7 +29,7 @@ const HomePage = () => {
           <HomePosts />
         </div>
 
-        {/* <IntroPopUp /> */}
+        <IntroPopUp />
       </div>
     </Main>
   )
