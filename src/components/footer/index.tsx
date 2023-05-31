@@ -91,7 +91,7 @@ export const Footer = () => {
       </a>
 
       {/* background linear */}
-      <div className="absolute top-0 bottom-0 left-0 right-0 background z-0"></div>
+      <div className="absolute top-0 bottom-0 left-0 right-0 background-default z-0"></div>
     </footer>
   )
 }

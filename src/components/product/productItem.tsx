@@ -103,7 +103,7 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
                       ? `${API_URL}${data?.representation_image?.image_url}`
                       : empty
                   }
-                  imageClassName="object-cover w-full hover:scale-110 duration-200 ease-in-out aspect-[1/1]"
+                  imageClassName="object-cover w-full h-full hover:scale-110 duration-200 ease-in-out aspect-[1/1]"
                   className=""
                 />
               </div>

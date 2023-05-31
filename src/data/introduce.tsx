@@ -1,4 +1,15 @@
-import { ability, cooperate, creative, quality, respect, trust } from '@/assets'
+import {
+  ability,
+  cooperate,
+  creative,
+  quality,
+  respect,
+  trust,
+  medicine,
+  protect,
+  returnBox,
+  shipped,
+} from '@/assets'
 
 export const CoreValues = [
   {
@@ -36,5 +47,32 @@ export const CoreValues = [
     title: 'Chất lượng',
     content:
       'Chúng tôi nỗ lực để đạt được các chuẩn mực chất lượng cao nhất trong tất cả những gì chúng tôi làm.	',
+  },
+]
+
+export const HomeDecorData = [
+  {
+    image: medicine,
+    title: '100% SẢN PHẨM CHÍNH HÃNG',
+    content:
+      'Đầy đủ giấy phép, hồ sơ công bố, nhập khẩu. Nguồn gốc xuất xứ rõ ràng, xuất hóa đơn VAT. Cam kết chất lượng từ nhà sản xuất.',
+  },
+  {
+    image: protect,
+    title: 'HỖ TRỢ ĐẶT HÀNG, TƯ VẤN',
+    content:
+      'Có nhiều hình thức kết nối trực tuyến, miễn phí đến dược sĩ tư vấn. Đặt mua dễ dàng và chủ động theo dõi doanh số. ',
+  },
+  {
+    image: returnBox,
+    title: 'ĐỔI TRẢ MIỄN PHÍ',
+    content:
+      'Sẵn sàng đổi trả hoặc hoàn tiền nếu sản phẩm sai chủng loại, thiếu số lượng hoặc hư hỏng trong quá trình vận chuyển.',
+  },
+  {
+    image: shipped,
+    title: 'MIỄN PHÍ CHUYỂN PHÁT',
+    content:
+      'Miễn phí giao nhận đơn hàng cho nhà thuốc, phòng khám. Chủ động cập nhật và theo dõi tiến trình giao hàng.',
   },
 ]

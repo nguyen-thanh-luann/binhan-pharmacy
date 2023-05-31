@@ -33,6 +33,11 @@ export const orderDoneIcon = require('./order_done.png')
 export const orderDoneBackground = require('./order_done_background.png')
 export const categoryPromotionIcon = require('./category_promotion_icon.png')
 export const giftIcon = require('./gift.png')
+export const homeDecord = require('./home-decor.png')
+export const medicine = require('./medicine.png')
+export const protect = require('./protect.png')
+export const returnBox = require('./return-box.png')
+export const shipped = require('./shipped.png')
 
 // image use in page "gioi-thieu.tsx"
 export const introBanner = require('./abipha-banner-intro.png')

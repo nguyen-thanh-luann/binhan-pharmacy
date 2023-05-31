@@ -142,7 +142,7 @@ const PostCategoryPage = () => {
             <div>
               {isValidating || isArrayHasValue(postCategoryList) ? (
                 <div>
-                  <div className="max-h-[80vh] overflow-scroll">
+                  <div className="max-h-[80vh] overflow-scroll scrollbar-hide">
                     <InfiniteScroll
                       dataLength={postCategoryList?.length || 0}
                       next={() => getMore()}

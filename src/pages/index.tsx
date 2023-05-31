@@ -1,5 +1,6 @@
 import {
   HomeBanner,
+  HomeDecor,
   HomePosts,
   IntroPopUp,
   ListProductByAttributeMinor,
@@ -25,7 +26,11 @@ const HomePage = () => {
           <VisceraAttribute />
 
           <ListProductByAttributeMinor />
+        </div>
 
+        <HomeDecor />
+
+        <div className="container px-12">
           <HomePosts />
         </div>
 
