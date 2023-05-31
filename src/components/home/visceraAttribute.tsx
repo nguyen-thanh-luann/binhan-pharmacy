@@ -41,7 +41,7 @@ export const VisceraAttribute = ({ className }: VisceraAttributeProps) => {
     <div className={twMerge(classNames('', className))}>
       {isArrayHasValue(data) ? (
         <HomeSlide
-          title={viewAttribute?.attribute_name || 'Danh mục sản phẩm'}
+          title={'Danh mục sản phẩm'}
           icon={<NotebookIconOutline className="text-primary w-[34px] h-[34px]" />}
           className="bg-white rounded-[10px] mb-24 md:p-24"
           sectionClassName=""

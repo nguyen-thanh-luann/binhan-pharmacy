@@ -33,7 +33,7 @@ export const MOBILE_WIDTH = 300
 
 export const WEB_TITTLE = 'Nhà thuốc Bình An'
 export const WEB_DESCRIPTION = 'Nhà thuốc Bình An - chuyên cup cấp thuốc sỉ và lẻ'
-export const CONTACT_PHONE_NUMBER = '02963958186'
+export const CONTACT_PHONE_NUMBER = '0933 691 115'
 export const thumbnailImageUrl = 'https://tinyurl.com/bddj6utd'
 
 export const POPUP_NOTIFICATION = `Sàn giao dịch thương mại điện tử duocbinhan.vn được thiết lập để các thành viên tham gia mua bán sỉ các sản phẩm dược phẩm, vật tư y tế, mỹ phẩm và các sản phẩm được phép lưu hành tại Việt Nam.

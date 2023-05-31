@@ -38,7 +38,7 @@ export const HomeSlide = ({
           </p>
         </div>
 
-        <div>{rightSection}</div>
+        <div className='md:max-w-[60%]'>{rightSection}</div>
       </div>
       {children}
     </div>

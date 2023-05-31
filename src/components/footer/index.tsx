@@ -8,33 +8,54 @@ import { CONTACT_PHONE_NUMBER } from '@/constants'
 export const Footer = () => {
   return (
     <footer className="footer relative w-full py-80 px-24">
-      <div className="container px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-80">
+      <div className="container px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-40">
         <div className="col-span-1 z-10">
           <div className="mb-24">
             <Image src={logoSm} imageClassName="w-full max-w-[210px] object-cover" />
           </div>
 
-          <p className="text-md text-text-color font-normal">
-            Lorem ipsum dolor sit amet consectetur. Dolor habitasse vul putate quam nulla mauris.
-            Turpis eget id vitae nisl a nec.
+          <p className="text-md text-text-color font-normal mb-12">DƯỢC PHẨM BINHAN PHARMACY</p>
+
+          <p className="text-md text-text-color font-normal mb-12">
+            Địa chỉ: Căn 3305 tòa C2 Dự án D’Capitale, số 119 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà
+            Nội, Việt Nam
+          </p>
+          <p className="text-md text-text-color font-normal mb-12">GPĐKKD: 0105659294-003</p>
+
+          <p className="text-md text-text-color font-normal mb-12">
+            Website:{' '}
+            <a href="https://duocbinhan.vn" target="_blank">
+              duocbinhan.vn
+            </a>
+          </p>
+          <p className="text-md text-text-color font-normal mb-12">
+            Tổng đài tư vấn: <a href={`tel:${CONTACT_PHONE_NUMBER}`}>{CONTACT_PHONE_NUMBER}</a>
+          </p>
+
+          <p className="text-md text-text-color font-normal mb-12">
+            Email: <a href="mailto:duocbinhan.vn@gmail.com">duocbinhan.vn@gmail.com</a>
+          </p>
+
+          <p className="text-md text-text-color font-normal mb-12">
+            Người đại diện: <a href="mailto:duocbinhan.vn@gmail.com">Trần Thành - DS đại học</a>
           </p>
         </div>
 
         <div className="col-span-1 z-10">
-          <p className="text-primary font-bold text-md leading-10 mb-24">Danh mục Website</p>
+          <p className="text-primary font-bold text-lg leading-10 mb-24">Danh mục Website</p>
 
           {WebCategoryData.map((item, index) => (
-            <Link className="" key={index} href={item.path}>
-              <p className="text-gray text-base font-normal leading-8 mb-16">{item.title}</p>
+            <Link className="forward-link" key={index} href={item.path}>
+              <p className="text-md text-text-color font-normal leading-8 mb-16">{item.title}</p>
             </Link>
           ))}
         </div>
 
         <div className="col-span-1 z-10">
-          <p className="text-primary font-bold text-md leading-10 mb-24">Về chúng tôi</p>
+          <p className="text-primary font-bold text-lg leading-10 mb-24">Về chúng tôi</p>
           {AboutUsData.map((item, index) => (
-            <Link className="" key={index} href={item.path}>
-              <p className="text-gray text-base font-normal leading-8 mb-16">{item.title}</p>
+            <Link className="forward-link" key={index} href={item.path}>
+              <p className="text-md text-text-color font-normal leading-8 mb-16">{item.title}</p>
             </Link>
           ))}
         </div>
@@ -62,10 +83,11 @@ export const Footer = () => {
       {/*  */}
       <a
         href={`tel:${CONTACT_PHONE_NUMBER}`}
-        className="absolute top-[-25px] z-10 right-[5%] py-8 px-16 rounded-full bg-primary text-white flex-center gap-12">
+        className="absolute top-[-25px] z-10 right-[5%] py-8 px-16 rounded-full bg-primary text-white flex-center gap-12"
+      >
         <TelePhoneIcon className="w-16 h-16 text-white" />
 
-        <p className="text-white text-base font-normal leading-10">{`+84 ${CONTACT_PHONE_NUMBER}`}</p>
+        <p className="text-white text-base font-normal leading-10">{`${CONTACT_PHONE_NUMBER}`}</p>
       </a>
 
       {/* background linear */}

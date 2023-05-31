@@ -101,10 +101,10 @@ const PostDetailPage = () => {
                   <PostCategoryMenu />
                 </div>
               </div>
-              <div className="flex-1 bg-white overflow-scroll scrollbar-hide">
-                <PostDetail data={postDetail} />
+              <div className="flex-1 overflow-scroll scrollbar-hide">
+                <PostDetail className='mb-32 bg-white' data={postDetail} />
 
-                <div className="mt-32">
+                <div className="bg-white p-12">
                   {isLoadingPostList || isArrayHasValue(postList) ? (
                     <div>
                       <p className="mb-12 text-2xl font-bold capitalize border-b-2 border-primary">Xem thêm bài viết</p>

@@ -28,26 +28,14 @@ export const WebCategoryData = [
 export const AboutUsData = [
   {
     title: 'Giới thiệu',
-    path: '',
+    path: '/gioi-thieu',
   },
   {
     title: 'Hệ thống cửa hàng',
-    path: '',
+    path: '/drug-stores',
   },
   {
-    title: 'Giấy phép kinh doanh cửa hàng',
-    path: '',
-  },
-  {
-    title: 'Cơ chế hoạt động',
-    path: '',
-  },
-  {
-    title: 'Chính sách bảo mật',
-    path: '',
-  },
-  {
-    title: 'Chính sách thanh toán',
-    path: '',
+    title: 'Chính sách bán hàng',
+    path: '/chinh-sach-ban-hang',
   },
 ]

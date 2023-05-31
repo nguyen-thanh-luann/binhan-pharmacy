@@ -3,13 +3,14 @@ import { SWR_KEY } from '@/constants'
 import { useProductListByAttributeMinor } from '@/hooks'
 import { AttributeMinor } from '@/types'
 import classNames from 'classnames'
-import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { CustomImage } from '../customImage'
 import { ProductItem, ProductItemLoading } from '../product'
 import { Tabs } from '../tabs'
 import { HomeSlide } from './homeSlide'
+import ScrollContainer from 'react-indiana-drag-scroll'
 
 interface ProductsByAttributeMinorProps {
   atribute: AttributeMinor | undefined
@@ -114,19 +115,35 @@ export const ProductsByAttributeMinor = ({
         title={atribute?.attribute_name || ''}
         rightSection={
           tabs?.length > 1 ? (
-            <div className="overflow-scroll scrollbar-hide">
-              <Tabs
-                list={
-                  (atribute?.value_ids?.length || 0) > 3
-                    ? [...tabs, { label: 'Xem thêm', value: 'more' }]
-                    : [...tabs]
-                }
-                tabActive={currentTab}
-                onChange={(val: string) => handleTabChange(val)}
-                className="rounded-[32px] bg-primary-200 w-fit"
-                labelClassName="text-gray font-medium text-md leading-9 py-8 px-16"
-                tabActiveClassName="bg-primary !text-white rounded-[32px]"
-              />
+            // <div className="overflow-scroll scrollbar-hide">
+            //   <Tabs
+            //     list={
+            //       (atribute?.value_ids?.length || 0) > 3
+            //         ? [...tabs, { label: 'Xem thêm', value: 'more' }]
+            //         : [...tabs]
+            //     }
+            //     tabActive={currentTab}
+            //     onChange={(val: string) => handleTabChange(val)}
+            //     className="rounded-[32px] bg-primary-200 w-fit"
+            //     labelClassName="text-gray font-medium text-md leading-9 py-8 px-16"
+            //     tabActiveClassName="bg-primary !text-white rounded-[32px]"
+            //   />
+            // </div>
+            <div>
+              <ScrollContainer className="">
+                <Tabs
+                  list={
+                    (atribute?.value_ids?.length || 0) > 3
+                      ? [...tabs, { label: 'Xem thêm', value: 'more' }]
+                      : [...tabs]
+                  }
+                  tabActive={currentTab}
+                  onChange={(val: string) => handleTabChange(val)}
+                  className="rounded-[32px] bg-primary-200 w-fit"
+                  labelClassName="text-gray font-medium text-md leading-9 py-8 px-16"
+                  tabActiveClassName="bg-primary !text-white rounded-[32px]"
+                />
+              </ScrollContainer>
             </div>
           ) : undefined
         }
