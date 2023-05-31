@@ -34,4 +34,12 @@ export const orderDoneBackground = require('./order_done_background.png')
 export const categoryPromotionIcon = require('./category_promotion_icon.png')
 export const giftIcon = require('./gift.png')
 
-// export const voucherFrame = require('./voucherFrame.svg')
+// image use in page "gioi-thieu.tsx"
+export const introBanner = require('./abipha-banner-intro.png')
+export const ability = require('./ability.png')
+export const cooperate = require('./cooperate.png')
+export const creative = require('./creative.png')
+export const quality = require('./quality.png')
+export const respect = require('./respect.png')
+export const trust = require('./trust.png')
+export const delivery = require('./delivery.png')

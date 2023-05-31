@@ -4,7 +4,7 @@ import {
   IntroPopUp,
   ListProductByAttributeMinor,
   SectionBuyMedicine,
-  VisceraAttribute
+  VisceraAttribute,
 } from '@/components'
 
 import { DOMAIN_URL, WEB_DESCRIPTION, WEB_TITTLE, thumbnailImageUrl } from '@/constants'
@@ -26,12 +26,10 @@ const HomePage = () => {
 
           <ListProductByAttributeMinor />
 
-          {/* post list */}
           <HomePosts />
         </div>
 
-        <IntroPopUp />
-        {/* <ChatButton /> */}
+        {/* <IntroPopUp /> */}
       </div>
     </Main>
   )
