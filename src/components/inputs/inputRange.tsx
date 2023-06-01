@@ -28,8 +28,9 @@ export const InputRange: FC<MultiRangeSliderProps> = memo(function InputRangeChi
   // Set width of the range to decrease from the left side
   useEffect(() => {
     if (maxValRef.current) {
-      const minPercent = getPercent(minVal)
-      const maxPercent = getPercent(+maxValRef.current.value) // Precede with '+' to convert the value from type string to type number
+      const minPercent = getPercent(minVal) < 0 ? 0 : getPercent(minVal)
+      const maxPercent =
+        getPercent(+maxValRef.current.value) > 100 ? 100 : getPercent(+maxValRef.current.value) // Precede with '+' to convert the value from type string to type number
 
       if (range.current) {
         range.current.style.left = `${minPercent}%`
@@ -41,8 +42,10 @@ export const InputRange: FC<MultiRangeSliderProps> = memo(function InputRangeChi
   // Set width of the range to decrease from the right side
   useEffect(() => {
     if (minValRef.current) {
-      const minPercent = getPercent(+minValRef.current.value)
-      const maxPercent = getPercent(maxVal)
+      const minPercent =
+        getPercent(+minValRef.current.value) < 0 ? 0 : getPercent(+minValRef.current.value)
+
+      const maxPercent = getPercent(maxVal) > 100 ? 100 : getPercent(maxVal)
 
       if (range.current) {
         range.current.style.width = `${maxPercent - minPercent}%`
@@ -90,7 +93,7 @@ export const InputRange: FC<MultiRangeSliderProps> = memo(function InputRangeChi
         <div className="absolute rounded-[3px] h-[0.5rem] bg-slate-400 w-[250px]"></div>
         <div
           ref={range}
-          className="absolute bg-primary z-50 h-[0.5rem] rounded-[3px] max-w-[100%]"
+          className="absolute bg-primary z-50 h-[0.5rem] rounded-[3px] min-w-fit max-w-[100%]"
         ></div>
         <div className="absolute left-[4px] mt-12">{formatMoneyVND(minVal)}</div>
         <div className="absolute right-[4px] mt-12">{formatMoneyVND(maxVal)}</div>

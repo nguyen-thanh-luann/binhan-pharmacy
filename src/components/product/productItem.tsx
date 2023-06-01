@@ -142,7 +142,8 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
             </Tooltip>
 
             {/* properties list */}
-            <ScrollContainer className="flex h-[30px]">
+            <ScrollContainer
+              className="flex h-[30px]">
               {/* attribute */}
               {data?.attribute_minor_ids?.map((attribute) => {
                 if (attribute?.filterable) {

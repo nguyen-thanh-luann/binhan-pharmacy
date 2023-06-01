@@ -129,10 +129,10 @@ export const FilterByCategory = () => {
                             onClick={() => hanldeCategorySelect(child.category_id)}
                           >
                             <p
-                              className={` font-semibold text-md ${
+                              className={`font-semibold text-md border-b duration-200 ${
                                 isActive(child?.category_id?.toString())
-                                  ? 'text-primary'
-                                  : 'text-text-color'
+                                  ? 'text-primary border-primary'
+                                  : 'text-text-color border-white'
                               }`}
                             >
                               {child?.category_name}

@@ -39,7 +39,7 @@ const PostAdminItem = ({
           imageClassName="object-cover aspect-1 rounded-lg"
         />
       </div>
-      <div className="flex-1 mx-[12px]">
+      <div className="flex-1 ml-12 mr-32">
         <div className="">
           <p className="title_md line-clamp-1">{post?.title}</p>
           <p className="text_md line-clamp-2">{post?.short_content}</p>

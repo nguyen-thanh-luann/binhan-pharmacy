@@ -1,4 +1,4 @@
-import { FilterOutlineIcon, TimesIcon } from '@/assets'
+import { FilterOutlineIcon, SearchIcon, TimesIcon, TrashIconOutline } from '@/assets'
 import {
   Breadcrumb,
   Modal,
@@ -119,24 +119,25 @@ const SearchPage = () => {
           ]}
         />
 
-        <div className="flex">
-          <div className="w-[300px] hidden md:block h-[100vh] overflow-scroll scrollbar-hide px-12 pb-12">
+        <div className="grid grid-cols-4">
+          <div className="col-span-1 hidden md:block h-[95vh] overflow-scroll scrollbar-hide px-12 pb-12">
             <ProductFilterSidebar price_max={price_max} price_min={price_min} />
           </div>
-          <div className="flex-1 overflow-scroll scrollbar-hide px-12 h-[100vh]">
+
+          <div className="col-span-4 md:col-span-3 overflow-scroll scrollbar-hide px-12 h-[100vh]">
             {/* search bar */}
-            <div className="p-12 rounded-lg bg-white mb-24 shadow-shadow-1">
+            <div className="p-12 rounded-lg bg-white z-50 mb-12 shadow-shadow-1">
               <Tabs
                 list={PRODUCT_FILTER_TABS}
                 tabActive={currentTab}
                 onChange={(val: any) => handleSelectFilterTab(val)}
-                className="overflow-scroll scrollbar-hide"
+                className="overflow-scroll scrollbar-hide mb-8"
                 labelClassName="px-12 py-8 text-center border-b border-white"
                 tabActiveClassName="!border-primary text-primary"
               />
               <div
                 onClick={openFilters}
-                className="flex md:hidden mt-12 items-center gap-4 cursor-pointer hover:text-primary duration-150"
+                className="flex md:hidden mb-8 items-center gap-4 cursor-pointer hover:text-primary duration-150"
               >
                 <FilterOutlineIcon className="w-20 h-20" />
                 <span className="text-base">Lọc</span>
@@ -164,8 +165,35 @@ const SearchPage = () => {
               </Modal>
             </div>
 
+            {isObjectHasValue(router?.query) && (
+              <div className="mb-12 flex items-center justify-between flex-wrap">
+                <div>
+                  {router.query.keyword && (
+                    <div className="flex items-center">
+                      <SearchIcon className="mr-8 min-w-14 h-14" />
+
+                      <p className="text-md line-clamp-2">
+                        Kết quả tìm kiếm cho từ khóa{' '}
+                        <span className="text-primary">{`"${router.query.keyword}"`}</span>
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <div
+                  onClick={() => {
+                    router.push('/search')
+                  }}
+                  className="flex items-center border border-red rounded-md p-4 cursor-pointer bg-white"
+                >
+                  <TrashIconOutline className="text-red text-base mr-8" />
+                  <p className="text-red text-base">Xóa bộ lọc</p>
+                </div>
+              </div>
+            )}
+
             {/* product slide here */}
-            <div className="max-h-[95vh] overflow-scroll scrollbar-hide">
+            <div className="">
               {isValidating || isLoadingMore ? (
                 <ProductsLoadingSlice className="grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-12" />
               ) : null}

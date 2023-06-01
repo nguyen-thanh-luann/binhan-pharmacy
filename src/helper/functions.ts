@@ -291,10 +291,9 @@ export const mergeProductDescriptionContent = (productDescriptions: ProductDescr
       descContent += `<h1 class='desc_title' id='desc_category_${description.category_id}'>${
         description?.category_name || ''
       }</h1> 
-      <br/> 
       ${description?.content || ''} 
-      <br/> 
       ${description?.extra_content || ''}
+      <br/>
       `
 
       if (isArrayHasValue(description.child)) {
@@ -302,10 +301,10 @@ export const mergeProductDescriptionContent = (productDescriptions: ProductDescr
           descContent += `<h2 class='desc_title' id='desc_category_${child.category_id}'>${
             child.category_name
           }</h2> 
-          <br/> 
           ${child?.content || ''}
-          <br/>
+           <br/>
           ${child?.extra_content || ''}
+           <br/>
           `
         })
       }

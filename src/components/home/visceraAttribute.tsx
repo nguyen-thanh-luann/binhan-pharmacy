@@ -6,14 +6,14 @@ import { twMerge } from 'tailwind-merge'
 import { NotebookIconOutline } from '@/assets'
 import { isArrayHasValue } from '@/helper'
 import { VisceraAttribute as IVisceraAttribute, VisceraAttributeRes } from '@/types'
-import { Autoplay, Navigation, Pagination } from 'swiper'
+import { useRouter } from 'next/router'
+import { Navigation, Pagination } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { VisceraAttributeItem, VisceraAttributeItemLoading } from '../attribute'
 import { HomeSlide } from './homeSlide'
-import { useRouter } from 'next/router'
 
 interface VisceraAttributeProps {
   className?: string
@@ -55,11 +55,7 @@ export const VisceraAttribute = ({ className }: VisceraAttributeProps) => {
               clickable: true,
             }}
             loop={true}
-            autoplay={{
-              delay: 5000,
-              disableOnInteraction: false,
-            }}
-            modules={[Autoplay, Pagination, Navigation]}
+            modules={[Pagination, Navigation]}
             breakpoints={{
               300: {
                 slidesPerView: 2,

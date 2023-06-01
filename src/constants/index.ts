@@ -31,14 +31,11 @@ export const DESKTOP_WIDTH = 1024
 export const TABLET_WIDTH = 900
 export const MOBILE_WIDTH = 300
 
-export const WEB_TITTLE = 'Nhà thuốc Bình An'
-export const WEB_DESCRIPTION = 'Nhà thuốc Bình An - chuyên cup cấp thuốc sỉ và lẻ'
-export const CONTACT_PHONE_NUMBER = '0933 691 115'
+export const WEB_TITTLE = 'Hệ thống nhà thuốc BINHAN PHARMACY'
+export const WEB_DESCRIPTION =
+  'Phân phối đa dạng các dòng sản phẩm chăm sóc sức khỏe trong và ngoài nước. Cam kết 100% sản phẩm chính hãng, xuất xứ rõ ràng, tư vấn tận tình.'
+export const CONTACT_PHONE_NUMBER = '093 3691 115'
 export const thumbnailImageUrl = 'https://tinyurl.com/bddj6utd'
-
-export const POPUP_NOTIFICATION = `Sàn giao dịch thương mại điện tử duocbinhan.vn được thiết lập để các thành viên tham gia mua bán sỉ các sản phẩm dược phẩm, vật tư y tế, mỹ phẩm và các sản phẩm được phép lưu hành tại Việt Nam.
- Thành viên tham gia Sàn Giao Dịch là các công ty, tổ chức, nhà thuốc, quầy thuốc, phòng khám được cấp quyền phân phối dược phẩm, vật tư y tế và các sản phẩm khác; và phải có người phụ trách chuyên môn theo quy định của pháp luật. Các thông tin về giá cả, thông tin sản phẩm thuốc đăng tải lên Sàn Giao Dịch nhằm mục đích cung cấp thông tin cho thành viên có quyền mua hàng có thể xác định các đặc tính của hàng hóa để đưa ra quyết định mua. 
-Việc sử dụng thuốc kê đơn hay chữa bệnh phải tuyệt đối tuân thủ theo sự hướng dẫn của người có chuyên môn về y dược. Sàn Giao Dịch không chịu trách nhiệm cho bất cứ hậu quả nào xảy ra do tự ý dùng thuốc dựa trên các thông tin trên và các trường hợp thành viên mua thuốc cho mục đích tiêu dùng.`
 
 export const MESSAGE_OPTION_MENU_SIZE = {
   width: 180,
@@ -76,7 +73,7 @@ export const STORE_TYPE: OptionType<string>[] = [
 ]
 
 export const PRODUCT_FILTER_TABS: OptionType<string>[] = [
-  { label: 'Phổ biến', value: 'default' },
+  { label: 'Tất cả', value: 'default' },
   { label: 'Bán chạy', value: 'sold_quantity' },
   { label: 'Sản phẩm mới', value: 'new_product' },
   { label: 'Giá thấp đến cao', value: 'price_increase' },
