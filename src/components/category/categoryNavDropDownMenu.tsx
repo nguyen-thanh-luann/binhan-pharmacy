@@ -15,12 +15,14 @@ interface CategoryNavDropDownMenuProps {
   parent_category_id?: number
   className?: string
   isMinorCategory?: boolean
+  onClose?: () => void
 }
 
 export const CategoryNavDropDownMenu = ({
   parent_category_id,
   className,
   isMinorCategory = false,
+  onClose,
 }: CategoryNavDropDownMenuProps) => {
   const router = useRouter()
 
@@ -52,6 +54,7 @@ export const CategoryNavDropDownMenu = ({
     } else {
       router.push(`/search/?minor_category_${id}=${id}`)
     }
+    onClose?.()
   }
 
   return (
@@ -110,7 +113,7 @@ export const CategoryNavDropDownMenu = ({
             <div className="col-span-3 h-category_dropdown_height overflow-scroll scrollbar-hide">
               {/* child category list */}
               <div>
-                <CategoryNavChilds parent_category_id={currentCategoryId} />
+                <CategoryNavChilds parent_category_id={currentCategoryId} onClose={onClose} />
               </div>
 
               {/* product list */}

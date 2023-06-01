@@ -17,12 +17,14 @@ interface CategoryNavChildsProps {
   parent_category_id?: number
   className?: string
   isMinorCategory?: boolean
+  onClose?: () => void
 }
 
 export const CategoryNavChilds = ({
   parent_category_id,
   className,
   isMinorCategory = false,
+  onClose,
 }: CategoryNavChildsProps) => {
   const router = useRouter()
 
@@ -48,6 +50,7 @@ export const CategoryNavChilds = ({
     } else {
       router.push(`/search/?minor_category_${id}=${id}`)
     }
+    onClose?.()
   }
 
   return (

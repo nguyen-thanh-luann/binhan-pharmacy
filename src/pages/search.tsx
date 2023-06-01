@@ -27,7 +27,7 @@ const SearchPage = () => {
   const [currentTab, setCurrentTab] = useState<string>('default')
   const { visible: showFilters, openModal: openFilters, closeModal: closeFilters } = useModal()
 
-  const { products, filter, isValidating, hasMore, getMore } = useProductQuery({
+  const { products, filter, isValidating, hasMore, getMore, isLoadingMore } = useProductQuery({
     key: `${SWR_KEY.filter_product}`,
     params: {
       product_type: 'product_product',
@@ -165,7 +165,7 @@ const SearchPage = () => {
 
             {/* product slide here */}
             <div className="max-h-[95vh] overflow-scroll scrollbar-hide">
-              {isValidating ? (
+              {isValidating || isLoadingMore ? (
                 <ProductsLoadingSlice className="grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-12" />
               ) : null}
 
@@ -187,7 +187,7 @@ const SearchPage = () => {
                   </div>
                 </InfiniteScroll>
               ) : (
-                <div className=''>
+                <div className="">
                   <NotFound notify="Không tìm thấy sản phẩm phù hợp!" />
                 </div>
               )}

@@ -35,7 +35,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   } catch (err) {
     console.log(err)
     return {
-      paths: [],
+      paths: [''],
       fallback: true,
     }
   }

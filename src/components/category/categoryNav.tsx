@@ -107,14 +107,16 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
 
           {/* dropdown menu */}
           <div
-            className={`absolute z-40 left-0 right-0 ${
+            className={classNames(
+              'absolute z-40 left-0 right-0 transition-opacity ease-in-out duration-200',
               currentCategoryId ? 'flex' : 'hidden'
-            } transition-opacity ease-in-out duration-200`}
+            )}
           >
             <CategoryNavDropDownMenu
               parent_category_id={currentCategoryId}
               isMinorCategory={isCategoryMinor}
               className="transition-opacity ease-in-out duration-200"
+              onClose={() => {setCurrentCategoryId(undefined)}}
             />
           </div>
         </div>
