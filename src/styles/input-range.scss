@@ -6,7 +6,6 @@
   position: relative;
   width: 100%;
 
-
   /* Removing the default appearance */
   .thumb,
   .thumb::-webkit-slider-thumb {
@@ -20,18 +19,6 @@
     height: 0;
     outline: none;
     width: 250px;
-  }
-
-  .thumb--zindex-3 {
-    z-index: 3;
-  }
-
-  .thumb--zindex-4 {
-    z-index: 4;
-  }
-
-  .thumb--zindex-5 {
-    z-index: 5;
   }
 
   /* For Chrome browsers */
@@ -55,9 +42,9 @@
     border-radius: 50%;
     box-shadow: 0 0 1px 1px #ced4da;
     cursor: pointer;
-    height: 18px;
-    width: 18px;
-    margin-top: 4px;
+    height: 1.8rem;
+    width: 1.8rem;
+    margin-top: 0.4rem;
     pointer-events: all;
     position: relative;
   }

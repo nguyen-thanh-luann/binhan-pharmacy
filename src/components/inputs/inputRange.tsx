@@ -68,8 +68,8 @@ export const InputRange: FC<MultiRangeSliderProps> = memo(function InputRangeChi
           setMinVal(value)
           event.target.value = value.toString()
         }}
-        className={classnames('thumb thumb--zindex-3', {
-          'thumb--zindex-5': minVal > max - 100,
+        className={classnames('thumb z-30', {
+          'z-50': minVal > max - 100,
         })}
       />
       <input
@@ -83,12 +83,15 @@ export const InputRange: FC<MultiRangeSliderProps> = memo(function InputRangeChi
           setMaxVal(value)
           event.target.value = value.toString()
         }}
-        className="thumb thumb--zindex-4"
+        className="thumb z-40"
       />
 
       <div className="relative w-[250px]">
         <div className="absolute rounded-[3px] h-[0.5rem] bg-slate-400 w-[250px]"></div>
-        <div ref={range} className="absolute bg-primary z-50 h-[0.5rem] rounded-[3px]"></div>
+        <div
+          ref={range}
+          className="absolute bg-primary z-50 h-[0.5rem] rounded-[3px] max-w-[100%]"
+        ></div>
         <div className="absolute left-[4px] mt-12">{formatMoneyVND(minVal)}</div>
         <div className="absolute right-[4px] mt-12">{formatMoneyVND(maxVal)}</div>
       </div>

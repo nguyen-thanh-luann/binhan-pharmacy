@@ -1,11 +1,11 @@
 import { SWR_KEY } from '@/constants'
 import { isArrayHasValue } from '@/helper'
 import { useAttributeMinor } from '@/hooks'
+import { AttributeMinor } from '@/types'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import { InputCheckbox } from '../inputs'
 import { Spinner } from '../spinner'
-import { useEffect, useState } from 'react'
-import { AttributeMinor } from '@/types'
 
 export const FilterByAttributeMinor = () => {
   const router = useRouter()
@@ -73,10 +73,6 @@ export const FilterByAttributeMinor = () => {
     }
     setExpandAtts([...expandAtts, data?.attribute_id])
   }
-
-  useEffect(() => {
-    console.log({ expandAtts })
-  }, [expandAtts])
 
   return (
     <div>
