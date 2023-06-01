@@ -311,6 +311,21 @@ export interface OrderHistoryDetail {
   code_delivery: string | false
   url_tracking_delivery: string | false
   delivery_message: string
+  payment_method: OrderPaymentMethod
+}
+
+export interface OrderPaymentMethod {
+  payment_id: number
+  payment_name: string
+  payment_type: 'bank' | 'cod' | 'other'
+  payment_info: {
+    qr_code: string
+    bank_name: string
+    bank_code: string
+    bank_branch: string
+    bank_account_holder: string
+    bank_note: string
+  }
 }
 
 export interface ProductOrderHistory {
