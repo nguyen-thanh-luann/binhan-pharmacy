@@ -1,9 +1,16 @@
 import React from 'react'
 import { Image } from '../image'
-import { TelePhoneIcon, downloadAppStore, downloadGooglePlay, logoSm } from '@/assets'
+import {
+  TelePhoneIcon,
+  downloadAppStore,
+  downloadGooglePlay,
+  facebookIcon,
+  logoSm,
+  zaloIcon,
+} from '@/assets'
 import Link from 'next/link'
 import { AboutUsData, WebCategoryData } from '@/data'
-import { CONTACT_PHONE_NUMBER } from '@/constants'
+import { CONTACT_PHONE_NUMBER, ZALO_OA_ID } from '@/constants'
 
 export const Footer = () => {
   return (
@@ -61,21 +68,42 @@ export const Footer = () => {
         </div>
 
         <div className="col-span-1 z-10">
-          <div className="mb-16 text-text-color font-bold text-base leading-10 uppercase text-center">
-            <p className="">Tải ứng dụng</p>
-            <p>
-              binhan <span className="text-primary">Pharmacy</span>
-            </p>
+          <div className="mb-24">
+            <div className="mb-16 text-center">
+              <p className="text-md uppercase">Tải ứng dụng</p>
+              <p className="text-md uppercase">
+                binhan <span className="text-primary">Pharmacy</span>
+              </p>
+            </div>
+
+            <div className="flex items-center justify-center gap-16">
+              <Link href={'/'}>
+                <Image src={downloadGooglePlay} imageClassName="w-[134px]" />
+              </Link>
+
+              <Link href={'/'}>
+                <Image src={downloadAppStore} imageClassName="w-[134px]" />
+              </Link>
+            </div>
           </div>
 
-          <div className="flex items-center gap-16">
-            <Link href={'/'}>
-              <Image src={downloadGooglePlay} imageClassName="w-[134px]" />
-            </Link>
+          <div className="">
+            <p className="text-md text-center text-text-color uppercase mb-12">
+              Kết nối cùng BINHAN
+            </p>
 
-            <Link href={'/'}>
-              <Image src={downloadAppStore} imageClassName="w-[134px]" />
-            </Link>
+            <div className="flex items-center justify-center gap-16">
+              <Link href={'https://www.facebook.com/duocbinhan'} target="_blank">
+                <Image
+                  src={facebookIcon}
+                  className="w-[40px] h-[40px] object-cover cursor-pointer"
+                />
+              </Link>
+
+              <Link href={`https://zalo.me/${ZALO_OA_ID}`} target='_blank'>
+                <Image src={zaloIcon} className="w-[40px] h-[40px] object-cover cursor-pointer" />
+              </Link>
+            </div>
           </div>
         </div>
       </div>
