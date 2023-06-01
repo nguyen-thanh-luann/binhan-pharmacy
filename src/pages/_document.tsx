@@ -14,7 +14,7 @@ class MyDocument extends Document {
           <Main />
 
           <div
-            className="zalo-chat-widget animate-fade"
+            className="zalo-chat-widget animate-fade !z-50"
             data-oaid={ZALO_OA_ID}
             data-welcome-message="Rất vui khi được hỗ trợ bạn!"
             data-autopopup="0"

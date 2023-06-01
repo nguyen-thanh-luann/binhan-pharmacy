@@ -24,7 +24,7 @@ export const PostListItemVertical = ({
   titleClassName,
   shortContentClassName,
 }: PostItemProps) => {
-  const postSlug = `/post/${generateProductSlug(data?.title, data?.id)}`
+  const postSlug = `/post-detail?slug=${generateProductSlug(data?.title, data?.id)}`
 
   return (
     <div

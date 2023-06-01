@@ -2,54 +2,21 @@ import {
   Breadcrumb,
   PostCategoryMenu,
   PostDetail,
+  PostDetailLoading,
   PostItemLoading,
-  PostListItemHorizontal,
-  Spinner,
+  PostListItemHorizontal
 } from '@/components'
-import { DEFAULT_LIMIT, SWR_KEY } from '@/constants'
+import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
 import { fromProductSlugToProductId, isArrayHasValue, isObjectHasValue } from '@/helper'
 import { usePostDetail, usePostList } from '@/hooks'
-import { postAPI } from '@/services'
 import { Main } from '@/templates'
-import { Post } from '@/types'
-import type { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import InfiniteScroll from 'react-infinite-scroll-component'
-
-type IPostUrl = {
-  slug: string
-}
-
-export const getStaticPaths: GetStaticPaths<IPostUrl> = async () => {
-  try {
-    const res: any = await postAPI.getPostList({})
-
-    return {
-      paths: res?.data?.data?.map((post: Post) => ({
-        params: { slug: post?.id },
-      })),
-      fallback: false,
-    }
-  } catch (err) {
-    console.log(err)
-    return {
-      paths: [],
-      fallback: false,
-    }
-  }
-}
-
-export const getStaticProps: GetStaticProps<IPostUrl, IPostUrl> = async ({ params }) => {
-  return {
-    props: {
-      slug: params!.slug,
-    },
-  }
-}
 
 const PostDetailPage = () => {
   const router = useRouter()
   const post_id = fromProductSlugToProductId((router.query.slug as string) || '')
+
   const { data: postDetail, isValidating } = usePostDetail({
     key: `${SWR_KEY.get_post_detail}_${post_id}`,
     params: { post_id },
@@ -78,12 +45,10 @@ const PostDetailPage = () => {
   }
 
   return (
-    <Main title="" description="">
+    <Main title={postDetail?.title || WEB_TITTLE} description={WEB_DESCRIPTION}>
       <div className="container my-24">
         {isValidating ? (
-          <div className="flex-center">
-            <Spinner />
-          </div>
+          <PostDetailLoading />
         ) : isObjectHasValue(postDetail) ? (
           <div>
             <Breadcrumb

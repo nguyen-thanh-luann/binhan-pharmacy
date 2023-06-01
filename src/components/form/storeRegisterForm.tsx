@@ -107,7 +107,8 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
   const checkAccountExist = async (
     phone: string,
     onExist?: () => void,
-    onNotExist?: () => void
+    onNotExist?: () => void,
+    onError?: () => void
   ) => {
     try {
       const res: any = await userAPI.checkUserAccountExist(phone)
@@ -117,6 +118,7 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
         onNotExist?.()
       }
     } catch (error) {
+      onError?.()
       console.log(error)
     }
   }
@@ -192,6 +194,10 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
             )
           },
         })
+      },
+      () => {
+        toast.error('Có lỗi xảy ra!')
+        closeOtpForm()
       }
     )
   }

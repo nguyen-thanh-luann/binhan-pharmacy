@@ -24,7 +24,7 @@ export const PostListItemHorizontal = ({
   titleClassName,
   shortContentClassName,
 }: PostItemProps) => {
-  const postSlug = `/post/${generateProductSlug(data?.title, data?.id)}`
+  const postSlug = `/post-detail?slug=${generateProductSlug(data?.title, data?.id)}`
 
   return (
     <div className={twMerge(classNames(`group rounded-[10px] bg-white`, className))}>

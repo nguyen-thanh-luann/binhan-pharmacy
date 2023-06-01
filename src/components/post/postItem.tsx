@@ -1,11 +1,10 @@
+import { generateProductSlug } from '@/helper'
 import { Post } from '@/types'
 import classNames from 'classnames'
-import React from 'react'
-import { twMerge } from 'tailwind-merge'
-import Link from 'next/link'
-import { Image } from '../image'
-import { generateProductSlug } from '@/helper'
 import moment from 'moment'
+import { twMerge } from 'tailwind-merge'
+import { Image } from '../image'
+import Link from 'next/link'
 
 interface PostItemProps {
   data: Post
@@ -24,7 +23,7 @@ export const PostItem = ({
   titleClassName,
   shortContentClassName,
 }: PostItemProps) => {
-  const postSlug = `/post/${generateProductSlug(data?.title, data?.id)}`
+  const postSlug = `/post-detail?slug=${generateProductSlug(data?.title, data?.id)}`
 
   return (
     <div className={twMerge(classNames(`group rounded-[10px] overflow-hidden`, className))}>

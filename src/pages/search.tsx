@@ -122,7 +122,7 @@ const SearchPage = () => {
           <div className="w-[300px] hidden md:block h-[100vh] overflow-scroll scrollbar-hide px-12 pb-12">
             <ProductFilterSidebar />
           </div>
-          <div className="flex-1 overflow-scroll scrollbar-hide px-12">
+          <div className="flex-1 overflow-scroll scrollbar-hide px-12 h-[100vh]">
             {/* search bar */}
             <div className="p-12 rounded-lg bg-white mb-24 shadow-shadow-1">
               <Tabs
@@ -187,7 +187,7 @@ const SearchPage = () => {
                   </div>
                 </InfiniteScroll>
               ) : (
-                <div>
+                <div className=''>
                   <NotFound notify="Không tìm thấy sản phẩm phù hợp!" />
                 </div>
               )}
