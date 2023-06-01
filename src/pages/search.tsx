@@ -109,7 +109,7 @@ const SearchPage = () => {
 
   return (
     <MainNoFooter title={WEB_TITTLE} description="">
-      <div className="container px-12 min-h-[60vh]">
+      <div className="container min-h-[60vh]">
         <Breadcrumb
           breadcrumbList={[
             {
@@ -158,7 +158,7 @@ const SearchPage = () => {
                   </div>
 
                   <div className="p-16 h-[100vh] overflow-scroll scrollbar-hide">
-                    <ProductFilterSidebar />
+                    <ProductFilterSidebar price_max={price_max} price_min={price_min} />
                   </div>
                 </div>
               </Modal>
