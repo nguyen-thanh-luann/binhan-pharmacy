@@ -155,9 +155,9 @@ export type HTTPResV2<T> = {
   data: T
 }
 
-export type Fetcher<Params, Data> = (params: Params) => Promise<HTTPResponseV2<Data[]>>
-
 export type FetcherListResV2<Params, Data> = (params: Params) => Promise<HTTPListResV2<Data[]>>
+
+export type Fetcher<Params, Data> = (params: Params) => Promise<HTTPResponseV2<Data[]>>
 
 export type FetcherPartialParams<Params, Data> = (
   params: Partial<Params>
@@ -165,8 +165,8 @@ export type FetcherPartialParams<Params, Data> = (
 
 export type FetcherProductFilter<Params, Data> = (
   params: Params
-) => Promise<HTTPListProductFilterResponse<Data[]>>
+) => Promise<HTTPProductFilterResponse<Data[]>>
 
 export type FetcherProductFilterPartialParams<Params, Data> = (
   params: Partial<Params>
-) => Promise<HTTPListProductFilterResponse<Data[]>>
+) => Promise<HTTPProductFilterResponse<Data[]>>

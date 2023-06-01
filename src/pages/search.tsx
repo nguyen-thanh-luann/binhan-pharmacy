@@ -27,12 +27,13 @@ const SearchPage = () => {
   const [currentTab, setCurrentTab] = useState<string>('default')
   const { visible: showFilters, openModal: openFilters, closeModal: closeFilters } = useModal()
 
-  const { products, filter, isValidating, hasMore, getMore, isLoadingMore } = useProductQuery({
-    key: `${SWR_KEY.filter_product}`,
-    params: {
-      product_type: 'product_product',
-    },
-  })
+  const { products, filter, isValidating, hasMore, getMore, isLoadingMore, price_max, price_min } =
+    useProductQuery({
+      key: `${SWR_KEY.filter_product}`,
+      params: {
+        product_type: 'product_product',
+      },
+    })
 
   useEffect(() => {
     let attribute: any = {}
@@ -120,7 +121,7 @@ const SearchPage = () => {
 
         <div className="flex">
           <div className="w-[300px] hidden md:block h-[100vh] overflow-scroll scrollbar-hide px-12 pb-12">
-            <ProductFilterSidebar />
+            <ProductFilterSidebar price_max={price_max} price_min={price_min} />
           </div>
           <div className="flex-1 overflow-scroll scrollbar-hide px-12 h-[100vh]">
             {/* search bar */}

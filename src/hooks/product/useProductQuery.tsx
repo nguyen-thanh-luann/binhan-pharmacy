@@ -1,6 +1,6 @@
 import { productAPI } from '@/services'
 import { FilterProductParams, Product } from '@/types'
-import { useQueryListV2 } from '../common/useQueryV2'
+import { useProductFilter } from '../common/useProductFilter'
 
 interface useProductQueryProps {
   key: string
@@ -14,21 +14,21 @@ interface useProductQueryRes {
   isValidating: boolean
   filter: (params: FilterProductParams) => void
   getMore: () => void
+  price_max: number
+  price_min: number
 }
 
 export const useProductQuery = ({ key, params }: useProductQueryProps): useProductQueryRes => {
-  const { data, isValidating, getMore, hasMore, isLoadingMore, filter } = useQueryListV2<
-    Product,
-    FilterProductParams
-  >({
-    key,
-    fetcher: productAPI.filterProduct,
-    initialParams: params,
-    config: {
-      revalidateOnFocus: false,
-      dedupingInterval: 60000,
-    },
-  })
+  const { data, isValidating, getMore, hasMore, isLoadingMore, filter, price_max, price_min } =
+    useProductFilter<Product, FilterProductParams>({
+      key,
+      fetcher: productAPI.filterProduct,
+      initialParams: params,
+      config: {
+        revalidateOnFocus: false,
+        dedupingInterval: 60000,
+      },
+    })
 
   return {
     products: data,
@@ -37,5 +37,7 @@ export const useProductQuery = ({ key, params }: useProductQueryProps): useProdu
     hasMore,
     getMore,
     filter,
+    price_max,
+    price_min,
   }
 }

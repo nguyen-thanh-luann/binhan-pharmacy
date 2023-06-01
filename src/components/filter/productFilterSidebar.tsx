@@ -11,9 +11,15 @@ import { FilterByPrice } from './filterByPrice'
 
 interface ProductFilterSidebarProps {
   className?: string
+  price_max?: number
+  price_min?: number
 }
 
-export const ProductFilterSidebar = ({ className }: ProductFilterSidebarProps) => {
+export const ProductFilterSidebar = ({
+  className,
+  price_max = 0,
+  price_min = 0,
+}: ProductFilterSidebarProps) => {
   const router = useRouter()
 
   const showResetFilterBtn = isObjectHasValue(router?.query)
@@ -39,7 +45,7 @@ export const ProductFilterSidebar = ({ className }: ProductFilterSidebarProps) =
       </div>
 
       <div className="mb-16">
-        <FilterByPrice />
+        <FilterByPrice price_max={price_max} price_min={price_min} />
       </div>
 
       <div>

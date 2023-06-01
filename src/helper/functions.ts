@@ -369,3 +369,11 @@ export function getRatingContent(content: string): string {
   if (!content) return ''
   return content.includes('<p>') ? content.slice(3, content.length - 4) : content
 }
+
+export function roundingNumber(value: number, type: 'upper' | 'lower', base_unit: number): number {
+  if (type === 'upper') {
+    return Math.ceil(value / base_unit) * base_unit
+  } else {
+    return Math.floor(value / base_unit) * base_unit
+  }
+}

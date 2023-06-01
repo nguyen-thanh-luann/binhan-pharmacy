@@ -2,20 +2,26 @@ import produce, { Draft } from 'immer'
 import { useState } from 'react'
 import useSWR, { Key } from 'swr'
 
-import { removeEmptyValueFromObject } from '@/helper'
-import { Fetcher, FetcherPartialParams, HTTPListResponse, HTTPResponseV2, QueryList } from '@/types'
-import { PublicConfiguration } from 'swr/_internal'
 import { DEFAULT_LIMIT } from '@/constants'
+import { removeEmptyValueFromObject } from '@/helper'
+import {
+  FetcherProductFilter,
+  FetcherProductFilterPartialParams,
+  HTTPListProductFilterResponse,
+  HTTPProductFilterResponse,
+  QueryList,
+} from '@/types'
+import { PublicConfiguration } from 'swr/_internal'
 
 export interface UseProductFilterProps<Data, Params extends QueryList = any> {
-
-  fetcher: Fetcher<Params, Data> | FetcherPartialParams<Params, Data>
-  mutateFetcherResponse?: (params: HTTPListResponse<Data[]>) => HTTPListResponse<Data[]>
+  fetcher: FetcherProductFilter<Params, Data> | FetcherProductFilterPartialParams<Params, Data>
+  mutateFetcherResponse?: (
+    params: HTTPListProductFilterResponse<Data[]>
+  ) => HTTPListProductFilterResponse<Data[]>
   key: Key
   initialParams?: Params
   config?: Partial<PublicConfiguration<any, any, (args_0: string) => any>>
   result_key?: string
-  
 }
 
 export const useProductFilter = <Data = any, Params extends QueryList = any>({
@@ -25,11 +31,10 @@ export const useProductFilter = <Data = any, Params extends QueryList = any>({
   fetcher,
   mutateFetcherResponse,
 }: UseProductFilterProps<Data, Params>) => {
-  const { isValidating, data, error, mutate } = useSWR<HTTPListResponse<Data[]>, Params>(
-    key,
-    () => fetcherHandler(),
-    config
-  )
+  const { isValidating, data, error, mutate } = useSWR<
+    HTTPListProductFilterResponse<Data[]>,
+    Params
+  >(key, () => fetcherHandler(), config)
   const [params, setParams] = useState<Params>(getDefaultParams)
   const hasMore = (data?.result?.length || 0) < (data?.paginate?.total || 0)
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false)
@@ -42,21 +47,25 @@ export const useProductFilter = <Data = any, Params extends QueryList = any>({
     } as Params
   }
 
-  const getDefaultResponse = (): HTTPListResponse<Data[]> => ({
+  const getDefaultResponse = (): HTTPListProductFilterResponse<Data[]> => ({
     paginate: {
       limit: 0,
       offset: 0,
       total: 0,
     },
     result: [],
+    price_max: 0,
+    price_min: 0,
   })
 
-  const getDataResponse = <Data>(res: HTTPResponseV2<Data[]>): HTTPListResponse<Data[]> => {
+  const getDataResponse = <Data>(
+    res: HTTPProductFilterResponse<Data[]>
+  ): HTTPListProductFilterResponse<Data[]> => {
     const response = res?.data
     return response || getDefaultResponse()
   }
 
-  async function fetcherHandler(): Promise<HTTPListResponse<Data[]>> {
+  async function fetcherHandler(): Promise<HTTPListProductFilterResponse<Data[]>> {
     try {
       const res = await fetcher(params)
       if (mutateFetcherResponse) {
@@ -126,7 +135,15 @@ export const useProductFilter = <Data = any, Params extends QueryList = any>({
 
   const _mutate = (params: Data[], shouldFetch?: boolean) => {
     if (data) {
-      mutate({ paginate: data.paginate, result: params }, shouldFetch)
+      mutate(
+        {
+          paginate: data.paginate,
+          result: params,
+          price_max: data?.price_max,
+          price_min: data?.price_min,
+        },
+        shouldFetch
+      )
     }
   }
 
@@ -135,6 +152,8 @@ export const useProductFilter = <Data = any, Params extends QueryList = any>({
     offset: data?.paginate?.offset || 0,
     limit: data?.paginate?.limit || 0,
     total: data?.paginate?.total || 0,
+    price_min: data?.price_min || 0,
+    price_max: data?.price_max || 0,
     isValidating,
     isLoadingMore,
     error,

@@ -7,6 +7,7 @@ import {
   GetProductByAttributeMinorParams,
   GetProductByCategoryParams,
   HTTPListRes,
+  HTTPProductFilterResponse,
   HTTPResponseV2,
   Product,
   ProductParams,
@@ -15,7 +16,7 @@ import { AxiosPromise } from 'axios'
 import axiosClient from '.'
 
 const productAPI = {
-  filterProduct: (params?: FilterProductParams): Promise<HTTPResponseV2<Product[]>> => {
+  filterProduct: (params?: FilterProductParams): Promise<HTTPProductFilterResponse<Product[]>> => {
     return axiosClient.post('/product_controller/list_product_by_filter', {
       params: {
         ...params,
