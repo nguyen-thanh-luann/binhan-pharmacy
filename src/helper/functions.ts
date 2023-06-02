@@ -376,3 +376,7 @@ export function roundingNumber(value: number, type: 'upper' | 'lower', base_unit
     return Math.floor(value / base_unit) * base_unit
   }
 }
+
+export function isAddressNameValid(province: string, district: string, ward: string): boolean{
+  return (!!province && !!district && !!ward)
+}

@@ -20,11 +20,11 @@ import 'swiper/css/pagination'
 import { twMerge } from 'tailwind-merge'
 import { Image } from '../image'
 import { ModalProductDetail } from '../modal'
+import { Spinner } from '../spinner'
 import { Star } from '../star'
+import { Tooltip } from '../tooltip'
 import { ProductDiscountBadge } from './productDiscountBadge'
 import { ProductItemLoading } from './productItemLoading'
-import { Spinner } from '../spinner'
-import { Tooltip } from '../tooltip'
 
 interface ProductItemProps {
   data: Product
@@ -143,12 +143,23 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
 
             {/* properties list */}
             <ScrollContainer
-              className="flex h-[30px]">
+              onChange={(event) => {
+                console.log(event)
+
+                event.preventDefault()
+                event.stopPropagation()
+              }}
+              mouseScroll={true}
+              className="flex h-[30px]"
+            >
               {/* attribute */}
               {data?.attribute_minor_ids?.map((attribute) => {
                 if (attribute?.filterable) {
                   return attribute?.value_ids?.map((value) => (
                     <p
+                      onChange={(e) => {
+                        console.log('onChange product', e)
+                      }}
                       key={value?.value_id}
                       onClick={() =>
                         hanldePropertyClick({
@@ -170,6 +181,9 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
               {/* category */}
               {isObjectHasValue(data?.category_id) ? (
                 <p
+                  onChange={(e) => {
+                    console.log('onChange product', e)
+                  }}
                   key={data?.category_id?.category_id}
                   onClick={() =>
                     hanldePropertyClick({

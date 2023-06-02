@@ -8,7 +8,7 @@ import {
   TextareaField,
 } from '@/components'
 import { LIMIT_ATTACHMENT } from '@/constants'
-import { isInvalidDate } from '@/helper'
+import { isAddressNameValid, isInvalidDate } from '@/helper'
 import { useAttachment, useCreateAttachment, useUser } from '@/hooks'
 import { storeInfoSchema } from '@/schema'
 import { AddressPickerRes, CreateAttachmentRes, UserInfo } from '@/types'
@@ -243,9 +243,15 @@ export const StoreProfile = ({ data, className }: StoreProfileProps) => {
               className="mb-12"
               onSubmit={(data: AddressPickerRes) => handleSelectAddress(data)}
               defaultValue={
-                data
-                  ? `${data?.account?.ward_id?.ward_name} ${data?.account?.district_id?.district_name} ${data?.account?.province_id?.province_name} `
-                  : ``
+                isAddressNameValid(
+                  data?.account?.province_id?.province_name,
+                  data?.account?.district_id?.district_name,
+                  data?.account?.ward_id?.ward_name
+                )
+                  ? `${data?.account?.ward_id?.ward_name} ${
+                      data?.account?.district_id?.district_name
+                    } ${data?.account?.province_id?.province_name} `
+                  : undefined
               }
             />
 

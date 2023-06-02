@@ -1,17 +1,16 @@
 import { selectViewedProducts } from '@/store'
 import classNames from 'classnames'
-import React from 'react'
 import { useSelector } from 'react-redux'
 import { twMerge } from 'tailwind-merge'
 
+import { Product } from '@/types'
 import { Autoplay, Navigation, Pagination } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Product } from '@/types'
-import { ProductItem } from './productItem'
 import { HomeSlide } from '../home'
+import { ProductItem } from './productItem'
 
 interface ViewedProductsProps {
   className?: string
@@ -21,6 +20,7 @@ export const ViewedProducts = ({ className }: ViewedProductsProps) => {
   const viewedProducts = useSelector(selectViewedProducts)
   
   if (!viewedProducts || viewedProducts?.length === 0) return null
+
 
   return (
     <div className={twMerge(classNames(`bg-white p-12`, className))}>
@@ -53,10 +53,9 @@ export const ViewedProducts = ({ className }: ViewedProductsProps) => {
         >
           <div>
             {viewedProducts.map((product: Product) => (
-              <div key={product?.product_id} className=''>
-                
+              <div key={product?.product_id} className="">
                 <SwiperSlide key={product.product_id}>
-                  <ProductItem data={product} className='relative'/>
+                  <ProductItem data={product} className="relative" />
                 </SwiperSlide>
               </div>
             ))}
