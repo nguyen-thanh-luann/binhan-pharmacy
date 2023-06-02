@@ -34,7 +34,7 @@ export const SelectProductForm = ({
     onClose?.()
   })
 
-  const { products, filter, hasMore } = useProductQuery({
+  const { products, filter, hasMore, getMore } = useProductQuery({
     key: `${SWR_KEY.search_product}`,
     params: {
       product_type: 'product_product',
@@ -47,8 +47,6 @@ export const SelectProductForm = ({
       onClose?.()
     }
   }
-
-  const handleLoadMore = () => {}
 
   const searchProducts = async (value: string) => {
     if (!value) return
@@ -63,9 +61,7 @@ export const SelectProductForm = ({
     const index = productSelected?.findIndex((p) => p.product_id === product?.product_id)
 
     if (index !== -1) {
-      console.log('update quantity')
-
-      //update quantity
+      //update quantity or not???
       return
     }
 
@@ -98,18 +94,22 @@ export const SelectProductForm = ({
         />
       </div>
 
-      <div className="max-h-[350px] overflow-scroll scrollbar-hide p-12">
+      <div
+        id="listQuickOrderProducts"
+        className="max-h-[350px] overflow-scroll scrollbar-hide p-12"
+      >
         <InfiniteScroll
           dataLength={products?.length || 0}
-          next={() => handleLoadMore()}
+          next={() => getMore()}
           hasMore={hasMore}
           loader={
             hasMore ? (
-              <div className="my-12">
+              <div className="my-12 flex-center">
                 <Spinner />
               </div>
             ) : null
           }
+          scrollableTarget="listQuickOrderProducts"
         >
           <div className="">
             {isArrayHasValue(products) ? (

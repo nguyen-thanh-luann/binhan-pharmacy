@@ -17,7 +17,7 @@ import { CustomImage } from '../customImage'
 import { Divider } from '../divider'
 import { ImageShower } from '../imageShower'
 import { InputField, RadioField, TextareaField } from '../inputs'
-import { Modal } from '../modal'
+import { ModalSelectData } from '../modal'
 import { SelectProductItem } from '../product'
 import { AddressPickerV2 } from './addressPickerV2'
 import { SelectDrugStoreForm } from './selectDrugStoreForm'
@@ -25,17 +25,20 @@ import { SelectProductForm } from './selectProductForm'
 
 interface QuickOrderFormProps {
   className?: string
+  type: 'purchase' | 'advice'
 }
 
-export const QuickOrderForm = ({ className }: QuickOrderFormProps) => {
+export const QuickOrderForm = ({ className, type = 'purchase' }: QuickOrderFormProps) => {
   const dispatch = useDispatch()
   const { createQuickOrder } = useQuickOrder()
   const addressPickerRef = useRef<any>(null)
   const { getBase64Images } = useAttachment({ limit: LIMIT_ATTACHMENT })
+  const { createAttachment, isLoading: isLoadAttachment } = useCreateAttachment()
+  
+  const previewImageUrl = useSelector(selectPreviewImageUrl)
+
   const [prescriptionPhotos, setPrescriptionPhotos] = useState<CreateAttachmentRes[]>()
   const [productSelected, setProductSelected] = useState<Product[]>([])
-  const { createAttachment, isLoading: isLoadAttachment } = useCreateAttachment()
-  const previewImageUrl = useSelector(selectPreviewImageUrl)
 
   const {
     visible: showSelectStore,
@@ -152,7 +155,8 @@ export const QuickOrderForm = ({ className }: QuickOrderFormProps) => {
 
     createQuickOrder(
       {
-        has_medicine_order: true,
+        has_medicine_order: isArrayHasValue(prescriptionPhotos),
+        request_type: type,
         contact_name: data?.name,
         drugstore_id: data?.drugstore_id?.value,
         phone: data?.phone,
@@ -365,25 +369,15 @@ export const QuickOrderForm = ({ className }: QuickOrderFormProps) => {
       </form>
 
       {/* modal select store */}
-      <Modal
-        visible={showSelectStore}
-        animationType="fade"
-        headerClassName="hidden"
-        modalClassName="h-fit max-h-[450px] w-[500px] max-w-[90%] rounded-[10px] overflow-scroll scrollbar-hide"
-      >
+      <ModalSelectData visible={showSelectStore} modalClassName="">
         <SelectDrugStoreForm
           onClose={closeSelectStore}
           onSelect={(data) => handleSelectStore(data)}
         />
-      </Modal>
+      </ModalSelectData>
 
       {/* modal select product */}
-      <Modal
-        visible={showSelectProduct}
-        animationType="fade"
-        headerClassName="hidden"
-        modalClassName="h-fit max-h-[600px] w-[500px] max-w-[90%] rounded-[10px] overflow-scroll scrollbar-hide"
-      >
+      <ModalSelectData visible={showSelectProduct} modalClassName="">
         <SelectProductForm
           onClose={closeSelectProduct}
           onSubmit={(data) => {
@@ -391,7 +385,7 @@ export const QuickOrderForm = ({ className }: QuickOrderFormProps) => {
           }}
           defaultProductSelected={productSelected}
         />
-      </Modal>
+      </ModalSelectData>
 
       {previewImageUrl ? <ImageShower url={previewImageUrl} /> : null}
     </div>

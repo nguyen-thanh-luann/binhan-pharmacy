@@ -406,6 +406,7 @@ export interface OrderReturnPaidStatus {
 
 export interface CreateOpportunityParams {
   has_medicine_order: boolean
+  request_type: 'purchase' | 'advice'
   gender?: UserGenderType
   contact_name: string
   phone: string

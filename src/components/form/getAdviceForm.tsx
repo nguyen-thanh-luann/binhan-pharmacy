@@ -18,6 +18,9 @@ interface GetAdviceFormProps {
   className?: string
 }
 
+// =================NOTE=========================
+// MR.Thanh change request => dont use this component anymore
+
 export const GetAdviceForm = ({ className }: GetAdviceFormProps) => {
   const { createQuickOrder } = useQuickOrder()
 
@@ -85,6 +88,7 @@ export const GetAdviceForm = ({ className }: GetAdviceFormProps) => {
     createQuickOrder(
       {
         has_medicine_order: false,
+        request_type: 'advice',
         contact_name: data?.name,
         drugstore_id: data?.drugstore_id?.value,
         phone: data?.phone,

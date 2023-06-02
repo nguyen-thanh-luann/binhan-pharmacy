@@ -45,10 +45,10 @@ export const VerifyOtpForm = ({ firstOption, secondOption, type }: VerifyOtpForm
     )
   }
 
-  const handleGenerateOTP = async (phone: string) => {
-    if (!phone) return
+  const handleGenerateOTP = async (phoneNumber: string) => {
+    if (!phoneNumber) return
 
-    setPhoneNumber(phone)
+    setPhoneNumber(phoneNumber)
 
     dispatch(setBackdropVisible(true))
 
@@ -63,7 +63,7 @@ export const VerifyOtpForm = ({ firstOption, secondOption, type }: VerifyOtpForm
     try {
       const confirmationResult = await signInWithPhoneNumber(
         authentication,
-        `+84${phone.slice(1)}`,
+        `+84${phoneNumber.slice(1)}`,
         verify
       )
 

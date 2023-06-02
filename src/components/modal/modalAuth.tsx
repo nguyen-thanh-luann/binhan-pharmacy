@@ -24,11 +24,11 @@ export const ModalAuth = ({ visible, animationType = 'fade', children }: modalAu
             alt=''
               src={loginFormBanner}
               className=""
-              imageClassName="object-cover w-[300px] h-modal_auth_height rounded-tl-[16px] rounded-bl-[16px]"
+              imageClassName="object-cover w-[320px] h-modal_auth_height rounded-tl-[16px] rounded-bl-[16px]"
             />
           </div>
 
-          <div className="md:ml-[300px]">{children}</div>
+          <div className="md:ml-[310px]">{children}</div>
         </div>
       </Modal>
     </div>

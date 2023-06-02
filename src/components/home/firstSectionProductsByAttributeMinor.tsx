@@ -16,7 +16,6 @@ export const FirstSectionProductByAttributeMinor = ({
     key: SWR_KEY.get_attribute_minor_list,
     params: {
       view_state: 'home',
-      limit: 1,
     },
   })
 
