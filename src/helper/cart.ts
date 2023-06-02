@@ -239,6 +239,30 @@ export const getOrderDraftProductParams = (
   return { list_products: response, list_combo }
 }
 
+export const getTotalCartCategoryMoney = (
+  cart: GetProductsInCartRes | undefined,
+  company_index: number,
+  category_index: number
+) => {
+  if (!cart?.result) {
+    return { amount_total: 0 }
+  }
+
+  let amount_total = 0
+
+  cart?.result?.[company_index]?.shopping_cart_category?.[
+    category_index
+  ]?.shopping_cart_product.forEach((product) => {
+    if (product.is_check) {
+      amount_total += product.quantity * product.price_unit
+    }
+  })
+
+  return {
+    amount_total,
+  }
+}
+
 export const sumMoneyAndTotalProductInCart = (cart: GetProductsInCartRes | undefined) => {
   if (!cart?.result) {
     return { totalAmount: 0, totalProduct: 0 }

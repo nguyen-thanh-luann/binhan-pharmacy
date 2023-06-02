@@ -220,6 +220,7 @@ export interface CartCategory {
   has_promotion: boolean
   promotions_category_applied?: PromotionRes[]
   is_promotion_category_loading?: boolean
+  amount_total: number
 }
 
 export interface CartCompany {

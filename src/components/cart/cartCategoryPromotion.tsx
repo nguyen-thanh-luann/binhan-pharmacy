@@ -51,7 +51,7 @@ export const CartCategoryPromotion = ({
   }
 
   return (
-    <div className="p-16 border-b border-gray-200">
+    <div className="">
       <div className="flex items-center gap-8">
         <Image alt="" src={categoryPromotionIcon} imageClassName="w-32 h-32 object-cover" />
         {category?.is_promotion_category_loading ? (

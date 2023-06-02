@@ -1,5 +1,6 @@
 import {
   CartCategory,
+  GetShoppingCartRes,
   CartProduct as ICartProduct,
   ToggleCheckProduct,
   UpdateProduct,
@@ -11,6 +12,10 @@ import { CartProduct } from './cartProduct'
 import { Button } from '../button'
 import { useCartCategoryList } from '@/hooks'
 import { Spinner } from '../spinner'
+import { formatMoneyVND, getTotalCartCategoryMoney } from '@/helper'
+import { useMemo } from 'react'
+import useSWR from 'swr'
+import { SWR_KEY } from '@/constants'
 
 interface CartCategoryGroupProps {
   data: CartCategory
@@ -34,17 +39,30 @@ export const CartCategoryGroup = ({
   onUpdateProduct,
 }: CartCategoryGroupProps) => {
   const { getMoreProductsInCategory, categoryLoadingId } = useCartCategoryList()
+  const { data: shoppingcart } = useSWR<GetShoppingCartRes>(SWR_KEY.cart_list)
+
+  const { amount_total } = useMemo(() => {
+    return getTotalCartCategoryMoney(shoppingcart, companyIndex, categoryIndex)
+  }, [shoppingcart])
+
 
   return (
     <div className={twMerge(classNames('bg-white rounded-[10px] shadow-shadow-1', className))}>
-      {data?.has_promotion ? (
-        <CartCategoryPromotion
-          category={data}
-          categoryIndex={categoryIndex}
-          companyId={companyIndex}
-          companyIndex={companyIndex}
-        />
-      ) : null}
+      <div className="flex justify-between flex-wrap items-center p-16 gap-12 border-b border-gray-200">
+        <div>
+          {data?.has_promotion ? (
+            <CartCategoryPromotion
+              category={data}
+              categoryIndex={categoryIndex}
+              companyId={companyIndex}
+              companyIndex={companyIndex}
+            />
+          ) : null}
+        </div>
+        <div>
+          <p className="text-base">{`Doanh số nhóm: ${formatMoneyVND(amount_total)}`}</p>
+        </div>
+      </div>
 
       {/* cartProduct List */}
       <div className="py-8">
@@ -79,7 +97,7 @@ export const CartCategoryGroup = ({
         ))}
 
         {categoryLoadingId === data.cart_category_id ? (
-          <div className='flex-center my-12'>
+          <div className="flex-center my-12">
             <Spinner />
           </div>
         ) : data.shopping_cart_product?.length < data?.paginate?.total ? (
