@@ -24,7 +24,7 @@ export const VisceraAttribute = ({ className }: VisceraAttributeProps) => {
   const { data, isValidating } = useViceraAttribute({
     key: `${SWR_KEY.get_viscera_attribute}`,
   })
-
+  
   const viewAttribute: VisceraAttributeRes | undefined = data?.[0]
 
   if (isValidating) {
@@ -41,7 +41,7 @@ export const VisceraAttribute = ({ className }: VisceraAttributeProps) => {
     <div className={twMerge(classNames('', className))}>
       {isArrayHasValue(data) ? (
         <HomeSlide
-          title={'Danh mục sản phẩm'}
+          title={data?.[0]?.attribute_name || 'Danh mục sản phẩm'}
           icon={<NotebookIconOutline className="text-primary w-[34px] h-[34px]" />}
           className="bg-white rounded-[10px] mb-24 md:p-24"
           sectionClassName=""

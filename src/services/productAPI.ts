@@ -50,16 +50,9 @@ const productAPI = {
     return axiosClient.get('/category_controller/list_category_minor', { params })
   },
 
-  getListAtributeMinor: ({
-    limit = DEFAULT_LIMIT,
-    offset = 0,
-    ...params
-  }: GetListAttributeMinorParams) => {
+  getListAtributeMinor: (params: GetListAttributeMinorParams) => {
     return axiosClient.get(
-      `/category_controller/list_attribute_minor?limit=${limit}&offset=${offset}${
-        params?.attribute_parent_id ? `&attribute_parent_id=${params?.attribute_parent_id}` : ''
-      }${params?.view_state ? `&view_state=${params?.view_state}` : ``}`
-    )
+      `/category_controller/list_attribute_minor`, {params})
   },
 
   getListVisceraAttribute: () => {

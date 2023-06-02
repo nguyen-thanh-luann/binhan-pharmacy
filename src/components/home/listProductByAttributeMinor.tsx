@@ -1,4 +1,4 @@
-import { SWR_KEY } from '@/constants'
+import { DEFAULT_LIMIT, SWR_KEY } from '@/constants'
 import { isArrayHasValue } from '@/helper'
 import { useAttributeMinor, useBanner } from '@/hooks'
 import classNames from 'classnames'
@@ -14,7 +14,10 @@ interface ListProductByAttributeMinorProps {
 export const ListProductByAttributeMinor = ({ className }: ListProductByAttributeMinorProps) => {
   const { attributeMinors, isValidating: attributeMinorLoading } = useAttributeMinor({
     key: SWR_KEY.get_attribute_minor_list,
-    params: {},
+    params: {
+      view_state: 'home',
+      limit: DEFAULT_LIMIT,
+    },
   })
 
   const { data: bannerList, isValidating: isLoadingBanner } = useBanner({

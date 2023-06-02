@@ -9,6 +9,8 @@ import { twMerge } from 'tailwind-merge'
 import { CustomImage } from '../customImage'
 import { Spinner } from '../spinner'
 import { PromotionsAppliedOnOrderView } from './promotionsAppliedOnOrderView'
+import { Image } from '../image'
+import { API_URL } from '@/constants'
 
 interface OrderHistoryDetailProps {
   type?: 'history' | 'order'
@@ -17,7 +19,11 @@ interface OrderHistoryDetailProps {
   cb?: (params: IOrderHistoryDetail) => void
 }
 
-export const OrderHistoryDetail = ({ sale_order_id, className, cb: om }: OrderHistoryDetailProps) => {
+export const OrderHistoryDetail = ({
+  sale_order_id,
+  className,
+  cb: om,
+}: OrderHistoryDetailProps) => {
   const { data: order, isValidating } = useOrderHistoryDetail({ sale_order_id })
 
   useEffect(() => {
@@ -50,36 +56,34 @@ export const OrderHistoryDetail = ({ sale_order_id, className, cb: om }: OrderHi
 
             <table
               className={classNames(
-                'hidden animate-fade product_table w-full transition',
+                'hidden animate-fade table-auto',
                 viewOrderDetail ? 'md:table' : ''
               )}
             >
               <thead>
-                <tr className="">
-                  <th className="text-start text-md">Sản phẩm</th>
-                  <th className="text-start text-md">Đơn vị</th>
-                  <th className="text-start text-md">Số lượng</th>
-                  <th className="text-start text-md">Giá</th>
+                <tr>
+                  <th className="text-md text-start">Sản phẩm</th>
+                  <th className="text-md text-start">Đơn vị</th>
+                  <th className="text-md text-start">Số lượng</th>
+                  <th className="text-md text-start">Giá</th>
                 </tr>
               </thead>
               <tbody>
                 {order?.products?.map((item) => (
                   <tr key={item.product_id}>
-                    <td className="image-group">
+                    <td className="">
                       <div className="flex items-center gap-12 mb-16">
-                        <div className="">
-                          <CustomImage
-                            src={item.image_url?.[0] || ''}
-                            className="w-[40px] h-[40px]"
-                            imageClassName="w-[40px] h-[40px] object-cover rounded-lg aspect-1"
-                          />
-                        </div>
-                        <p className="title-md font-bold line-clamp-1">{item.name}</p>
+                        <CustomImage
+                          src={item.image_url?.[0] || ''}
+                          className="w-[40px] h-[40px]"
+                          imageClassName="w-[40px] max-w-[40px] h-[40px] object-cover rounded-lg aspect-1"
+                        />
+                        <p className="text-md font-bold line-clamp-2">{item.name}</p>
                       </div>
                     </td>
-                    <td className="text-md">{item.product_uom}</td>
-                    <td className="text-md">{item.quantity}</td>
-                    <td className="text-md">{formatMoneyVND(item.price)}</td>
+                    <td className="text-md min-w-[100px]">{item.product_uom}</td>
+                    <td className="text-md min-w-[100px]">{item.quantity}</td>
+                    <td className="text-md min-w-[100px]">{formatMoneyVND(item.price)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -96,7 +100,7 @@ export const OrderHistoryDetail = ({ sale_order_id, className, cb: om }: OrderHi
                     />
                   </div>
                   <div>
-                    <p className="text-md line-clamp-1">{item.name}</p>
+                    <p className="text-md line-clamp-2">{item.name}</p>
                     <p className="text-md">{`x${item.quantity} `}</p>
                     <p className="text-md !text-error">{formatMoneyVND(item.price)}</p>
                   </div>
@@ -129,31 +133,53 @@ export const OrderHistoryDetail = ({ sale_order_id, className, cb: om }: OrderHi
 
   if (!order) return null
 
-  console.log({order});
-  
   return (
     <div className={twMerge(classNames(`bg-white p-24 rounded-[10px] shadow-shadow-1`, className))}>
       {isObjectHasValue(order) ? (
         <div className="order_history-detail">
-          <div className="grid grid-cols-1  lg:grid-cols-3 gap-12 mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-12">
             <div className="bg-white p-16 rounded-sm">
               <p className="text-text-color font-bold text-lg mb-4">Địa chỉ người nhận</p>
               <p className="text-text-color font-bold text-md mb-4">{order.delivery_name}</p>
               <p className="text-text-color font-semibold text-md mb-4">{`Địa chỉ: ${order.delivery_address}`}</p>
               <p className="text-text-color font-semibold text-md">{`Số điện thoại: ${order.delivery_phone}`}</p>
             </div>
+
             <div className="bg-white p-16 rounded-sm">
-              <p className="text-text-color font-bold text-lg mb-4">Phương thức vận chuyển</p>
+              <p className="text-text-color font-bold text-lg mb-4">Phương thức thanh toán</p>
               <p className="mb-4">
-                <span className="text-text-color font-semibold text-md">{`COD - Tiền mặt trực tiếp`}</span>
-              </p>
-              <p className="mb-4">
-                <span className="text-text-color font-semibold text-md">{`Tổng tiền: `}</span>
-                <span className="font-semibold text-md !text-primary">
-                  {formatMoneyVND(order?.amount_total)}
+                <span className="text-text-color font-semibold text-md">
+                  {order?.payment_method?.payment_name}
                 </span>
+
+                {order?.payment_method?.payment_type === 'bank' && (
+                  <div>
+                    <Image
+                      src={
+                        order?.payment_method?.payment_info?.qr_code
+                          ? `${API_URL}${order?.payment_method?.payment_info?.qr_code}`
+                          : ''
+                      }
+                      imageClassName="w-[100px] h-[100px] object-cover"
+                      className="w-[100px]"
+                    />
+                    <p className="text-md">{order?.payment_method?.payment_info?.bank_name}</p>
+                    <p className="text-md font-bold mb-4">
+                      {`Chủ tài khoản: ${order?.payment_method?.payment_info?.bank_account_holder}`}
+                    </p>
+
+                    <p className="text-md font-bold mb-4">
+                      {`Số tài khoản: ${order?.payment_method?.payment_info?.bank_code}`}
+                    </p>
+
+                    <p className="text-md font-bold mb-4">
+                      {`Chi nhánh: ${order?.payment_method?.payment_info?.bank_branch}`}
+                    </p>
+                  </div>
+                )}
               </p>
             </div>
+
             <div className="bg-white p-16 rounded-sm shadow-sm">
               <p className="text-text-color font-bold text-lg mb-4">Đơn hàng</p>
               <p className="text-text-color font-semibold text-md mb-4">{`Mã đơn hàng: ${order.name}`}</p>
