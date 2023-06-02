@@ -27,6 +27,8 @@ export const ListProductByAttributeMinor = ({ className }: ListProductByAttribut
     },
   })
 
+  const [_, ...restAttributeMinors] = attributeMinors
+
   return (
     <div className={twMerge(classNames(``, className))}>
       {attributeMinorLoading ? (
@@ -35,8 +37,8 @@ export const ListProductByAttributeMinor = ({ className }: ListProductByAttribut
             <ProductItemLoading key={index} />
           ))}
         </div>
-      ) : isArrayHasValue(attributeMinors) ? (
-        attributeMinors?.map((attribute, index) => (
+      ) : isArrayHasValue(restAttributeMinors) ? (
+        restAttributeMinors?.map((attribute, index) => (
           <div>
             <ProductsByAttributeMinor
               className="mb-24"

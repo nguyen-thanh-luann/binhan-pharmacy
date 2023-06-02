@@ -1,4 +1,5 @@
 import {
+  FirstSectionProductByAttributeMinor,
   HomeBanner,
   HomeDecor,
   HomePosts,
@@ -23,6 +24,8 @@ const HomePage = () => {
         <div className="container px-12">
           <SectionBuyMedicine className="mb-24 hidden md:block" />
 
+          <FirstSectionProductByAttributeMinor/>
+          
           <VisceraAttribute />
 
           <ListProductByAttributeMinor />
