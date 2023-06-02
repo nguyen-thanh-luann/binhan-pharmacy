@@ -33,6 +33,7 @@ export const ViewedProducts = ({ className }: ViewedProductsProps) => {
           pagination={{
             clickable: true,
           }}
+          allowTouchMove={false}
           loop={true}
           autoplay={{
             delay: 5000,

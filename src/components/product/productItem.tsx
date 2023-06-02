@@ -142,24 +142,12 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
             </Tooltip>
 
             {/* properties list */}
-            <ScrollContainer
-              onChange={(event) => {
-                console.log(event)
-
-                event.preventDefault()
-                event.stopPropagation()
-              }}
-              mouseScroll={true}
-              className="flex h-[30px]"
-            >
+            <ScrollContainer mouseScroll={true} className="flex h-[30px]">
               {/* attribute */}
               {data?.attribute_minor_ids?.map((attribute) => {
                 if (attribute?.filterable) {
                   return attribute?.value_ids?.map((value) => (
                     <p
-                      onChange={(e) => {
-                        console.log('onChange product', e)
-                      }}
                       key={value?.value_id}
                       onClick={() =>
                         hanldePropertyClick({
@@ -181,9 +169,6 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
               {/* category */}
               {isObjectHasValue(data?.category_id) ? (
                 <p
-                  onChange={(e) => {
-                    console.log('onChange product', e)
-                  }}
                   key={data?.category_id?.category_id}
                   onClick={() =>
                     hanldePropertyClick({

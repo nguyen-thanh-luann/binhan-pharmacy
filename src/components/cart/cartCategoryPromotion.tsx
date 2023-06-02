@@ -8,13 +8,13 @@ import {
   GetPromotionApplyOnCategorySingleRes,
   UserInfo,
 } from '@/types'
-import Toast from 'react-hot-toast'
 import useSWR from 'swr'
 import { Image } from '../image'
 import { Modal } from '../modal'
 import { PromotionLoading } from './promotionLoading'
 import { PromotionsAppliedOnCartView } from './promotionsAppliedView'
 import { SelectPromotion } from './selectPromotion'
+import { toast } from 'react-hot-toast'
 
 export type CategoryPromotionProps = {
   category: CartCategory
@@ -38,12 +38,12 @@ export const CartCategoryPromotion = ({
 
   const openPromotionModal = () => {
     if (!productsChecked?.length) {
-      Toast('Vui lòng chọn sản phẩm', { icon: '🙏' })
+      toast.error('Vui lòng chọn sản phẩm!', { icon: '🙏' })
       return
     }
 
     if (!customer_id) {
-      Toast('Vui lòng chọn khách hàng')
+      toast.error('Vui lòng đăng nhập để xem chương trình!')
       return
     }
 

@@ -74,6 +74,7 @@ const ProductDetailPage = () => {
     setBreadcrumbList([...breadcrumb, { name: data?.product_data?.product_name || '', path: '/' }])
 
     if (!data?.product_data?.product_id) return
+    
     dispatch(addViewedProduct(data?.product_data))
   }, [router.query.productId, data])
 
