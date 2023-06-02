@@ -24,8 +24,8 @@ const HomePage = () => {
         <div className="container px-12">
           <SectionBuyMedicine className="mb-24 hidden md:block" />
 
-          <FirstSectionProductByAttributeMinor/>
-          
+          <FirstSectionProductByAttributeMinor />
+
           <VisceraAttribute />
 
           <ListProductByAttributeMinor />

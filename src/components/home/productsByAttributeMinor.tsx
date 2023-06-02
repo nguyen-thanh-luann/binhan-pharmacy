@@ -1,16 +1,16 @@
 import { UserCircleIcon } from '@/assets'
-import { SWR_KEY } from '@/constants'
+import { DEFAULT_LIMIT_PRODUCT, SWR_KEY } from '@/constants'
 import { useProductListByAttributeMinor } from '@/hooks'
 import { AttributeMinor } from '@/types'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import ScrollContainer from 'react-indiana-drag-scroll'
 import { twMerge } from 'tailwind-merge'
 import { CustomImage } from '../customImage'
 import { ProductItem, ProductItemLoading } from '../product'
 import { Tabs } from '../tabs'
 import { HomeSlide } from './homeSlide'
-import ScrollContainer from 'react-indiana-drag-scroll'
 
 interface ProductsByAttributeMinorProps {
   atribute: AttributeMinor | undefined
@@ -52,6 +52,7 @@ export const ProductsByAttributeMinor = ({
     params: {
       attribute_id: atribute?.attribute_id || 0,
       attribute_value_ids: [atribute?.value_ids?.[0]?.value_id || 0],
+      limit: DEFAULT_LIMIT_PRODUCT,
     },
   })
 
@@ -90,7 +91,7 @@ export const ProductsByAttributeMinor = ({
 
   if (isValidating || productListLoading) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 mb-24">
         {Array.from({ length: 5 }).map((_, index) => (
           <ProductItemLoading key={index} />
         ))}
