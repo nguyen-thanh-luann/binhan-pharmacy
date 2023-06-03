@@ -11,6 +11,9 @@ import { Spinner } from '../spinner'
 import { PromotionsAppliedOnOrderView } from './promotionsAppliedOnOrderView'
 import { Image } from '../image'
 import { API_URL } from '@/constants'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectPreviewImageUrl, setPreviewImageUrl } from '@/store'
+import { ImageShower } from '../imageShower'
 
 interface OrderHistoryDetailProps {
   type?: 'history' | 'order'
@@ -25,6 +28,8 @@ export const OrderHistoryDetail = ({
   cb: om,
 }: OrderHistoryDetailProps) => {
   const { data: order, isValidating } = useOrderHistoryDetail({ sale_order_id })
+  const dispatch = useDispatch()
+  const previewImageUrl = useSelector(selectPreviewImageUrl)
 
   useEffect(() => {
     if (order) om?.(order)
@@ -154,15 +159,25 @@ export const OrderHistoryDetail = ({
 
                 {order?.payment_method?.payment_type === 'bank' && (
                   <div>
-                    <Image
-                      src={
-                        order?.payment_method?.payment_info?.qr_code
-                          ? `${API_URL}${order?.payment_method?.payment_info?.qr_code}`
-                          : ''
-                      }
-                      imageClassName="w-[100px] h-[100px] object-cover"
-                      className="w-[100px]"
-                    />
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => {
+                        const imageUrl = order?.payment_method?.payment_info?.qr_code
+                        if (imageUrl) {
+                          dispatch(setPreviewImageUrl(`${imageUrl}`))
+                        }
+                      }}
+                    >
+                      <Image
+                        src={
+                          order?.payment_method?.payment_info?.qr_code
+                            ? `${API_URL}${order?.payment_method?.payment_info?.qr_code}`
+                            : ''
+                        }
+                        imageClassName="w-[100px] h-[100px] object-contain"
+                        className="w-[100px]"
+                      />
+                    </div>
                     <p className="text-md">{order?.payment_method?.payment_info?.bank_name}</p>
                     <p className="text-md font-bold mb-4">
                       {`Chủ tài khoản: ${order?.payment_method?.payment_info?.bank_account_holder}`}
@@ -198,6 +213,8 @@ export const OrderHistoryDetail = ({
               <span className="ml-6 text-primary">Trở lại</span>
             </div>
           </Link>
+
+          {previewImageUrl ? <ImageShower url={previewImageUrl} /> : null}
         </div>
       ) : null}
     </div>

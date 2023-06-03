@@ -1,14 +1,19 @@
-import { Image, OrderTicketProduct, Spinner } from '@/components'
+import { Image, ImageShower, OrderTicketProduct, Spinner } from '@/components'
 import { API_URL } from '@/constants'
 import { formatMoneyVND } from '@/helper'
 import { useOrderHistoryDetail } from '@/hooks'
+import { selectPreviewImageUrl, setPreviewImageUrl } from '@/store'
 import Link from 'next/link'
+import { useDispatch, useSelector } from 'react-redux'
 
 interface OrderConfirmTicketProps {
   sale_order_id: number
 }
 
 export const OrderConfirmTicket = ({ sale_order_id }: OrderConfirmTicketProps) => {
+  const dispatch = useDispatch()
+  const previewImageUrl = useSelector(selectPreviewImageUrl)
+
   const { data, isValidating } = useOrderHistoryDetail({
     sale_order_id: Number(sale_order_id) || 0,
   })
@@ -25,14 +30,22 @@ export const OrderConfirmTicket = ({ sale_order_id }: OrderConfirmTicketProps) =
               <p className="text-md text-text-color font-bold mb-12">{`Thông tin thanh toán`}</p>
 
               <div className="flex flex-col md:flex-row gap-24">
-                <div className="flex justify-center">
+                <div
+                  className="flex justify-center cursor-pointer"
+                  onClick={() => {
+                    const imageUrl = data?.payment_method?.payment_info?.qr_code
+                    if (imageUrl) {
+                      dispatch(setPreviewImageUrl(`${imageUrl}`))
+                    }
+                  }}
+                >
                   <Image
                     src={
                       data?.payment_method?.payment_info?.qr_code
                         ? `${API_URL}${data?.payment_method?.payment_info?.qr_code}`
                         : ''
                     }
-                    imageClassName="w-[150px] h-[150px] object-cover"
+                    imageClassName="w-[150px] h-[150px] object-contain"
                     className="w-[150px]"
                   />
                 </div>
@@ -54,6 +67,8 @@ export const OrderConfirmTicket = ({ sale_order_id }: OrderConfirmTicketProps) =
                   </p>
                 </div>
               </div>
+
+              {previewImageUrl ? <ImageShower url={previewImageUrl} /> : null}
             </div>
           )}
 

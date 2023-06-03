@@ -12,7 +12,7 @@ import Toast from 'react-hot-toast'
 import useSWR from 'swr'
 import { Image } from '../image'
 import { Modal } from '../modal'
-import { Spinner } from '../spinner'
+import { PromotionLoading } from './promotionLoading'
 import { PromotionsAppliedOnCartView } from './promotionsAppliedView'
 import { SelectPromotion } from './selectPromotion'
 
@@ -48,7 +48,7 @@ export const CartCompanyPromotion = ({ company, companyIndex }: CartCompanyPromo
       <div className="flex items-center gap-8">
         <Image alt="" src={categoryPromotionIcon} imageClassName="w-32 h-32 object-cover" />
         {company?.is_promotion_loading ? (
-          <Spinner className="mt-12" />
+          <PromotionLoading />
         ) : (
           <div
             onClick={openPromotionModal}

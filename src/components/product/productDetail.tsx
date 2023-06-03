@@ -1,7 +1,7 @@
 import { NoteIconOutline, companyIconSm } from '@/assets'
 import { DOMAIN_URL, SWR_KEY } from '@/constants'
 import { formatMoneyVND, isObjectHasValue } from '@/helper'
-import { useAddToCart, useUser, useWishlist } from '@/hooks'
+import { useAddToCart, useProductPromotion, useUser, useWishlist } from '@/hooks'
 import { productAPI } from '@/services'
 import { ProductDetail as IProductDetail, Product } from '@/types'
 import { useRouter } from 'next/router'
@@ -10,12 +10,14 @@ import { toast } from 'react-hot-toast'
 import { useSWRConfig } from 'swr'
 import { twMerge } from 'tailwind-merge'
 import { Button } from '../button'
+import { PromotionLoading } from '../cart/promotionLoading'
 import { Divider } from '../divider'
 import { Image } from '../image'
 import { InputQuantity } from '../inputs'
 import { ShareSocial } from '../shareSocial'
 import { Spinner } from '../spinner'
 import { Star } from '../star'
+import { ListProductPromotion } from './listProductPromotion'
 import ProductImg from './productImage'
 import { ProductVariants } from './productVariants'
 import WishlistBtn from './wishlistBtn'
@@ -34,6 +36,12 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
   const { userInfo } = useUser({ shouldFetch: false })
   const { addWhishlist, deleteWhishlist, isLoading: isToggleWishlist } = useWishlist({})
   const { addToCart, isAddingTocart } = useAddToCart()
+  const { data: productPromotions, isValidating: isLoadProductPromotion } = useProductPromotion({
+    key: `${SWR_KEY.get_product_promotion}_${data?.product_id}`,
+    product_id: data?.product_id,
+  })
+
+  console.log({ productPromotions })
 
   const [quantity, setQuantity] = useState<number>(1)
   const [currentProduct, setCurrentProduct] = useState<IProductDetail>(data)
@@ -230,6 +238,12 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
             />
           </div>
         ) : null}
+
+        {isLoadProductPromotion ? (
+          <PromotionLoading />
+        ) : (
+          <ListProductPromotion className='mb-16' data={productPromotions || []} />
+        )}
 
         <div className="flex items-center gap-12 mb-16">
           <p className="text_md">{`Số lượng`}</p>

@@ -20,6 +20,7 @@ import {
   HTTPResponseV2,
   PromotionDetailRes,
   PromotionItemRes,
+  PromotionProductItemRes,
   PromotionRes,
 } from '@/types'
 import axiosClient from '.'
@@ -92,6 +93,12 @@ export const promotionAPI = {
   cancelPromotion: (params: CancelPromotionReq): Promise<HTTPResponseV2<{}>> => {
     return axiosClient.post(`/promotion_controller/cancel_promotion`, {
       params,
+    })
+  },
+
+  getProductPromotion: (product_id: number): Promise<HTTPResponseV2<PromotionProductItemRes[]>> => {
+    return axiosClient.get('/list_promotion_controller/promotion_product', {
+      params: { product_id },
     })
   },
 }

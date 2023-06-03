@@ -198,7 +198,9 @@ const SearchPage = () => {
                 <ProductsLoadingSlice className="grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-12" />
               ) : null}
 
-              {isArrayHasValue(products) ? (
+              {isValidating ? (
+                <ProductsLoadingSlice className="grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-12" />
+              ) : isArrayHasValue(products) ? (
                 <InfiniteScroll
                   dataLength={products?.length || 0}
                   next={() => getMore()}

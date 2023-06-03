@@ -49,6 +49,19 @@ export interface PromotionItemRes {
   promotion_level: PromotionLevel
 }
 
+export interface PromotionProductItemRes {
+  promotion_level: PromotionLevel
+  promotion_id: number
+  promotion_code: string
+  promotion_name: string
+  promotion_type: PromotionType
+  promotion_fixed_discount: number
+  promotion_percent_discount: number
+  promotion_brief: string
+  date_start: Date
+  date_end: Date
+}
+
 export interface GetPromotionsCanApplyOnProductsReq {
   customer_id?: number
   list_product: [

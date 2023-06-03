@@ -57,8 +57,6 @@ export const FilterByCategory = () => {
   }
 
   const hanldeShowCategories = (category_id: number) => {
-    console.log('call hanldeShowCategories')
-
     const index = showCategories?.findIndex((c) => c === category_id)
 
     if (index !== -1) {
@@ -80,18 +78,6 @@ export const FilterByCategory = () => {
       return !!categoriesActive.find((item) => item === category_id)
     }
   }
-
-  // const checkShowCategoriesContainActiveCate = (category: Category, child?: CategoryChild) => {
-  //   if (child) {
-  //     const childIndex = category.child_ids?.findIndex(
-  //       (child) => child.category_id === child.category_id
-  //     )
-
-      
-  //   } else {
-  //     return showCategories.includes(category.category_id)
-  //   }
-  // }
 
   return (
     <div>
