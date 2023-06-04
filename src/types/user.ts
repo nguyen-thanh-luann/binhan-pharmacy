@@ -56,7 +56,7 @@ export interface UserDetail {
   birthday: Date
   phone: string
   email: string
-  sex: 'male'
+  sex: string
   street: string
   partner_id: number
   company_id: number

@@ -8,6 +8,7 @@ import {
   ProductDescription,
   ProductUom,
   ReactSelectType,
+  UserAccount,
 } from '@/types'
 import _ from 'lodash'
 const sign = require('jwt-encode')
@@ -379,4 +380,9 @@ export function roundingNumber(value: number, type: 'upper' | 'lower', base_unit
 
 export function isAddressNameValid(province: string, district: string, ward: string): boolean{
   return (!!province && !!district && !!ward)
+}
+
+export function isDrugStore(account: UserAccount | undefined): boolean {
+  if(!account) return false
+  return account.medicine_account_type === 'drugstore_account'
 }

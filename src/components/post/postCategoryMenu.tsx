@@ -1,13 +1,18 @@
 import { MenuIcon, RightIcon, TrashIconOutline } from '@/assets'
-import { DEFAULT_LIMIT, SWR_KEY } from '@/constants'
-import { generateProductSlug, isArrayHasValue, isObjectHasValue } from '@/helper'
+import { SWR_KEY } from '@/constants'
+import {
+  fromProductSlugToProductId,
+  generateProductSlug,
+  isArrayHasValue,
+  isObjectHasValue,
+} from '@/helper'
 import { usePostCategory } from '@/hooks'
-import classNames from 'classnames'
-import { useState } from 'react'
-import { Spinner } from '../spinner'
 import { PostCategory } from '@/types'
+import classNames from 'classnames'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import { Button } from '../button'
+import { Spinner } from '../spinner'
 
 interface PostCategoryMenuProps {
   className?: string
@@ -16,14 +21,28 @@ interface PostCategoryMenuProps {
 export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
   const [expandCategory, setExpandCategory] = useState<string>()
   const router = useRouter()
-  const showResetFilterBtn = isObjectHasValue(router?.query)
+  const { parent_id, category_id } = router.query
+  const parent_id_req = fromProductSlugToProductId(parent_id as string)
+  const showResetFilterBtn = isObjectHasValue(router?.query) && category_id
 
-  const { data: postCategoryList, isValidating } = usePostCategory({
-    key: `${SWR_KEY.get_post_category_list}`,
+  console.log({ parent_id_req })
+
+  const {
+    data: postCategoryList,
+    isValidating,
+    filter,
+  } = usePostCategory({
+    key: `${SWR_KEY.get_post_category_list}_${parent_id_req}`,
     params: {
-      limit: DEFAULT_LIMIT,
+      parent_id: parent_id_req,
     },
   })
+
+  useEffect(() => {
+    filter({
+      parent_id: parent_id_req,
+    })
+  }, [parent_id_req])
 
   const hanldeCategoryClick = (cate: PostCategory) => {
     if (!cate) return
@@ -39,7 +58,8 @@ export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
     router.push({
       pathname: '/post-list',
       query: {
-        post_id: generateProductSlug(cate.name, cate.id),
+        ...router.query,
+        category_id: generateProductSlug(cate.name, cate.id),
       },
     })
   }
@@ -54,7 +74,7 @@ export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
       >
         <MenuIcon className="text-text-color w-32 h-32" />
 
-        <p className="title_lg">{`Danh mục sống khỏe`}</p>
+        <p className="title_lg">{`Danh mục tin tức`}</p>
       </div>
 
       {isValidating ? (
@@ -87,11 +107,11 @@ export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
 
                 <div className={classNames(isExpand ? 'block' : 'hidden')}>
                   {isArrayHasValue(cate?.children) ? (
-                    <div className="">
+                    <div className="px-12">
                       {cate?.children?.map((child) => (
                         <div
                           onClick={() => hanldeCategoryClick(child)}
-                          className="px-12 w-full"
+                          className="pl-12 py-8 w-full cursor-pointer"
                           key={child?.id}
                         >
                           <p className="text-md">{child?.name}</p>
@@ -114,7 +134,12 @@ export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
             className="bg-white p-8 rounded-lg w-full"
             textClassName="text-red text-base"
             onClick={() => {
-              router.push('/post-list')
+              router.push({
+                pathname: '/post-list',
+                query: {
+                  parent_id: parent_id || undefined,
+                },
+              })
             }}
           />
         ) : null}

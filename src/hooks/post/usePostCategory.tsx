@@ -56,7 +56,7 @@ export const usePostCategory = ({ key, params }: usePostListProps): usePostCateg
 
       if (res?.id) {
         handleSuccess?.()
-        mutate([res, ...data], false)
+        mutate([res, ...data], true)
       } else {
         handleError?.()
         return
@@ -82,7 +82,7 @@ export const usePostCategory = ({ key, params }: usePostListProps): usePostCateg
       if (res?.category_id) {
         handleSuccess?.()
 
-        mutate([...data.filter((postCate) => postCate?.id !== id)], false)
+        mutate([...data.filter((postCate) => postCate?.id !== id)], true)
       } else {
         hanldeError?.()
       }
@@ -108,7 +108,7 @@ export const usePostCategory = ({ key, params }: usePostListProps): usePostCateg
         handleSuccess?.()
         mutate(
           data?.map((p) => (p.id === res.id ? res : p)),
-          false
+          true
         )
       } else {
         handleError?.()

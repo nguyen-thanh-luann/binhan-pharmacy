@@ -89,7 +89,10 @@ const PostCategoryPage = () => {
     )
   }
 
+  
+
   const categoryOptions: OptionType<string>[] | undefined = useMemo(() => {
+    if (!postCategoryList) return []
     return postCategoryList?.map((item) => ({
       label: item.name,
       value: item.id,
@@ -129,7 +132,7 @@ const PostCategoryPage = () => {
           <div>
             <SearchField
               placeholder="Tìm theo tên danh mục"
-              className={classNames('border rounded-lg p-8 mb-12')}
+              className={classNames('border rounded-lg p-12 mb-12')}
               onChangeWithDebounceValue={(val) =>
                 filter({
                   keyword: val,
@@ -157,12 +160,23 @@ const PostCategoryPage = () => {
                         ) : (
                           <div>
                             {postCategoryList?.map((category) => (
-                              <PostCategoryItem
-                                data={category}
-                                key={category.id}
-                                onDelete={hanldeDeleteCategory}
-                                onEdit={handleSelectCategoryItemEdit}
-                              />
+                              <div key={category.id}>
+                                <PostCategoryItem
+                                  data={category}
+                                  key={category.id}
+                                  onDelete={hanldeDeleteCategory}
+                                  onEdit={handleSelectCategoryItemEdit}
+                                />
+
+                                {category?.children?.map((child) => (
+                                  <PostCategoryItem
+                                    data={child}
+                                    key={child.id}
+                                    onDelete={hanldeDeleteCategory}
+                                    onEdit={handleSelectCategoryItemEdit}
+                                  />
+                                ))}
+                              </div>
                             ))}
                           </div>
                         )}

@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Button } from '../button'
-import { InputField, SelectField } from '../inputs'
+import { InputField, SelectField, TextareaField } from '../inputs'
 import { UploadSignleFile } from '../upload'
 import classNames from 'classnames'
 
@@ -106,7 +106,8 @@ export const CreatePostForm = ({
       </div>
 
       <div className="mb-12">
-        <InputField
+        <TextareaField
+          rows={4}
           control={control}
           name="short_content"
           placeholder="Tóm tắt nội dung"

@@ -1,10 +1,9 @@
 import {
   Breadcrumb,
-  NotFound,
   PostCategoryMenu,
   PostItemLoading,
   PostListItemHorizontal,
-  PostListItemVertical,
+  PostListItemVertical
 } from '@/components'
 import {
   DEFAULT_LIMIT,
@@ -17,14 +16,13 @@ import {
 import { fromProductSlugToProductId, isArrayHasValue } from '@/helper'
 import { usePostList } from '@/hooks'
 import { Main, PostListPageContainer } from '@/templates'
-import InfiniteScroll from 'react-infinite-scroll-component'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 const PostListPage = () => {
   const router = useRouter()
-  const { post_id } = router.query
+  const { category_id, parent_id } = router.query
 
   const {
     data: postList,
@@ -41,9 +39,13 @@ const PostListPage = () => {
 
   useEffect(() => {
     filter({
-      category_id: post_id ? fromProductSlugToProductId(post_id as string) : undefined,
+      category_id: parent_id
+        ? fromProductSlugToProductId(parent_id as string)
+        : category_id
+        ? fromProductSlugToProductId(category_id as string)
+        : undefined,
     })
-  }, [post_id])
+  }, [category_id, parent_id])
 
   const [firstPost, secondPost, ...postData] = postList || []
 
@@ -114,9 +116,7 @@ const PostListPage = () => {
                   </div>
                 </InfiniteScroll>
               </div>
-            ) : (
-              <NotFound notify="Không tìm thấy thông tin!" />
-            )}
+            ) : null}
           </div>
         </PostListPageContainer>
       </div>

@@ -21,6 +21,9 @@ interface HomePostsProps {
 export const HomePosts = ({ className }: HomePostsProps) => {
   const { data: postList, isValidating: loadingPostList } = usePostList({
     key: SWR_KEY.get_post_list,
+    params: {
+
+    }
   })
 
   if (loadingPostList) {
@@ -68,7 +71,7 @@ export const HomePosts = ({ className }: HomePostsProps) => {
             }}
           >
             <div>
-              {postList?.map((post: Post) => (
+              {postList?.filter((post) => post?.role !== 'npp')?.map((post: Post) => (
                 <SwiperSlide key={post.id}>
                   <PostItem data={post} />
                 </SwiperSlide>

@@ -23,7 +23,7 @@ export const PostCategoryItem = ({ data, onDelete, onEdit }: PostCategoryItemPro
 
   return (
     <div
-      className={`relative border border-gray-200 mb-12 last:mb-0 rounded-md p-12 bg-white hover:bg-gray-200 duration-150 ease-in-out`}
+      className={`relative border border-gray-200 mb-12 rounded-md p-12 bg-white hover:bg-gray-200 duration-150 ease-in-out`}
     >
       <p className="title_md line-clamp-1 capitalize">{data?.name}</p>
 

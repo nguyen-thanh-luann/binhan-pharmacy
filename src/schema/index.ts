@@ -258,6 +258,12 @@ export const categoryFormSchema = Yup.object().shape({
       label: Yup.string(),
     })
     .nullable(),
+  role: Yup.object()
+    .shape({
+      value: Yup.string(),
+      label: Yup.string(),
+    })
+    .nullable(),
   image: Yup.string().nullable(),
   desc: Yup.string().nullable(),
 })

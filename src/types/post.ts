@@ -1,3 +1,4 @@
+import { AccountType } from './auth'
 import { QueryList } from './http'
 
 export interface GetPostCategoryListParams extends QueryList {
@@ -6,6 +7,7 @@ export interface GetPostCategoryListParams extends QueryList {
 
 export interface GetPostListParams extends QueryList {
   category_id?: string
+  parent_id?: string
   keyword?: string
 }
 
@@ -35,6 +37,7 @@ export interface Post {
   category_id: string
   category_name: string
   created_at: Date
+  role?: AccountType
 }
 
 export type PostDetail = Pick<
@@ -63,6 +66,7 @@ export interface PostCategory {
   updated_at: Date
   children: PostCategory[]
   children_count: number
+  role: AccountType
 }
 
 export interface CreatePostCategory {
@@ -71,6 +75,7 @@ export interface CreatePostCategory {
   parent_id?: string
   attachment_id?: string
   desc: string
+  role?: AccountType
 }
 
 export interface UpdateCategory extends CreatePostCategory {

@@ -29,8 +29,8 @@ export const ListProductPromotion = ({ data, className }: ListProductPromotionPr
           <p className="text-md line-clamp-1">{`Từ ${moment(data?.[0]?.date_start).format(
             'DD/MM'
           )} đến ${moment(data?.[0]?.date_end).format('DD/MM')} Hết hạn ${moment(
-            data?.[0]?.date_start
-          ).diff(moment(data?.[0]?.date_end), 'days')} ngày`}</p>
+            data?.[0]?.date_end
+          ).diff(moment(data?.[0]?.date_start), 'days')} ngày`}</p>
         </div>
 
         <div>

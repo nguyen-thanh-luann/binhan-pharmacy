@@ -1,15 +1,15 @@
 import { DownIcon } from '@/assets'
 import { SWR_KEY } from '@/constants'
-import { isArrayHasValue } from '@/helper'
-import { useCategoryList, useCategoryMinorList } from '@/hooks'
+import { generateProductSlug, isArrayHasValue, isDrugStore } from '@/helper'
+import { useCategoryList, useCategoryMinorList, usePostCategory, useUser } from '@/hooks'
 import classNames from 'classnames'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
+import { toast } from 'react-hot-toast'
+import ScrollContainer from 'react-indiana-drag-scroll'
 import { twMerge } from 'tailwind-merge'
 import { Spinner } from '../spinner'
 import { CategoryNavDropDownMenu } from './categoryNavDropDownMenu'
-import { useRouter } from 'next/router'
-import ScrollContainer from 'react-indiana-drag-scroll'
 
 interface HeaderCategoryNavProps {
   className?: string
@@ -18,6 +18,7 @@ interface HeaderCategoryNavProps {
 export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
   const router = useRouter()
   const ref = useRef<HTMLDivElement>(null)
+  const { userInfo } = useUser({})
   const [currentCategoryId, setCurrentCategoryId] = useState<number | undefined>()
   const [isCategoryMinor, setIsCategoryMinor] = useState<boolean>(false)
 
@@ -28,6 +29,11 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
 
   const { categoryMinorList, isValidating: categoryMinorListLoading } = useCategoryMinorList({
     key: SWR_KEY.get_category_minor_list,
+    params: {},
+  })
+
+  const { data: postCategoryList, isValidating: postCategoryLoading } = usePostCategory({
+    key: `${SWR_KEY.get_post_category_list}`,
     params: {},
   })
 
@@ -92,17 +98,63 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
               ) : null}
             </div>
 
-            <div className="flex min-w-fit items-center ml-12">
-              <Link href="/post-list" className="title !text-white">
-                Góc nhà thuốc
-              </Link>
+            <div className="flex items-center ml-12">
+              {postCategoryLoading ? (
+                <div>
+                  <Spinner />
+                </div>
+              ) : (
+                <ScrollContainer className="flex items-center ml-12">
+                  {postCategoryList?.map((postCategory, index) => (
+                    <div className="flex items-center">
+                      <div
+                        className="cursor-pointer"
+                        key={postCategory.id}
+                        onClick={() => {
+                          if (postCategory.role === 'npp' && !isDrugStore(userInfo?.account)) {
+                            toast.error('Thông tin chỉ dành cho người phụ trách chuyên môn về dược')
+                          } else {
+                            router.push({
+                              pathname: '/post-list',
+                              query: {
+                                parent_id: generateProductSlug(postCategory.name, postCategory.id),
+                              },
+                            })
+                          }
+                        }}
+                      >
+                        <p className="title !text-white">{postCategory?.name}</p>
+                      </div>
+
+                      {index < postCategoryList?.length - 1 && (
+                        <div className={`border-l border-white h-[18px] mx-12`}></div>
+                      )}
+                    </div>
+                  ))}
+                </ScrollContainer>
+              )}
+            </div>
+
+            {/* <div className="flex min-w-fit items-center ml-12">
+              <div
+                className="cursor-pointer"
+                onClick={() => {
+                  if (isDrugStore(userInfo?.account)) {
+                    router.push('/post-list')
+                  } else {
+                    toast.error('Thông tin chỉ dành cho người phụ trách chuyên môn về dược')
+                  }
+                }}
+              >
+                <p className="title !text-white">Góc nhà thuốc</p>
+              </div>
 
               <div className={`border-l border-white h-[18px] mx-12`}></div>
 
               <Link href="/post-list" className="title !text-white">
                 Sống khỏe mỗi ngày
               </Link>
-            </div>
+            </div> */}
           </div>
 
           {/* dropdown menu */}
@@ -116,7 +168,9 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
               parent_category_id={currentCategoryId}
               isMinorCategory={isCategoryMinor}
               className="transition-opacity ease-in-out duration-200"
-              onClose={() => {setCurrentCategoryId(undefined)}}
+              onClose={() => {
+                setCurrentCategoryId(undefined)
+              }}
             />
           </div>
         </div>

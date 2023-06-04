@@ -7,7 +7,7 @@ import classNames from 'classnames'
 import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import { Button } from '../button'
-import { InputField, SelectField } from '../inputs'
+import { InputField, SelectField, TextareaField } from '../inputs'
 
 interface PostCategoryFormProps {
   onSubmit?: (params: CreatePostCategory) => void
@@ -16,6 +16,17 @@ interface PostCategoryFormProps {
 
 export const PostCategoryForm = ({ onSubmit, categoryOptions }: PostCategoryFormProps) => {
   const currentPostCategory = useSelector(selectPostCategoryForm)
+
+  const roleOptions = [
+    {
+      label: 'Tất cả',
+      value: 'th',
+    },
+    {
+      label: 'Nhà thuốc',
+      value: 'npp',
+    },
+  ]
 
   const {
     handleSubmit,
@@ -32,11 +43,12 @@ export const PostCategoryForm = ({ onSubmit, categoryOptions }: PostCategoryForm
         ...data,
         slug: convertViToEn(data.slug.trim().toLowerCase()).replace(/\s+/g, '-'),
         parent_id: data?.parent_id?.value || undefined,
+        role: data?.role?.value || 'th',
       })
   }
 
   return (
-    <form className="p-12" onSubmit={handleSubmit(onSubmitHandler)}>
+    <form className="" onSubmit={handleSubmit(onSubmitHandler)}>
       <div className="">
         <div className="mb-12">
           <InputField
@@ -74,10 +86,24 @@ export const PostCategoryForm = ({ onSubmit, categoryOptions }: PostCategoryForm
         </div>
 
         <div className="mb-12">
-          <InputField
+          <SelectField
+            defaultValue={roleOptions?.find(
+              (item: any) => item.value === currentPostCategory?.role
+            )}
+            control={control}
+            name="role"
+            placeholder="Phân loại người xem"
+            label="Phân loại"
+            options={roleOptions}
+          />
+        </div>
+
+        <div className="mb-12">
+          <TextareaField
+            rows={4}
             control={control}
             name="desc"
-            placeholder="Mô tả"
+            placeholder="Nhập mô tả"
             label="Mô tả"
             defaultValue={currentPostCategory?.desc}
           />

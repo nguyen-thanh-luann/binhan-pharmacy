@@ -16,7 +16,7 @@ import { isArrayHasValue } from '@/helper'
 import { useChatAccount, usePostCategory, usePostList } from '@/hooks'
 import { selectPostForm, setPostForm } from '@/store'
 import { AccountContainer, Main } from '@/templates'
-import { OptionType, Post } from '@/types'
+import { OptionType, Post, PostCategory } from '@/types'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
 import { toast } from 'react-hot-toast'
@@ -74,15 +74,27 @@ const PostPage = () => {
     dispatch(setPostForm(undefined))
   }
 
+  const transformData = (data: PostCategory[]) => {
+    const transformedData: any = []
+
+    data.forEach((item) => {
+      const transformedItem = {
+        label: item?.name,
+        value: item?.id,
+      }
+
+      transformedData.push(transformedItem)
+
+      if (item.children && item.children.length > 0) {
+        transformedData.push(...transformData(item.children))
+      }
+    })
+
+    return transformedData
+  }
+
   const categoryOptions: OptionType<string>[] | [] = useMemo(() => {
-    if (postCategoryList) {
-      return postCategoryList?.map((item: any) => ({
-        label: item.name,
-        value: item.id,
-      }))
-    } else {
-      return []
-    }
+    return transformData(postCategoryList || [])
   }, [postCategoryList])
 
   const renderPostLoading = () => {
