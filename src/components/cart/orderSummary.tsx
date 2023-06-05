@@ -96,7 +96,7 @@ export const OrderSummary = ({ className }: CartSummaryProps) => {
         </p>
       </div>
 
-      <div className="p-16">
+      <div className="p-16 pt-0">
         <Button
           title="Đặt hàng"
           className="bg-primary rounded-[10px] py-10 w-full"

@@ -48,7 +48,7 @@ export const CartPageCompany = ({
 
   return (
     <div className={twMerge(classNames('', className))}>
-      <div className="flex items-center gap-12 bg-white rounded-[10px] p-16 mb-12 shadow-shadow-1">
+      <div className="flex items-center gap-12 bg-white rounded-[10px] p-12 mb-12 shadow-shadow-1">
         <div className={`w-32`}>
           {isLoading ? (
             <Spinner />

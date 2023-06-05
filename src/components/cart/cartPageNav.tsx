@@ -59,7 +59,7 @@ export const CartPageNav = ({
     <div
       className={twMerge(
         classNames(
-          `bg-white p-16 rounded-[10px] shadow-shadow-1 z-10 sticky top-header_mobile_height md:top-header_group_height`,
+          `bg-white p-12 rounded-[10px] shadow-shadow-1 z-10 sticky top-header_mobile_height md:top-header_group_height`,
           className
         )
       )}

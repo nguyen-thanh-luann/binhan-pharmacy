@@ -139,12 +139,12 @@ export const CartProduct = ({
   // console.log({ data })
 
   return (
-    <div className={classNames('p-16', className)}>
+    <div className={classNames('p-12', className)}>
       {data?.has_promotion ? (
         <CartProductPromotion {...indexes} companyId={company_id} product={data} />
       ) : null}
 
-      <div className={twMerge(classNames('bg-white py-16 flex md:gap-24 items-center'))}>
+      <div className={twMerge(classNames('bg-white flex md:gap-24 items-center'))}>
         {/* product info */}
         <div className="flex-1 flex items-center">
           <div className="w-32">
@@ -195,29 +195,33 @@ export const CartProduct = ({
             </div>
 
             {/* mobile view */}
-            <p className="block md:hidden text-md text-primary font-bold leading-8 line-clamp-1 mt-8">
-              {formatMoneyVND(data.product_id?.price_unit)}
-            </p>
+            <div className="md:hidden flex flex-wrap justify-between items-center">
+              <p className="text-md text-primary font-bold leading-8 line-clamp-1 mt-8">
+                {formatMoneyVND(data.product_id?.price_unit)}
+              </p>
 
-            <div className="md:hidden flex justify-start mt-8">
-              {data?.rel_uom_ids?.length > 1 ? (
-                <Select
-                  isSearchable={false}
-                  className="text-base min-w-[80px] border-primary"
-                  components={{ IndicatorSeparator: () => null }}
-                  defaultValue={changeProductUomTypeToReactSelectType(data?.uom_id)}
-                  options={data?.rel_uom_ids.map((productUom) =>
-                    changeProductUomTypeToReactSelectType(productUom)
-                  )}
-                  onChange={(val) =>
-                    handleChangeProductUom(changeReactSelectTypeToProductUomType(val || undefined))
-                  }
-                />
-              ) : (
-                <div>
-                  <p className="text-base line-clamp-1">{data?.uom_id?.uom_name}</p>
-                </div>
-              )}
+              <div className="flex justify-start mt-8">
+                {data?.rel_uom_ids?.length > 1 ? (
+                  <Select
+                    isSearchable={false}
+                    className="text-base min-w-[80px] border-primary"
+                    components={{ IndicatorSeparator: () => null }}
+                    defaultValue={changeProductUomTypeToReactSelectType(data?.uom_id)}
+                    options={data?.rel_uom_ids.map((productUom) =>
+                      changeProductUomTypeToReactSelectType(productUom)
+                    )}
+                    onChange={(val) =>
+                      handleChangeProductUom(
+                        changeReactSelectTypeToProductUomType(val || undefined)
+                      )
+                    }
+                  />
+                ) : (
+                  <div>
+                    <p className="text-base line-clamp-1">{data?.uom_id?.uom_name}</p>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="md:hidden flex justify-between items-center mt-8">

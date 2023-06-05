@@ -21,6 +21,7 @@ import { InputDate, InputField, PasswordField, RadioField, TextareaField } from 
 import { Modal } from '../modal'
 import { AddressPicker } from './addressPicker'
 import { OtpForm } from './otpForm'
+import { Spinner } from '../spinner'
 
 interface StoreRegisterFormProps {
   className?: string
@@ -58,7 +59,7 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
   })
 
   const { getBase64Images } = useAttachment({ limit: LIMIT_ATTACHMENT })
-  const { createAttachment } = useCreateAttachment()
+  const { createAttachment, isLoading: isLoadAttachment } = useCreateAttachment()
 
   const [businessCerImage, setBusinessCerImage] = useState<CreateAttachmentRes>()
   const [gppCerImage, setGppCerImage] = useState<any>()
@@ -67,7 +68,8 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
     e: ChangeEvent<HTMLInputElement>,
     type: certificatteTypeImage
   ) => {
-    if (!e?.target?.files) return
+
+    if (!e?.target?.files || isLoadAttachment) return
 
     getBase64Images(e.target.files, (images) => {
       if (!images?.[0]) return
@@ -382,7 +384,7 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
                   accept="image/*"
                 />
                 <label
-                  className="cursor-pointer"
+                  className={classNames(isLoadAttachment ? 'cursor-wait' : 'cursor-pointer')}
                   htmlFor="business-certificatte-image"
                   id="business-certificatte-image"
                 >
@@ -419,7 +421,7 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
                   accept="image/*"
                 />
                 <label
-                  className="cursor-pointer"
+                  className={classNames(isLoadAttachment ? 'cursor-wait' : 'cursor-pointer')}
                   htmlFor="gpp-certificatte-image"
                   id="gpp-certificatte-image"
                 >
@@ -440,6 +442,12 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
               </div>
             </div>
           </div>
+
+          {isLoadAttachment && (
+            <div className="flex justify-center my-12">
+              <Spinner />
+            </div>
+          )}
         </div>
 
         <p className="text-lg font-bold text-primary mb-24">

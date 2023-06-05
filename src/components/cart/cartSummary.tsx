@@ -94,7 +94,7 @@ export const CartSummary = ({ className }: CartSummaryProps) => {
         </p>
       </div>
 
-      <div className="p-16">
+      <div className="p-16 pt-0">
         <Button
           disabled={isLoading}
           loading={isLoading}
