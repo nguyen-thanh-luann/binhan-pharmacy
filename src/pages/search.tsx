@@ -27,7 +27,7 @@ const SearchPage = () => {
   const [currentTab, setCurrentTab] = useState<string>('default')
   const { visible: showFilters, openModal: openFilters, closeModal: closeFilters } = useModal()
 
-  const { products, filter, isValidating, hasMore, getMore, isLoadingMore, price_max, price_min } =
+  const { products, filter, isValidating, hasMore, getMore, isFilter, price_max, price_min } =
     useProductQuery({
       key: `${SWR_KEY.filter_product}`,
       params: {
@@ -113,7 +113,7 @@ const SearchPage = () => {
         <Breadcrumb
           breadcrumbList={[
             {
-              path: '/',
+              path: '/search',
               name: `Danh sách sản phẩm`,
             },
           ]}
@@ -194,7 +194,7 @@ const SearchPage = () => {
 
             {/* product slide here */}
             <div className="">
-              {isValidating || isLoadingMore ? (
+              {isValidating || isFilter ? (
                 <ProductsLoadingSlice className="grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-12" />
               ) : null}
 

@@ -38,6 +38,7 @@ export const useProductFilter = <Data = any, Params extends QueryList = any>({
   const [params, setParams] = useState<Params>(getDefaultParams)
   const hasMore = (data?.result?.length || 0) < (data?.paginate?.total || 0)
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false)
+  const [isFilter, setIsFilter] = useState<boolean>(false)
 
   function getDefaultParams(): Params {
     return {
@@ -123,12 +124,14 @@ export const useProductFilter = <Data = any, Params extends QueryList = any>({
         offset: 0,
       })
       setParams(newParams)
-
+      setIsFilter(true)
       const res = await fetcher(newParams)
       const response = getDataResponse<Data>(res)
       mutate(response, false)
       onSuccess?.(response?.result)
+      setIsFilter(false)
     } catch (error) {
+      setIsFilter(false)
       onError?.()
     }
   }
@@ -156,6 +159,7 @@ export const useProductFilter = <Data = any, Params extends QueryList = any>({
     price_max: data?.price_max || 0,
     isValidating,
     isLoadingMore,
+    isFilter,
     error,
     hasMore,
     params,
