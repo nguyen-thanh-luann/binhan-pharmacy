@@ -29,3 +29,8 @@ export interface VisceraAttribute extends AttributeMinorValue {}
 export interface VisceraAttributeRes extends AttributeMinor {
   value_ids: VisceraAttribute[]
 }
+
+export interface AttributeReq {
+  attribute_id: number
+  attribute_value_ids: Array<number>
+}

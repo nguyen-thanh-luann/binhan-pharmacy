@@ -8,7 +8,7 @@ import { CategoryItemLoading } from '../category/categoryItemLoading'
 
 export const FilterByCategoryMinor = () => {
   const [showCategories, setShowCategories] = useState<number[]>([])
-
+ 
   const router = useRouter()
 
   const { categoryMinorList, isValidating: categoryMinorListLoading } = useCategoryMinorList({

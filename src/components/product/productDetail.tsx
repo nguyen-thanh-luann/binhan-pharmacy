@@ -40,7 +40,7 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
   const purchasable = purchasableProduct(data, userInfo)
 
   const { data: productPromotions, isValidating: isLoadProductPromotion } = useProductPromotion({
-    key: `${SWR_KEY.get_product_promotion}_${data?.product_id}`,
+    key: `${SWR_KEY.get_product_promotion}_${data?.product_id}_${userInfo?.account?.partner_id}`,
     product_id: data?.product_id,
   })
 

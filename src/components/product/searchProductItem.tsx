@@ -36,7 +36,7 @@ export const SearchProductItem = ({
           onChange?.(data)
         }}
       >
-        <p className="text-base text-text-color">{data?.product_name}</p>
+        <p className="text-base text-text-color line-clamp-2">{data?.product_name}</p>
       </div>
 
       {onDelete ? (

@@ -9,18 +9,13 @@ import {
   Tabs,
 } from '@/components'
 import { PRODUCT_FILTER_TABS, SWR_KEY, WEB_TITTLE } from '@/constants'
-import { isArrayHasValue, isObjectHasValue } from '@/helper'
+import { generateFilterProductParamFormRouter, isArrayHasValue, isObjectHasValue } from '@/helper'
 import { useModal, useProductQuery } from '@/hooks'
 import { MainNoFooter } from '@/templates'
 import { ProductfilterSortType } from '@/types'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
-
-interface AttributeReq {
-  attribute_id: number
-  attribute_value_ids: Array<number>
-}
 
 const SearchPage = () => {
   const router = useRouter()
@@ -36,61 +31,11 @@ const SearchPage = () => {
     })
 
   useEffect(() => {
-    let attribute: any = {}
-    let attribute_ids: AttributeReq[] = []
-
-    let category: any = {}
-    let category_ids: number[] = []
-
-    let category_minor: any = {}
-    let category_minor_ids: number[] = []
-
-    Object.keys(router.query).forEach((key) => {
-      if (key.includes('attributes_')) {
-        attribute[key] = router.query[key]
-      } else if (key?.includes('minor_category_')) {
-        category_minor[key] = router?.query[key]
-      } else if (key?.includes('category_')) {
-        category[key] = router?.query[key]
-      }
-    })
-
-    if (isObjectHasValue(attribute)) {
-      attribute_ids = Object.keys(attribute).reduce(
-        (prev: AttributeReq[], curr) =>
-          [...prev].concat({
-            attribute_id: Number(curr.split('attributes_')[1]) || 0,
-            attribute_value_ids: curr.includes('attributes_')
-              ? typeof attribute[curr] === 'string'
-                ? [Number(attribute[curr])]
-                : attribute[curr].map((x: string) => Number(x))
-              : [],
-          }),
-        []
-      )
-    }
-
-    if (isObjectHasValue(category)) {
-      category_ids = Object.keys(category)?.map((c) => {
-        return Number(c?.split('category_')[1] || 0)
-      })
-    }
-
-    if (isObjectHasValue(category_minor)) {
-      category_minor_ids = Object.keys(category_minor)?.map((c) => {
-        return Number(c?.split('minor_category_')[1] || 0)
-      })
-    }
+    const searchParams = generateFilterProductParamFormRouter(router)
 
     filter({
       product_type: 'product_product',
-      keyword: router?.query?.keyword || '',
-      sort_by: (router?.query?.sort_by as ProductfilterSortType) || undefined,
-      category_ids,
-      category_minor_ids,
-      attributes: attribute_ids,
-      price_min: Number(router?.query?.price_min) || undefined,
-      price_max: Number(router?.query?.price_max) || undefined,
+      ...searchParams,
     })
 
     if (router?.query?.sort_by) {
@@ -219,7 +164,9 @@ const SearchPage = () => {
                 </InfiniteScroll>
               ) : (
                 <div className="">
-                  <NotFound notify="Không tìm thấy sản phẩm phù hợp!" />
+                  {!isValidating && !isFilter && (
+                    <NotFound notify="Không tìm thấy sản phẩm phù hợp!" />
+                  )}
                 </div>
               )}
             </div>
