@@ -2,6 +2,7 @@ import moment from 'moment'
 import React, { useState } from 'react'
 import { ModalConfirm } from '../modal'
 import { PostCategory } from '@/types'
+import classNames from 'classnames'
 
 interface PostCategoryItemProps {
   data: PostCategory
@@ -26,6 +27,19 @@ export const PostCategoryItem = ({ data, onDelete, onEdit }: PostCategoryItemPro
       className={`relative border border-gray-200 mb-12 rounded-md p-12 bg-white hover:bg-gray-200 duration-150 ease-in-out`}
     >
       <p className="title_md line-clamp-1 capitalize">{data?.name}</p>
+
+      <div className="flex items-center gap-8">
+        <p className="text-md font-bold">Phân cấp:</p>
+
+        <div
+          className={classNames(
+            'border rounded-lg w-fit min-w-[100px] text-center',
+            data?.role === 'npp' ? 'border-primary text-primary' : 'border-green text-green'
+          )}
+        >
+          {data?.role === 'npp' ? 'Nhà thuốc' : 'Tất cả'}
+        </div>
+      </div>
 
       <p className="title_md line-clamp-2">
         {'Slug: '}

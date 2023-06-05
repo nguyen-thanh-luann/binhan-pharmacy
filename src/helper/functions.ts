@@ -4,6 +4,7 @@ import {
   CartProduct,
   LastMessage,
   MessageRes,
+  PostCategory,
   Product,
   ProductDescription,
   ProductUom,
@@ -378,11 +379,30 @@ export function roundingNumber(value: number, type: 'upper' | 'lower', base_unit
   }
 }
 
-export function isAddressNameValid(province: string, district: string, ward: string): boolean{
-  return (!!province && !!district && !!ward)
+export function isAddressNameValid(province: string, district: string, ward: string): boolean {
+  return !!province && !!district && !!ward
 }
 
 export function isDrugStore(account: UserAccount | undefined): boolean {
-  if(!account) return false
+  if (!account) return false
   return account.medicine_account_type === 'drugstore_account'
+}
+
+export function transPostCategoryDataToSelectionType(data: PostCategory[]) {
+  const transformedData: any = []
+
+  data.forEach((item) => {
+    const transformedItem = {
+      label: item?.name,
+      value: item?.id,
+    }
+
+    transformedData.push(transformedItem)
+
+    if (item.children && item.children.length > 0) {
+      transformedData.push(...transPostCategoryDataToSelectionType(item.children))
+    }
+  })
+
+  return transformedData
 }

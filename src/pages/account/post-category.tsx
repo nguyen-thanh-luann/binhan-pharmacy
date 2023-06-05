@@ -11,7 +11,7 @@ import {
   SignupPostAdminForm,
 } from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
-import { isArrayHasValue } from '@/helper'
+import { isArrayHasValue, transPostCategoryDataToSelectionType } from '@/helper'
 import { useChatAccount, useModal, usePostCategory } from '@/hooks'
 import { selectPostCategoryForm, setPostCategoryForm } from '@/store'
 import { AccountContainer, Main } from '@/templates'
@@ -89,14 +89,8 @@ const PostCategoryPage = () => {
     )
   }
 
-  
-
   const categoryOptions: OptionType<string>[] | undefined = useMemo(() => {
-    if (!postCategoryList) return []
-    return postCategoryList?.map((item) => ({
-      label: item.name,
-      value: item.id,
-    }))
+    return transPostCategoryDataToSelectionType(postCategoryList || [])
   }, [postCategoryList])
 
   const handleSelectCategoryItemEdit = (item: PostCategory) => {

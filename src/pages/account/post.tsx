@@ -12,11 +12,11 @@ import {
 } from '@/components'
 import EditPost from '@/components/post/editPost'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
-import { isArrayHasValue } from '@/helper'
+import { isArrayHasValue, transPostCategoryDataToSelectionType } from '@/helper'
 import { useChatAccount, usePostCategory, usePostList } from '@/hooks'
 import { selectPostForm, setPostForm } from '@/store'
 import { AccountContainer, Main } from '@/templates'
-import { OptionType, Post, PostCategory } from '@/types'
+import { OptionType, Post } from '@/types'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
 import { toast } from 'react-hot-toast'
@@ -74,27 +74,8 @@ const PostPage = () => {
     dispatch(setPostForm(undefined))
   }
 
-  const transformData = (data: PostCategory[]) => {
-    const transformedData: any = []
-
-    data.forEach((item) => {
-      const transformedItem = {
-        label: item?.name,
-        value: item?.id,
-      }
-
-      transformedData.push(transformedItem)
-
-      if (item.children && item.children.length > 0) {
-        transformedData.push(...transformData(item.children))
-      }
-    })
-
-    return transformedData
-  }
-
   const categoryOptions: OptionType<string>[] | [] = useMemo(() => {
-    return transformData(postCategoryList || [])
+    return transPostCategoryDataToSelectionType(postCategoryList || [])
   }, [postCategoryList])
 
   const renderPostLoading = () => {

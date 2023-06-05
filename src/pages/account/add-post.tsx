@@ -1,6 +1,7 @@
 import { TimesIcon } from '@/assets'
 import { Breadcrumb, CreatePostForm, Modal, PostEditor, SignupPostAdminForm } from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
+import { transPostCategoryDataToSelectionType } from '@/helper'
 import { useChatAccount, usePostCategory, usePostList } from '@/hooks'
 import { AccountContainer, Main } from '@/templates'
 import { CreatePost, OptionType } from '@/types'
@@ -29,7 +30,7 @@ const CreatePostPage = () => {
     })
   }
 
-  const { data: postCategories } = usePostCategory({
+  const { data: postCategoryList } = usePostCategory({
     key: `${SWR_KEY.get_post_category_list}`,
     params: {
       limit: DEFAULT_LIMIT,
@@ -37,11 +38,8 @@ const CreatePostPage = () => {
   })
 
   const categoryOptions: OptionType<string>[] | undefined = useMemo(() => {
-    return postCategories?.map((item) => ({
-      label: item.name,
-      value: item.id,
-    }))
-  }, [postCategories])
+    return transPostCategoryDataToSelectionType(postCategoryList || [])
+  }, [postCategoryList])
 
   return (
     <Main title={WEB_TITTLE} description={WEB_DESCRIPTION}>
