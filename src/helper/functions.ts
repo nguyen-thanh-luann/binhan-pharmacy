@@ -10,6 +10,7 @@ import {
   ProductUom,
   ReactSelectType,
   UserAccount,
+  UserInfo,
 } from '@/types'
 import _ from 'lodash'
 const sign = require('jwt-encode')
@@ -405,4 +406,12 @@ export function transPostCategoryDataToSelectionType(data: PostCategory[]) {
   })
 
   return transformedData
+}
+
+export function purchasableProduct(product: Product, userInfo: UserInfo | undefined) {
+  if (!product || !userInfo) return false
+  
+  return product?.product_type === 'medicine'
+    ? userInfo?.account?.medicine_account_type === 'drugstore_account'
+    : true // if product is medicine => just drugstore account can buy it!
 }

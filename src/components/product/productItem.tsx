@@ -5,8 +5,9 @@ import {
   formatMoneyVND,
   generateProductSlug,
   isObjectHasValue,
+  purchasableProduct,
 } from '@/helper'
-import { useAddToCart, useModal } from '@/hooks'
+import { useAddToCart, useModal, useUser } from '@/hooks'
 import { setProduct } from '@/store'
 import { Product } from '@/types'
 import classNames from 'classnames'
@@ -45,7 +46,11 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
   const productSlug = `/${generateProductSlug(data?.product_name, data?.product_id)}`
   const router = useRouter()
   const dispatch = useDispatch()
+  const { userInfo } = useUser({})
   const { addToCart, isAddingTocart } = useAddToCart()
+
+  const purchasable = purchasableProduct(data, userInfo)
+
   const {
     visible: showProductDetailModal,
     closeModal: closeProductDetailModal,
@@ -53,7 +58,7 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
   } = useModal()
 
   const handleAddToCart = (product: Product) => {
-    if (isAddingTocart) return
+    if (isAddingTocart || !purchasable) return
 
     if (product.has_variant) {
       hanldeOpenModalDetail()
@@ -191,29 +196,37 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
 
             <div className="relative">
               {/* price */}
-              <div className="mb-8 flex items-center">
-                <div className="flex items-center flex-1 flex-wrap">
-                  <p className="text-orange text-base md:text-md font-bold leading-9 mr-10">
-                    {formatMoneyVND(data?.price_unit || 0)}
+              <div>
+                {purchasable ? (
+                  <div className="mb-8 flex items-center">
+                    <div className="flex items-center flex-1 flex-wrap">
+                      <p className="text-orange text-base md:text-md font-bold leading-9 mr-10">
+                        {formatMoneyVND(data?.price_unit || 0)}
+                      </p>
+
+                      {data?.price_unit !== data?.origin_price_unit ? (
+                        <p className="text-gray-400 text-xs font-medium leading-7 line-through">
+                          {formatMoneyVND(data?.origin_price_unit || 0)}
+                        </p>
+                      ) : null}
+                    </div>
+
+                    <div
+                      onClick={() => handleAddToCart(data)}
+                      className=" bg-primary h-[30px] w-[30px] min-w-[30px] rounded-full flex-center cursor-pointer"
+                    >
+                      {isAddingTocart ? (
+                        <Spinner className="!text-primary !fill-white" />
+                      ) : (
+                        <ProductCartIcon className="text-white w-16 h-16" />
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <p className="flex-1 text-orange text-base md:text-md font-bold leading-9">
+                    Tư vấn dược sĩ
                   </p>
-
-                  {data?.price_unit !== data?.origin_price_unit ? (
-                    <p className="text-gray-400 text-xs font-medium leading-7 line-through">
-                      {formatMoneyVND(data?.origin_price_unit || 0)}
-                    </p>
-                  ) : null}
-                </div>
-
-                <div
-                  onClick={() => handleAddToCart(data)}
-                  className=" bg-primary h-[30px] w-[30px] min-w-[30px] rounded-full flex-center cursor-pointer"
-                >
-                  {isAddingTocart ? (
-                    <Spinner className="!text-primary !fill-white" />
-                  ) : (
-                    <ProductCartIcon className="text-white w-16 h-16" />
-                  )}
-                </div>
+                )}
               </div>
 
               {/*rate & sale count */}

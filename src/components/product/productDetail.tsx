@@ -1,6 +1,6 @@
 import { NoteIconOutline, companyIconSm } from '@/assets'
 import { DOMAIN_URL, SWR_KEY } from '@/constants'
-import { formatMoneyVND, isObjectHasValue } from '@/helper'
+import { formatMoneyVND, isObjectHasValue, purchasableProduct } from '@/helper'
 import { useAddToCart, useProductPromotion, useUser, useWishlist } from '@/hooks'
 import { productAPI } from '@/services'
 import { ProductDetail as IProductDetail, Product } from '@/types'
@@ -36,17 +36,20 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
   const { userInfo } = useUser({ shouldFetch: false })
   const { addWhishlist, deleteWhishlist, isLoading: isToggleWishlist } = useWishlist({})
   const { addToCart, isAddingTocart } = useAddToCart()
+
+  const purchasable = purchasableProduct(data, userInfo)
+
   const { data: productPromotions, isValidating: isLoadProductPromotion } = useProductPromotion({
     key: `${SWR_KEY.get_product_promotion}_${data?.product_id}`,
     product_id: data?.product_id,
   })
 
-  console.log({ productPromotions })
-
   const [quantity, setQuantity] = useState<number>(1)
   const [currentProduct, setCurrentProduct] = useState<IProductDetail>(data)
 
   const handleAddToCart = (product: Product) => {
+    if (!purchasable) return
+
     if (!userInfo?.account?.partner_id) {
       router.push(`${DOMAIN_URL}/login`)
       return
@@ -242,7 +245,7 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
         {isLoadProductPromotion ? (
           <PromotionLoading />
         ) : (
-          <ListProductPromotion className='mb-16' data={productPromotions || []} />
+          <ListProductPromotion className="mb-16" data={productPromotions || []} />
         )}
 
         <div className="flex items-center gap-12 mb-16">
@@ -267,13 +270,15 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
             textClassName="text-primary text-md"
           />
 
-          <Button
-            onClick={() => handleAddToCart(currentProduct)}
-            title={isAddingTocart ? '' : 'Chọn mua'}
-            icon={isAddingTocart ? <Spinner className="!text-white !fill-primary" /> : undefined}
-            className="rounded-[8px] p-10 bg-primary border border-primary min-w-[167px] max-w-[30%]"
-            textClassName="text-white text-md"
-          />
+          {purchasable && (
+            <Button
+              onClick={() => handleAddToCart(currentProduct)}
+              title={isAddingTocart ? '' : 'Chọn mua'}
+              icon={isAddingTocart ? <Spinner className="!text-white !fill-primary" /> : undefined}
+              className="rounded-[8px] p-10 bg-primary border border-primary min-w-[167px] max-w-[30%]"
+              textClassName="text-white text-md"
+            />
+          )}
         </div>
       </div>
     </div>

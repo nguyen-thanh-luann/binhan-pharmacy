@@ -68,7 +68,12 @@ export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
     <div className={classNames('bg-white', className)}>
       <div
         onClick={() => {
-          router.push('/post-list')
+          router.push({
+            pathname: '/post-list',
+            query: {
+              parent_id: parent_id || undefined,
+            },
+          })
         }}
         className="p-10 flex items-center gap-12 border-b border-gray-200 cursor-pointer"
       >

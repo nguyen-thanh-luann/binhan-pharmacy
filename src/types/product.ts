@@ -17,6 +17,8 @@ export interface ProductParams {
   attribute_ids?: any[]
 }
 
+export type ProductType = 'dietary_supplement' | 'medicine'
+
 export type GetProductType = 'product_combo' | 'product_product'
 
 export interface GetProductByAttributeMinorParams extends QueryList {
@@ -83,6 +85,7 @@ export interface Product {
   product_available: number
   quantity: number
   stock_quantity: ProductUom
+  product_type: ProductType
 }
 
 export interface ProductUom {

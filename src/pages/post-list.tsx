@@ -39,10 +39,10 @@ const PostListPage = () => {
 
   useEffect(() => {
     filter({
-      category_id: parent_id
-        ? fromProductSlugToProductId(parent_id as string)
-        : category_id
+      category_id: category_id
         ? fromProductSlugToProductId(category_id as string)
+        : parent_id
+        ? fromProductSlugToProductId(parent_id as string)
         : undefined,
     })
   }, [category_id, parent_id])

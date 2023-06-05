@@ -55,15 +55,17 @@ export const AccountDrawer = ({ className }: AccountDrawerProps) => {
               <div>
                 <CustomImage
                   src={userInfo?.account?.avatar_url?.url || ''}
-                  imageClassName="w-[20px] h-[20px] object-cover rounded-full"
+                  imageClassName="w-[20px] min-w-[20px] h-[20px] object-cover rounded-full"
                 />
               </div>
             )}
           </div>
 
           <div className="hidden md:block">
-            <p className="title !text-gray group-hover:!text-primary line-clamp-1">
-              {!deviceCode ? 'Tài khoản' : 'Đăng nhập'}
+            <p className="title !text-gray group-hover:!text-primary line-clamp-1 break-all">
+              {!deviceCode
+                ? userInfo?.account?.business_operation_name || userInfo?.account?.partner_name
+                : 'Đăng nhập'}
             </p>
           </div>
         </div>
