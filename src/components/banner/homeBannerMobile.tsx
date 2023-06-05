@@ -10,26 +10,24 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { twMerge } from 'tailwind-merge'
 import { CustomImage } from '../customImage'
 
-interface HomeBannerProps {
+interface HomeBannerMobileProps {
   className?: string
 }
 
-export const HomeBanner = ({ className }: HomeBannerProps) => {
-
+export const HomeBannerMobile = ({ className }: HomeBannerMobileProps) => {
   const { data: bannerList, isValidating: bannerListLoading } = useBanner({
-    key: `${SWR_KEY.get_main_banner}`,
+    key: `${SWR_KEY.get_mobile_banner}`,
     params: {
-      banner_size: '4:1',
+      banner_size: '2:1',
     },
   })
 
-
-  if (!bannerListLoading && !bannerList ) return null
+  if (!bannerListLoading && !bannerList) return null
 
   return (
-    <div className={twMerge(classNames('', className))}>
+    <div className={twMerge(classNames('md:hidden', className))}>
       {bannerListLoading ? (
-        <div className="animate-pulse bg-gray-200 aspect-[2/1] md:aspect-[4/1]"></div>
+        <div className="animate-pulse bg-gray-200 aspect-[2/1]"></div>
       ) : isArrayHasValue(bannerList) ? (
         <Swiper
           slidesPerView={1}
@@ -54,7 +52,7 @@ export const HomeBanner = ({ className }: HomeBannerProps) => {
                     // src={`${banners?.[0]?.banner_cloud_storage_id?.url}`}
                     src={`${banner?.banner_cloud_storage_id?.url || ''}`}
                     alt="banner"
-                    imageClassName="object-cover w-full aspect-[2/1] md:aspect-[4/1]"
+                    imageClassName="object-cover w-full aspect-[2/1]"
                   />
                 </div>
               </SwiperSlide>
@@ -62,7 +60,7 @@ export const HomeBanner = ({ className }: HomeBannerProps) => {
           </div>
         </Swiper>
       ) : (
-        <div className="animate-pulse bg-gray-200 aspect-[2/1] md:aspect-[4/1]"></div>
+        <div className="animate-pulse bg-gray-200 aspect-[2/1]"></div>
       )}
     </div>
   )

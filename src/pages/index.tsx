@@ -1,6 +1,7 @@
 import {
   FirstSectionProductByAttributeMinor,
   HomeBanner,
+  HomeBannerMobile,
   HomeDecor,
   HomePosts,
   IntroPopUp,
@@ -10,16 +11,17 @@ import {
 } from '@/components'
 
 import { DOMAIN_URL, WEB_DESCRIPTION, WEB_TITTLE, thumbnailImageUrl } from '@/constants'
+import { useDevice } from '@/hooks'
 import { Main } from '@/templates'
 
 // this is checkout branch
 const HomePage = () => {
+  const { isDesktop } = useDevice()
+
   return (
     <Main title={WEB_TITTLE} description={WEB_DESCRIPTION}>
       <div>
-        <div className="mb-24">
-          <HomeBanner />
-        </div>
+        <div className="mb-24">{isDesktop ? <HomeBanner /> : <HomeBannerMobile />}</div>
 
         <div className="container px-12">
           <SectionBuyMedicine className="mb-24 hidden md:block" />

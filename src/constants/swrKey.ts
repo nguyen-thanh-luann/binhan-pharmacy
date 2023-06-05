@@ -38,6 +38,7 @@ export const SWR_KEY = {
 
   get_main_banner: 'get_main_banner',
   get_banner_list: 'get_banner_list',
+  get_mobile_banner: 'get_mobile_banner',
   get_star_rating_count: 'get_star_rating_count',
 
   get_user_address: 'get_user_address',
