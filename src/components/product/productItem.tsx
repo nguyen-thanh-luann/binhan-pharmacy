@@ -8,10 +8,9 @@ import {
   purchasableProduct,
 } from '@/helper'
 import { useAddToCart, useModal, useUser } from '@/hooks'
-import { setProduct } from '@/store'
+import { addViewedProduct, setProduct } from '@/store'
 import { Product } from '@/types'
 import classNames from 'classnames'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import ScrollContainer from 'react-indiana-drag-scroll'
 import { useDispatch } from 'react-redux'
@@ -85,6 +84,11 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
     }
   }
 
+  const onProductClick = () => {
+    router.push(productSlug)
+    dispatch(addViewedProduct(data))
+  }
+
   const discount = calcDiscountPercent(data)
 
   return (
@@ -100,19 +104,20 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
         >
           {/* image group */}
           <div className="relative">
-            <Link href={productSlug}>
-              <div className="mb-8 rounded-tl-[6px] rounded-tr-[6px] max-h-[230px] relative overflow-hidden">
-                <Image
-                  src={
-                    data?.representation_image?.image_url
-                      ? `${API_URL}${data?.representation_image?.image_url}`
-                      : empty
-                  }
-                  imageClassName="object-cover w-full h-full hover:scale-110 duration-200 ease-in-out aspect-[1/1]"
-                  className=""
-                />
-              </div>
-            </Link>
+            <div
+              onClick={onProductClick}
+              className="mb-8 rounded-tl-[6px] rounded-tr-[6px] max-h-[230px] relative overflow-hidden cursor-pointer"
+            >
+              <Image
+                src={
+                  data?.representation_image?.image_url
+                    ? `${API_URL}${data?.representation_image?.image_url}`
+                    : empty
+                }
+                imageClassName="object-cover w-full h-full hover:scale-110 duration-200 ease-in-out aspect-[1/1]"
+                className=""
+              />
+            </div>
 
             {/* packing rule */}
             <div
@@ -137,13 +142,11 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
           {/*product info*/}
           <div className="px-8 md:px-16 pb-8 md:pb-16 relative">
             <Tooltip text={data?.product_name || ''} viewTooltip={data?.product_name?.length > 20}>
-              <Link href={productSlug}>
-                <div className="relative group">
-                  <p className="h-[43px] line-clamp-2 w-full text-text-color text-base md:text-md font-bold leading-9 mb-8 group-hover:text-primary duration-200 ease-in-out">
-                    {data?.product_name}
-                  </p>
-                </div>
-              </Link>
+              <div onClick={onProductClick} className="relative group cursor-pointer">
+                <p className="h-[43px] line-clamp-2 w-full text-text-color text-base md:text-md font-bold leading-9 mb-8 group-hover:text-primary duration-200 ease-in-out">
+                  {data?.product_name}
+                </p>
+              </div>
             </Tooltip>
 
             {/* properties list */}

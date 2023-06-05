@@ -18,9 +18,7 @@ import {
 } from '@/components'
 import { SWR_KEY, WEB_TITTLE } from '@/constants'
 import { fromProductSlugToProductId, isArrayHasValue, isObjectHasValue } from '@/helper'
-import { addViewedProduct } from '@/store'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
@@ -51,7 +49,6 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 
 const ProductDetailPage = () => {
   const router = useRouter()
-  const dispatch = useDispatch()
   const [breadcrumbList, setBreadcrumbList] = useState<BreadcrumbItem[]>([])
   const productId = fromProductSlugToProductId((router.query?.productId as string) || '')
 
@@ -72,10 +69,6 @@ const ProductDetailPage = () => {
   // Get category breadcrumb & set viewed product
   useEffect(() => {
     setBreadcrumbList([...breadcrumb, { name: data?.product_data?.product_name || '', path: '/' }])
-
-    if (!data?.product_data?.product_id) return
-    
-    dispatch(addViewedProduct(data?.product_data))
   }, [router.query.productId, data])
 
   return (

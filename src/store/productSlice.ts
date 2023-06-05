@@ -1,11 +1,11 @@
-import { Product, ProductDetail } from '@/types'
+import { Product } from '@/types'
 import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from './store'
 
 interface ProductSlice {
   product: Product | undefined
   searchProductHistory: []
-  viewedProducts: Product[] | ProductDetail[]
+  viewedProducts: Product[]
 }
 
 const initialState: ProductSlice = {
@@ -49,7 +49,7 @@ const productSlice = createSlice({
       )
     },
 
-    addViewedProduct: (state, { payload }: { payload: ProductDetail }) => {
+    addViewedProduct: (state, { payload }: { payload: Product }) => {
       const index = state?.viewedProducts?.findIndex(
         (item) => item?.product_id === payload?.product_id
       )

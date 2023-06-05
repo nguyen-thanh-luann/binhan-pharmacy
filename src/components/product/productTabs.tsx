@@ -12,7 +12,15 @@ interface ProductTabsProps {
 }
 
 export const ProductTabs = ({ className, product_id }: ProductTabsProps) => {
-  const [currentTab, setCurrentTab] = useState<string>('rating')
+  const [currentTab, setCurrentTab] = useState<string>('')
+
+  const hanldeTabChange = (value: string) => {
+    if (currentTab === value) {
+      setCurrentTab('')
+    } else {
+      setCurrentTab(value)
+    }
+  }
 
   return (
     <ProductDetailPageContainer>
@@ -23,7 +31,7 @@ export const ProductTabs = ({ className, product_id }: ProductTabsProps) => {
             { label: 'Bình luận', value: 'comment' },
           ]}
           tabActive={currentTab}
-          onChange={(val: string) => setCurrentTab(val)}
+          onChange={(val: string) => hanldeTabChange(val)}
           className="bg-white w-fit mb-12"
           labelClassName="text-text-color font-bold text-lg leading-9 capitalize px-16 border-r border-gray-200 last:border-none"
           tabActiveClassName="!text-primary"
