@@ -27,7 +27,7 @@ export const PostListItemHorizontal = ({
   const postSlug = `/post-detail?slug=${generateProductSlug(data?.title, data?.id)}`
 
   return (
-    <div className={twMerge(classNames(`group rounded-[10px] bg-white`, className))}>
+    <div className={twMerge(classNames(`group rounded-[10px] bg-white animate-fade duration-200`, className))}>
       <Link href={postSlug}>
         <div className="flex gap-12">
           <div className="w-fit">
@@ -41,7 +41,7 @@ export const PostListItemHorizontal = ({
             />
           </div>
 
-          <div className="flex-1">
+          <div className="flex-1 p-8">
             <p
               className={classNames(
                 'text-text-color font-bold text-md leading-9 line-clamp-2 group-hover:text-primary duration-200 ease-in-out',

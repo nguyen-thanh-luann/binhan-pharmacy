@@ -251,7 +251,6 @@ export const storeReceiveSchema = Yup.object().shape({
 
 export const categoryFormSchema = Yup.object().shape({
   name: Yup.string().required('Vui lòng nhập trường này'),
-  slug: Yup.string().required('Vui lòng nhập trường này'),
   parent_id: Yup.object()
     .shape({
       value: Yup.string(),

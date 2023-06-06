@@ -1,4 +1,4 @@
-import { useProductDetail } from '@/hooks'
+import { useProductDetail, useUser } from '@/hooks'
 import { productAPI } from '@/services'
 import { Main } from '@/templates'
 import { BreadcrumbItem, Product } from '@/types'
@@ -49,11 +49,12 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 
 const ProductDetailPage = () => {
   const router = useRouter()
+  const { userInfo } = useUser({ shouldFetch: false })
   const [breadcrumbList, setBreadcrumbList] = useState<BreadcrumbItem[]>([])
   const productId = fromProductSlugToProductId((router.query?.productId as string) || '')
 
   const { data, isValidating } = useProductDetail({
-    key: `${SWR_KEY.get_product_detail}_${productId}`,
+    key: `${SWR_KEY.get_product_detail}_${productId}_${userInfo?.account?.partner_id}`,
     product_id: Number(productId),
   })
 

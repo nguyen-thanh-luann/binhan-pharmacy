@@ -1,4 +1,4 @@
-import { convertViToEn } from '@/helper'
+import { convertViToEn, removeEmptyValueFromObject } from '@/helper'
 import { categoryFormSchema } from '@/schema'
 import { selectPostCategoryForm } from '@/store'
 import { CreatePostCategory, OptionType } from '@/types'
@@ -20,11 +20,15 @@ export const PostCategoryForm = ({ onSubmit, categoryOptions }: PostCategoryForm
   const roleOptions = [
     {
       label: 'Tất cả',
-      value: 'th',
+      value: '',
     },
     {
       label: 'Nhà thuốc',
       value: 'npp',
+    },
+    {
+      label: 'Người dùng',
+      value: 'th',
     },
   ]
 
@@ -39,12 +43,14 @@ export const PostCategoryForm = ({ onSubmit, categoryOptions }: PostCategoryForm
 
   const onSubmitHandler = (data: any) => {
     onSubmit &&
-      onSubmit({
-        ...data,
-        slug: convertViToEn(data.slug.trim().toLowerCase()).replace(/\s+/g, '-'),
-        parent_id: data?.parent_id?.value || undefined,
-        role: data?.role?.value || 'th',
-      })
+      onSubmit(
+        removeEmptyValueFromObject({
+          ...data,
+          slug: convertViToEn(data.name.trim().toLowerCase()).replace(/\s+/g, '-'),
+          parent_id: data?.parent_id?.value || undefined,
+          role: data?.role?.value || undefined,
+        })
+      )
   }
 
   return (
@@ -62,20 +68,9 @@ export const PostCategoryForm = ({ onSubmit, categoryOptions }: PostCategoryForm
         </div>
 
         <div className="mb-12">
-          <InputField
-            defaultValue={currentPostCategory?.slug}
-            control={control}
-            name="slug"
-            placeholder="Slug"
-            label="Slug"
-            required={true}
-          />
-        </div>
-
-        <div className="mb-12">
           <SelectField
             defaultValue={categoryOptions?.find(
-              (item: any) => item.value === currentPostCategory?.id
+              (item: any) => item.value === currentPostCategory?.parent_id
             )}
             control={control}
             name="parent_id"

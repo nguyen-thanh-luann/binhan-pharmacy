@@ -34,6 +34,7 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
   const { mutate } = useSWRConfig()
 
   const { userInfo } = useUser({ shouldFetch: false })
+
   const { addWhishlist, deleteWhishlist, isLoading: isToggleWishlist } = useWishlist({})
   const { addToCart, isAddingTocart } = useAddToCart()
 
@@ -183,10 +184,14 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
           currentProduct?.stock_quantity?.factor || 0
         }`}</p>
 
-        <p className="text-red text-2xl font-semibold mb-16">
-          {formatMoneyVND(currentProduct?.price_unit || 0)}
-          <span className="text-text-color text-sm ml-4">{`/ ${currentProduct?.uom_id?.uom_name}`}</span>
-        </p>
+        {purchasable ? (
+          <p className="text-red text-2xl font-semibold mb-16">
+            {formatMoneyVND(currentProduct?.price_unit || 0)}
+            <span className="text-text-color text-sm ml-4">{`/ ${currentProduct?.uom_id?.uom_name}`}</span>
+          </p>
+        ) : (
+          <p className="text-red text-2xl font-semibold mb-16">Tư vấn dược sĩ</p>
+        )}
 
         {/* category */}
         {isObjectHasValue(currentProduct?.category_id) ? (

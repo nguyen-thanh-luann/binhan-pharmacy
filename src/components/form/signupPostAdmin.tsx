@@ -32,7 +32,7 @@ export const SignupPostAdminForm = ({ className }: LoginFormProps) => {
         user_id: userInfo?.account?.partner_id || 0,
         password: data.password,
         phone: userInfo?.account?.phone || '',
-        role: 'npp',
+        role: 'admin',
         user_name: data.name,
         avatar: userInfo?.account?.avatar_url?.url,
       },

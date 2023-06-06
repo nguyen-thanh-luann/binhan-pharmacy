@@ -29,6 +29,7 @@ export const useListQuery = <Data = any, Params extends QueryList = any>({
     config
   )
 
+  
   const [params, setParams] = useState<Params>(getDefaultParams)
   const hasMore = (data?.data?.length || 0) < (data?.total || 0)
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false)

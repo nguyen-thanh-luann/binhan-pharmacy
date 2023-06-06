@@ -16,16 +16,13 @@ interface useProducDescriptionRes {
 export const useProductDescription = ({
   shouldFetch = true,
   key,
-  product_id
+  product_id,
 }: useProductDescriptionProps): useProducDescriptionRes => {
   const { data, isValidating } = useSWR(
     key,
     !shouldFetch
       ? null
-      : () =>
-          productAPI
-            .getProductDescription(product_id)
-            .then((res: any) => res?.data),
+      : () => productAPI.getProductDescription(product_id).then((res: any) => res?.data),
     {
       revalidateOnFocus: false,
       dedupingInterval: 1000,

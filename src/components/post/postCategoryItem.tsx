@@ -1,16 +1,24 @@
-import moment from 'moment'
-import React, { useState } from 'react'
-import { ModalConfirm } from '../modal'
 import { PostCategory } from '@/types'
 import classNames from 'classnames'
+import moment from 'moment'
+import { useState } from 'react'
+import { ModalConfirm } from '../modal'
 
 interface PostCategoryItemProps {
   data: PostCategory
   onDelete?: (id: string) => void
   onEdit?: (data: PostCategory) => void
+  className?: string
+  onClick?: (data: PostCategory) => void
 }
 
-export const PostCategoryItem = ({ data, onDelete, onEdit }: PostCategoryItemProps) => {
+export const PostCategoryItem = ({
+  data,
+  onDelete,
+  onEdit,
+  className,
+  onClick: onExternalClick,
+}: PostCategoryItemProps) => {
   const [modalConfirm, setModalConfirm] = useState<boolean>(false)
 
   const handleDelete = () => {
@@ -24,7 +32,11 @@ export const PostCategoryItem = ({ data, onDelete, onEdit }: PostCategoryItemPro
 
   return (
     <div
-      className={`relative border border-gray-200 mb-12 rounded-md p-12 bg-white hover:bg-gray-200 duration-150 ease-in-out`}
+      onClick={() => onExternalClick?.(data)}
+      className={classNames(
+        'relative border border-gray-200 rounded-md p-12 bg-white duration-150 ease-in-out cursor-pointer hover:bg-gray-100',
+        className
+      )}
     >
       <p className="title_md line-clamp-1 capitalize">{data?.name}</p>
 
@@ -34,10 +46,14 @@ export const PostCategoryItem = ({ data, onDelete, onEdit }: PostCategoryItemPro
         <div
           className={classNames(
             'border rounded-lg w-fit min-w-[100px] text-center',
-            data?.role === 'npp' ? 'border-primary text-primary' : 'border-green text-green'
+            data?.role === 'npp'
+              ? 'border-primary text-primary'
+              : data?.role === 'th'
+              ? 'border-green text-green'
+              : 'border-blue text-blue'
           )}
         >
-          {data?.role === 'npp' ? 'Nhà thuốc' : 'Tất cả'}
+          {data?.role === 'npp' ? 'Nhà thuốc' : data?.role === 'th' ? 'Người dùng' : 'Tất cả'}
         </div>
       </div>
 

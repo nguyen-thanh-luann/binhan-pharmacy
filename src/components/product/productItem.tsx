@@ -115,7 +115,7 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
                     : empty
                 }
                 imageClassName="object-cover w-full h-full hover:scale-110 duration-200 ease-in-out aspect-[1/1]"
-                className=""
+                className="aspect-[1/1]"
               />
             </div>
 

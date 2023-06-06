@@ -1,12 +1,19 @@
 import { DownIcon } from '@/assets'
 import { SWR_KEY } from '@/constants'
-import { generateProductSlug, isArrayHasValue, isDrugStore } from '@/helper'
-import { useCategoryList, useCategoryMinorList, usePostCategory, useUser } from '@/hooks'
+import { isArrayHasValue, isDrugStore } from '@/helper'
+import {
+  useCategoryList,
+  useCategoryMinorList,
+  usePrimaryPostCategory,
+  useUser
+} from '@/hooks'
+import { PostCategory } from '@/types'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import ScrollContainer from 'react-indiana-drag-scroll'
+import { useSWRConfig } from 'swr'
 import { twMerge } from 'tailwind-merge'
 import { Spinner } from '../spinner'
 import { CategoryNavDropDownMenu } from './categoryNavDropDownMenu'
@@ -19,6 +26,7 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
   const router = useRouter()
   const ref = useRef<HTMLDivElement>(null)
   const { userInfo } = useUser({})
+  const { mutate: mutateRemote } = useSWRConfig()
   const [currentCategoryId, setCurrentCategoryId] = useState<number | undefined>()
   const [isCategoryMinor, setIsCategoryMinor] = useState<boolean>(false)
 
@@ -32,8 +40,8 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
     params: {},
   })
 
-  const { data: postCategoryList, isValidating: postCategoryLoading } = usePostCategory({
-    key: `${SWR_KEY.get_post_category_list}`,
+  const { data: postCategoryList, isValidating: postCategoryLoading } = usePrimaryPostCategory({
+    key: `${SWR_KEY.get_parent_post_category_list}`,
     params: {},
   })
 
@@ -42,6 +50,18 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
       router.push(`/search/?category_${id}=${id}`)
     } else {
       router.push(`/search/?minor_category_${id}=${id}`)
+    }
+  }
+
+  const hanldePostCategoryClick = (postCategory: PostCategory) => {
+    if (postCategory.role === 'npp' && !isDrugStore(userInfo?.account)) {
+      toast.error('Thông tin chỉ dành cho người phụ trách chuyên môn về dược')
+    } else {
+      mutateRemote(SWR_KEY.current_post_parent_category, postCategory?.id, false)
+
+      router.push({
+        pathname: '/post-list',
+      })
     }
   }
 
@@ -98,7 +118,7 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
               ) : null}
             </div>
 
-            <div className="flex items-center ml-12">
+            <div className="flex items-center ml-12 max-w-[300px] overflow-scroll scrollbar-hide">
               {postCategoryLoading ? (
                 <div>
                   <Spinner />
@@ -111,16 +131,7 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
                         className="cursor-pointer"
                         key={postCategory.id}
                         onClick={() => {
-                          if (postCategory.role === 'npp' && !isDrugStore(userInfo?.account)) {
-                            toast.error('Thông tin chỉ dành cho người phụ trách chuyên môn về dược')
-                          } else {
-                            router.push({
-                              pathname: '/post-list',
-                              query: {
-                                parent_id: generateProductSlug(postCategory.name, postCategory.id),
-                              },
-                            })
-                          }
+                          hanldePostCategoryClick(postCategory)
                         }}
                       >
                         <p className="title !text-white">{postCategory?.name}</p>
@@ -134,27 +145,6 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
                 </ScrollContainer>
               )}
             </div>
-
-            {/* <div className="flex min-w-fit items-center ml-12">
-              <div
-                className="cursor-pointer"
-                onClick={() => {
-                  if (isDrugStore(userInfo?.account)) {
-                    router.push('/post-list')
-                  } else {
-                    toast.error('Thông tin chỉ dành cho người phụ trách chuyên môn về dược')
-                  }
-                }}
-              >
-                <p className="title !text-white">Góc nhà thuốc</p>
-              </div>
-
-              <div className={`border-l border-white h-[18px] mx-12`}></div>
-
-              <Link href="/post-list" className="title !text-white">
-                Sống khỏe mỗi ngày
-              </Link>
-            </div> */}
           </div>
 
           {/* dropdown menu */}

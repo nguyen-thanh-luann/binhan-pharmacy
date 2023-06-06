@@ -9,7 +9,7 @@ import {
   PostCategory,
   PostDetail,
   UpdateCategory,
-  UpdatePost
+  UpdatePost,
 } from '@/types'
 import { AxiosPromise } from 'axios'
 import axiosClient from '.'
@@ -27,6 +27,12 @@ const postAPI = {
     params: GetPostCategoryListParams
   ): Promise<HTTPListResV2<PostCategory[]>> => {
     return axiosClient.get(`/chatDMS/api/category`, { params })
+  },
+
+  getPrimaryPostCategoryList: (
+    params: GetPostCategoryListParams
+  ): Promise<HTTPListResV2<PostCategory[]>> => {
+    return axiosClient.get(`/chatDMS/api/category/parent`, { params })
   },
 
   createCategory: (params: CreatePostCategory) => {

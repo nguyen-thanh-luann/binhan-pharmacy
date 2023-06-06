@@ -4,13 +4,14 @@ import {
   fromProductSlugToProductId,
   generateProductSlug,
   isArrayHasValue,
-  isObjectHasValue,
+  isDrugStore,
 } from '@/helper'
-import { usePostCategory } from '@/hooks'
+import { usePostCategory, useUser } from '@/hooks'
 import { PostCategory } from '@/types'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { useSWRConfig } from 'swr'
 import { Button } from '../button'
 import { Spinner } from '../spinner'
 
@@ -21,28 +22,29 @@ interface PostCategoryMenuProps {
 export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
   const [expandCategory, setExpandCategory] = useState<string>()
   const router = useRouter()
-  const { parent_id, category_id } = router.query
-  const parent_id_req = fromProductSlugToProductId(parent_id as string)
-  const showResetFilterBtn = isObjectHasValue(router?.query) && category_id
+  const { userInfo } = useUser({})
+  const { cache } = useSWRConfig()
 
-  console.log({ parent_id_req })
+  const { category_id } = router.query
+  const currentPostCategoryId = fromProductSlugToProductId(category_id as string)
+  const currentPostParentCategoryId = cache.get(SWR_KEY.current_post_parent_category)?.data || ''
 
   const {
     data: postCategoryList,
     isValidating,
     filter,
   } = usePostCategory({
-    key: `${SWR_KEY.get_post_category_list}_${parent_id_req}`,
+    key: `${SWR_KEY.get_post_category_list}_${currentPostParentCategoryId}`,
     params: {
-      parent_id: parent_id_req,
+      parent_id: currentPostParentCategoryId,
     },
   })
 
   useEffect(() => {
     filter({
-      parent_id: parent_id_req,
+      parent_id: currentPostParentCategoryId,
     })
-  }, [parent_id_req])
+  }, [currentPostParentCategoryId])
 
   const hanldeCategoryClick = (cate: PostCategory) => {
     if (!cate) return
@@ -70,9 +72,6 @@ export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
         onClick={() => {
           router.push({
             pathname: '/post-list',
-            query: {
-              parent_id: parent_id || undefined,
-            },
           })
         }}
         className="p-10 flex items-center gap-12 border-b border-gray-200 cursor-pointer"
@@ -88,51 +87,60 @@ export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
         </div>
       ) : (
         <div>
-          {postCategoryList?.map((cate) => {
-            const isExpand = cate?.id === expandCategory
+          {postCategoryList &&
+            (isDrugStore(userInfo?.account)
+              ? postCategoryList
+              : postCategoryList.filter((postCategory) => postCategory.role !== 'npp')
+            )?.map((cate) => {
+              const isExpand = cate?.id === expandCategory
 
-            return (
-              <div key={cate?.id}>
-                <div
-                  onClick={() => hanldeCategoryClick(cate)}
-                  className="flex-between p-12 border-b last:mb-0 border-gray-100 cursor-pointer"
-                >
-                  <p className="text-md">{cate.name}</p>
+              return (
+                <div key={cate?.id}>
+                  <div
+                    onClick={() => hanldeCategoryClick(cate)}
+                    className="flex-between p-12 border-b last:mb-0 border-gray-100 cursor-pointer"
+                  >
+                    <p className="text-md">{cate.name}</p>
 
-                  <div className={classNames('flex-center duration-200 ease-in-out')}>
-                    <RightIcon
-                      className={classNames(
-                        'text-sm text-text-color duration-200 ease-in-out',
-                        isExpand ? 'rotate-90' : '',
-                        cate.children_count > 0 ? 'block' : 'hidden'
-                      )}
-                    />
+                    <div className={classNames('flex-center duration-200 ease-in-out')}>
+                      <RightIcon
+                        className={classNames(
+                          'text-sm text-text-color duration-200 ease-in-out',
+                          isExpand ? 'rotate-90' : '',
+                          cate.children_count > 0 ? 'block' : 'hidden'
+                        )}
+                      />
+                    </div>
+                  </div>
+
+                  <div className={classNames(isExpand ? 'block' : 'hidden')}>
+                    {isArrayHasValue(cate?.children) ? (
+                      <div className="px-12">
+                        {cate?.children?.map((child) => {
+                          const isActive = child?.id === currentPostCategoryId
+                          return (
+                            <div
+                              onClick={() => hanldeCategoryClick(child)}
+                              className="pl-12 py-8 w-full cursor-pointer"
+                              key={child?.id}
+                            >
+                              <p className={classNames('text-md', isActive ? 'text-primary' : ' ')}>
+                                {child?.name}
+                              </p>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    ) : null}
                   </div>
                 </div>
-
-                <div className={classNames(isExpand ? 'block' : 'hidden')}>
-                  {isArrayHasValue(cate?.children) ? (
-                    <div className="px-12">
-                      {cate?.children?.map((child) => (
-                        <div
-                          onClick={() => hanldeCategoryClick(child)}
-                          className="pl-12 py-8 w-full cursor-pointer"
-                          key={child?.id}
-                        >
-                          <p className="text-md">{child?.name}</p>
-                        </div>
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-            )
-          })}
+              )
+            })}
         </div>
       )}
 
       <div>
-        {showResetFilterBtn ? (
+        {currentPostCategoryId ? (
           <Button
             title="Xóa bộ lọc"
             icon={<TrashIconOutline className="text-red text-base" />}
@@ -141,9 +149,6 @@ export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
             onClick={() => {
               router.push({
                 pathname: '/post-list',
-                query: {
-                  parent_id: parent_id || undefined,
-                },
               })
             }}
           />

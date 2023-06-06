@@ -46,7 +46,7 @@ export const AccountDrawer = ({ className }: AccountDrawerProps) => {
       <div className={twMerge(classNames(`relative group`, className))}>
         <div
           onClick={handleClick}
-          className="min-w-header_tab_width h-header_tab_height flex p-8 gap-8 rounded-[8px] items-center shadow-shadow-1 cursor-pointer group bg-background hover:bg-primary-100"
+          className="w-header_tab_width h-header_tab_height flex p-8 gap-8 rounded-[8px] items-center shadow-shadow-1 cursor-pointer group bg-background hover:bg-primary-100"
         >
           <div className="w-20 h-20">
             {deviceCode ? (

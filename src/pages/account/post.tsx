@@ -164,7 +164,7 @@ const PostPage = () => {
                   </InfiniteScroll>
                 </div>
               ) : (
-                <NotFound notify="Không tìm thấy danh mục nào!" />
+                <NotFound notify="Không tìm thấy bài viết nào!" />
               )}
 
               {/* modal confirm delete post */}

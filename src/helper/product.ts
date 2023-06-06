@@ -3,6 +3,7 @@ import {
   FilterProductParams,
   Product,
   ProductDescription,
+  ProductDetail,
   ProductfilterSortType,
   UserInfo,
 } from '@/types'
@@ -68,7 +69,7 @@ export function generateFilterProductParamFormRouter(router: NextRouter): Filter
   }
 }
 
-export function purchasableProduct(product: Product, userInfo: UserInfo | undefined) {
+export function purchasableProduct(product: Product | ProductDetail, userInfo: UserInfo | undefined) {
   if (!product || !userInfo) return false
 
   return product?.product_type === 'medicine'

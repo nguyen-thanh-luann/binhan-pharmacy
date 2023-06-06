@@ -100,7 +100,7 @@ export interface SingupNewChatAccountParams {
   user_id: number
   password: string
   user_name: string
-  role: 'npp'
+  role: 'admin'
   phone: string
   avatar?: string
 }

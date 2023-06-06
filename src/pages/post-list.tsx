@@ -1,9 +1,10 @@
 import {
   Breadcrumb,
+  NotFound,
   PostCategoryMenu,
   PostItemLoading,
   PostListItemHorizontal,
-  PostListItemVertical
+  PostListItemVertical,
 } from '@/components'
 import {
   DEFAULT_LIMIT,
@@ -19,10 +20,14 @@ import { Main, PostListPageContainer } from '@/templates'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import { useSWRConfig } from 'swr'
 
 const PostListPage = () => {
   const router = useRouter()
-  const { category_id, parent_id } = router.query
+  const { cache } = useSWRConfig()
+  const current_post_parent_id = cache.get(SWR_KEY.current_post_parent_category)?.data || ''
+
+  const { category_id } = router.query
 
   const {
     data: postList,
@@ -41,11 +46,9 @@ const PostListPage = () => {
     filter({
       category_id: category_id
         ? fromProductSlugToProductId(category_id as string)
-        : parent_id
-        ? fromProductSlugToProductId(parent_id as string)
-        : undefined,
+        : current_post_parent_id || undefined,
     })
-  }, [category_id, parent_id])
+  }, [category_id, current_post_parent_id])
 
   const [firstPost, secondPost, ...postData] = postList || []
 
@@ -71,54 +74,62 @@ const PostListPage = () => {
           ]}
         />
 
-        <div className="mb-24">
-          {isValidating ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
-              {Array.from({ length: 2 }).map((_, index) => (
-                <PostItemLoading key={index} />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
-              {firstPost && <PostListItemVertical data={firstPost} />}
-
-              {secondPost && <PostListItemVertical data={secondPost} />}
-            </div>
-          )}
-        </div>
-
-        <PostListPageContainer
-          leftChildren={
-            <div className="">
-              <PostCategoryMenu className="sticky top-header_group_height" />
-            </div>
-          }
-        >
+        {isArrayHasValue(postList) ? (
           <div>
-            {isValidating || isArrayHasValue(postData) ? (
+            <div className="mb-24">
+              {isValidating ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
+                  {Array.from({ length: 2 }).map((_, index) => (
+                    <PostItemLoading key={index} />
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
+                  {firstPost && <PostListItemVertical data={firstPost} />}
+
+                  {secondPost && <PostListItemVertical data={secondPost} />}
+                </div>
+              )}
+            </div>
+
+            <PostListPageContainer
+              leftChildren={
+                <div className="">
+                  <PostCategoryMenu className="sticky top-header_group_height" />
+                </div>
+              }
+            >
               <div>
-                <InfiniteScroll
-                  dataLength={postList?.length || 0}
-                  next={() => getMore()}
-                  hasMore={hasMore}
-                  loader={hasMore ? renderderPostLoading() : null}
-                >
+                {isValidating || isArrayHasValue(postData) ? (
                   <div>
-                    {isValidating ? (
-                      <div>{renderderPostLoading()}</div>
-                    ) : (
+                    <InfiniteScroll
+                      dataLength={postList?.length || 0}
+                      next={() => getMore()}
+                      hasMore={hasMore}
+                      loader={hasMore ? renderderPostLoading() : null}
+                    >
                       <div>
-                        {postData?.map((post) => (
-                          <PostListItemHorizontal data={post} />
-                        ))}
+                        {isValidating ? (
+                          <div>{renderderPostLoading()}</div>
+                        ) : (
+                          <div>
+                            {postData?.map((post) => (
+                              <PostListItemHorizontal data={post} />
+                            ))}
+                          </div>
+                        )}
                       </div>
-                    )}
+                    </InfiniteScroll>
                   </div>
-                </InfiniteScroll>
+                ) : null}
               </div>
-            ) : null}
+            </PostListPageContainer>
           </div>
-        </PostListPageContainer>
+        ) : (
+          <div className="bg-white min-h-[60vh] flex-center">
+            <NotFound notify="Không tìm thấy thông tin!" />
+          </div>
+        )}
       </div>
     </Main>
   )

@@ -17,7 +17,7 @@ export const PostListPageContainer = ({
     <div className={twMerge(classNames(`flex gap-24`, className))}>
       {leftChildren ? <div className="w-[300px] hidden md:block">{leftChildren}</div> : null}
 
-      <div className="flex-1 bg-white overflow-scroll scrollbar-hide">{children}</div>
+      <div className="flex-1 overflow-scroll scrollbar-hide">{children}</div>
     </div>
   )
 }

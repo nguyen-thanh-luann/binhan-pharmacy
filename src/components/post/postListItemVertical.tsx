@@ -28,7 +28,7 @@ export const PostListItemVertical = ({
 
   return (
     <div
-      className={twMerge(classNames(`group rounded-[10px] overflow-hidden bg-white`, className))}
+      className={twMerge(classNames(`group rounded-[10px] overflow-hidden bg-white animate-fade duration-200`, className))}
     >
       <Link href={postSlug}>
         <div>
@@ -44,7 +44,7 @@ export const PostListItemVertical = ({
             )}
           />
 
-          <div className="px-12">
+          <div className="p-12">
             <p className="text-gray text-sm">{moment(data?.created_at).format('DD/MM/YYYY')}</p>
             <p
               className={classNames(
