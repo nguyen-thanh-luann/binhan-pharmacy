@@ -30,8 +30,13 @@ export const VerifyOtpForm = ({ firstOption, secondOption, type }: VerifyOtpForm
   const { guestInfo } = useGuest()
   const deviceCode = guestInfo?.device_code || ''
   const { loginPhoneNumber } = useAuth()
-  const { updateUser, addGuestCartToShoppingCart, mutateAccountData, generateChatServiceToken } =
-    useUser({})
+  const {
+    updateUser,
+    addGuestCartToShoppingCart,
+    mutateAccountData,
+    generateChatServiceToken,
+    userInfo,
+  } = useUser({})
   const [phoneNumber, setPhoneNumber] = useState<string>('')
   const [otpForm, setOtpForm] = useState<boolean>()
 
@@ -84,46 +89,68 @@ export const VerifyOtpForm = ({ firstOption, secondOption, type }: VerifyOtpForm
       return
     }
 
+    //tài khoản tồn tại:
+    //+ type !== UserMedicineAccountType -> login => update 'usermedicine'
+    //+ type === UserMedicinAccountType -> login
+
+    //tài khoản k tồn tại:
+    //login => update 'usermedicine'
+
     checkAccountExist(
       phoneNumber,
       // account exist handler
       () => {
         if (type === 'login') {
-          loginPhoneNumber({
-            otpInput,
-            handleSuccess: () => {
-              mutateAccountData()
-              // merge cart data of guest to user's cart
-              addGuestCartToShoppingCart(deviceCode)
-              generateChatServiceToken()
-              router.push('/')
-            },
-          })
+          if (
+            userInfo?.account?.medicine_account_type === 'drugstore_account' ||
+            userInfo?.account?.medicine_account_type === 'patient_account'
+          ) {
+            directLogin(otpInput)
+          } else {
+            loginAndUpdateMedicineType(otpInput)
+          }
         }
       },
       // account not exist handler (signup and update accounttype as patient_account)
       () => {
         if (type === 'login') {
-          loginPhoneNumber({
-            otpInput,
-            handleSuccess: () => {
-              updateUser(
-                {
-                  medicine_account_type: 'patient_account',
-                },
-                () => {
-                  mutateAccountData()
-                  // merge cart data of guest to user's cart
-                  addGuestCartToShoppingCart(deviceCode)
-                  generateChatServiceToken()
-                  router.push('/')
-                }
-              )
-            },
-          })
+          loginAndUpdateMedicineType(otpInput)
         }
       }
     )
+  }
+
+  const directLogin = (otpInput: string) => {
+    loginPhoneNumber({
+      otpInput,
+      handleSuccess: () => {
+        mutateAccountData()
+        // merge cart data of guest to user's cart
+        addGuestCartToShoppingCart(deviceCode)
+        generateChatServiceToken()
+        router.push('/')
+      },
+    })
+  }
+
+  const loginAndUpdateMedicineType = (otpInput: string) => {
+    loginPhoneNumber({
+      otpInput,
+      handleSuccess: () => {
+        updateUser(
+          {
+            medicine_account_type: 'patient_account',
+          },
+          () => {
+            mutateAccountData()
+            // merge cart data of guest to user's cart
+            addGuestCartToShoppingCart(deviceCode)
+            generateChatServiceToken()
+            router.push('/')
+          }
+        )
+      },
+    })
   }
 
   const checkAccountExist = async (

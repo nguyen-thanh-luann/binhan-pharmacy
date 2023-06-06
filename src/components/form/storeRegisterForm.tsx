@@ -68,7 +68,6 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
     e: ChangeEvent<HTMLInputElement>,
     type: certificatteTypeImage
   ) => {
-
     if (!e?.target?.files || isLoadAttachment) return
 
     getBase64Images(e.target.files, (images) => {
@@ -222,6 +221,13 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
     handleGenerateOTP(data?.phone)
   }
 
+  const hanldeOnEnterPhoneNumber = (phoneNumber: string) => {
+    checkAccountExist(phoneNumber, () => {
+      toast.error('Số điện thoại đã được đăng kí')
+      return
+    })
+  }
+
   return (
     <div className={twMerge(classNames(``, className))}>
       <form onSubmit={handleSubmit(handleSubmitForm)}>
@@ -247,6 +253,9 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
               placeholder={`số điện thoại`}
               inputClassName="p-12"
               required
+              onBlur={(e) => {
+                hanldeOnEnterPhoneNumber(e.target.value)
+              }}
             />
           </div>
         </div>
