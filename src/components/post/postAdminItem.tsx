@@ -6,6 +6,7 @@ import { PostAdminItemLoading } from './postAdminItemLoading'
 import { useClickOutside, useModal } from '@/hooks'
 import classNames from 'classnames'
 import { useRef } from 'react'
+import { PostRoleTag } from './postRoleTag'
 
 interface PostItemProps {
   post: Post
@@ -41,7 +42,10 @@ const PostAdminItem = ({
       </div>
       <div className="flex-1 ml-12 mr-32">
         <div className="">
-          <p className="title_md line-clamp-1">{post?.title}</p>
+          <p className="title_md line-clamp-1 mb-8">{post?.title}</p>
+
+          <PostRoleTag data={post} />
+
           <p className="text_md line-clamp-2">{post?.short_content}</p>
           <p className="text">
             <p className="">
@@ -96,27 +100,6 @@ const PostAdminItem = ({
           </div>
         </div>
       </div>
-
-      {/* <div className="flex flex-col h-full">
-        <button
-          onClick={() => onClickEdit && onClickEdit()}
-          className="bg-blue-600 flex-center w-[40px] h-[40px] title_md !text-white hover:opacity-80 ease-in-out"
-        >
-          <PenIconSolid className="text-white-color" />
-        </button>
-        <button
-          onClick={() => onClickDetail && onClickDetail()}
-          className="bg-blue-400 flex-center w-[40px] h-[40px] title_md !text-white hover:opacity-80 ease-in-out"
-        >
-          <EyeIconSolid className="text-white-color" />
-        </button>
-        <button
-          onClick={() => onClickDelete && onClickDelete()}
-          className="bg-red flex-center w-[40px] h-[40px] title_md !text-white hover:opacity-80 ease-in-out"
-        >
-          <TrashIconOutline className="text-white-color" />
-        </button>
-      </div> */}
     </div>
   )
 }

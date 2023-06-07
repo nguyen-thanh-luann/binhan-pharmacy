@@ -82,15 +82,15 @@ export const PRODUCT_FILTER_TABS: OptionType<string>[] = [
 
 export const POST_ROLES_OPTIONS = [
   {
-    label: 'Tất cả',
+    label: 'Công khai',
     value: '',
   },
   {
-    label: 'Nhà thuốc',
+    label: 'Riêng tư',
     value: 'npp',
   },
   {
-    label: 'Người dùng xác minh',
+    label: 'Người dùng',
     value: 'th',
   },
 ]

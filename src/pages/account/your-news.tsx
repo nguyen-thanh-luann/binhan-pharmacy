@@ -148,6 +148,7 @@ const YourNewsPage = () => {
                         <div>
                           {postList?.map((post) => (
                             <PostListItemHorizontal
+                              key={post?.id}
                               data={post}
                               onClick={hanldePostClick}
                               imageClassName="!w-[100px] !h-[100px]"

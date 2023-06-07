@@ -2,6 +2,7 @@ import { SWR_KEY } from '@/constants'
 import { encodeJWT } from '@/helper'
 import { authAPI, userAPI } from '@/services'
 import {
+  AccountType,
   GenerateChatTokenRes,
   GetChatTokenRes,
   SingupNewChatAccountParams,
@@ -21,7 +22,7 @@ interface useChatAccountRes {
   isValidating: boolean
   setChatToken: (params: GenerateChatTokenRes, onSuccess?: () => void, onError?: () => void) => void
   generateChatServiceToken: () => void
-  autoSignupChatServer: () => void
+  autoSignupChatServer: (role?: AccountType) => void
 }
 
 export const useChatAccount = (): useChatAccountRes => {
@@ -87,7 +88,7 @@ export const useChatAccount = (): useChatAccountRes => {
     }
   }
 
-  const autoSignupChatServer = async () => {
+  const autoSignupChatServer = async (role?: AccountType) => {
     // use this function when user login to signup an account
 
     try {
@@ -101,7 +102,11 @@ export const useChatAccount = (): useChatAccountRes => {
             user_id: user?.account?.partner_id || 0,
             password: user?.account?.phone,
             phone: user?.account?.phone || '',
-            role: user?.account?.account_type === 'npp' ? 'admin' : user?.account?.account_type,
+            role: role
+              ? role
+              : user?.account?.account_type === 'npp'
+              ? 'admin'
+              : user?.account?.account_type,
             user_name: user.account?.partner_name,
             avatar: user?.account?.avatar_url?.url,
           },

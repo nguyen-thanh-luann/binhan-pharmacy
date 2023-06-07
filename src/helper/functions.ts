@@ -401,11 +401,7 @@ export function transPostCategoryDataToSelectionType(data: PostCategory[]) {
 }
 
 export function ValidAccountRoleToUsePostService(data: UserInfo | undefined): AccountType {
-  if (!data) return 'th'
+  if (!data || data?.account?.medicine_account_type !== 'drugstore_account') return 'th'
 
-  if (data?.account?.account_type === 'npp' || data?.account?.account_type === 'th') {
-    return data?.account?.account_type
-  }
-
-  return 'th'
+  return 'npp'
 }

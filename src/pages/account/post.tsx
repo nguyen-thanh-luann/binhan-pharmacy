@@ -7,7 +7,7 @@ import {
   NotFound,
   PostAdminItem,
   PostAdminItemLoading,
-  PostContentDetail
+  PostContentDetail,
 } from '@/components'
 import EditPost from '@/components/post/editPost'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'

@@ -4,6 +4,7 @@ import moment from 'moment'
 import { useState } from 'react'
 import { ModalConfirm } from '../modal'
 import { isArrayHasValue } from '@/helper'
+import { PostCategoryRoleTag } from './postCategoryRoleTag'
 
 interface PostCategoryItemProps {
   data: PostCategory
@@ -38,23 +39,10 @@ export const PostCategoryItem = ({
         className
       )}
     >
-      <p className="title_md line-clamp-1 capitalize">{data?.name}</p>
+      <p className="title_md line-clamp-1 capitalize mb-8">{data?.name}</p>
 
       <div className="flex items-center gap-8">
-        <p className="text-md font-bold">Phân cấp:</p>
-
-        <div
-          className={classNames(
-            'border rounded-lg w-fit min-w-[100px] text-center',
-            data?.role === 'npp'
-              ? 'border-primary text-primary'
-              : data?.role === 'th'
-              ? 'border-green text-green'
-              : 'border-blue text-blue'
-          )}
-        >
-          {data?.role === 'npp' ? 'Nhà thuốc' : data?.role === 'th' ? 'Người dùng xác minh' : 'Tất cả'}
-        </div>
+        <PostCategoryRoleTag data={data} />
       </div>
 
       <p className="title_md line-clamp-2">

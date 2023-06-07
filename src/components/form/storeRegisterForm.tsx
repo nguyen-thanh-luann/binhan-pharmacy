@@ -25,11 +25,11 @@ import { useDispatch } from 'react-redux'
 import { twMerge } from 'tailwind-merge'
 import { Button } from '../button'
 import { CustomImage } from '../customImage'
-import { InputDate, InputField, PasswordField, RadioField, TextareaField } from '../inputs'
+import { InputDate, InputField, RadioField, TextareaField } from '../inputs'
 import { Modal } from '../modal'
+import { Spinner } from '../spinner'
 import { AddressPicker } from './addressPicker'
 import { OtpForm } from './otpForm'
-import { Spinner } from '../spinner'
 
 interface StoreRegisterFormProps {
   className?: string
@@ -194,7 +194,7 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
                 establish_date: data?.establish_date,
               },
               () => {
-                autoSignupChatServer()
+                autoSignupChatServer('npp')
                 // merge cart data of guest to user's cart
                 mutateAccountData()
                 addGuestCartToShoppingCart(deviceCode)
@@ -316,30 +316,6 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
 
         <div className="mb-18 flex flex-wrap flex-col md:flex-row gap-24">
           <div className="flex-1">
-            <PasswordField
-              control={control}
-              name="password"
-              label={`Mật khẩu`}
-              placeholder={`nhập mật khẩu`}
-              inputClassName=""
-              required
-            />
-          </div>
-
-          <div className="flex-1">
-            <PasswordField
-              control={control}
-              name="confirmPassword"
-              label={`Nhập lại mật khẩu`}
-              placeholder={`nhập lại mật khẩu`}
-              inputClassName=""
-              required
-            />
-          </div>
-        </div>
-
-        <div className="mb-18 flex flex-wrap flex-col md:flex-row gap-24">
-          <div className="flex-1">
             <InputDate
               control={control}
               name="establish_date"
@@ -397,6 +373,7 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
                   type="file"
                   name="businessCertificateImage"
                   multiple
+                  readOnly={isLoadAttachment}
                   id="business-certificatte-image"
                   accept="image/*"
                 />
@@ -434,6 +411,7 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
                   type="file"
                   name="gppCertificateImage"
                   multiple
+                  readOnly={isLoadAttachment}
                   id="gpp-certificatte-image"
                   accept="image/*"
                 />

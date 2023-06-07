@@ -181,13 +181,6 @@ export const storeRegisterSchema = Yup.object().shape({
       label: Yup.string().required(),
     })
     .required('Vui lòng chọn điạ chỉ phường xã'),
-  password: Yup.string()
-    .min(6, 'Mật khẩu phải có ít nhất 6 ký tự')
-    .required('Vui lòng nhập mật khẩu'),
-  confirmPassword: Yup.string()
-    .min(6, 'Mật khẩu phải có ít nhất 6 ký tự')
-    .oneOf([Yup.ref('password')], 'Mật khẩu xác nhận phải trùng với mật khẩu mới')
-    .required('Vui lòng nhập mật khẩu xác nhận'),
   businessCertificateImage: Yup.object({
     id: Yup.number().required(),
     url: Yup.string().required(),

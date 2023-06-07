@@ -95,6 +95,7 @@ const EditPost = ({ onSuccess }: EditPostProps) => {
                     short_content: params?.short_content,
                     slug: params?.slug,
                     title: params?.title,
+                    role: params?.role,
                     content,
                   })
                 }
