@@ -27,6 +27,8 @@ export const AccountDrawer = ({ className }: AccountDrawerProps) => {
   const { guestInfo } = useGuest()
   const { userInfo } = useUser({})
 
+  //  console.log(encodeJWT({ user_id: userInfo?.account?.partner_id }))
+
   const deviceCode = guestInfo?.device_code
 
   const handleCLoseModal = () => {

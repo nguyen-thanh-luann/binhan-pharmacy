@@ -375,6 +375,12 @@ export function isDrugStore(account: UserAccount | undefined): boolean {
   return account.medicine_account_type === 'drugstore_account'
 }
 
+export function isAdmin(account: UserAccount | undefined): boolean {
+  //admin is an account with account_type: 'npp' => who have all permissions with post
+  if (!account) return false
+  return account.account_type === 'npp'
+}
+
 export function transPostCategoryDataToSelectionType(data: PostCategory[]) {
   const transformedData: any = []
 

@@ -1,8 +1,14 @@
 import { TimesIcon } from '@/assets'
-import { Breadcrumb, CreatePostForm, Modal, PostEditor, SignupPostAdminForm } from '@/components'
+import {
+  Breadcrumb,
+  CreatePostForm,
+  Modal,
+  NotFound,
+  PostEditor
+} from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
-import { transPostCategoryDataToSelectionType } from '@/helper'
-import { useChatAccount, usePostCategory, usePostList } from '@/hooks'
+import { isAdmin, transPostCategoryDataToSelectionType } from '@/helper'
+import { useChatAccount, usePostCategory, usePostList, useUser } from '@/hooks'
 import { AccountContainer, Main } from '@/templates'
 import { CreatePost, OptionType } from '@/types'
 import { useRouter } from 'next/router'
@@ -12,6 +18,7 @@ import { toast } from 'react-hot-toast'
 const CreatePostPage = () => {
   const router = useRouter()
 
+  const { userInfo } = useUser({})
   const { data: chatToken } = useChatAccount()
   const [content, setContent] = useState<string>()
 
@@ -60,7 +67,7 @@ const CreatePostPage = () => {
             <p className="text-xl capitalize font-semibold">Thêm tin tức</p>
           </div>
 
-          {chatToken ? (
+          {isAdmin(userInfo?.account) && chatToken ? (
             <div>
               <div className="">
                 <PostEditor
@@ -71,7 +78,8 @@ const CreatePostPage = () => {
               </div>
             </div>
           ) : (
-            <SignupPostAdminForm className="md:w-[60%] mx-auto" />
+            // <SignupPostAdminForm className="md:w-[60%] mx-auto" />
+            <NotFound notify="Tài khoản của bạn không được cấp phép" />
           )}
 
           {/* modal create post form */}

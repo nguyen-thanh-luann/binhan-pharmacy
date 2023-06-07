@@ -1,9 +1,7 @@
 import { SWR_KEY } from '@/constants'
-import { encodeJWT } from '@/helper'
 import { cartAPI, userAPI } from '@/services'
 import { CheckPasswordRes, UpdateUserParams, UserInfo } from '@/types'
 import useSWR, { useSWRConfig } from 'swr'
-import { useAuth } from '../auth'
 import { useAsync } from '../common'
 
 interface useUserProps {
@@ -13,7 +11,7 @@ interface useUserProps {
 
 interface useUserRes {
   userInfo: UserInfo | undefined
-  getUserInfo: (cb?: (props: UserInfo) => void) => void
+  getUserInfo: (cb?: (props: UserInfo) => void, handleErr?: () => void) => void
   checkHasPassword: (cb?: (props: CheckPasswordRes) => void) => void
   updateUser: (props: UpdateUserParams, onSuccess?: () => void, onError?: () => void) => void
   addGuestCartToShoppingCart: (
@@ -22,13 +20,11 @@ interface useUserRes {
     onError?: () => void
   ) => void
   mutateAccountData: () => void
-  generateChatServiceToken: () => void
 }
 
 export const useUser = ({ key, shouldFetch = true }: useUserProps): useUserRes => {
   const { asyncHandler } = useAsync()
   const { mutate: mutateConfig } = useSWRConfig()
-  const { generateChatToken } = useAuth()
 
   const { data: userInfo, mutate } = useSWR(
     key ? key : SWR_KEY.get_user_information,
@@ -39,16 +35,19 @@ export const useUser = ({ key, shouldFetch = true }: useUserProps): useUserRes =
     }
   )
 
-  const getUserInfo = async (onSuccess?: (props: UserInfo) => void) => {
+  const getUserInfo = async (
+    handleSuccess?: (props: UserInfo) => void,
+    hanldeError?: () => void
+  ) => {
     asyncHandler({
       fetcher: userAPI.getUserInfo,
       onSuccess: (res: any) => {
-        console.log('on success getUserInfo')
         mutate(res)
-        onSuccess?.(res)
+        handleSuccess?.(res)
       },
       onError: () => {
         mutate(undefined)
+        hanldeError?.()
       },
       config: {
         errorMsg: 'Get user info fail',
@@ -113,23 +112,6 @@ export const useUser = ({ key, shouldFetch = true }: useUserProps): useUserRes =
     mutateConfig(SWR_KEY.get_user_information)
   }
 
-  const generateChatServiceToken = async () => {
-    try {
-      const res: any = await userAPI.getUserInfo()
-      if (res.success || res?.result?.success) {
-        handleGenerateChatToken(res?.data)
-      }
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const handleGenerateChatToken = async (userInfo: UserInfo) => {
-    generateChatToken({
-      token: encodeJWT({ user_id: userInfo?.account?.partner_id }),
-    })
-  }
-
   return {
     userInfo,
     getUserInfo,
@@ -137,6 +119,5 @@ export const useUser = ({ key, shouldFetch = true }: useUserProps): useUserRes =
     updateUser,
     addGuestCartToShoppingCart,
     mutateAccountData,
-    generateChatServiceToken,
   }
 }

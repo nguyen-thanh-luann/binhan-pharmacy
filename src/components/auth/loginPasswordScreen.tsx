@@ -1,4 +1,4 @@
-import { useAuth, useGuest, useUser } from '@/hooks'
+import { useAuth, useChatAccount, useGuest, useUser } from '@/hooks'
 import { setAuthOption } from '@/store'
 import { LoginFormParams } from '@/types'
 import { useRouter } from 'next/router'
@@ -19,24 +19,24 @@ export const LoginPasswordScreen = ({
   const router = useRouter()
   const { guestInfo } = useGuest()
   const deviceCode = guestInfo?.device_code || ''
-  const { addGuestCartToShoppingCart, mutateAccountData, generateChatServiceToken } = useUser({})
+  const { addGuestCartToShoppingCart, mutateAccountData } = useUser({})
   const { loginWithPassword } = useAuth()
+  const { autoSignupChatServer } = useChatAccount()
 
   const handleLogin = (data: LoginFormParams) => {
     loginWithPassword({
       params: data,
+
       onSuccess: () => {
         onClose?.()
-
         mutateAccountData()
         // merge cart data of guest to user's cart
         addGuestCartToShoppingCart(deviceCode)
-        generateChatServiceToken()
+        autoSignupChatServer()
         router.push('/')
       },
     })
   }
-
 
   return (
     <>

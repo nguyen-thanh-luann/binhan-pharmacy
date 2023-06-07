@@ -8,17 +8,16 @@ import {
   PostCategoryItem,
   PostCategoryItemLoading,
   PostCatgoryDetail,
-  SearchField,
-  SignupPostAdminForm,
+  SearchField
 } from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
-import { isArrayHasValue, transPostCategoryDataToSelectionType } from '@/helper'
-import { useChatAccount, useModal, usePostCategory } from '@/hooks'
+import { isAdmin, isArrayHasValue, transPostCategoryDataToSelectionType } from '@/helper'
+import { useChatAccount, useModal, usePostCategory, useUser } from '@/hooks'
 import { selectPostCategoryForm, setPostCategoryForm } from '@/store'
 import { AccountContainer, Main } from '@/templates'
 import { BreadcrumbItem, CreatePostCategory, OptionType, PostCategory } from '@/types'
-import { useRouter } from 'next/router'
 import classNames from 'classnames'
+import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -29,6 +28,7 @@ const PostCategoryPage = () => {
   const { parent_id, parent_name } = router.query
   const { data: chatToken } = useChatAccount()
   const currentPostCategory: PostCategory = useSelector(selectPostCategoryForm)
+  const { userInfo } = useUser({})
 
   const [breadcrumbList, setBreadcrumbList] = useState<BreadcrumbItem[]>([
     {
@@ -176,7 +176,7 @@ const PostCategoryPage = () => {
               />
             </div>
 
-            {chatToken ? (
+            {isAdmin(userInfo?.account) && chatToken ? (
               <div>
                 {isValidating || isArrayHasValue(postCategoryList) ? (
                   <div>
@@ -219,7 +219,8 @@ const PostCategoryPage = () => {
                 )}
               </div>
             ) : (
-              <SignupPostAdminForm className="md:w-[60%] mx-auto" />
+              // <SignupPostAdminForm className="md:w-[60%] mx-auto" />
+              <NotFound notify="Tài khoản của bạn không được cấp phép" />
             )}
 
             {/* modal create post category */}

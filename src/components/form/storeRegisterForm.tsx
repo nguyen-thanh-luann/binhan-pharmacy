@@ -1,6 +1,14 @@
 import { PhotoIcon } from '@/assets'
 import { LIMIT_ATTACHMENT, STORE_TYPE } from '@/constants'
-import { useAttachment, useAuth, useCreateAttachment, useGuest, useModal, useUser } from '@/hooks'
+import {
+  useAttachment,
+  useAuth,
+  useChatAccount,
+  useCreateAttachment,
+  useGuest,
+  useModal,
+  useUser,
+} from '@/hooks'
 import { storeRegisterSchema } from '@/schema'
 import { userAPI } from '@/services'
 import { setBackdropVisible } from '@/store'
@@ -42,8 +50,8 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
   const { guestInfo } = useGuest()
   const deviceCode = guestInfo?.device_code || ''
   const { loginPhoneNumber } = useAuth()
-  const { updateUser, addGuestCartToShoppingCart, mutateAccountData, generateChatServiceToken } =
-    useUser({})
+  const { updateUser, addGuestCartToShoppingCart, mutateAccountData } = useUser({})
+  const { autoSignupChatServer } = useChatAccount()
   const [formData, setFormData] = useState<any>()
 
   const { visible: showOtpForm, openModal: setShowOtpForm, closeModal: closeOtpForm } = useModal()
@@ -186,7 +194,7 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
                 establish_date: data?.establish_date,
               },
               () => {
-                generateChatServiceToken()
+                autoSignupChatServer()
                 // merge cart data of guest to user's cart
                 mutateAccountData()
                 addGuestCartToShoppingCart(deviceCode)

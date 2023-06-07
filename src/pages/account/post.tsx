@@ -7,13 +7,12 @@ import {
   NotFound,
   PostAdminItem,
   PostAdminItemLoading,
-  PostContentDetail,
-  SignupPostAdminForm,
+  PostContentDetail
 } from '@/components'
 import EditPost from '@/components/post/editPost'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
-import { isArrayHasValue, transPostCategoryDataToSelectionType } from '@/helper'
-import { useChatAccount, usePostCategory, usePostList } from '@/hooks'
+import { isAdmin, isArrayHasValue, transPostCategoryDataToSelectionType } from '@/helper'
+import { useChatAccount, usePostCategory, usePostList, useUser } from '@/hooks'
 import { selectPostForm, setPostForm } from '@/store'
 import { AccountContainer, Main } from '@/templates'
 import { OptionType, Post } from '@/types'
@@ -27,6 +26,7 @@ import Select from 'react-select'
 const PostPage = () => {
   const router = useRouter()
   const dispatch = useDispatch()
+  const { userInfo } = useUser({})
   const { data: chatToken } = useChatAccount()
   const [currentPostId, setCurrentPostId] = useState<string | undefined>()
   const [currentPostContent, setCurrentPostContent] = useState<string | undefined>()
@@ -117,7 +117,7 @@ const PostPage = () => {
             />
           </div>
 
-          {chatToken ? (
+          {isAdmin(userInfo?.account) && chatToken ? (
             <div>
               <div className="mb-12">
                 <p className="title_md mb-8">Lọc theo danh mục</p>
@@ -225,7 +225,8 @@ const PostPage = () => {
               </Modal>
             </div>
           ) : (
-            <SignupPostAdminForm className="md:w-[60%] mx-auto" />
+            // <SignupPostAdminForm className="md:w-[60%] mx-auto" />
+            <NotFound notify="Tài khoản của bạn không được cấp phép" />
           )}
         </div>
       </AccountContainer>

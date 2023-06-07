@@ -1,4 +1,4 @@
-export type AccountType = 'th' | 'nvkd' | 'npp' | 'gsbh' | 'asm'
+export type AccountType = 'th' | 'nvkd' | 'npp' | 'gsbh' | 'asm' | 'admin'
 
 export interface LoginPasswordReq {
   phone: string
@@ -100,7 +100,7 @@ export interface SingupNewChatAccountParams {
   user_id: number
   password: string
   user_name: string
-  role: 'admin'
+  role: AccountType
   phone: string
   avatar?: string
 }

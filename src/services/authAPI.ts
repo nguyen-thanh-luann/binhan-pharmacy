@@ -7,7 +7,7 @@ import type {
   LoginRes,
   ResetPasswordParams,
   SingupNewChatAccountParams,
-  TokenRes
+  TokenRes,
 } from '@/types'
 import { AxiosPromise } from 'axios'
 import axiosClient from '.'

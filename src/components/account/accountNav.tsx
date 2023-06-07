@@ -15,6 +15,7 @@ export const AccountNav = ({ className }: AccountNavProps) => {
   const { userInfo } = useUser({})
   const { closeModal, openModal, visible: showModalConfirm } = useModal()
 
+
   const hanldeLogout = () => {
     logout(() => {
       router.reload()
