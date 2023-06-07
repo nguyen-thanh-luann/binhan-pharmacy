@@ -180,18 +180,26 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
           <p className="text_md">{`${currentProduct?.sold_quantity || 0} Đã bán`}</p>
         </div>
 
-        <p className="text_md mb-16">{`Tồn kho khả dụng: ${
-          currentProduct?.stock_quantity?.factor || 0
-        }`}</p>
+        {purchasable ? (
+          <p className="text_md mb-16">{`Tồn kho khả dụng: ${
+            currentProduct?.stock_quantity?.factor || 0
+          }`}</p>
+        ) : null}
 
         {purchasable ? (
-          <p className="text-red text-2xl font-semibold mb-16">
-            {formatMoneyVND(currentProduct?.price_unit || 0)}
-            <span className="text-text-color text-sm ml-4">{`/ ${currentProduct?.uom_id?.uom_name}`}</span>
-          </p>
-        ) : (
-          <p className="text-red text-2xl font-semibold mb-16">Tư vấn dược sĩ</p>
-        )}
+          <div className="flex h-fit gap-12 items-center mb-16">
+            <p className="text-red text-2xl font-semibold">
+              {formatMoneyVND(currentProduct?.price_unit || 0)}
+              <span className="text-text-color text-sm ml-4">{`/ ${currentProduct?.uom_id?.uom_name}`}</span>
+            </p>
+
+            {currentProduct?.price_unit === currentProduct?.origin_price_unit ? (
+              <p className="text-gray-400 text-md font-medium line-through">
+                {formatMoneyVND(currentProduct?.origin_price_unit || 0)}
+              </p>
+            ) : null}
+          </div>
+        ) : null}
 
         {/* category */}
         {isObjectHasValue(currentProduct?.category_id) ? (

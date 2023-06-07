@@ -15,7 +15,12 @@ export const PromotionsAppliedOnCartView = ({ data, className }: Props) => {
         if (item.promotion_type === 'bogo_sale' && item?.free_product?.length) {
           return item.free_product.map((product) => (
             <>
-              <ProductGiftItem className="basis-full" key={product.product_id} data={product} />
+              <ProductGiftItem
+                className="basis-full"
+                key={product.product_id}
+                data={product}
+                label={item?.promotion_name}
+              />
             </>
           ))
         }

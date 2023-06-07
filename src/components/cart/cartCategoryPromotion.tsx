@@ -61,7 +61,9 @@ export const CartCategoryPromotion = ({
             onClick={openPromotionModal}
             className="bg-primary p-6 rounded-[6px] flex items-center gap-8 cursor-pointer active:opacity-50 duration-200"
           >
-            <p className="text-base text-white">Chọn chương trình</p>
+            <p className="text-base text-white">{`Chọn chương trình ${
+              category?.category_id?.category_name.toLowerCase() || ''
+            }`}</p>
             <RightIcon className="text-sm text-white" />
           </div>
         )}

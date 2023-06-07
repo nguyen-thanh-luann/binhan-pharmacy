@@ -73,7 +73,7 @@ export const CartProductPromotion = (props: CartProductPromotionProps) => {
   }
 
   return (
-    <div className="px-16">
+    <div className="px-16 mb-12">
       <div className="flex items-center gap-8">
         <Image alt="" src={categoryPromotionIcon} imageClassName="w-32 h-32 object-cover" />
         {product.is_product_promotion_loading ? (

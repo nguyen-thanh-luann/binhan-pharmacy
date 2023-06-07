@@ -43,6 +43,9 @@ export const CartCompanyPromotion = ({ company, companyIndex }: CartCompanyPromo
     openModal()
   }
 
+  console.log({company});
+  
+
   return (
     <div className="mt-12 bg-white px-16 py-10 shadow-shadow-1 rounded-[10px]">
       <div className="flex items-center gap-8">
@@ -54,7 +57,7 @@ export const CartCompanyPromotion = ({ company, companyIndex }: CartCompanyPromo
             onClick={openPromotionModal}
             className="bg-primary p-6 rounded-[6px] flex items-center gap-8 cursor-pointer active:opacity-50 duration-200"
           >
-            <p className="text-base text-white">Chọn chương trình</p>
+            <p className="text-base text-white">Xem khuyến mãi nhận được</p>
             <RightIcon className="text-sm text-white" />
           </div>
         )}

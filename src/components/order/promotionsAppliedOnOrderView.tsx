@@ -9,6 +9,8 @@ type Props = {
 }
 
 export const PromotionsAppliedOnOrderView = ({ data, className }: Props) => {
+  console.log({ data })
+
   return (
     <div className={className}>
       {data.map((item) => (
@@ -16,11 +18,16 @@ export const PromotionsAppliedOnOrderView = ({ data, className }: Props) => {
           key={item.promotion_id}
           className="mb-8 py-8 border-b border-solid border-gray-200 last:border-b-0"
         >
-          <p className="text-base mb-8 line-clamp-1">{item.promotion_name}</p>
+          <p className="text-base mb-8 line-clamp-1 font-bold">{item.promotion_name}</p>
 
           {item.promotion_type === 'bogo_sale' && item?.free_product?.length ? (
             item.free_product.map((product) => (
-              <ProductGiftItem key={product.product_id} className="mb-0 last:mb-0" data={product} />
+              <ProductGiftItem
+                key={product.product_id}
+                className="mb-0 last:mb-0"
+                data={product}
+                label={item?.promotion_name}
+              />
             ))
           ) : item.promotion_type === 'range' ? (
             <div>
@@ -35,10 +42,8 @@ export const PromotionsAppliedOnOrderView = ({ data, className }: Props) => {
                     <ProductGiftItem
                       key={product.product_id}
                       className={classNames()}
-                      // style={{
-                      //   marginBottom: productIndex === item.free_product?.length - 1 ? 0 : 8,
-                      // }}
                       data={product}
+                      label={item?.promotion_name}
                     />
                   ))
                 : null}

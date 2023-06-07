@@ -31,6 +31,10 @@ export const OrderHistoryDetail = ({
   const dispatch = useDispatch()
   const previewImageUrl = useSelector(selectPreviewImageUrl)
 
+
+  console.log({order});
+  
+
   useEffect(() => {
     if (order) om?.(order)
   }, [order])

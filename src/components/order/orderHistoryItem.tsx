@@ -11,6 +11,8 @@ interface OrderHistoryItemProps {
 }
 
 export const OrderHistoryItem = ({ data, onClick: onExternalClick }: OrderHistoryItemProps) => {
+  console.log({data});
+  
   return (
     <div className="bg-white p-16 rounded-lg mb-20 last:mb-0 shadow-shadow-1">
       <div className="border-b border-gray-200 pb-12 flex items-center flex-between flex-wrap">
@@ -29,7 +31,7 @@ export const OrderHistoryItem = ({ data, onClick: onExternalClick }: OrderHistor
       </div>
 
       <div className="py-12">
-        {data?.product?.map((product) => (
+        {data?.product?.slice(0, 2)?.map((product) => (
           <div
             key={product.product_id}
             className="flex gap-12 mb-12 last:mb-0 border-b last:border-none border-gray-200 py-8"
