@@ -79,3 +79,18 @@ export const PRODUCT_FILTER_TABS: OptionType<string>[] = [
   { label: 'Giá thấp đến cao', value: 'price_increase' },
   { label: 'Giá cao đến thấp', value: 'price_decrease' },
 ]
+
+export const POST_ROLES_OPTIONS = [
+  {
+    label: 'Tất cả',
+    value: '',
+  },
+  {
+    label: 'Nhà thuốc',
+    value: 'npp',
+  },
+  {
+    label: 'Người dùng',
+    value: 'th',
+  },
+]

@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import moment from 'moment'
 import { useState } from 'react'
 import { ModalConfirm } from '../modal'
+import { isArrayHasValue } from '@/helper'
 
 interface PostCategoryItemProps {
   data: PostCategory
@@ -32,9 +33,8 @@ export const PostCategoryItem = ({
 
   return (
     <div
-      onClick={() => onExternalClick?.(data)}
       className={classNames(
-        'relative border border-gray-200 rounded-md p-12 bg-white duration-150 ease-in-out cursor-pointer hover:bg-gray-100',
+        'relative border border-gray-200 rounded-md p-12 bg-white duration-150 ease-in-out',
         className
       )}
     >
@@ -66,6 +66,16 @@ export const PostCategoryItem = ({
         {'Ngày tạo: '}
         <span className="text_md">{moment(data?.created_at).format('HH:mm DD/MM/YYYY')}</span>
       </p>
+
+      {isArrayHasValue(data?.children) && (
+        <p
+          className="text-center text-primary font-bold cursor-pointer"
+          onClick={() => onExternalClick?.(data)}
+        >
+          Xem chi tiết
+        </p>
+      )}
+      <p className=""></p>
 
       <div className="absolute top-12 right-12 flex items-center">
         <div

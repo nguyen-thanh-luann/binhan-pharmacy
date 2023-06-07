@@ -1,12 +1,14 @@
+import { POST_ROLES_OPTIONS } from '@/constants'
+import { convertViToEn } from '@/helper'
 import { postFormSchema } from '@/schema'
 import { CreatePost, OptionType, PostDetail } from '@/types'
 import { yupResolver } from '@hookform/resolvers/yup'
+import classNames from 'classnames'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Button } from '../button'
 import { InputField, SelectField, TextareaField } from '../inputs'
 import { UploadSignleFile } from '../upload'
-import classNames from 'classnames'
 
 interface createPostFormProps {
   onSubmit?: (params: CreatePost) => void
@@ -32,8 +34,14 @@ export const CreatePostForm = ({
     mode: 'all',
   })
 
-  const onSubmitHandler = (data: CreatePost) => {
-    onSubmit && onSubmit(data)
+  const onSubmitHandler = (data: any) => {
+    onSubmit &&
+      onSubmit({
+        ...data,
+        slug: convertViToEn(data?.title.trim().toLowerCase()).replace(/\s+/g, '-'),
+        category: data?.cacategory_id?.value,
+        role: data?.role?.value !== '' ? data?.role?.value : null,
+      })
   }
 
   return (
@@ -84,23 +92,23 @@ export const CreatePostForm = ({
       </div>
 
       <div className="mb-12">
-        <InputField
+        <SelectField
+          defaultValue={POST_ROLES_OPTIONS?.find((item: any) => item.value === defaultValue?.role)}
           control={control}
-          name="title"
-          placeholder="Tiêu đề"
-          label="Tiêu đề"
-          defaultValue={defaultValue?.title}
-          required={true}
+          name="role"
+          placeholder="Phân loại người xem"
+          label="Phân loại"
+          options={POST_ROLES_OPTIONS}
         />
       </div>
 
       <div className="mb-12">
         <InputField
           control={control}
-          defaultValue={defaultValue?.slug}
-          name="slug"
-          placeholder="Slug"
-          label="Slug"
+          name="title"
+          placeholder="Tiêu đề"
+          label="Tiêu đề"
+          defaultValue={defaultValue?.title}
           required={true}
         />
       </div>

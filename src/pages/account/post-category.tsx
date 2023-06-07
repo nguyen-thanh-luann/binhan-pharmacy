@@ -16,10 +16,10 @@ import { isArrayHasValue, transPostCategoryDataToSelectionType } from '@/helper'
 import { useChatAccount, useModal, usePostCategory } from '@/hooks'
 import { selectPostCategoryForm, setPostCategoryForm } from '@/store'
 import { AccountContainer, Main } from '@/templates'
-import { CreatePostCategory, OptionType, PostCategory } from '@/types'
+import { BreadcrumbItem, CreatePostCategory, OptionType, PostCategory } from '@/types'
 import { useRouter } from 'next/router'
 import classNames from 'classnames'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useDispatch, useSelector } from 'react-redux'
@@ -29,6 +29,13 @@ const PostCategoryPage = () => {
   const { parent_id, parent_name } = router.query
   const { data: chatToken } = useChatAccount()
   const currentPostCategory: PostCategory = useSelector(selectPostCategoryForm)
+
+  const [breadcrumbList, setBreadcrumbList] = useState<BreadcrumbItem[]>([
+    {
+      path: '/account/post-category',
+      name: 'Danh mục tin tức',
+    },
+  ])
 
   const dispatch = useDispatch()
 
@@ -112,17 +119,32 @@ const PostCategoryPage = () => {
     })
   }
 
+  useEffect(() => {
+    if (parent_id && parent_name) {
+      setBreadcrumbList([
+        {
+          path: '/account/post-category',
+          name: 'Danh mục tin tức',
+        },
+        {
+          name: parent_name as string,
+          path: `/account/post-category?parent_id=${parent_id}&parent_name=${parent_name}`,
+        },
+      ])
+    } else {
+      setBreadcrumbList([
+        {
+          path: '/account/post-category',
+          name: 'Danh mục tin tức',
+        },
+      ])
+    }
+  }, [router.query])
+
   return (
     <Main title={WEB_TITTLE} description={WEB_DESCRIPTION}>
       <div className="container">
-        <Breadcrumb
-          breadcrumbList={[
-            {
-              path: '/',
-              name: 'Danh mục tin tức',
-            },
-          ]}
-        />
+        <Breadcrumb breadcrumbList={breadcrumbList} />
       </div>
 
       <AccountContainer className="container mb-32">

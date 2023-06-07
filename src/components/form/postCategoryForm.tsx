@@ -1,4 +1,5 @@
-import { convertViToEn, removeEmptyValueFromObject } from '@/helper'
+import { POST_ROLES_OPTIONS } from '@/constants'
+import { convertViToEn } from '@/helper'
 import { categoryFormSchema } from '@/schema'
 import { selectPostCategoryForm } from '@/store'
 import { CreatePostCategory, OptionType } from '@/types'
@@ -17,21 +18,6 @@ interface PostCategoryFormProps {
 export const PostCategoryForm = ({ onSubmit, categoryOptions }: PostCategoryFormProps) => {
   const currentPostCategory = useSelector(selectPostCategoryForm)
 
-  const roleOptions = [
-    {
-      label: 'Tất cả',
-      value: '',
-    },
-    {
-      label: 'Nhà thuốc',
-      value: 'npp',
-    },
-    {
-      label: 'Người dùng',
-      value: 'th',
-    },
-  ]
-
   const {
     handleSubmit,
     formState: { isValid },
@@ -43,14 +29,12 @@ export const PostCategoryForm = ({ onSubmit, categoryOptions }: PostCategoryForm
 
   const onSubmitHandler = (data: any) => {
     onSubmit &&
-      onSubmit(
-        removeEmptyValueFromObject({
-          ...data,
-          slug: convertViToEn(data.name.trim().toLowerCase()).replace(/\s+/g, '-'),
-          parent_id: data?.parent_id?.value || undefined,
-          role: data?.role?.value || undefined,
-        })
-      )
+      onSubmit({
+        ...data,
+        slug: convertViToEn(data.name.trim().toLowerCase()).replace(/\s+/g, '-'),
+        parent_id: data?.parent_id?.value || undefined,
+        role: data?.role?.value !== '' ? data?.role?.value : null,
+      })
   }
 
   return (
@@ -82,14 +66,14 @@ export const PostCategoryForm = ({ onSubmit, categoryOptions }: PostCategoryForm
 
         <div className="mb-12">
           <SelectField
-            defaultValue={roleOptions?.find(
+            defaultValue={POST_ROLES_OPTIONS?.find(
               (item: any) => item.value === currentPostCategory?.role
             )}
             control={control}
             name="role"
             placeholder="Phân loại người xem"
             label="Phân loại"
-            options={roleOptions}
+            options={POST_ROLES_OPTIONS}
           />
         </div>
 

@@ -25,12 +25,20 @@ export const Breadcrumb = ({ breadcrumbList }: BreadcrumbProps) => {
                   {index !== breadcrumbList.length - 1 ? (
                     <>
                       <Link href={item.path} className="forward-link">
-                        <span className="text-text-color line-clamp-2">{item.name}</span>
+                        <span className="line-clamp-2">{item.name}</span>
                       </Link>
                       <RightIcon className="text-sm text-text-color" />
                     </>
                   ) : (
-                    <span className="text-text-color line-clamp-2">{item.name}</span>
+                    <>
+                      {item?.path !== '/' && item?.path !== '' ? (
+                        <Link href={item.path} className="forward-link">
+                          <span className="line-clamp-2">{item.name}</span>
+                        </Link>
+                      ) : (
+                        <span className="text-text-color line-clamp-2">{item.name}</span>
+                      )}
+                    </>
                   )}
                 </li>
               )

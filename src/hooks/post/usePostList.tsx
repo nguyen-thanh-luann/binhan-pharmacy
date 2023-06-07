@@ -45,7 +45,7 @@ export const usePostList = ({ key, params }: usePostListProps): usePostListRes =
     try {
       dispatch(setBackdropVisible(true))
       const res: any = await postAPI.createPost(params)
-      console.log({ res })
+      // console.log({ res })
 
       if (res?.success) {
         handleSuccess?.()

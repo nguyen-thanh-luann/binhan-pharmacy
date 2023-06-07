@@ -49,6 +49,7 @@ export type PostDetail = Pick<
   author_name: string
   category_id?: string
   category_name?: string
+  role: AccountType
 }
 
 export interface PostCategory {
@@ -91,6 +92,7 @@ export interface CreatePost {
   category_id: string
   slug: string
   tags?: string[] | undefined
+  role?: AccountType
 }
 
 export interface UpdatePost extends CreatePost {
