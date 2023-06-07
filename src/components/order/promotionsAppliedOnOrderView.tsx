@@ -36,7 +36,8 @@ export const PromotionsAppliedOnOrderView = ({ data, className }: Props) => {
                   className={classNames(item?.free_product?.length && 'mb-8')}
                   label={item.range_line.range_name}
                 />
-              ) : null}
+                ) : null}
+                
               {item?.free_product?.length
                 ? item.free_product.map((product) => (
                     <ProductGiftItem
