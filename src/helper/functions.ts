@@ -1,4 +1,5 @@
 import {
+  AccountType,
   CartCategory,
   CartCompany,
   CartProduct,
@@ -9,6 +10,7 @@ import {
   ProductUom,
   ReactSelectType,
   UserAccount,
+  UserInfo,
 } from '@/types'
 import _ from 'lodash'
 const sign = require('jwt-encode')
@@ -390,4 +392,14 @@ export function transPostCategoryDataToSelectionType(data: PostCategory[]) {
   })
 
   return transformedData
+}
+
+export function ValidAccountRoleToUsePostService(data: UserInfo | undefined): AccountType {
+  if (!data) return 'th'
+
+  if (data?.account?.account_type === 'npp' || data?.account?.account_type === 'th') {
+    return data?.account?.account_type
+  }
+
+  return 'th'
 }

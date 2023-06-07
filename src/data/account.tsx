@@ -1,4 +1,5 @@
 import {
+  BellIconOutline,
   DonationIconOutline,
   FeatherOutlineIcon,
   LocationOutlineIcon,
@@ -8,7 +9,7 @@ import {
   NotebookIconOutlinePlus,
   PackageBoxIconOutline,
   StarIconOutline,
-  UserCircleIcon
+  UserCircleIcon,
 } from '@/assets'
 
 export const accountIconStyle = 'w-[20px] h-[20px]'
@@ -43,6 +44,12 @@ export const accountNavData = [
     title: 'Danh mục tin tức',
     access_rules: AdminAccessRule,
     // access_rules: PublicAccessRule,
+  },
+  {
+    path: '/account/your-news',
+    icon: <BellIconOutline className={accountIconStyle} />,
+    title: 'Tin tức của bạn',
+    access_rules: PublicAccessRule,
   },
   {
     path: '/purchased-order',

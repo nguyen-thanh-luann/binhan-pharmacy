@@ -104,8 +104,8 @@ export const PostCatgoryDetail = ({
   }
 
   return (
-    <div className={classNames('bg-white', className)}>
-      <p className="text-center text-lg font-bold p-12">{parent_name}</p>
+    <div className={classNames('bg-white p-12', className)}>
+      <p className="text-center text-lg font-bold mb-12">{parent_name}</p>
 
       {isValidating ? (
         <PostCategoryItemLoading />

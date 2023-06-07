@@ -100,7 +100,14 @@ export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
                     onClick={() => hanldeCategoryClick(cate)}
                     className="flex-between p-12 border-b last:mb-0 border-gray-100 cursor-pointer"
                   >
-                    <p className="text-md">{cate.name}</p>
+                    <p
+                      className={classNames(
+                        'text-md hover:text-primary',
+                        cate?.id === currentPostCategoryId ? 'text-primary' : ''
+                      )}
+                    >
+                      {cate.name}
+                    </p>
 
                     <div className={classNames('flex-center duration-200 ease-in-out')}>
                       <RightIcon
@@ -124,7 +131,12 @@ export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
                               className="pl-12 py-8 w-full cursor-pointer"
                               key={child?.id}
                             >
-                              <p className={classNames('text-md', isActive ? 'text-primary' : ' ')}>
+                              <p
+                                className={classNames(
+                                  'text-md border-b w-fit',
+                                  isActive ? 'text-primary border-primary' : 'border-white'
+                                )}
+                              >
                                 {child?.name}
                               </p>
                             </div>

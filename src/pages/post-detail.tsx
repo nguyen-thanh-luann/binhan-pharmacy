@@ -1,15 +1,17 @@
 import {
   Breadcrumb,
+  NotFound,
   PostCategoryMenu,
   PostDetail,
   PostDetailLoading,
   PostItemLoading,
-  PostListItemHorizontal
+  PostListItemHorizontal,
 } from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
-import { fromProductSlugToProductId, isArrayHasValue, isObjectHasValue } from '@/helper'
+import { fromProductSlugToProductId, generateProductSlug, isArrayHasValue, isObjectHasValue } from '@/helper'
 import { usePostDetail, usePostList } from '@/hooks'
 import { Main } from '@/templates'
+import { Post } from '@/types'
 import { useRouter } from 'next/router'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
@@ -42,6 +44,15 @@ const PostDetailPage = () => {
         ))}
       </div>
     )
+  }
+
+  const hanldePostClick = (data: Post) => {
+    router.push({
+      pathname: '/post-detail',
+      query: {
+        slug: generateProductSlug(data?.title, data?.id),
+      },
+    })
   }
 
   return (
@@ -88,7 +99,9 @@ const PostDetailPage = () => {
                           ) : (
                             <div>
                               {postList?.map((post) =>
-                                post?.id !== post_id ? <PostListItemHorizontal data={post} /> : null
+                                post?.id !== post_id ? (
+                                  <PostListItemHorizontal data={post} onClick={hanldePostClick} />
+                                ) : null
                               )}
                             </div>
                           )}
@@ -100,7 +113,7 @@ const PostDetailPage = () => {
               </div>
             </div>
           </div>
-        ) : null}
+        ) : <NotFound notify='Không tìm thấy thông tin bài viết'/>}
       </div>
     </Main>
   )

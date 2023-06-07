@@ -11,7 +11,7 @@ import 'swiper/css/pagination'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { NotebookIconOutline } from '@/assets'
 import { HomeSlide } from './homeSlide'
-import { usePostList } from '@/hooks'
+import { usePostList, useUser } from '@/hooks'
 import { SWR_KEY } from '@/constants'
 
 interface HomePostsProps {
@@ -19,11 +19,11 @@ interface HomePostsProps {
 }
 
 export const HomePosts = ({ className }: HomePostsProps) => {
-  const { data: postList, isValidating: loadingPostList } = usePostList({
-    key: SWR_KEY.get_post_list,
-    params: {
+  const { userInfo } = useUser({ shouldFetch: false })
 
-    }
+  const { data: postList, isValidating: loadingPostList } = usePostList({
+    key: `${SWR_KEY.get_post_list}_${userInfo?.account?.partner_id}`,
+    params: {},
   })
 
   if (loadingPostList) {
@@ -40,7 +40,7 @@ export const HomePosts = ({ className }: HomePostsProps) => {
     <div className={twMerge(classNames(`mb-24`, className))}>
       {isArrayHasValue(postList) ? (
         <HomeSlide
-          className='md:p-24'
+          className="md:p-24"
           title="Sống khỏe mỗi ngày"
           icon={<NotebookIconOutline className="text-primary w-[34px] h-[34px]" />}
         >
@@ -71,11 +71,13 @@ export const HomePosts = ({ className }: HomePostsProps) => {
             }}
           >
             <div>
-              {postList?.filter((post) => post?.role !== 'npp')?.map((post: Post) => (
-                <SwiperSlide key={post.id}>
-                  <PostItem data={post} />
-                </SwiperSlide>
-              ))}
+              {postList
+                ?.filter((post) => post?.role !== 'npp')
+                ?.map((post: Post) => (
+                  <SwiperSlide key={post.id}>
+                    <PostItem data={post} />
+                  </SwiperSlide>
+                ))}
             </div>
           </Swiper>
         </HomeSlide>

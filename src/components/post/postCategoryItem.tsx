@@ -53,7 +53,7 @@ export const PostCategoryItem = ({
               : 'border-blue text-blue'
           )}
         >
-          {data?.role === 'npp' ? 'Nhà thuốc' : data?.role === 'th' ? 'Người dùng' : 'Tất cả'}
+          {data?.role === 'npp' ? 'Nhà thuốc' : data?.role === 'th' ? 'Người dùng xác minh' : 'Tất cả'}
         </div>
       </div>
 

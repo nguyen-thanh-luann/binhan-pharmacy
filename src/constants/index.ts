@@ -90,7 +90,7 @@ export const POST_ROLES_OPTIONS = [
     value: 'npp',
   },
   {
-    label: 'Người dùng',
+    label: 'Người dùng xác minh',
     value: 'th',
   },
 ]

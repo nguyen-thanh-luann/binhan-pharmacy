@@ -9,6 +9,7 @@ export interface GetPostListParams extends QueryList {
   category_id?: string
   parent_id?: string
   keyword?: string
+  role?: AccountType
 }
 
 export interface GetPostDetailParams {
