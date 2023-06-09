@@ -21,6 +21,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<HTTPRe
   }
 
   req.url = `${process.env.NEXT_PUBLIC_API_URL}${req.url?.replace('/api', '')}`
+
   return new Promise((resolve) => {
     proxy.once('proxyRes', () => {
       resolve(true)

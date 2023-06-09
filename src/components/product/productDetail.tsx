@@ -1,6 +1,6 @@
 import { NoteIconOutline, companyIconSm } from '@/assets'
 import { DOMAIN_URL, SWR_KEY } from '@/constants'
-import { formatMoneyVND, isObjectHasValue, purchasableProduct } from '@/helper'
+import { formatMoneyVND, generateProductSlug, isObjectHasValue, purchasableProduct } from '@/helper'
 import { useAddToCart, useProductPromotion, useUser, useWishlist } from '@/hooks'
 import { productAPI } from '@/services'
 import { ProductDetail as IProductDetail, Product } from '@/types'
@@ -143,8 +143,11 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
           <div className="mr-8 flex items-center">
             <p className="text-text-color text-md font-semibold mr-12">Chia sẻ: </p>
             <ShareSocial
-              name={currentProduct?.product_name}
-              product_id={currentProduct?.product_id}
+              title={currentProduct?.product_name}
+              slug={`${DOMAIN_URL}/${generateProductSlug(
+                currentProduct?.product_name,
+                currentProduct?.product_id
+              )}`}
             />
           </div>
 

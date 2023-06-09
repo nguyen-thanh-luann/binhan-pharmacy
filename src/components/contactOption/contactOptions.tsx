@@ -4,6 +4,9 @@ import classNames from 'classnames'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
+//@ts-ignore
+// import MessengerCustomerChat from 'react-messenger-customer-chat'
+
 export const ContactOptions = () => {
   const [expandOption, setExpandOption] = useState<boolean>(true)
 
@@ -49,12 +52,13 @@ export const ContactOptions = () => {
           expandOption ? 'block' : 'hidden'
         )}
       >
+        {/* <MessengerCustomerChat pageId={FACEBOOK_PAGE_ID} appId={FACEBOOK_APP_ID} /> */}
+
         <div className={classNames('rounded-full bg-blue p-10 cursor-pointer duration-200')}>
           <Link href={'https://www.facebook.com/duocbinhan'} target="_blank">
             <FacebookIconOutline className="text-white font-bold w-32 h-32" />
           </Link>
         </div>
-
         <div className={classNames('rounded-full bg-orange p-10 cursor-pointer duration-150')}>
           <Link href={`tel:${CONTACT_PHONE_NUMBER}`} target="_blank">
             <TelePhoneIconOutline className="text-white font-bold  w-32 h-32" />

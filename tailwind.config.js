@@ -215,7 +215,7 @@ module.exports = {
     },
   },
   plugins: [
-    require('@tailwindcss/line-clamp'),
+    // require('@tailwindcss/line-clamp'), // As of Tailwind CSS v3.3, the `@tailwindcss/line-clamp` plugin is now included by default
     require('@tailwindcss/aspect-ratio'),
     require('tailwind-scrollbar-hide'),
   ],

@@ -126,7 +126,7 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
               ) : (
                 <ScrollContainer className="flex items-center ml-12">
                   {postCategoryList?.map((postCategory, index) => (
-                    <div className="flex items-center">
+                    <div className="flex items-center" key={index}>
                       <div
                         className="cursor-pointer"
                         key={postCategory.id}

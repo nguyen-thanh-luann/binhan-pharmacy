@@ -39,7 +39,7 @@ export const ListProductByAttributeMinor = ({ className }: ListProductByAttribut
         </div>
       ) : isArrayHasValue(restAttributeMinors) ? (
         restAttributeMinors?.map((attribute, index) => (
-          <div>
+          <div key={index}>
             <ProductsByAttributeMinor
               className="mb-24"
               key={attribute?.attribute_id}

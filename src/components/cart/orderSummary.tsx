@@ -1,14 +1,17 @@
-import { SWR_KEY } from '@/constants'
+import { DOMAIN_URL, SWR_KEY } from '@/constants'
 import { formatMoneyVND } from '@/helper'
-import { useCreateOrderDone } from '@/hooks'
-import { GetOrderDraftRes } from '@/types'
+import { useCreateOrderDone, usePayment } from '@/hooks'
+import { selectOrderPayment } from '@/store'
+import { GetOrderDraftRes, Payment } from '@/types'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import useSWR from 'swr'
 import { twMerge } from 'tailwind-merge'
 import { Button } from '../button'
 import { Spinner } from '../spinner'
+import { toast } from 'react-hot-toast'
 
 interface CartSummaryProps {
   className?: string
@@ -18,13 +21,39 @@ export const OrderSummary = ({ className }: CartSummaryProps) => {
   const router = useRouter()
   const { data, isValidating } = useSWR<GetOrderDraftRes>(SWR_KEY.orders)
   const { createOrderDone } = useCreateOrderDone()
+  const { createPayment } = usePayment()
+
+  const payment: Payment = useSelector(selectOrderPayment)
 
   const handleCreateOrder = () => {
-    createOrderDone({}, (data) => {
-      let query = ''
-      data?.sale_order_id.forEach((item) => (query += `sale_order_id=${item.sale_order_id}&`))
-      router.push(`/checkout-success?${query.slice(0, query.length - 1)}`)
-    })
+    if (payment?.provider === 'vnpay') {
+      if (data?.sale_orders?.[0]) {
+        const order_id = data.sale_orders[0].order_id
+
+        createPayment(
+          {
+            sale_order_id: order_id,
+            acquirer_id: payment.acquirer_id,
+            returned_url: `${DOMAIN_URL}/checking-checkout-status?sale_order_id=${order_id}`,
+          },
+          (data: any) => {
+            router.push(data.vnpay_payment_url)
+          },
+          () => {
+            toast?.error('Tạo thanh toán không thành công')
+          }
+        )
+      } else {
+        // Not hanlde for multi company
+        return
+      }
+    } else {
+      createOrderDone({}, (data) => {
+        let query = ''
+        data?.sale_order_id.forEach((item) => (query += `sale_order_id=${item.sale_order_id}&`))
+        router.push(`/checkout-success?${query.slice(0, query.length - 1)}`)
+      })
+    }
   }
 
   const { totalPromotion, amountSubtotal, amountTotal } = useMemo(() => {
@@ -91,9 +120,7 @@ export const OrderSummary = ({ className }: CartSummaryProps) => {
 
       <div className="flex-between p-16">
         <p className="text-text-color text-lg font-bold leading-9">{`Thanh toán`}</p>
-        <p className="text-primary text-lg font-bold leading-9">
-          {formatMoneyVND(amountTotal)}
-        </p>
+        <p className="text-primary text-lg font-bold leading-9">{formatMoneyVND(amountTotal)}</p>
       </div>
 
       <div className="p-16 pt-0">

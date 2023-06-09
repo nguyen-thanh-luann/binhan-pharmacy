@@ -21,7 +21,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<HTTPRe
   }
 
   req.url = `${process.env.NEXT_PUBLIC_CHAT_API_URL}${req.url?.replace('/api/chatDMS', '')}`
-  
+
   return new Promise((resolve) => {
     proxy.once('proxyRes', () => {
       resolve(true)

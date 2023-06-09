@@ -7,7 +7,7 @@ import {
   DeliveryAddress,
   OrderSummary,
   OrderSummaryMobile,
-  Spinner
+  Spinner,
 } from '@/components'
 import { SWR_KEY } from '@/constants'
 import { isArrayHasValue } from '@/helper'
