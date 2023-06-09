@@ -1,4 +1,4 @@
-import { FacebookIconOutline, TelePhoneIconOutline, ThreeDotsIcon, TimesIcon } from '@/assets'
+import { CommunicationIcon, FacebookIconOutline, TelePhoneIconOutline, TimesIcon } from '@/assets'
 import { CONTACT_PHONE_NUMBER } from '@/constants'
 import classNames from 'classnames'
 import Link from 'next/link'
@@ -36,13 +36,13 @@ export const ContactOptions = () => {
       <div
         onClick={hanldeToggleOption}
         className={classNames(
-          'fixed z-50 bottom-[60px] md:bottom-[12px] right-[32px] cursor-pointer border bg-white border-primary animate-bounce p-12 rounded-full'
+          'fixed z-50 bottom-[60px] md:bottom-[12px] right-[32px] w-[45px] h-[45px] border border-primary bg-white flex-center cursor-pointer animate-bounce rounded-full'
         )}
       >
         {expandOption ? (
-          <TimesIcon className="text-primary" />
+          <TimesIcon className="text-primary w-18 h-18" />
         ) : (
-          <ThreeDotsIcon className="text-primary" />
+          <CommunicationIcon className="text-primary w-24 h-24" />
         )}
       </div>
 

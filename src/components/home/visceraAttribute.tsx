@@ -14,6 +14,7 @@ import 'swiper/css/pagination'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { VisceraAttributeItem, VisceraAttributeItemLoading } from '../attribute'
 import { HomeSlide } from './homeSlide'
+import { CustomImage } from '../customImage'
 
 interface VisceraAttributeProps {
   className?: string
@@ -24,7 +25,7 @@ export const VisceraAttribute = ({ className }: VisceraAttributeProps) => {
   const { data, isValidating } = useViceraAttribute({
     key: `${SWR_KEY.get_viscera_attribute}`,
   })
-  
+
   const viewAttribute: VisceraAttributeRes | undefined = data?.[0]
 
   if (isValidating) {
@@ -42,7 +43,16 @@ export const VisceraAttribute = ({ className }: VisceraAttributeProps) => {
       {isArrayHasValue(data) ? (
         <HomeSlide
           title={data?.[0]?.attribute_name || 'Danh mục sản phẩm'}
-          icon={<NotebookIconOutline className="text-primary w-[34px] h-[34px]" />}
+          icon={
+            data?.[0]?.attribute_icon?.url ? (
+              <CustomImage
+                src={data?.[0]?.attribute_icon?.url || ''}
+                imageClassName="w-[32px] h-[32px] object-cover rounded-full"
+              />
+            ) : (
+              <NotebookIconOutline className="text-primary w-[34px] h-[34px]" />
+            )
+          }
           className="bg-white rounded-[10px] mb-24 md:p-24"
           sectionClassName=""
         >
