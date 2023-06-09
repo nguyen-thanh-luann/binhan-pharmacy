@@ -49,7 +49,7 @@ export const TextareaField = ({
             onBlur={onBlur}
             ref={ref}
             style={{ height: `${name === 'content' && '160px'}` }}
-            className={`border border-gray-200 p-8 rounded-md w-full outline-none ${
+            className={`border border-gray-200 p-8 rounded-md w-full outline-none mt-8 ${
               error ? 'border-red bg-red-100' : ''
             }`}
             // defaultValue={}

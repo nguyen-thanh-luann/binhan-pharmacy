@@ -1,0 +1,45 @@
+import { PostCategory } from '@/types'
+import classNames from 'classnames'
+import React from 'react'
+import { InputCheckbox } from '../inputs'
+import { RightIcon } from '@/assets'
+
+interface PostCategoryOptionProps {
+  data: PostCategory
+  isActive: boolean
+  isExpand?: boolean
+  onCheck: (data: PostCategory) => void
+  className?: string
+  onExpand?: (data: PostCategory) => void
+}
+
+export const PostCategoryOption = ({
+  data,
+  className,
+  isActive = false,
+  isExpand = false,
+  onCheck,
+  onExpand,
+}: PostCategoryOptionProps) => {
+  return (
+    <div className={classNames('', className)}>
+      <div
+        onClick={() => onExpand?.(data)}
+        className={classNames('flex items-center justify-between mb-8 cursor-pointer', className)}
+      >
+        <div className="flex gap-8">
+          <InputCheckbox isChecked={isActive} onCheck={() => onCheck?.(data)} />
+          <p className="text-md">{data?.name}</p>
+        </div>
+
+        {data?.children_count > 0 && (
+          <div>
+            <RightIcon
+              className={classNames('text-gray duration-200', isExpand ? 'rotate-90' : '')}
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}

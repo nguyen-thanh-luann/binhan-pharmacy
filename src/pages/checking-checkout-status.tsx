@@ -26,7 +26,9 @@ const CheckoutProcess = () => {
         setValidating(false)
 
         if (res.result?.success) {
-          createOrderDone({})
+          createOrderDone({}, () => {
+            toast.success('Tạo thanh toán thành công')
+          })
         }
       })
       .catch(() => {

@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import moment from 'moment'
 import { twMerge } from 'tailwind-merge'
 import { Image } from '../image'
+import { PostCategoryTag } from './postCategoryTag'
 
 interface PostItemProps {
   data: Post
@@ -48,14 +49,20 @@ export const PostListItemVertical = ({
 
         <div className="p-12">
           <p className="text-gray text-sm">{moment(data?.created_at).format('DD/MM/YYYY')}</p>
+
           <p
             className={classNames(
-              'text-text-color font-bold text-md leading-9 line-clamp-2 group-hover:text-primary duration-200 ease-in-out',
+              'text-text-color font-bold text-md leading-9 line-clamp-2 group-hover:text-primary duration-200 ease-in-out mb-8',
               titleClassName
             )}
           >
             {data?.title}
           </p>
+
+          <div className='mb-8'>
+            <PostCategoryTag data={data?.category_name} />
+          </div>
+
           <p
             className={classNames(
               'text-text-color text-base leading-9 line-clamp-2 group-hover:text-primary duration-200 ease-in-out',

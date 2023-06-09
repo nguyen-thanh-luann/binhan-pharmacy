@@ -8,7 +8,7 @@ import {
   PostCategoryItem,
   PostCategoryItemLoading,
   PostCatgoryDetail,
-  SearchField
+  SearchField,
 } from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
 import { isAdmin, isArrayHasValue, transPostCategoryDataToSelectionType } from '@/helper'
@@ -160,7 +160,9 @@ const PostCategoryPage = () => {
                 className="py-8 px-20 active:opacity-50 duration-200 border border-primary"
                 textClassName="text-primary"
                 icon={<PlusIcon className="text-primary" />}
-                onClick={OpenCategoryModal}
+                onClick={() => {
+                  router.push('/account/create-category')
+                }}
               />
             </div>
 

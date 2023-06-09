@@ -7,10 +7,12 @@ interface PostRoleTagProps {
 }
 
 export const PostRoleTag = ({ data }: PostRoleTagProps) => {
+  if (!data) return null
+
   return (
     <div
       className={classNames(
-        'border rounded-lg w-fit min-w-[100px] text-center mb-8',
+        'border rounded-lg w-fit min-w-[100px] text-center p-2',
         data?.role === 'npp'
           ? 'border-primary text-primary'
           : data?.role === 'th'

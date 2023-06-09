@@ -7,6 +7,7 @@ import { useClickOutside, useModal } from '@/hooks'
 import classNames from 'classnames'
 import { useRef } from 'react'
 import { PostRoleTag } from './postRoleTag'
+import { PostCategoryTag } from './postCategoryTag'
 
 interface PostItemProps {
   post: Post
@@ -44,7 +45,11 @@ const PostAdminItem = ({
         <div className="">
           <p className="title_md line-clamp-1 mb-8">{post?.title}</p>
 
-          <PostRoleTag data={post} />
+          <div className="flex gap-8 items-center mb-8 overflow-scroll scrollbar-hide">
+            <PostRoleTag data={post} />
+
+            <PostCategoryTag data={post?.category_name} />
+          </div>
 
           <p className="text_md line-clamp-2">{post?.short_content}</p>
           <p className="text">

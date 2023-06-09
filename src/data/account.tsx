@@ -17,7 +17,10 @@ export const accountIconStyle = 'w-[20px] h-[20px]'
 export const PublicAccessRule = ['th', 'nvkd', 'npp', 'gsbh', 'asm', '']
 export const AdminAccessRule = ['npp']
 
-//user account: th | npp === drugstore account
+//user account: th | npp  drugstore account
+//user account: drugstore || patient account
+// Có thể bạn cần == drugstore
+// khuyến mãi dành cho bạn
 
 export const accountNavData = [
   {

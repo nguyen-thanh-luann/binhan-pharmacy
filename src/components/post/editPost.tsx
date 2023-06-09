@@ -1,6 +1,7 @@
 import { TimesIcon } from '@/assets'
 import { CreatePostForm, Modal, PostEditor } from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY } from '@/constants'
+import { transPostCategoryDataToSelectionType } from '@/helper'
 import { usePostCategory, usePostList } from '@/hooks'
 import { selectPostForm } from '@/store'
 import { CreatePost, OptionType, Post } from '@/types'
@@ -41,7 +42,7 @@ const EditPost = ({ onSuccess }: EditPostProps) => {
     )
   }
 
-  const { data: postCategories } = usePostCategory({
+  const { data: postCategoryList } = usePostCategory({
     key: `${SWR_KEY.get_post_category_list}`,
     params: {
       limit: DEFAULT_LIMIT,
@@ -49,11 +50,8 @@ const EditPost = ({ onSuccess }: EditPostProps) => {
   })
 
   const categoryOptions: OptionType<string>[] | undefined = useMemo(() => {
-    return postCategories?.map((item) => ({
-      label: item.name,
-      value: item.id,
-    }))
-  }, [postCategories])
+    return transPostCategoryDataToSelectionType(postCategoryList || [])
+  }, [postCategoryList])
 
   return (
     <div>

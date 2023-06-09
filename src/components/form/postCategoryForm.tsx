@@ -5,10 +5,13 @@ import { selectPostCategoryForm } from '@/store'
 import { CreatePostCategory, OptionType } from '@/types'
 import { yupResolver } from '@hookform/resolvers/yup'
 import classNames from 'classnames'
-import { useForm } from 'react-hook-form'
+import { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import { Button } from '../button'
 import { InputField, SelectField, TextareaField } from '../inputs'
+import { UploadSignleFile } from '../upload'
+import { PostCategoryOptionForm } from './postCategoryOptionForm'
 
 interface PostCategoryFormProps {
   onSubmit?: (params: CreatePostCategory) => void
@@ -17,6 +20,8 @@ interface PostCategoryFormProps {
 
 export const PostCategoryForm = ({ onSubmit, categoryOptions }: PostCategoryFormProps) => {
   const currentPostCategory = useSelector(selectPostCategoryForm)
+
+  const [image, setImage] = useState<string>('')
 
   const {
     handleSubmit,
@@ -41,6 +46,28 @@ export const PostCategoryForm = ({ onSubmit, categoryOptions }: PostCategoryForm
     <form className="" onSubmit={handleSubmit(onSubmitHandler)}>
       <div className="">
         <div className="mb-12">
+          <p className="text_md mb-12">Hình đại diện</p>
+
+          <Controller
+            control={control}
+            name="attachment_id"
+            // defaultValue={defaultValue?.id}
+            render={({ field: { onChange } }) => (
+              <div className="flex justify-center">
+                <UploadSignleFile
+                  id="attachment_id"
+                  defaultImage={image}
+                  getImage={(val) => {
+                    setImage(val?.url)
+                    onChange(val?.id)
+                  }}
+                />
+              </div>
+            )}
+          />
+        </div>
+
+        <div className="mb-12">
           <InputField
             defaultValue={currentPostCategory?.name}
             control={control}
@@ -52,16 +79,7 @@ export const PostCategoryForm = ({ onSubmit, categoryOptions }: PostCategoryForm
         </div>
 
         <div className="mb-12">
-          <SelectField
-            defaultValue={categoryOptions?.find(
-              (item: any) => item.value === currentPostCategory?.parent_id
-            )}
-            control={control}
-            name="parent_id"
-            placeholder="Danh mục cha"
-            label="Danh mục cha"
-            options={categoryOptions}
-          />
+          <PostCategoryOptionForm />
         </div>
 
         <div className="mb-12">

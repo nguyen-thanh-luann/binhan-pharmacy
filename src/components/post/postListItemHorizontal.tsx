@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import moment from 'moment'
 import { twMerge } from 'tailwind-merge'
 import { Image } from '../image'
+import { PostCategoryTag } from './postCategoryTag'
 
 interface PostItemProps {
   data: Post
@@ -48,12 +49,16 @@ export const PostListItemHorizontal = ({
         <div className="flex-1 p-8">
           <p
             className={classNames(
-              'text-text-color font-bold text-md leading-9 line-clamp-2 group-hover:text-primary duration-200 ease-in-out',
+              'text-text-color font-bold text-md leading-9 line-clamp-2 group-hover:text-primary duration-200 ease-in-out mb-8',
               titleClassName
             )}
           >
             {data?.title}
           </p>
+
+          <div className="mb-8">
+            <PostCategoryTag data={data?.category_name} />
+          </div>
 
           <p
             className={classNames(

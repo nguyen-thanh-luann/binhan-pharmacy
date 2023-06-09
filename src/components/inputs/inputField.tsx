@@ -13,7 +13,7 @@ type InputFieldProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInp
   labelClassName?: string
   messageClassName?: string
 }
- 
+
 export const InputField = ({
   className = '',
   inputClassName,

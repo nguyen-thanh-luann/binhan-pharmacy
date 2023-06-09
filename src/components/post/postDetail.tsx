@@ -16,12 +16,19 @@ export const PostDetail = ({ data, className }: PostDetailProps) => {
     <div className={twMerge(classNames(`post-content bg-white p-12`, className))}>
       <div dangerouslySetInnerHTML={{ __html: data?.content + '' }}></div>
 
-      <div className="mr-8 flex items-center my-32">
-        <p className="text-text-color text-md font-semibold mr-12">Chia sẻ: </p>
-        <ShareSocial
-          title={data?.title}
-          slug={`${DOMAIN_URL}/post-detail?slug=${generateProductSlug(data?.title, data?.id)}`}
-        />
+      <div className="border rounded-lg border-primary bg-white my-32 p-32">
+        <div className="flex-center mb-12">
+          <p className="text-primary text-md font-semibold mr-12">Chia sẻ cùng bạn bè: </p>
+          <ShareSocial
+            title={data?.title}
+            slug={`${DOMAIN_URL}/post-detail?slug=${generateProductSlug(data?.title, data?.id)}`}
+          />
+        </div>
+
+        <p className='text-base italic'>
+          <strong>Lưu ý: </strong> Thông tin trong bài viết chỉ mang tính chất tham khảo, vui lòng liên hệ với Bác sĩ,
+          Dược sĩ hoặc chuyên viên y tế để được tư vấn cụ thể.
+        </p>
       </div>
     </div>
   )

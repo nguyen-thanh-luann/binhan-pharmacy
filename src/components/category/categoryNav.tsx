@@ -1,12 +1,7 @@
 import { DownIcon } from '@/assets'
 import { SWR_KEY } from '@/constants'
 import { isArrayHasValue, isDrugStore } from '@/helper'
-import {
-  useCategoryList,
-  useCategoryMinorList,
-  usePrimaryPostCategory,
-  useUser
-} from '@/hooks'
+import { useCategoryList, useCategoryMinorList, usePrimaryPostCategory, useUser } from '@/hooks'
 import { PostCategory } from '@/types'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
@@ -124,25 +119,31 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
                   <Spinner />
                 </div>
               ) : (
-                <ScrollContainer className="flex items-center ml-12">
-                  {postCategoryList?.map((postCategory, index) => (
-                    <div className="flex items-center" key={index}>
-                      <div
-                        className="cursor-pointer"
-                        key={postCategory.id}
-                        onClick={() => {
-                          hanldePostCategoryClick(postCategory)
-                        }}
-                      >
-                        <p className="title !text-white">{postCategory?.name}</p>
-                      </div>
+                <div>
+                  {isArrayHasValue(postCategoryList) ? (
+                    <div className="flex items-center">
+                      <div className={`border-l border-white h-[18px] mx-12`}></div>
 
-                      {index < postCategoryList?.length - 1 && (
-                        <div className={`border-l border-white h-[18px] mx-12`}></div>
-                      )}
+                      <ScrollContainer className="flex items-center">
+                        {postCategoryList?.map((postCategory, index) => {
+                          return postCategory?.role !== 'npp' ? (
+                            <div className="flex items-center" key={index}>
+                              <div
+                                className="cursor-pointer"
+                                key={postCategory.id}
+                                onClick={() => {
+                                  hanldePostCategoryClick(postCategory)
+                                }}
+                              >
+                                <p className="title !text-white">{postCategory?.name}</p>
+                              </div>
+                            </div>
+                          ) : null
+                        })}
+                      </ScrollContainer>
                     </div>
-                  ))}
-                </ScrollContainer>
+                  ) : null}
+                </div>
               )}
             </div>
           </div>
