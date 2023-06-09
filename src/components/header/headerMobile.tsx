@@ -23,7 +23,7 @@ export const HeaderMobile = ({ className }: HeaderMobileProps) => {
   return (
     <div className={twMerge(classNames('relative', className))}>
       <div
-        className={`bg-background h-header_mobile_height md:hidden flex items-center fixed top-0 left-0 right-0 z-40`}
+        className={`bg-background h-header_mobile_height md:hidden flex items-center fixed top-0 left-0 right-0 z-50`}
       >
         <div className="container px-12">
           <div className="flex-between mb-12">

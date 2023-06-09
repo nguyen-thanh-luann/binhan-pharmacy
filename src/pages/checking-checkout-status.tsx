@@ -7,6 +7,7 @@ import { orderAPI } from '@/services'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
 
 const CheckoutProcess = () => {
   const router = useRouter()
@@ -29,6 +30,7 @@ const CheckoutProcess = () => {
         }
       })
       .catch(() => {
+        toast.error('Something went wrong!')
         setValidating(false)
       })
 

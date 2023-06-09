@@ -10,7 +10,7 @@ interface HeaderGroupProps {
 export const HeaderGroup = ({ className }: HeaderGroupProps) => {
   return (
     <div className={twMerge(classNames(`relative h-header_group_height`, className))}>
-      <div className={`fixed top-0 left-0 right-0 z-40`}>
+      <div className={`fixed top-0 left-0 right-0 z-50`}>
         <Header />
         <CategoryNav />
       </div>

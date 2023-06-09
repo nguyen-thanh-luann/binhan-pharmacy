@@ -23,14 +23,16 @@
     li,
     div {
       @apply select-text break-words;
-
     }
   }
 
   .ql-toolbar {
     position: sticky !important;
-    top: 0;
+    top: $header_group_height;
     background-color: white;
-    z-index: 10;
+    z-index: 40;
+    @include responsive(md-screen) {
+      top: $header_mobile_height;
+    }
   }
 }

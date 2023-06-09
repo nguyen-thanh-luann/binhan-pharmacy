@@ -10,7 +10,7 @@
 
 ### note z-index value use in project:
 - z-30: DescriptionMenuMobile
-- z-40: chatButton, headerGroup, cartSummaryMobile
-- z-50: messageImagePicker, messageReaction, bottomNav
+- z-40: chatButton,
+- z-50: messageImagePicker, messageReaction, bottomNav,  headerGroup, cartSummaryMobile
 - z-1000: modal overlay
 - z-9999: backdrop

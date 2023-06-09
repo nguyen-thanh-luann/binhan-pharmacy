@@ -125,7 +125,7 @@ const PostEditor = ({ onSubmit, defaultValue, btnLabel, validating = false }: bl
         />
       </div>
 
-      <div className="flex-center sticky bottom-0 z-50 bg-white py-12">
+      <div className="flex-center sticky bottom-0 z-40 bg-white py-12">
         <Button
           title={btnLabel || 'Tiếp tục'}
           className={classNames(
