@@ -1,11 +1,5 @@
 import { TimesIcon } from '@/assets'
-import {
-  Breadcrumb,
-  CreatePostForm,
-  Modal,
-  NotFound,
-  PostEditor
-} from '@/components'
+import { Breadcrumb, CreatePostForm, Modal, NotFound, PostEditor } from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
 import { isAdmin, transPostCategoryDataToSelectionType } from '@/helper'
 import { useChatAccount, usePostCategory, usePostList, useUser } from '@/hooks'
@@ -69,7 +63,7 @@ const CreatePostPage = () => {
 
           {isAdmin(userInfo?.account) && chatToken ? (
             <div>
-              <div className="">
+              <div className="post_editor_account_page">
                 <PostEditor
                   onSubmit={(val) => {
                     setContent(val)

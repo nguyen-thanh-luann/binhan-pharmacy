@@ -57,7 +57,7 @@ const EditPost = ({ onSuccess }: EditPostProps) => {
 
   return (
     <div>
-      <div className="p-12">
+      <div className="p-12 relative post_update_modal_editor">
         <PostEditor
           defaultValue={postForm?.content}
           onSubmit={(val) => {

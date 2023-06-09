@@ -8,9 +8,10 @@
     outline: none;
 
     img {
-      max-width: 300px !important;
-      max-height: 500px !important;
+      max-width: 100% !important;
+      max-height: 50vh !important;
       object-fit: cover;
+      margin: 12px auto !important;
     }
 
     h1,
@@ -27,12 +28,34 @@
   }
 
   .ql-toolbar {
-    position: sticky !important;
-    top: $header_group_height;
     background-color: white;
     z-index: 40;
-    @include responsive(md-screen) {
-      top: $header_mobile_height;
+  }
+}
+
+// set the toolbar at top of page create post
+.post_editor_account_page {
+  .quill {
+    .ql-toolbar {
+      position: sticky !important;
+      top: $header_group_height;
+      background-color: white;
+      z-index: 40;
+      @include responsive(md-screen) {
+        top: $header_mobile_height;
+      }
+    }
+  }
+}
+
+// set the toolbar at top of modal update
+.post_update_modal_editor {
+  .quill {
+    .ql-toolbar {
+      position: sticky !important;
+      top: 0px;
+      background-color: white;
+      z-index: 40;
     }
   }
 }
