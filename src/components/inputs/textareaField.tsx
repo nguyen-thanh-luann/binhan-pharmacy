@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import React from 'react'
 import { Control, useController } from 'react-hook-form'
 
@@ -8,6 +9,7 @@ type TextareaFieldProps = React.DetailedHTMLProps<
   control: Control<any>
   name: string
   className?: string
+  labelClassName?: string
   label?: string
 }
 
@@ -17,6 +19,7 @@ export const TextareaField = ({
   control,
   name,
   defaultValue,
+  labelClassName,
   onChange: externalOnChange,
   onBlur: externalOnBlur,
   ref: externalRef,
@@ -35,7 +38,7 @@ export const TextareaField = ({
   return (
     <div className={`${className}`}>
       {label && (
-        <label htmlFor={name} className={`text`}>
+        <label htmlFor={name} className={classNames('text', labelClassName)}>
           {label}
           <span className="text-red font-bold">{attributes?.required ? ' * ' : ''}</span>
         </label>

@@ -1,24 +1,26 @@
 import { DEFAULT_LIMIT, SWR_KEY } from '@/constants'
-import { useModal, usePostCategory } from '@/hooks'
+import { usePostCategory } from '@/hooks'
 import { PostCategory } from '@/types'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Spinner } from '../spinner'
 import { PostCategoryOption } from './postCategoryOption'
+import { PostCategoryOptionGrandChild } from './postCategoryOptionGrandChild'
+import classNames from 'classnames'
 
 interface PostCategoryOptionChild {
   data: PostCategory
   onCheck?: (data: PostCategory) => void
-  isChecked: boolean
+  checkedPostCategory?: String[]
+  className?: string
 }
 
 export const PostCategoryOptionChild = ({
   data,
   onCheck,
-  isChecked = false,
+  className,
+  checkedPostCategory,
 }: PostCategoryOptionChild) => {
-  const { visible, toggle } = useModal()
-
-  console.log({ data })
+  const [expandCategories, setExpandCategories] = useState<PostCategory[]>()
 
   const {
     data: postCategoryList,
@@ -33,37 +35,55 @@ export const PostCategoryOptionChild = ({
 
   useEffect(() => {
     if (!data) return
-    
+
     filter({
       parent_id: data?.id,
     })
-  }, [postCategoryList])
+  }, [])
 
-  console.log({ postCategoryList })
+  const handleExpandCategory = (data: PostCategory) => {
+    const index = expandCategories?.findIndex((c) => c?.id === data?.id)
+
+    if (index !== -1) {
+      setExpandCategories([...(expandCategories?.filter((c) => c?.id !== data?.id) || [])])
+      return
+    }
+
+    setExpandCategories([...(expandCategories || []), data])
+  }
 
   return (
-    <div>
+    <div className={classNames('', className)}>
       {isValidating ? (
         <Spinner />
       ) : (
         <div>
-          {postCategoryList?.map((postCategoryParent: PostCategory) => (
-            <div key={postCategoryParent?.id}>
-              <PostCategoryOption
-                data={postCategoryParent}
-                isActive={isChecked}
-                onCheck={() => onCheck?.(postCategoryParent)}
-                onExpand={toggle}
-                isExpand={visible}
-              />
+          {postCategoryList?.map((item: PostCategory) => {
+            const isExpand = expandCategories?.includes(item)
 
-              <div>
-                {/* {visible ? (
-                  <PostCategoryOptionChild data={postCategoryParent} isChecked onCheck={() => {}} />
-                ) : null} */}
+            return (
+              <div key={item?.id}>
+                <PostCategoryOption
+                  data={item}
+                  isChecked={checkedPostCategory?.includes(item?.id) || false}
+                  onCheck={() => onCheck?.(item)}
+                  onExpand={handleExpandCategory}
+                  isExpand={isExpand}
+                />
+
+                <div>
+                  {isExpand ? (
+                    <PostCategoryOptionGrandChild
+                      className="pl-12"
+                      data={item}
+                      checkedPostCategory={checkedPostCategory}
+                      onCheck={onCheck}
+                    />
+                  ) : null}
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       )}
     </div>

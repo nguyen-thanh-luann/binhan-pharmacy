@@ -1,51 +1,56 @@
 import { DEFAULT_LIMIT, SWR_KEY } from '@/constants'
-import { useModal, usePostCategory } from '@/hooks'
+import { usePostCategory } from '@/hooks'
 import { PostCategory } from '@/types'
-import React from 'react'
+import { useEffect } from 'react'
 import { Spinner } from '../spinner'
 import { PostCategoryOption } from './postCategoryOption'
+import classNames from 'classnames'
 
 interface PostCategoryOptionGrandChild {
   data: PostCategory
+  checkedPostCategory?: String[]
   onCheck?: (data: PostCategory) => void
-  isChecked: boolean
+  className?: string
 }
 
 export const PostCategoryOptionGrandChild = ({
   data,
   onCheck,
-  isChecked,
+  className,
+  checkedPostCategory,
 }: PostCategoryOptionGrandChild) => {
-  const { visible, toggle } = useModal()
-
-  const { data: postCategoryList, isValidating } = usePostCategory({
+  const {
+    data: postCategoryList,
+    isValidating,
+    filter,
+  } = usePostCategory({
     key: `${SWR_KEY.get_post_category_option}_${data?.id}`,
     params: {
       limit: DEFAULT_LIMIT,
     },
   })
 
+  useEffect(() => {
+    if (!data) return
+
+    filter({
+      parent_id: data?.id,
+    })
+  }, [])
+
   return (
     <div>
       {isValidating ? (
         <Spinner />
       ) : (
-        <div>
-          {postCategoryList?.map((postCategoryParent) => (
-            <div key={postCategoryParent?.id}>
+        <div className={classNames('', className)}>
+          {postCategoryList?.map((item) => (
+            <div key={item?.id}>
               <PostCategoryOption
-                data={postCategoryParent}
-                isActive={isChecked}
-                onCheck={() => onCheck?.(postCategoryParent)}
-                onExpand={toggle}
-                isExpand={visible}
+                data={item}
+                isChecked={checkedPostCategory?.includes(item?.id) || false}
+                onCheck={() => onCheck?.(item)}
               />
-
-              <div>
-                {/* {visible ? (
-                  <PostCategoryOptionChild data={postCategoryParent} isChecked onCheck={() => {}} />
-                ) : null} */}
-              </div>
             </div>
           ))}
         </div>

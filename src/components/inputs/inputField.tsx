@@ -14,7 +14,7 @@ type InputFieldProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInp
   messageClassName?: string
 }
 
-export const InputField = ({
+export const InputField = ({ 
   className = '',
   inputClassName,
   labelClassName,

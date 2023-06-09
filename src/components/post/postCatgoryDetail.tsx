@@ -1,20 +1,17 @@
-import { TimesIcon } from '@/assets'
 import { DEFAULT_LIMIT, SWR_KEY } from '@/constants'
-import { isArrayHasValue, transPostCategoryDataToSelectionType } from '@/helper'
+import { isArrayHasValue } from '@/helper'
 import { usePostCategory } from '@/hooks'
-import { selectPostCategoryForm, setPostCategoryForm } from '@/store'
-import { CreatePostCategory, OptionType, PostCategory } from '@/types'
+import { setPostCategoryForm } from '@/store'
+import { PostCategory } from '@/types'
 import classNames from 'classnames'
-import { useEffect, useMemo } from 'react'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import toast from 'react-hot-toast'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { useDispatch, useSelector } from 'react-redux'
-import { PostCategoryForm } from '../form'
-import { Modal } from '../modal'
+import { useDispatch } from 'react-redux'
 import { NotFound } from '../notFound'
 import { PostCategoryItem } from './postCategoryItem'
 import { PostCategoryItemLoading } from './postCategoryItemLoading'
-import { useRouter } from 'next/router'
 
 interface PostCatgoryDetailProps {
   parent_id: string
@@ -35,8 +32,6 @@ export const PostCatgoryDetail = ({
     parent_name,
   })
 
-  const currentPostCategory: PostCategory = useSelector(selectPostCategoryForm)
-
   const {
     data: postCategoryList,
     isValidating,
@@ -44,7 +39,6 @@ export const PostCatgoryDetail = ({
     getMore,
     filter,
     deletePostCategory,
-    updateCategory,
   } = usePostCategory({
     key: `${SWR_KEY.get_post_category_list}_${parent_id}`,
     params: {
@@ -59,10 +53,6 @@ export const PostCatgoryDetail = ({
     })
   }, [parent_id])
 
-  const categoryOptions: OptionType<string>[] | undefined = useMemo(() => {
-    return transPostCategoryDataToSelectionType(postCategoryList || [])
-  }, [postCategoryList])
-
   const hanldeDeleteCategory = (id: string) => {
     deletePostCategory(
       id,
@@ -75,21 +65,9 @@ export const PostCatgoryDetail = ({
     )
   }
 
-  const handleUpdateCategory = (data: CreatePostCategory) => {
-    updateCategory(
-      { ...data, id: currentPostCategory?.id },
-      () => {
-        dispatch(setPostCategoryForm(undefined))
-        toast.success('Cập nhật thông tin thành công!')
-      },
-      () => {
-        toast.error('Có lỗi xảy ra!')
-      }
-    )
-  }
-
   const handleSelectCategoryItemEdit = (item: PostCategory) => {
     dispatch(setPostCategoryForm(item))
+    router.push(`/account/create-category?category_id=${item.id}`)
   }
 
   const handlePostCategoryClick = (item: PostCategory) => {
@@ -146,30 +124,6 @@ export const PostCatgoryDetail = ({
       ) : (
         <NotFound notify="Không tìm thấy danh mục con nào!" />
       )}
-
-      <Modal
-        visible={currentPostCategory !== undefined}
-        headerClassName="hidden"
-        modalClassName="w-[90%] md:w-[500px] max-w-[90vw] h-fit"
-      >
-        <div>
-          <div className="flex-between p-12">
-            <p className="text-md">Cập nhật danh mục</p>
-            <div
-              className="cursor-pointer"
-              onClick={() => {
-                dispatch(setPostCategoryForm(undefined))
-              }}
-            >
-              <TimesIcon />
-            </div>
-          </div>
-
-          <div className="max-h-[400px] h-fit overflow-scroll scrollbar-hide p-12">
-            <PostCategoryForm onSubmit={handleUpdateCategory} categoryOptions={categoryOptions} />
-          </div>
-        </div>
-      </Modal>
     </div>
   )
 }

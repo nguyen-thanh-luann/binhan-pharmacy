@@ -1,19 +1,70 @@
 import { Breadcrumb, NotFound, PostCategoryForm } from '@/components'
-import { WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
+import { SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
 import { isAdmin } from '@/helper'
-import { useChatAccount, useUser } from '@/hooks'
-import { selectPostCategoryForm } from '@/store'
+import { useChatAccount, usePostCategory, useUser } from '@/hooks'
+import { selectPostCategoryForm, setPostCategoryForm } from '@/store'
 import { AccountContainer, Main } from '@/templates'
-import { PostCategory } from '@/types'
+import { CreatePostCategory, PostCategory } from '@/types'
 import { useRouter } from 'next/router'
-import React from 'react'
-import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { toast } from 'react-hot-toast'
+import { useDispatch, useSelector } from 'react-redux'
 
 const Createcategory = () => {
-  const router = useRouter()
   const { data: chatToken } = useChatAccount()
-  const currentPostCategory: PostCategory = useSelector(selectPostCategoryForm)
   const { userInfo } = useUser({})
+  const dispatch = useDispatch()
+  const router = useRouter()
+  const { category_id } = router.query
+
+  const currentPostCategory: PostCategory = useSelector(selectPostCategoryForm)
+  const title = currentPostCategory ? 'Cập nhật danh mục tin tức' : 'Tạo danh mục tin tức'
+
+  const { createCategory, updateCategory } = usePostCategory({
+    key: `${SWR_KEY.get_post_category_list}`,
+    params: {},
+  })
+
+  useEffect(() => {
+    if (!category_id) {
+      dispatch(setPostCategoryForm(undefined))
+    }
+  }, [category_id])
+
+  const handleCreatePostCategory = (props: CreatePostCategory) => {
+    createCategory(
+      props,
+      () => {
+        toast.success('Thêm danh mục thành công!')
+        router.push('/account/post-category')
+      },
+      () => {
+        toast.error('Lỗi, có thể slug đã tồn tại!')
+      }
+    )
+  }
+
+  const handleUpdateCategory = (data: CreatePostCategory) => {
+    updateCategory(
+      { ...data, id: currentPostCategory?.id },
+      () => {
+        dispatch(setPostCategoryForm(undefined))
+        toast.success('Cập nhật thông tin thành công!')
+        router.push('/account/post-category')
+      },
+      () => {
+        toast.error('Có lỗi xảy ra!')
+      }
+    )
+  }
+
+  const onPostCategoryFormSubmit = (data: CreatePostCategory) => {
+    if (currentPostCategory) {
+      handleUpdateCategory(data)
+    } else {
+      handleCreatePostCategory(data)
+    }
+  }
 
   return (
     <Main title={WEB_TITTLE} description={WEB_DESCRIPTION}>
@@ -21,7 +72,11 @@ const Createcategory = () => {
         <Breadcrumb
           breadcrumbList={[
             {
-              name: 'Tạo danh mục tin tức',
+              name: 'Danh mục tin tức',
+              path: '/account/post-category',
+            },
+            {
+              name: `${title}`,
               path: '',
             },
           ]}
@@ -31,15 +86,15 @@ const Createcategory = () => {
       <AccountContainer className="container mb-32">
         <div className="bg-white p-24 rounded-[10px] shadow-shadow-1">
           <div className="flex-between flex-wrap border-b border-gray-200 pb-12 mb-24">
-            <p className="text-xl capitalize font-semibold">Tạo danh mục tin tức</p>
+            <p className="text-xl capitalize font-semibold">{title}</p>
           </div>
 
           <div>
             {isAdmin(userInfo?.account) && chatToken ? (
               <div>
                 <PostCategoryForm
-                  onSubmit={() => {}}
-                  // categoryOptions={}
+                  onSubmit={onPostCategoryFormSubmit}
+                  defaultPostCategory={category_id ? currentPostCategory : undefined}
                 />
               </div>
             ) : (

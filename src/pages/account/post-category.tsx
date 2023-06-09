@@ -1,33 +1,30 @@
-import { PlusIcon, TimesIcon } from '@/assets'
+import { PlusIcon } from '@/assets'
 import {
   Breadcrumb,
   Button,
-  Modal,
   NotFound,
-  PostCategoryForm,
   PostCategoryItem,
   PostCategoryItemLoading,
   PostCatgoryDetail,
   SearchField,
 } from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
-import { isAdmin, isArrayHasValue, transPostCategoryDataToSelectionType } from '@/helper'
-import { useChatAccount, useModal, usePostCategory, useUser } from '@/hooks'
-import { selectPostCategoryForm, setPostCategoryForm } from '@/store'
+import { isAdmin, isArrayHasValue } from '@/helper'
+import { useChatAccount, usePostCategory, useUser } from '@/hooks'
+import { setPostCategoryForm } from '@/store'
 import { AccountContainer, Main } from '@/templates'
-import { BreadcrumbItem, CreatePostCategory, OptionType, PostCategory } from '@/types'
+import { BreadcrumbItem, PostCategory } from '@/types'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 const PostCategoryPage = () => {
   const router = useRouter()
   const { parent_id, parent_name } = router.query
   const { data: chatToken } = useChatAccount()
-  const currentPostCategory: PostCategory = useSelector(selectPostCategoryForm)
   const { userInfo } = useUser({})
 
   const [breadcrumbList, setBreadcrumbList] = useState<BreadcrumbItem[]>([
@@ -40,19 +37,11 @@ const PostCategoryPage = () => {
   const dispatch = useDispatch()
 
   const {
-    visible: showPostCategoryModal,
-    openModal: OpenCategoryModal,
-    closeModal: closeCategoryModal,
-  } = useModal()
-
-  const {
     data: postCategoryList,
-    createCategory,
     isValidating,
     hasMore,
     getMore,
     deletePostCategory,
-    updateCategory,
     filter,
   } = usePostCategory({
     key: `${SWR_KEY.get_post_category_list}`,
@@ -60,20 +49,6 @@ const PostCategoryPage = () => {
       limit: DEFAULT_LIMIT,
     },
   })
-
-  const handleCreatePostCategory = (props: CreatePostCategory) => {
-    createCategory(
-      props,
-      () => {
-        toast.success('Thêm danh mục thành công!')
-        closeCategoryModal()
-      },
-      () => {
-        toast.error('Lỗi, có thể slug đã tồn tại!')
-        closeCategoryModal()
-      }
-    )
-  }
 
   const hanldeDeleteCategory = (id: string) => {
     deletePostCategory(
@@ -87,25 +62,9 @@ const PostCategoryPage = () => {
     )
   }
 
-  const handleUpdateCategory = (data: CreatePostCategory) => {
-    updateCategory(
-      { ...data, id: currentPostCategory?.id },
-      () => {
-        dispatch(setPostCategoryForm(undefined))
-        toast.success('Cập nhật thông tin thành công!')
-      },
-      () => {
-        toast.error('Có lỗi xảy ra!')
-      }
-    )
-  }
-
-  const categoryOptions: OptionType<string>[] | undefined = useMemo(() => {
-    return transPostCategoryDataToSelectionType(postCategoryList || [])
-  }, [postCategoryList])
-
   const handleSelectCategoryItemEdit = (item: PostCategory) => {
     dispatch(setPostCategoryForm(item))
+    router.push(`/account/create-category?category_id=${item.id}`)
   }
 
   const handlePostCategoryClick = (item: PostCategory) => {
@@ -224,58 +183,6 @@ const PostCategoryPage = () => {
               // <SignupPostAdminForm className="md:w-[60%] mx-auto" />
               <NotFound notify="Tài khoản của bạn không được cấp phép" />
             )}
-
-            {/* modal create post category */}
-            <Modal
-              visible={showPostCategoryModal}
-              headerClassName="hidden"
-              modalClassName="w-[90%] md:w-[500px] max-w-[90vw] h-fit"
-            >
-              <div>
-                <div className="flex-between p-12">
-                  <p className="text-md">Thêm danh mục</p>
-                  <div className="cursor-pointer" onClick={closeCategoryModal}>
-                    <TimesIcon />
-                  </div>
-                </div>
-
-                <div className="max-h-[400px] h-fit overflow-scroll scrollbar-hide p-12">
-                  <PostCategoryForm
-                    onSubmit={handleCreatePostCategory}
-                    categoryOptions={categoryOptions}
-                  />
-                </div>
-              </div>
-            </Modal>
-
-            {/* modal update post category */}
-
-            <Modal
-              visible={currentPostCategory !== undefined}
-              headerClassName="hidden"
-              modalClassName="w-[90%] md:w-[500px] max-w-[90vw] h-fit"
-            >
-              <div>
-                <div className="flex-between p-12">
-                  <p className="text-md">Cập nhật danh mục</p>
-                  <div
-                    className="cursor-pointer"
-                    onClick={() => {
-                      dispatch(setPostCategoryForm(undefined))
-                    }}
-                  >
-                    <TimesIcon />
-                  </div>
-                </div>
-
-                <div className="max-h-[400px] h-fit overflow-scroll scrollbar-hide p-12">
-                  <PostCategoryForm
-                    onSubmit={handleUpdateCategory}
-                    categoryOptions={categoryOptions}
-                  />
-                </div>
-              </div>
-            </Modal>
           </div>
         )}
       </AccountContainer>

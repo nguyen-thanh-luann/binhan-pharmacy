@@ -6,7 +6,7 @@ import { RightIcon } from '@/assets'
 
 interface PostCategoryOptionProps {
   data: PostCategory
-  isActive: boolean
+  isChecked: boolean
   isExpand?: boolean
   onCheck: (data: PostCategory) => void
   className?: string
@@ -16,7 +16,7 @@ interface PostCategoryOptionProps {
 export const PostCategoryOption = ({
   data,
   className,
-  isActive = false,
+  isChecked = false,
   isExpand = false,
   onCheck,
   onExpand,
@@ -28,7 +28,7 @@ export const PostCategoryOption = ({
         className={classNames('flex items-center justify-between mb-8 cursor-pointer', className)}
       >
         <div className="flex gap-8">
-          <InputCheckbox isChecked={isActive} onCheck={() => onCheck?.(data)} />
+          <InputCheckbox isChecked={isChecked} onCheck={() => onCheck?.(data)} />
           <p className="text-md">{data?.name}</p>
         </div>
 

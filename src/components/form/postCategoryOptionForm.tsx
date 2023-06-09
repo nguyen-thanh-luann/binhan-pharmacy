@@ -1,10 +1,18 @@
 import { DEFAULT_LIMIT, SWR_KEY } from '@/constants'
 import { usePostCategory } from '@/hooks'
 import { PostCategory } from '@/types'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { PostCategoryOption, PostCategoryOptionChild } from '../post'
 
-export const PostCategoryOptionForm = () => {
+interface PostCategoryOptionFormProps {
+  type: 'single' | 'multiple'
+  onChecked: (data: String[]) => void
+}
+
+export const PostCategoryOptionForm = ({
+  type = 'single',
+  onChecked,
+}: PostCategoryOptionFormProps) => {
   const { data: postCategoryList } = usePostCategory({
     key: `${SWR_KEY.get_post_category_list}`,
     params: {
@@ -13,6 +21,11 @@ export const PostCategoryOptionForm = () => {
   })
 
   const [expandCategories, setExpandCategories] = useState<PostCategory[]>()
+  const [checkPostCategories, setCheckPostCategory] = useState<String[]>([])
+
+  useEffect(() => {
+    onChecked(checkPostCategories)
+  }, [checkPostCategories])
 
   const handleExpandCategory = (data: PostCategory) => {
     const index = expandCategories?.findIndex((c) => c?.id === data?.id)
@@ -25,33 +38,47 @@ export const PostCategoryOptionForm = () => {
     setExpandCategories([...(expandCategories || []), data])
   }
 
+  const handleTogglePostCategory = (data: PostCategory) => {
+    const index = checkPostCategories?.findIndex((c) => c === data?.id)
+
+    if (type === 'multiple') {
+      if (index !== -1) {
+        setCheckPostCategory([...(checkPostCategories?.filter((c) => c !== data?.id) || [])])
+        return
+      }
+
+      setCheckPostCategory([...(checkPostCategories || []), data?.id])
+    } else {
+      setCheckPostCategory([data?.id])
+    }
+  }
+
   return (
     <div>
-      <p className="mb-8">Danh mục cha</p>
+      <p className="mb-8 text-md">Chọn danh mục cha</p>
 
       <div className="border p-12 rounded-md border-gray-200 max-h-[500px] overflow-scroll scrollbar-hide">
-        {postCategoryList?.map((postCategoryParent) => {
-          const isExpand = expandCategories?.includes(postCategoryParent)
+        {postCategoryList?.map((item) => {
+          const isExpand = expandCategories?.includes(item)
 
           return (
-            <div key={postCategoryParent?.id}>
+            <div key={item?.id}>
               <PostCategoryOption
-                data={postCategoryParent}
-                isActive={false}
-                onCheck={() => {}}
+                data={item}
+                isChecked={checkPostCategories?.includes(item?.id) || false}
+                onCheck={handleTogglePostCategory}
                 onExpand={handleExpandCategory}
                 isExpand={isExpand}
               />
 
               <div>
                 {isExpand ? (
-                  <div className="pl-12">
-                    <PostCategoryOptionChild
-                      data={postCategoryParent}
-                      isChecked={false}
-                      onCheck={() => {}}
-                    />
-                  </div>
+                  <PostCategoryOptionChild
+                    className="pl-12"
+                    data={item}
+                    checkedPostCategory={checkPostCategories}
+                    onCheck={handleTogglePostCategory}
+                  />
                 ) : null}
               </div>
             </div>

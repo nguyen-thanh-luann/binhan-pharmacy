@@ -8,12 +8,14 @@ type SelectFieldProps = Props & {
   control: Control<any>
   onChange?: (_: OptionType<any>) => void
   label?: string
+  labelClassName?: string
 }
 
 export const SelectField = ({
   name,
   control,
   label,
+  labelClassName,
   onChange: onChangeProps,
   ...attributes
 }: SelectFieldProps) => {
@@ -28,7 +30,7 @@ export const SelectField = ({
   return (
     <div>
       {label ? (
-        <label htmlFor={name} className={`text`}>
+        <label htmlFor={name} className={classNames(`text`, labelClassName)}>
           {label}
           <span className="text-red font-bold">{attributes?.required ? ' * ' : ''}</span>
         </label>
