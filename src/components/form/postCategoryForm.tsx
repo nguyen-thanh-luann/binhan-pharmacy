@@ -35,7 +35,7 @@ export const PostCategoryForm = ({ onSubmit, defaultPostCategory }: PostCategory
         ...data,
         slug: convertViToEn(data.name.trim().toLowerCase()).replace(/\s+/g, '-'),
         role: data?.role?.value !== '' ? data?.role?.value : null,
-        parent_id: data?.parent_id?.value || undefined,
+        parent_id: data?.parent_id || undefined,
       })
   }
 
@@ -79,6 +79,7 @@ export const PostCategoryForm = ({ onSubmit, defaultPostCategory }: PostCategory
           <PostCategoryOptionForm
             type="single"
             onChecked={(data) => {
+
               setValue('parent_id', data?.[0]?.toString() || '')
             }}
           />

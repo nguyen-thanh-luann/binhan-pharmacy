@@ -18,7 +18,7 @@ export const PostCategoryTag = ({
     <div
       onClick={() => onExternalClick?.()}
       className={classNames(
-        'border border-primary text-primary rounded-lg w-fit p-2 min-w-[100px] text-center',
+        'border border-primary text-primary rounded-lg w-fit p-2 px-8 text-center min-w-fit',
         className
       )}
     >

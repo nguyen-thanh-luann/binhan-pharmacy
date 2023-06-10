@@ -1,6 +1,7 @@
 import { DEFAULT_LIMIT, SWR_KEY } from '@/constants'
-import { usePostCategory } from '@/hooks'
-import { PostCategory } from '@/types'
+import { ValidAccountRoleToUsePostService } from '@/helper'
+import { usePostCategory, useUser } from '@/hooks'
+import { AccountType, PostCategory } from '@/types'
 import classNames from 'classnames'
 import { useEffect, useState } from 'react'
 import { PostCategoryOption, PostCategoryOptionChild, PostCategoryOptionLoading } from '../post'
@@ -22,11 +23,21 @@ export const PostCategoryOptionForm = ({
   label,
   labelClassName,
 }: PostCategoryOptionFormProps) => {
+  const { userInfo } = useUser({ shouldFetch: false })
+  const userRole: AccountType = ValidAccountRoleToUsePostService(userInfo)
+  const getPostCategoryParams =
+    userInfo?.account?.account_type === 'npp'
+      ? {
+          limit: DEFAULT_LIMIT,
+        }
+      : {
+          limit: DEFAULT_LIMIT,
+          role: userRole,
+        }
+
   const { data: postCategoryList, isValidating } = usePostCategory({
     key: `${SWR_KEY.get_post_category_list}`,
-    params: {
-      limit: DEFAULT_LIMIT,
-    },
+    params: getPostCategoryParams,
   })
 
   const [expandCategories, setExpandCategories] = useState<PostCategory[]>([])
@@ -88,7 +99,7 @@ export const PostCategoryOptionForm = ({
     <div>
       <p className={classNames('mb-8 text-md', labelClassName)}>{label || 'Chọn danh mục'}</p>
 
-      <div className="border p-12 rounded-md border-gray-200 max-h-[300px] md:max-h-[400px] overflow-scroll scrollbar-hide">
+      <div className="border rounded-md border-gray-200 max-h-[300px] md:max-h-[400px] overflow-scroll scrollbar-hide">
         {isValidating ? (
           <PostCategoryOptionLoading />
         ) : (
@@ -96,7 +107,7 @@ export const PostCategoryOptionForm = ({
             const isExpand = expandCategories?.includes(item)
 
             return (
-              <div key={item?.id} className='animate-fade'>
+              <div key={item?.id} className="animate-fade">
                 <PostCategoryOption
                   data={item}
                   isChecked={checkPostCategories?.includes(item?.id) || false}

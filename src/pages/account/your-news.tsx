@@ -2,24 +2,23 @@ import {
   Breadcrumb,
   NotFound,
   PostAdminItemLoading,
+  PostCategoryOptionForm,
   PostListItemHorizontal,
   PostOwnerDetail,
 } from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
 import {
-  ValidAccountRoleToUsePostService,
   fromProductSlugToProductId,
   generateProductSlug,
   isArrayHasValue,
-  transPostCategoryDataToSelectionType,
+  ValidAccountRoleToUsePostService,
 } from '@/helper'
-import { usePostCategory, usePostList, useUser } from '@/hooks'
+import { usePostList, useUser } from '@/hooks'
 import { AccountContainer, Main } from '@/templates'
-import { AccountType, BreadcrumbItem, OptionType, Post } from '@/types'
+import { AccountType, BreadcrumbItem, Post } from '@/types'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import Select from 'react-select'
 
 const YourNewsPage = () => {
   const router = useRouter()
@@ -49,18 +48,6 @@ const YourNewsPage = () => {
       role: userRole,
     },
   })
-
-  const { data: postCategoryList } = usePostCategory({
-    key: `${SWR_KEY.get_post_category_list}_${userId}`,
-    params: {
-      limit: DEFAULT_LIMIT,
-      role: userRole,
-    },
-  })
-
-  const categoryOptions: OptionType<string>[] | [] = useMemo(() => {
-    return transPostCategoryDataToSelectionType(postCategoryList || [])
-  }, [postCategoryList])
 
   const renderPostLoading = () => {
     return (
@@ -121,16 +108,16 @@ const YourNewsPage = () => {
 
             <div>
               <div className="mb-12">
-                <p className="title_md mb-8">Lọc theo danh mục</p>
-                <div className="">
-                  <Select
-                    className="w-[300px] text_md"
-                    defaultValue={{ label: 'Tất cả', value: '' }}
-                    placeholder={'Danh mục'}
-                    options={[{ label: 'Tất cả', value: '' }, ...categoryOptions]}
-                    onChange={(val) => filter({ category_id: val?.value || '', role: userRole })}
-                  />
-                </div>
+                <PostCategoryOptionForm
+                  label="Lọc theo chuyên mục"
+                  labelClassName="text-md font-bold"
+                  type="single"
+                  onChecked={(data) => {
+                    filter({
+                      category_id: data?.[0],
+                    })
+                  }}
+                />
               </div>
 
               {isValidating || isArrayHasValue(postList) ? (

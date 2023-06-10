@@ -25,7 +25,7 @@ export const PostCategoryOption = ({
     <div className={classNames('', className)}>
       <div
         onClick={() => onExpand?.(data)}
-        className={classNames('flex items-center justify-between mb-8 cursor-pointer', className)}
+        className={classNames('flex items-center m-8 justify-between cursor-pointer', className)}
       >
         <div className="flex gap-8">
           <InputCheckbox isChecked={isChecked} onCheck={() => onCheck?.(data)} />
