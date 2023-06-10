@@ -3,16 +3,17 @@ import { Breadcrumb, CreatePostForm, NotFound, PostEditor } from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
 import { isAdmin } from '@/helper'
 import { useChatAccount, usePostList, useUser } from '@/hooks'
-import { selectPostForm } from '@/store'
+import { selectPostForm, setPostForm } from '@/store'
 import { AccountContainer, Main } from '@/templates'
 import { CreatePost, Post } from '@/types'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const CreatePostPage = () => {
   const router = useRouter()
+  const dispatch = useDispatch()
   const { post_id } = router.query
   const { userInfo } = useUser({})
   const { data: chatToken } = useChatAccount()
@@ -23,7 +24,7 @@ const CreatePostPage = () => {
   const pageTitle = type === 'create' ? 'Tạo tin tức' : 'Cập nhật tin tức'
 
   const [content, setContent] = useState<string | undefined>(postForm?.content)
-  const [step, setStep] = useState<number>(1) //step 1 is edit post content, step 2 is select category for this post
+  const [step, setStep] = useState<number>(1) //step 1 is edit post content, step 2 is select image, categories,.... for this post
 
   const { createPost, updatePost } = usePostList({
     key: `${SWR_KEY.get_post_list}`,
@@ -31,6 +32,12 @@ const CreatePostPage = () => {
       limit: DEFAULT_LIMIT,
     },
   })
+
+  useEffect(() => {
+    if (!post_id) {
+      dispatch(setPostForm(undefined))
+    }
+  }, [post_id])
 
   const handleCreatePost = (params: CreatePost) => {
     createPost(params, () => {
@@ -79,7 +86,7 @@ const CreatePostPage = () => {
         <div className="bg-white p-24 rounded-[10px] shadow-shadow-1">
           <div className="flex-between flex-wrap border-b border-gray-200 pb-12 mb-24">
             <p className="text-xl capitalize font-semibold">
-              {step === 1 ? `${pageTitle}` : 'Chọn danh mục tin tức'}
+              {step === 1 ? `${pageTitle}` : 'Thông tin bài viết'}
             </p>
 
             {step === 2 && (
@@ -125,39 +132,6 @@ const CreatePostPage = () => {
             // <SignupPostAdminForm className="md:w-[60%] mx-auto" />
             <NotFound notify="Tài khoản của bạn không được cấp phép" />
           )}
-
-          {/* modal create post form */}
-          {/* <Modal
-            visible={content !== undefined}
-            headerClassName="hidden"
-            modalClassName="w-[90%] md:w-[500px] max-w-[90vw] h-fit"
-          >
-            <div>
-              <div className="flex-between p-12">
-                <p className="text-md">Tạo tin tức mới</p>
-                <div
-                  className="cursor-pointer"
-                  onClick={() => {
-                    setContent(undefined)
-                  }}
-                >
-                  <TimesIcon />
-                </div>
-              </div>
-
-              <div className="max-h-[400px] h-fit overflow-scroll scrollbar-hide p-12">
-                <CreatePostForm
-                  categoryOptions={categoryOptions}
-                  onSubmit={(params) => {
-                    if (content) {
-                      handleCreatePost({ ...params, content })
-                    }
-                  }}
-                  type={'create'}
-                />
-              </div>
-            </div>
-          </Modal> */}
         </div>
       </AccountContainer>
     </Main>

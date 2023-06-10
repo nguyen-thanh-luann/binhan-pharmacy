@@ -74,9 +74,6 @@ const PostPage = () => {
     })
   }
 
-  // const resetPostForm = () => {
-  //   dispatch(setPostForm(undefined))
-  // }
 
   const categoryOptions: OptionType<string>[] | [] = useMemo(() => {
     return transPostCategoryDataToSelectionType(postCategoryList || [])

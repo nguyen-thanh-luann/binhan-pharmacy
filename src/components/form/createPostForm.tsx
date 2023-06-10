@@ -4,7 +4,7 @@ import { postFormSchema } from '@/schema'
 import { CreatePost, Post } from '@/types'
 import { yupResolver } from '@hookform/resolvers/yup'
 import classNames from 'classnames'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { Button } from '../button'
@@ -24,7 +24,7 @@ export const CreatePostForm = ({
   type = 'create',
   defaultValue,
 }: createPostFormProps) => {
-  const [image, setImage] = useState<string>('')
+  const [image, setImage] = useState<string>(defaultValue?.thumbnail?.thumbnail_url || '')
 
   const {
     handleSubmit,
@@ -37,7 +37,7 @@ export const CreatePostForm = ({
   })
 
   const onSubmitHandler = (data: any) => {
-    if (!data?.categories) {
+    if (!data?.category_ids) {
       toast.error('Vui lòng chọn danh mục cho bài viết')
       return
     }
@@ -46,10 +46,16 @@ export const CreatePostForm = ({
       onSubmit({
         ...data,
         slug: convertViToEn(data?.title.trim().toLowerCase()).replace(/\s+/g, '-'),
-        categories: data?.categories,
+        category_ids: data?.category_ids,
         role: data?.role?.value !== '' ? data?.role?.value : null,
       })
   }
+
+  useEffect(() => {
+    if (defaultValue?.thumbnail?.id) {
+      setValue('attachment_id', defaultValue?.thumbnail?.id)
+    }
+  }, [defaultValue])
 
   return (
     <form onSubmit={handleSubmit(onSubmitHandler)}>
@@ -64,9 +70,9 @@ export const CreatePostForm = ({
             <div className="flex justify-center">
               <UploadSignleFile
                 id="attachment_id"
-                defaultImage={image || defaultValue?.thumbnail?.url}
+                defaultImage={image}
                 getImage={(val) => {
-                  setImage(val?.url)
+                  setImage(val?.thumbnail_url)
                   onChange(val?.id)
                 }}
               />
@@ -79,8 +85,9 @@ export const CreatePostForm = ({
         <PostCategoryOptionForm
           type="multiple"
           onChecked={(data) => {
-            setValue('categories', [...data] || [])
+            setValue('category_ids', [...data] || [])
           }}
+          defaultCheckedOption={defaultValue?.categories?.map((value) => value?.category_id)}
         />
       </div>
 

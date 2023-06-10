@@ -94,7 +94,7 @@ export interface CreatePost {
   content: string
   attachment_id: string
   short_content: string
-  categories: string[]
+  category_ids: string[]
   slug: string
   tags?: string[] | undefined
   role?: AccountType

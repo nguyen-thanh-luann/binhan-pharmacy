@@ -7,11 +7,13 @@ import { PostCategoryOption, PostCategoryOptionChild } from '../post'
 interface PostCategoryOptionFormProps {
   type: 'single' | 'multiple'
   onChecked: (data: string[]) => void
+  defaultCheckedOption?: string[]
 }
 
 export const PostCategoryOptionForm = ({
   type = 'single',
   onChecked,
+  defaultCheckedOption = [],
 }: PostCategoryOptionFormProps) => {
   const { data: postCategoryList } = usePostCategory({
     key: `${SWR_KEY.get_post_category_list}`,
@@ -21,7 +23,7 @@ export const PostCategoryOptionForm = ({
   })
 
   const [expandCategories, setExpandCategories] = useState<PostCategory[]>()
-  const [checkPostCategories, setCheckPostCategory] = useState<string[]>([])
+  const [checkPostCategories, setCheckPostCategory] = useState<string[]>(defaultCheckedOption)
 
   useEffect(() => {
     onChecked(checkPostCategories)

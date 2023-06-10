@@ -37,7 +37,7 @@ export const PostListItemHorizontal = ({
       <div onClick={() => OnExternalClick?.(data)} className="flex gap-12">
         <div className="w-fit">
           <Image
-            src={data?.thumbnail?.thumbnail_url}
+            src={data?.thumbnail?.thumbnail_url || ''}
             imageClassName={classNames(
               'object-cover aspect-1 rounded-[10px] hover:scale-110 duration-200 ease-in-out h-[150px] w-[150px]',
               imageClassName
@@ -56,7 +56,7 @@ export const PostListItemHorizontal = ({
             {data?.title}
           </p>
 
-          <div className="mb-8">
+          <div className="mb-8 flex gap-8 overflow-scroll scrollbar-hide">
             {data?.categories?.map((category) => (
               <PostCategoryTag data={category?.category_name} />
             ))}

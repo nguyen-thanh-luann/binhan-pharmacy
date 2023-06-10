@@ -37,7 +37,7 @@ const PostAdminItem = ({
     <div key={post.id} className="relative flex mb-12 last:mb-0">
       <div className="relative h-[100px] w-[100px] ">
         <Image
-          src={post?.thumbnail?.thumbnail_url}
+          src={post?.thumbnail?.thumbnail_url || ''}
           imageClassName="object-cover aspect-1 rounded-lg"
         />
       </div>
