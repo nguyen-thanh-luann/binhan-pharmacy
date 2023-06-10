@@ -1,12 +1,11 @@
 import { TimesIcon } from '@/assets'
 import { CreatePostForm, Modal, PostEditor } from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY } from '@/constants'
-import { transPostCategoryDataToSelectionType } from '@/helper'
-import { usePostCategory, usePostList } from '@/hooks'
+import { usePostList } from '@/hooks'
 import { selectPostForm } from '@/store'
-import { CreatePost, OptionType, Post } from '@/types'
+import { CreatePost, Post } from '@/types'
 import { useRouter } from 'next/router'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 
@@ -42,17 +41,6 @@ const EditPost = ({ onSuccess }: EditPostProps) => {
     )
   }
 
-  const { data: postCategoryList } = usePostCategory({
-    key: `${SWR_KEY.get_post_category_list}`,
-    params: {
-      limit: DEFAULT_LIMIT,
-    },
-  })
-
-  const categoryOptions: OptionType<string>[] | undefined = useMemo(() => {
-    return transPostCategoryDataToSelectionType(postCategoryList || [])
-  }, [postCategoryList])
-
   return (
     <div>
       <div className="p-12 relative post_update_modal_editor">
@@ -84,12 +72,11 @@ const EditPost = ({ onSuccess }: EditPostProps) => {
 
           <div className="max-h-[400px] h-fit overflow-scroll scrollbar-hide p-12">
             <CreatePostForm
-              categoryOptions={categoryOptions}
               onSubmit={(params) => {
                 if (content) {
                   handleUpdatePost({
                     attachment_id: params?.attachment_id,
-                    category_id: params?.category_id,
+                    categories: params?.categories,
                     short_content: params?.short_content,
                     slug: params?.slug,
                     title: params?.title,

@@ -57,7 +57,9 @@ export const PostListItemHorizontal = ({
           </p>
 
           <div className="mb-8">
-            <PostCategoryTag data={data?.category_name} />
+            {data?.categories?.map((category) => (
+              <PostCategoryTag data={category?.category_name} />
+            ))}
           </div>
 
           <p

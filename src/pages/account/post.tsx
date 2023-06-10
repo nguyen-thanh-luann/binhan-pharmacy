@@ -9,18 +9,17 @@ import {
   PostAdminItemLoading,
   PostContentDetail,
 } from '@/components'
-import EditPost from '@/components/post/editPost'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
 import { isAdmin, isArrayHasValue, transPostCategoryDataToSelectionType } from '@/helper'
 import { useChatAccount, usePostCategory, usePostList, useUser } from '@/hooks'
-import { selectPostForm, setPostForm } from '@/store'
+import { setPostForm } from '@/store'
 import { AccountContainer, Main } from '@/templates'
 import { OptionType, Post } from '@/types'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import Select from 'react-select'
 
 const PostPage = () => {
@@ -30,7 +29,6 @@ const PostPage = () => {
   const { data: chatToken } = useChatAccount()
   const [currentPostId, setCurrentPostId] = useState<string | undefined>()
   const [currentPostContent, setCurrentPostContent] = useState<string | undefined>()
-  const postForm: Post = useSelector(selectPostForm)
 
   const {
     data: postList,
@@ -68,11 +66,17 @@ const PostPage = () => {
 
   const handleEditPostClick = (post: Post) => {
     dispatch(setPostForm(post))
+    router.push({
+      pathname: '/account/add-post',
+      query: {
+        post_id: post.id,
+      },
+    })
   }
 
-  const resetPostForm = () => {
-    dispatch(setPostForm(undefined))
-  }
+  // const resetPostForm = () => {
+  //   dispatch(setPostForm(undefined))
+  // }
 
   const categoryOptions: OptionType<string>[] | [] = useMemo(() => {
     return transPostCategoryDataToSelectionType(postCategoryList || [])
@@ -199,28 +203,6 @@ const PostPage = () => {
               >
                 <div className="relative">
                   <PostContentDetail content={currentPostContent || ''} />
-                </div>
-              </Modal>
-
-              {/* modal edit post */}
-              <Modal
-                visible={postForm !== undefined}
-                modalClassName={`h-[90%] w-[90%] md:w-[60%] mx-auto`}
-                animationType="slideUp"
-                header={
-                  <div className="flex-between p-18">
-                    <p className="text-lg font-bold capitalize">Cập nhật thông tin</p>
-                    <div
-                      className="cursor-pointer hover:opacity-50 duration-150 ease-in-out"
-                      onClick={() => resetPostForm()}
-                    >
-                      <TimesIcon className="w-18 h-18 text-gray-500" />
-                    </div>
-                  </div>
-                }
-              >
-                <div className="relative">
-                  <EditPost onSuccess={() => resetPostForm()} />
                 </div>
               </Modal>
             </div>

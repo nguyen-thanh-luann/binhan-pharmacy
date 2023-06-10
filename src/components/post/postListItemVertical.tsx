@@ -24,6 +24,9 @@ export const PostListItemVertical = ({
   shortContentClassName,
   onClick: OnExternalClick,
 }: PostItemProps) => {
+
+console.log({data: data});
+  
   return (
     <div
       className={twMerge(
@@ -36,7 +39,7 @@ export const PostListItemVertical = ({
     >
       <div onClick={() => OnExternalClick?.(data)}>
         <Image
-          src={data?.thumbnail?.thumbnail_url}
+          src={data?.thumbnail?.thumbnail_url || ''}
           imageClassName={classNames(
             'object-cover aspect-1 rounded-[10px] hover:scale-110 duration-200 ease-in-out h-[390px]',
             imageClassName
@@ -59,8 +62,10 @@ export const PostListItemVertical = ({
             {data?.title}
           </p>
 
-          <div className='mb-8'>
-            <PostCategoryTag data={data?.category_name} />
+          <div className="mb-8 flex gap-8 overflow-scroll scrollbar-hide">
+            {data?.categories?.map((category) => (
+              <PostCategoryTag data={category?.category_name} />
+            ))}
           </div>
 
           <p

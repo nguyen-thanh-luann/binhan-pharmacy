@@ -39,8 +39,6 @@ export const PostCategoryForm = ({ onSubmit, defaultPostCategory }: PostCategory
       })
   }
 
-  console.log({ defaultPostCategory })
-
   return (
     <form className="" onSubmit={handleSubmit(onSubmitHandler)}>
       <div className="">

@@ -260,7 +260,7 @@ export const postFormSchema = Yup.object().shape({
   title: Yup.string().required('Vui lòng nhập trường này'),
   short_content: Yup.string().required('Vui lòng nhập trường này'),
   attachment_id: Yup.string().required('Vui lòng nhập trường này'),
-  category_id: Yup.string().required('Vui lòng nhập trường này'),
+  categories: Yup.array().of(Yup.string()),
   role: Yup.object()
     .shape({
       value: Yup.string(),

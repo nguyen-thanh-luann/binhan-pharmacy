@@ -1,25 +1,26 @@
 import { POST_ROLES_OPTIONS } from '@/constants'
 import { convertViToEn } from '@/helper'
 import { postFormSchema } from '@/schema'
-import { CreatePost, OptionType, PostDetail } from '@/types'
+import { CreatePost, Post } from '@/types'
 import { yupResolver } from '@hookform/resolvers/yup'
 import classNames from 'classnames'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { toast } from 'react-hot-toast'
 import { Button } from '../button'
 import { InputField, SelectField, TextareaField } from '../inputs'
 import { UploadSignleFile } from '../upload'
+import { PostCategoryOptionForm } from './postCategoryOptionForm'
 
 interface createPostFormProps {
   onSubmit?: (params: CreatePost) => void
-  defaultValue?: PostDetail
-  categoryOptions?: OptionType<string>[]
+  defaultValue?: Post
   type?: 'create' | 'update'
+  onBack?: () => void
 }
 
 export const CreatePostForm = ({
   onSubmit,
-  categoryOptions,
   type = 'create',
   defaultValue,
 }: createPostFormProps) => {
@@ -29,17 +30,23 @@ export const CreatePostForm = ({
     handleSubmit,
     control,
     formState: { isValid },
+    setValue,
   } = useForm<CreatePost>({
     resolver: yupResolver(postFormSchema),
     mode: 'all',
   })
 
   const onSubmitHandler = (data: any) => {
+    if (!data?.categories) {
+      toast.error('Vui lòng chọn danh mục cho bài viết')
+      return
+    }
+
     onSubmit &&
       onSubmit({
         ...data,
         slug: convertViToEn(data?.title.trim().toLowerCase()).replace(/\s+/g, '-'),
-        category: data?.cacategory_id?.value,
+        categories: data?.categories,
         role: data?.role?.value !== '' ? data?.role?.value : null,
       })
   }
@@ -69,25 +76,11 @@ export const CreatePostForm = ({
       </div>
 
       <div className="mb-12">
-        <Controller
-          control={control}
-          name="category_id"
-          defaultValue={defaultValue?.category_id}
-          render={({ field: { onChange } }) => (
-            <SelectField
-              control={control}
-              name="category"
-              placeholder="Danh mục"
-              label="Danh mục"
-              required={true}
-              options={categoryOptions}
-              defaultValue={categoryOptions?.find(
-                (item) => item?.value === defaultValue?.category_id
-              )}
-              onChange={(val: any) => val?.value && onChange(val.value)}
-            />
-          )}
-          rules={{ required: true }}
+        <PostCategoryOptionForm
+          type="multiple"
+          onChecked={(data) => {
+            setValue('categories', [...data] || [])
+          }}
         />
       </div>
 

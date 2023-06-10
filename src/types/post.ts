@@ -35,10 +35,14 @@ export interface Post {
   content: string
   short_content: string
   tags: []
-  category_id: string
-  category_name: string
+  categories: PostCategoryRes[]
   created_at: Date
   role?: AccountType
+}
+
+export interface PostCategoryRes {
+  category_id: string
+  category_name: string
 }
 
 export type PostDetail = Pick<
@@ -90,7 +94,7 @@ export interface CreatePost {
   content: string
   attachment_id: string
   short_content: string
-  category_id: string
+  categories: string[]
   slug: string
   tags?: string[] | undefined
   role?: AccountType

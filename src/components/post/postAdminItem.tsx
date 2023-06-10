@@ -48,7 +48,9 @@ const PostAdminItem = ({
           <div className="flex gap-8 items-center mb-8 overflow-scroll scrollbar-hide">
             <PostRoleTag data={post} />
 
-            <PostCategoryTag data={post?.category_name} />
+            {post?.categories?.map((category) => (
+              <PostCategoryTag data={category?.category_name} />
+            ))}
           </div>
 
           <p className="text_md line-clamp-2">{post?.short_content}</p>

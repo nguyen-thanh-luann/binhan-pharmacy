@@ -1,22 +1,31 @@
-import { TimesIcon } from '@/assets'
-import { Breadcrumb, CreatePostForm, Modal, NotFound, PostEditor } from '@/components'
+import { ArrowLeftIcon } from '@/assets'
+import { Breadcrumb, CreatePostForm, NotFound, PostEditor } from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
-import { isAdmin, transPostCategoryDataToSelectionType } from '@/helper'
-import { useChatAccount, usePostCategory, usePostList, useUser } from '@/hooks'
+import { isAdmin } from '@/helper'
+import { useChatAccount, usePostList, useUser } from '@/hooks'
+import { selectPostForm } from '@/store'
 import { AccountContainer, Main } from '@/templates'
-import { CreatePost, OptionType } from '@/types'
+import { CreatePost, Post } from '@/types'
 import { useRouter } from 'next/router'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { toast } from 'react-hot-toast'
+import { useSelector } from 'react-redux'
 
 const CreatePostPage = () => {
   const router = useRouter()
-
+  const { post_id } = router.query
   const { userInfo } = useUser({})
   const { data: chatToken } = useChatAccount()
-  const [content, setContent] = useState<string>()
 
-  const { createPost } = usePostList({
+  const postForm: Post = useSelector(selectPostForm)
+
+  const type = postForm && post_id ? 'update' : 'create'
+  const pageTitle = type === 'create' ? 'Tạo tin tức' : 'Cập nhật tin tức'
+
+  const [content, setContent] = useState<string | undefined>(postForm?.content)
+  const [step, setStep] = useState<number>(1) //step 1 is edit post content, step 2 is select category for this post
+
+  const { createPost, updatePost } = usePostList({
     key: `${SWR_KEY.get_post_list}`,
     params: {
       limit: DEFAULT_LIMIT,
@@ -31,16 +40,27 @@ const CreatePostPage = () => {
     })
   }
 
-  const { data: postCategoryList } = usePostCategory({
-    key: `${SWR_KEY.get_post_category_list}`,
-    params: {
-      limit: DEFAULT_LIMIT,
-    },
-  })
+  const handleUpdatePost = (params: CreatePost) => {
+    updatePost(
+      { ...params, id: postForm.id },
+      () => {
+        setContent(undefined)
+        router.push('/account/post')
+        toast.success('Cập nhật tin tức thành công!')
+      },
+      () => {
+        toast.error('Có lỗi xảy ra khi cập nhật tin tức!')
+      }
+    )
+  }
 
-  const categoryOptions: OptionType<string>[] | undefined = useMemo(() => {
-    return transPostCategoryDataToSelectionType(postCategoryList || [])
-  }, [postCategoryList])
+  const hanldeSubmit = (params: CreatePost) => {
+    if (postForm && post_id) {
+      handleUpdatePost(params)
+    } else {
+      handleCreatePost(params)
+    }
+  }
 
   return (
     <Main title={WEB_TITTLE} description={WEB_DESCRIPTION}>
@@ -49,7 +69,7 @@ const CreatePostPage = () => {
           breadcrumbList={[
             {
               path: '/',
-              name: `Thêm tin tức`,
+              name: `${pageTitle}`,
             },
           ]}
         />
@@ -58,18 +78,48 @@ const CreatePostPage = () => {
       <AccountContainer className="container mb-32">
         <div className="bg-white p-24 rounded-[10px] shadow-shadow-1">
           <div className="flex-between flex-wrap border-b border-gray-200 pb-12 mb-24">
-            <p className="text-xl capitalize font-semibold">Thêm tin tức</p>
+            <p className="text-xl capitalize font-semibold">
+              {step === 1 ? `${pageTitle}` : 'Chọn danh mục tin tức'}
+            </p>
+
+            {step === 2 && (
+              <div
+                onClick={() => setStep(1)}
+                className="flex items-center gap-8 text-primary cursor-pointer"
+              >
+                <ArrowLeftIcon />
+                <p className="text-md text-primary">Quay lại</p>
+              </div>
+            )}
           </div>
 
           {isAdmin(userInfo?.account) && chatToken ? (
             <div>
-              <div className="post_editor_account_page">
-                <PostEditor
-                  onSubmit={(val) => {
-                    setContent(val)
-                  }}
-                />
-              </div>
+              {step === 2 && content ? (
+                <div>
+                  <CreatePostForm
+                    onSubmit={(params) => {
+                      if (content) {
+                        hanldeSubmit({ ...params, content })
+                      }
+                    }}
+                    type={type}
+                    defaultValue={postForm}
+                  />
+                </div>
+              ) : (
+                <div className="post_editor_account_page">
+                  <PostEditor
+                    defaultValue={content}
+                    onSubmit={(val) => {
+                      setContent(val)
+                      if (val) {
+                        setStep(2)
+                      }
+                    }}
+                  />
+                </div>
+              )}
             </div>
           ) : (
             // <SignupPostAdminForm className="md:w-[60%] mx-auto" />
@@ -77,7 +127,7 @@ const CreatePostPage = () => {
           )}
 
           {/* modal create post form */}
-          <Modal
+          {/* <Modal
             visible={content !== undefined}
             headerClassName="hidden"
             modalClassName="w-[90%] md:w-[500px] max-w-[90vw] h-fit"
@@ -107,7 +157,7 @@ const CreatePostPage = () => {
                 />
               </div>
             </div>
-          </Modal>
+          </Modal> */}
         </div>
       </AccountContainer>
     </Main>

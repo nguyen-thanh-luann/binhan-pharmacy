@@ -57,7 +57,7 @@ const PostCategoryPage = () => {
         toast.success('Xóa danh mục thành công!')
       },
       () => {
-        toast.error('Có lỗi xảy ra!')
+        toast.error('Không thể xóa danh mục!')
       }
     )
   }

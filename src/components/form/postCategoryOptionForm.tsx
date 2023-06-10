@@ -6,7 +6,7 @@ import { PostCategoryOption, PostCategoryOptionChild } from '../post'
 
 interface PostCategoryOptionFormProps {
   type: 'single' | 'multiple'
-  onChecked: (data: String[]) => void
+  onChecked: (data: string[]) => void
 }
 
 export const PostCategoryOptionForm = ({
@@ -21,7 +21,7 @@ export const PostCategoryOptionForm = ({
   })
 
   const [expandCategories, setExpandCategories] = useState<PostCategory[]>()
-  const [checkPostCategories, setCheckPostCategory] = useState<String[]>([])
+  const [checkPostCategories, setCheckPostCategory] = useState<string[]>([])
 
   useEffect(() => {
     onChecked(checkPostCategories)
