@@ -1,4 +1,4 @@
-import { angryIcon, heartIcon, laughIcon, likeIcon, sadIcon, wowIcon } from '@/assets'
+import { angryIcon, heartIcon, laughIcon, likeIcon, sadIcon, wowIcon, thumbnailImage } from '@/assets'
 import { OptionType } from '@/types'
 
 export * from './regex'
@@ -38,6 +38,7 @@ export const WEB_DESCRIPTION =
   'Phân phối đa dạng các dòng sản phẩm chăm sóc sức khỏe trong và ngoài nước. Cam kết 100% sản phẩm chính hãng, xuất xứ rõ ràng, tư vấn tận tình.'
 export const CONTACT_PHONE_NUMBER = '093 3691 115'
 export const thumbnailImageUrl = 'https://tinyurl.com/bddj6utd'
+export const thumbnailImageUrlMain = thumbnailImage?.default?.src || ''
 
 export const MESSAGE_OPTION_MENU_SIZE = {
   width: 180,

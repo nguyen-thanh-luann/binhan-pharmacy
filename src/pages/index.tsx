@@ -10,11 +10,11 @@ import {
   VisceraAttribute,
 } from '@/components'
 
-import { DOMAIN_URL, WEB_DESCRIPTION, WEB_TITTLE, thumbnailImageUrl } from '@/constants'
+import { DOMAIN_URL, thumbnailImageUrlMain, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
 import { useDevice } from '@/hooks'
 import { Main } from '@/templates'
 
-// this is checkout branch
+// this is final branch
 const HomePage = () => {
   const { isDesktop } = useDevice()
 
@@ -53,12 +53,12 @@ export const getStaticProps = async () => {
       openGraphData: [
         {
           property: 'og:image',
-          content: thumbnailImageUrl,
+          content: thumbnailImageUrlMain,
           key: 'ogimage',
         },
         {
           property: 'og:image:alt',
-          content: thumbnailImageUrl,
+          content: thumbnailImageUrlMain,
           key: 'ogimagealt',
         },
         {
@@ -78,7 +78,7 @@ export const getStaticProps = async () => {
         },
         {
           property: 'og:image:secure_url',
-          content: thumbnailImageUrl,
+          content: thumbnailImageUrlMain,
           key: 'ogimagesecureurl',
         },
         {

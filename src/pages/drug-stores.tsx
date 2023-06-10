@@ -6,15 +6,13 @@ import {
   NotFound,
   SearchField,
   SelectField,
-  Spinner,
+  Spinner
 } from '@/components'
 import {
   DOMAIN_URL,
   LIMIT_DRUG_STORES,
-  SWR_KEY,
-  WEB_DESCRIPTION,
-  WEB_TITTLE,
-  thumbnailImageUrl,
+  SWR_KEY, thumbnailImageUrlMain, WEB_DESCRIPTION,
+  WEB_TITTLE
 } from '@/constants'
 import { isArrayHasValue } from '@/helper'
 import { useAddress, useDrugstores } from '@/hooks'
@@ -247,12 +245,12 @@ export const getStaticProps = async () => {
       openGraphData: [
         {
           property: 'og:image',
-          content: thumbnailImageUrl,
+          content: thumbnailImageUrlMain,
           key: 'ogimage',
         },
         {
           property: 'og:image:alt',
-          content: thumbnailImageUrl,
+          content: thumbnailImageUrlMain,
           key: 'ogimagealt',
         },
         {
@@ -272,7 +270,7 @@ export const getStaticProps = async () => {
         },
         {
           property: 'og:image:secure_url',
-          content: thumbnailImageUrl,
+          content: thumbnailImageUrlMain,
           key: 'ogimagesecureurl',
         },
         {

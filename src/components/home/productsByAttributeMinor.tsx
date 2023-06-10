@@ -99,6 +99,9 @@ export const ProductsByAttributeMinor = ({
     )
   }
 
+  // console.log({ atribute })
+
+  
   return (
     <div>
       <HomeSlide

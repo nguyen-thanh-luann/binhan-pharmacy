@@ -3,15 +3,13 @@ import {
   PostCategoryMenu,
   PostItemLoading,
   PostListItemHorizontal,
-  PostListItemVertical,
+  PostListItemVertical
 } from '@/components'
 import {
   DEFAULT_LIMIT,
   DOMAIN_URL,
-  SWR_KEY,
-  WEB_DESCRIPTION,
-  WEB_TITTLE,
-  thumbnailImageUrl,
+  SWR_KEY, thumbnailImageUrlMain, WEB_DESCRIPTION,
+  WEB_TITTLE
 } from '@/constants'
 import { fromProductSlugToProductId, generateProductSlug, isArrayHasValue } from '@/helper'
 import { usePostList } from '@/hooks'
@@ -146,12 +144,12 @@ export const getStaticProps = async () => {
       openGraphData: [
         {
           property: 'og:image',
-          content: thumbnailImageUrl,
+          content: thumbnailImageUrlMain,
           key: 'ogimage',
         },
         {
           property: 'og:image:alt',
-          content: thumbnailImageUrl,
+          content: thumbnailImageUrlMain,
           key: 'ogimagealt',
         },
         {
@@ -171,7 +169,7 @@ export const getStaticProps = async () => {
         },
         {
           property: 'og:image:secure_url',
-          content: thumbnailImageUrl,
+          content: thumbnailImageUrlMain,
           key: 'ogimagesecureurl',
         },
         {

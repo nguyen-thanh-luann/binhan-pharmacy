@@ -127,9 +127,10 @@
 
 .post-content {
   img {
-    max-width: 300px !important;
-    max-height: 500px !important;
+    max-width: 100% !important;
+    max-height: 50vh !important;
     object-fit: cover;
+    margin: 12px auto !important;
   }
 }
 
@@ -138,8 +139,8 @@
   right: 25px !important;
   border: none !important;
   outline: none !important;
-  
+
   @include responsive(md-screen) {
-     bottom: 120px !important;
+    bottom: 120px !important;
   }
 }
