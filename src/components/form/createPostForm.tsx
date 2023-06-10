@@ -84,7 +84,10 @@ export const CreatePostForm = ({
       <div className="mb-12">
         <PostCategoryOptionForm
           type="multiple"
+          isReturnParent={true}
           onChecked={(data) => {
+            console.log({data});
+            
             setValue('category_ids', [...data] || [])
           }}
           defaultCheckedOption={defaultValue?.categories?.map((value) => value?.category_id)}

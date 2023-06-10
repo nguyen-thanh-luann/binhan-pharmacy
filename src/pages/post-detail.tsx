@@ -8,7 +8,12 @@ import {
   PostListItemHorizontal,
 } from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
-import { fromProductSlugToProductId, generateProductSlug, isArrayHasValue, isObjectHasValue } from '@/helper'
+import {
+  fromProductSlugToProductId,
+  generateProductSlug,
+  isArrayHasValue,
+  isObjectHasValue,
+} from '@/helper'
 import { usePostDetail, usePostList } from '@/hooks'
 import { Main } from '@/templates'
 import { Post } from '@/types'
@@ -50,6 +55,7 @@ const PostDetailPage = () => {
     router.push({
       pathname: '/post-detail',
       query: {
+        ...router.query,
         slug: generateProductSlug(data?.title, data?.id),
       },
     })
@@ -113,7 +119,9 @@ const PostDetailPage = () => {
               </div>
             </div>
           </div>
-        ) : <NotFound notify='Không tìm thấy thông tin bài viết'/>}
+        ) : (
+          <NotFound notify="Không tìm thấy thông tin bài viết" />
+        )}
       </div>
     </Main>
   )

@@ -78,7 +78,7 @@ const PostAdminItem = ({
           <div
             className={classNames(
               visible ? 'block' : 'hidden',
-              'absolute z-50 right-0 rounded-lg p-8 shadow-shadow-1 bg-white min-w-[120px]'
+              'absolute z-50 right-0 rounded-lg p-8 shadow-shadow-1 bg-white min-w-[120px] animate-fade'
             )}
           >
             <button

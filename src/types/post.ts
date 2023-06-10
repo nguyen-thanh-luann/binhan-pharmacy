@@ -68,7 +68,7 @@ export interface PostCategory {
   created_at: string
   desc: string
   name: string
-  parent_id: number
+  parent_id: string
   updated_at: Date
   children: PostCategory[]
   children_count: number

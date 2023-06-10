@@ -1,10 +1,10 @@
 import { DEFAULT_LIMIT, SWR_KEY } from '@/constants'
 import { usePostCategory } from '@/hooks'
 import { PostCategory } from '@/types'
-import { useEffect } from 'react'
-import { Spinner } from '../spinner'
-import { PostCategoryOption } from './postCategoryOption'
 import classNames from 'classnames'
+import { useEffect } from 'react'
+import { PostCategoryOption } from './postCategoryOption'
+import { PostCategoryOptionLoading } from './postCategoryOptionLoading'
 
 interface PostCategoryOptionGrandChild {
   data: PostCategory
@@ -41,7 +41,7 @@ export const PostCategoryOptionGrandChild = ({
   return (
     <div>
       {isValidating ? (
-        <Spinner />
+        <PostCategoryOptionLoading />
       ) : (
         <div className={classNames('', className)}>
           {postCategoryList?.map((item) => (

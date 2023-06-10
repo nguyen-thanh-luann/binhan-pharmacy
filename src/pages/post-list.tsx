@@ -8,7 +8,7 @@ import {
 import {
   DEFAULT_LIMIT,
   DOMAIN_URL,
-  SWR_KEY, thumbnailImageUrlMain, WEB_DESCRIPTION,
+  SWR_KEY, thumbnailImageUrl, WEB_DESCRIPTION,
   WEB_TITTLE
 } from '@/constants'
 import { fromProductSlugToProductId, generateProductSlug, isArrayHasValue } from '@/helper'
@@ -64,6 +64,7 @@ const PostListPage = () => {
     router.push({
       pathname: '/post-detail',
       query: {
+        ...router.query,
         slug: generateProductSlug(data?.title, data?.id),
       },
     })
@@ -144,12 +145,12 @@ export const getStaticProps = async () => {
       openGraphData: [
         {
           property: 'og:image',
-          content: thumbnailImageUrlMain,
+          content: thumbnailImageUrl,
           key: 'ogimage',
         },
         {
           property: 'og:image:alt',
-          content: thumbnailImageUrlMain,
+          content: thumbnailImageUrl,
           key: 'ogimagealt',
         },
         {
@@ -169,7 +170,7 @@ export const getStaticProps = async () => {
         },
         {
           property: 'og:image:secure_url',
-          content: thumbnailImageUrlMain,
+          content: thumbnailImageUrl,
           key: 'ogimagesecureurl',
         },
         {

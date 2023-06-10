@@ -11,7 +11,7 @@ import {
 import {
   DOMAIN_URL,
   LIMIT_DRUG_STORES,
-  SWR_KEY, thumbnailImageUrlMain, WEB_DESCRIPTION,
+  SWR_KEY, thumbnailImageUrl, WEB_DESCRIPTION,
   WEB_TITTLE
 } from '@/constants'
 import { isArrayHasValue } from '@/helper'
@@ -245,12 +245,12 @@ export const getStaticProps = async () => {
       openGraphData: [
         {
           property: 'og:image',
-          content: thumbnailImageUrlMain,
+          content: thumbnailImageUrl,
           key: 'ogimage',
         },
         {
           property: 'og:image:alt',
-          content: thumbnailImageUrlMain,
+          content: thumbnailImageUrl,
           key: 'ogimagealt',
         },
         {
@@ -270,7 +270,7 @@ export const getStaticProps = async () => {
         },
         {
           property: 'og:image:secure_url',
-          content: thumbnailImageUrlMain,
+          content: thumbnailImageUrl,
           key: 'ogimagesecureurl',
         },
         {

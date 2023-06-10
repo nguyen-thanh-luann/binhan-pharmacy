@@ -99,7 +99,7 @@ export const ProductsByAttributeMinor = ({
     )
   }
 
-  // console.log({ atribute })
+  console.log({ atribute })
 
   
   return (

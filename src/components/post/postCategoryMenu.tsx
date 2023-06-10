@@ -11,7 +11,6 @@ import { PostCategory } from '@/types'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { useSWRConfig } from 'swr'
 import { Button } from '../button'
 import { Spinner } from '../spinner'
 
@@ -20,41 +19,38 @@ interface PostCategoryMenuProps {
 }
 
 export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
-  const [expandCategory, setExpandCategory] = useState<string>()
+  const [expandCategories, setExpandCategories] = useState<string[]>([])
   const router = useRouter()
   const { userInfo } = useUser({})
-  const { cache } = useSWRConfig()
 
-  const { category_id } = router.query
+  const { parent_category, category_id } = router.query
   const currentPostCategoryId = fromProductSlugToProductId(category_id as string)
-  const currentPostParentCategoryId = cache.get(SWR_KEY.current_post_parent_category)?.data || ''
 
   const {
     data: postCategoryList,
     isValidating,
     filter,
   } = usePostCategory({
-    key: `${SWR_KEY.get_post_category_list}_${currentPostParentCategoryId}`,
+    key: `${SWR_KEY.get_post_category_list}_${parent_category}`,
     params: {
-      parent_id: currentPostParentCategoryId,
+      parent_id: parent_category as string,
     },
   })
 
   useEffect(() => {
     filter({
-      parent_id: currentPostParentCategoryId,
+      parent_id: parent_category as string,
     })
-  }, [currentPostParentCategoryId])
+  }, [parent_category])
 
   const hanldeCategoryClick = (cate: PostCategory) => {
     if (!cate) return
 
-    if (cate?.children_count > 0) {
-      if (expandCategory === cate.id) {
-        setExpandCategory(undefined)
-      } else {
-        setExpandCategory(cate.id)
-      }
+    if (currentPostCategoryId === cate?.id) {
+      router.push({
+        query: {},
+      })
+      return
     }
 
     router.push({
@@ -66,16 +62,22 @@ export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
     })
   }
 
+  const handleExpandCategory = (data: PostCategory) => {
+    const index = expandCategories?.findIndex((c) => c === data?.id)
+
+    if (index !== -1) {
+      setExpandCategories([...(expandCategories?.filter((c) => c !== data?.id) || [])])
+      return
+    }
+
+    setExpandCategories([...(expandCategories || []), data?.id])
+  }
+
+  if (!parent_category) return <div></div>
+
   return (
     <div className={classNames('bg-white', className)}>
-      <div
-        onClick={() => {
-          router.push({
-            pathname: '/post-list',
-          })
-        }}
-        className="p-10 flex items-center gap-12 border-b border-gray-200 cursor-pointer"
-      >
+      <div className="p-10 flex items-center gap-12 border-b border-gray-200">
         <MenuIcon className="text-text-color w-32 h-32" />
 
         <p className="title_lg">{`Danh mục tin tức`}</p>
@@ -92,24 +94,27 @@ export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
               ? postCategoryList
               : postCategoryList.filter((postCategory) => postCategory.role !== 'npp')
             )?.map((cate) => {
-              const isExpand = cate?.id === expandCategory
+              const isExpand = expandCategories?.includes(cate?.id)
 
               return (
                 <div key={cate?.id}>
-                  <div
-                    onClick={() => hanldeCategoryClick(cate)}
-                    className="flex-between p-12 border-b last:mb-0 border-gray-100 cursor-pointer"
-                  >
+                  <div className="flex-between p-12 border-b last:mb-0 border-gray-100">
                     <p
+                      onClick={() => hanldeCategoryClick(cate)}
                       className={classNames(
-                        'text-md hover:text-primary',
+                        'text-md hover:text-primary cursor-pointer',
                         cate?.id === currentPostCategoryId ? 'text-primary' : ''
                       )}
                     >
                       {cate.name}
                     </p>
 
-                    <div className={classNames('flex-center duration-200 ease-in-out')}>
+                    <div
+                      onClick={() => handleExpandCategory(cate)}
+                      className={classNames(
+                        'flex flex-1 justify-end duration-200 ease-in-out cursor-pointer'
+                      )}
+                    >
                       <RightIcon
                         className={classNames(
                           'text-sm text-text-color duration-200 ease-in-out',
@@ -125,6 +130,7 @@ export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
                       <div className="px-12">
                         {cate?.children?.map((child) => {
                           const isActive = child?.id === currentPostCategoryId
+
                           return (
                             <div
                               onClick={() => hanldeCategoryClick(child)}
@@ -133,7 +139,7 @@ export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
                             >
                               <p
                                 className={classNames(
-                                  'text-md border-b w-fit',
+                                  'text-md border-b w-fit hover:text-primary',
                                   isActive ? 'text-primary border-primary' : 'border-white'
                                 )}
                               >
@@ -159,8 +165,13 @@ export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
             className="bg-white p-8 rounded-lg w-full"
             textClassName="text-red text-base"
             onClick={() => {
+              const { parent_category } = router.query
+
               router.push({
                 pathname: '/post-list',
+                query: {
+                  parent_category,
+                },
               })
             }}
           />

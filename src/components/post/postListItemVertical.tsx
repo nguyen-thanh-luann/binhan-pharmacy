@@ -25,7 +25,6 @@ export const PostListItemVertical = ({
   onClick: OnExternalClick,
 }: PostItemProps) => {
 
-console.log({data: data});
   
   return (
     <div

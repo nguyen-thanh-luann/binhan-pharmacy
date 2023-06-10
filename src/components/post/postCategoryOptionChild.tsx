@@ -1,11 +1,11 @@
 import { DEFAULT_LIMIT, SWR_KEY } from '@/constants'
 import { usePostCategory } from '@/hooks'
 import { PostCategory } from '@/types'
+import classNames from 'classnames'
 import { useEffect, useState } from 'react'
-import { Spinner } from '../spinner'
 import { PostCategoryOption } from './postCategoryOption'
 import { PostCategoryOptionGrandChild } from './postCategoryOptionGrandChild'
-import classNames from 'classnames'
+import { PostCategoryOptionLoading } from './postCategoryOptionLoading'
 
 interface PostCategoryOptionChild {
   data: PostCategory
@@ -20,7 +20,7 @@ export const PostCategoryOptionChild = ({
   className,
   checkedPostCategory,
 }: PostCategoryOptionChild) => {
-  const [expandCategories, setExpandCategories] = useState<PostCategory[]>()
+  const [expandCategories, setExpandCategories] = useState<PostCategory[]>([])
 
   const {
     data: postCategoryList,
@@ -55,7 +55,7 @@ export const PostCategoryOptionChild = ({
   return (
     <div className={classNames('', className)}>
       {isValidating ? (
-        <Spinner />
+        <PostCategoryOptionLoading />
       ) : (
         <div>
           {postCategoryList?.map((item: PostCategory) => {
@@ -74,7 +74,7 @@ export const PostCategoryOptionChild = ({
                 <div>
                   {isExpand ? (
                     <PostCategoryOptionGrandChild
-                      className="pl-12"
+                      className="pl-24 animate-fade"
                       data={item}
                       checkedPostCategory={checkedPostCategory}
                       onCheck={onCheck}

@@ -8,7 +8,6 @@ import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import ScrollContainer from 'react-indiana-drag-scroll'
-import { useSWRConfig } from 'swr'
 import { twMerge } from 'tailwind-merge'
 import { Spinner } from '../spinner'
 import { CategoryNavDropDownMenu } from './categoryNavDropDownMenu'
@@ -21,7 +20,6 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
   const router = useRouter()
   const ref = useRef<HTMLDivElement>(null)
   const { userInfo } = useUser({})
-  const { mutate: mutateRemote } = useSWRConfig()
   const [currentCategoryId, setCurrentCategoryId] = useState<number | undefined>()
   const [isCategoryMinor, setIsCategoryMinor] = useState<boolean>(false)
 
@@ -52,10 +50,11 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
     if (postCategory.role === 'npp' && !isDrugStore(userInfo?.account)) {
       toast.error('Thông tin chỉ dành cho người phụ trách chuyên môn về dược')
     } else {
-      mutateRemote(SWR_KEY.current_post_parent_category, postCategory?.id, false)
-
       router.push({
         pathname: '/post-list',
+        query: {
+          parent_category: postCategory?.id,
+        },
       })
     }
   }
