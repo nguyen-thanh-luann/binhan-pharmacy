@@ -7,20 +7,21 @@ import {
   NotFound,
   PostAdminItem,
   PostAdminItemLoading,
-  PostContentDetail,
+  PostCategoryOptionForm,
+  PostContentDetail
 } from '@/components'
+
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
-import { isAdmin, isArrayHasValue, transPostCategoryDataToSelectionType } from '@/helper'
-import { useChatAccount, usePostCategory, usePostList, useUser } from '@/hooks'
+import { isAdmin, isArrayHasValue } from '@/helper'
+import { useChatAccount, usePostList, useUser } from '@/hooks'
 import { setPostForm } from '@/store'
 import { AccountContainer, Main } from '@/templates'
-import { OptionType, Post } from '@/types'
+import { Post } from '@/types'
 import { useRouter } from 'next/router'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useDispatch } from 'react-redux'
-import Select from 'react-select'
 
 const PostPage = () => {
   const router = useRouter()
@@ -39,13 +40,6 @@ const PostPage = () => {
     filter,
   } = usePostList({
     key: `${SWR_KEY.get_post_list}`,
-    params: {
-      limit: DEFAULT_LIMIT,
-    },
-  })
-
-  const { data: postCategoryList } = usePostCategory({
-    key: `${SWR_KEY.get_post_category_list}`,
     params: {
       limit: DEFAULT_LIMIT,
     },
@@ -74,11 +68,6 @@ const PostPage = () => {
     })
   }
 
-
-  const categoryOptions: OptionType<string>[] | [] = useMemo(() => {
-    return transPostCategoryDataToSelectionType(postCategoryList || [])
-  }, [postCategoryList])
-
   const renderPostLoading = () => {
     return (
       <div>
@@ -104,7 +93,7 @@ const PostPage = () => {
 
       <AccountContainer className="container mb-32">
         <div className="bg-white p-24 rounded-[10px] shadow-shadow-1">
-          <div className="flex-between flex-wrap border-b border-gray-200 pb-12 mb-24">
+          <div className="flex-between flex-wrap border-b border-gray-200 pb-12 mb-12">
             <p className="text-xl capitalize font-semibold">Tin tức</p>
 
             <Button
@@ -121,16 +110,16 @@ const PostPage = () => {
           {isAdmin(userInfo?.account) && chatToken ? (
             <div>
               <div className="mb-12">
-                <p className="title_md mb-8">Lọc theo danh mục</p>
-                <div className="">
-                  <Select
-                    className="w-[300px] text_md"
-                    defaultValue={{ label: 'Tất cả', value: '' }}
-                    placeholder={'Danh mục'}
-                    options={[{ label: 'Tất cả', value: '' }, ...categoryOptions]}
-                    onChange={(val) => filter({ category_id: val?.value || '' })}
-                  />
-                </div>
+                <PostCategoryOptionForm
+                  label="Lọc theo chuyên mục"
+                  labelClassName="text-md font-bold"
+                  type="single"
+                  onChecked={(data) => {
+                    filter({
+                      category_id: data?.[0],
+                    })
+                  }}
+                />
               </div>
 
               {isValidating || isArrayHasValue(postList) ? (

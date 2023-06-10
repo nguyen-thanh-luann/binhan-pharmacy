@@ -20,12 +20,8 @@ interface HomePostsProps {
 export const HomePosts = ({ className }: HomePostsProps) => {
   const { userInfo } = useUser({ shouldFetch: false })
 
-  const {
-    data: postList,
-    isValidating: loadingPostList,
-  } = usePostList({
+  const { data: postList, isValidating: loadingPostList } = usePostList({
     key: `${SWR_KEY.get_post_list}_${userInfo?.account?.partner_id}`,
-    params: {},
   })
 
   if (loadingPostList) {

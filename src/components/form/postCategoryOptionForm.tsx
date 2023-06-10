@@ -1,6 +1,7 @@
 import { DEFAULT_LIMIT, SWR_KEY } from '@/constants'
 import { usePostCategory } from '@/hooks'
 import { PostCategory } from '@/types'
+import classNames from 'classnames'
 import { useEffect, useState } from 'react'
 import { PostCategoryOption, PostCategoryOptionChild } from '../post'
 
@@ -8,12 +9,16 @@ interface PostCategoryOptionFormProps {
   type: 'single' | 'multiple'
   onChecked: (data: string[]) => void
   defaultCheckedOption?: string[]
+  label?: string
+  labelClassName?: string
 }
 
 export const PostCategoryOptionForm = ({
   type = 'single',
   onChecked,
   defaultCheckedOption = [],
+  label,
+  labelClassName,
 }: PostCategoryOptionFormProps) => {
   const { data: postCategoryList } = usePostCategory({
     key: `${SWR_KEY.get_post_category_list}`,
@@ -57,7 +62,7 @@ export const PostCategoryOptionForm = ({
 
   return (
     <div>
-      <p className="mb-8 text-md">Chọn danh mục cha</p>
+      <p className={classNames('mb-8 text-md', labelClassName)}>{label || 'Chọn danh mục'}</p>
 
       <div className="border p-12 rounded-md border-gray-200 max-h-[500px] overflow-scroll scrollbar-hide">
         {postCategoryList?.map((item) => {

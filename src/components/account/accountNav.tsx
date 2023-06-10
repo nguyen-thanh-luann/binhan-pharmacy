@@ -36,7 +36,12 @@ export const AccountNav = ({ className }: AccountNavProps) => {
             className={classNames(
               `flex items-center p-10 rounded-[10px] cursor-pointer group hover:bg-primary mb-12 last:mb-0 isActive:opacity-50`,
               isActive ? 'bg-primary' : '',
-              item?.access_rules?.includes(userInfo?.account?.account_type || '') ? '' : 'hidden'
+              item?.access_rules?.includes(userInfo?.account?.account_type || '') &&
+                item?.account_type_permissions?.includes(
+                  userInfo?.account?.medicine_account_type || ''
+                )
+                ? ''
+                : 'hidden'
             )}
           >
             <div
