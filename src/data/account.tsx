@@ -9,6 +9,7 @@ import {
   NotebookIconOutlinePlus,
   PackageBoxIconOutline,
   StarIconOutline,
+  TagIcon,
   UserCircleIcon,
 } from '@/assets'
 
@@ -20,7 +21,6 @@ export const UserAccessRule = ['th', 'nvkd', 'gsbh', 'asm', ''] //without 'npp'
 export const AdminAccessRule = ['npp']
 
 export const PublicAccountTypePermissions = ['drugstore_account', 'patient_account', '']
-
 
 export const accountNavData = [
   {
@@ -48,6 +48,13 @@ export const accountNavData = [
     path: '/account/post-category',
     icon: <MenuSquareDotOutlineIcon className={accountIconStyle} />,
     title: 'Danh mục tin tức',
+    access_rules: AdminAccessRule,
+    account_type_permissions: PublicAccountTypePermissions,
+  },
+  {
+    path: '/account/post-tags',
+    icon: <TagIcon className={accountIconStyle} />,
+    title: 'Quản lí tags',
     access_rules: AdminAccessRule,
     account_type_permissions: PublicAccountTypePermissions,
   },

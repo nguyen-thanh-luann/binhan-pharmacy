@@ -1,7 +1,8 @@
-import { POST_ROLES_OPTIONS } from '@/constants'
+import { DEFAULT_LIMIT, POST_ROLES_OPTIONS, SWR_KEY } from '@/constants'
 import { convertViToEn } from '@/helper'
+import { usePostTag } from '@/hooks/post/usePostTag'
 import { postFormSchema } from '@/schema'
-import { CreatePost, Post } from '@/types'
+import { CreatePost, OptionType, Post } from '@/types'
 import { yupResolver } from '@hookform/resolvers/yup'
 import classNames from 'classnames'
 import { useEffect, useState } from 'react'
@@ -36,6 +37,13 @@ export const CreatePostForm = ({
     mode: 'all',
   })
 
+  const { data: postTagList } = usePostTag({
+    key: `${SWR_KEY.get_post_tags}`,
+    params: {
+      limit: DEFAULT_LIMIT,
+    },
+  })
+
   const onSubmitHandler = (data: any) => {
     if (!data?.category_ids) {
       toast.error('Vui lòng chọn danh mục cho bài viết')
@@ -48,6 +56,7 @@ export const CreatePostForm = ({
         slug: convertViToEn(data?.title.trim().toLowerCase()).replace(/\s+/g, '-'),
         category_ids: data?.category_ids,
         role: data?.role?.value !== '' ? data?.role?.value : null,
+        tag_ids: data?.tag_ids?.map((tag: OptionType<string>) => tag.value) || undefined,
       })
   }
 
@@ -56,6 +65,15 @@ export const CreatePostForm = ({
       setValue('attachment_id', defaultValue?.thumbnail?.id)
     }
   }, [defaultValue])
+
+  const tagsOption = postTagList
+    ?.filter((t) => t?.active === true)
+    ?.map((tag) => {
+      return {
+        label: tag?.content || '',
+        value: tag.id,
+      }
+    })
 
   return (
     <form onSubmit={handleSubmit(onSubmitHandler)}>
@@ -99,7 +117,21 @@ export const CreatePostForm = ({
           name="role"
           placeholder="Phân loại người xem"
           label="Phân loại"
+          labelClassName="!text-md"
           options={POST_ROLES_OPTIONS}
+        />
+      </div>
+
+      <div className="mb-12">
+        <SelectField
+          isMulti
+          // defaultValue={tagsOption?.find((item: any) => item.value === defaultValue?.role)}
+          control={control}
+          name="tag_ids"
+          placeholder="Chọn tags đính kèm"
+          label="Tags"
+          labelClassName="!text-md"
+          options={tagsOption}
         />
       </div>
 
@@ -109,6 +141,7 @@ export const CreatePostForm = ({
           name="title"
           placeholder="Tiêu đề"
           label="Tiêu đề"
+          labelClassName="!text-md"
           defaultValue={defaultValue?.title}
           required={true}
         />
@@ -121,6 +154,7 @@ export const CreatePostForm = ({
           name="short_content"
           placeholder="Tóm tắt nội dung"
           label="Tóm tắt nội dung"
+          labelClassName="!text-md"
           defaultValue={defaultValue?.short_content}
           required={true}
         />

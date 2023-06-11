@@ -3,13 +3,15 @@ import {
   PostCategoryMenu,
   PostItemLoading,
   PostListItemHorizontal,
-  PostListItemVertical
+  PostListItemVertical,
 } from '@/components'
 import {
   DEFAULT_LIMIT,
   DOMAIN_URL,
-  SWR_KEY, thumbnailImageUrl, WEB_DESCRIPTION,
-  WEB_TITTLE
+  SWR_KEY,
+  thumbnailImageUrl,
+  WEB_DESCRIPTION,
+  WEB_TITTLE,
 } from '@/constants'
 import { fromProductSlugToProductId, generateProductSlug, isArrayHasValue } from '@/helper'
 import { usePostList } from '@/hooks'
@@ -25,7 +27,7 @@ const PostListPage = () => {
   const { cache } = useSWRConfig()
   const current_post_parent_id = cache.get(SWR_KEY.current_post_parent_category)?.data || ''
 
-  const { category_id } = router.query
+  const { category_id, tag_ids} = router.query
 
   const {
     data: postList,
@@ -45,8 +47,9 @@ const PostListPage = () => {
       category_id: category_id
         ? fromProductSlugToProductId(category_id as string)
         : current_post_parent_id || undefined,
+      tag_ids: [tag_ids] as string[],
     })
-  }, [category_id, current_post_parent_id])
+  }, [category_id, current_post_parent_id, tag_ids])
 
   const [firstPost, secondPost, ...postData] = postList || []
 

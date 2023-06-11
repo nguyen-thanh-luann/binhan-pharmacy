@@ -261,10 +261,20 @@ export const postFormSchema = Yup.object().shape({
   short_content: Yup.string().required('Vui lòng nhập trường này'),
   attachment_id: Yup.string().required('Vui lòng nhập trường này'),
   category_ids: Yup.array().of(Yup.string()),
-  role: Yup.object()
-    .shape({
-      value: Yup.string(),
-      label: Yup.string(),
-    })
+  role: Yup.object().shape({
+    value: Yup.string(),
+    label: Yup.string(),
+  }),
+  tag_ids: Yup.array()
+    .of(
+      Yup.object().shape({
+        value: Yup.string(),
+        label: Yup.string(),
+      })
+    )
     .nullable(),
+})
+
+export const postTagFormSchema = Yup.object().shape({
+  content: Yup.string().required('Vui lòng nhập trường này'),
 })

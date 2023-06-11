@@ -10,6 +10,7 @@ export interface GetPostListParams extends QueryList {
   parent_id?: string
   keyword?: string
   role?: AccountType
+  tag_ids?: string[] | undefined
 }
 
 export interface GetPostDetailParams {
@@ -34,7 +35,7 @@ export interface Post {
   thumbnail: PostImage
   content: string
   short_content: string
-  tags: []
+  tags: PostTagRes[]
   categories: PostCategoryRes[]
   created_at: Date
   role?: AccountType
@@ -43,6 +44,11 @@ export interface Post {
 export interface PostCategoryRes {
   category_id: string
   category_name: string
+}
+
+export interface PostTagRes {
+  tag_id: string
+  tag_content: string
 }
 
 export type PostDetail = Pick<
@@ -96,7 +102,7 @@ export interface CreatePost {
   short_content: string
   category_ids: string[]
   slug: string
-  tags?: string[] | undefined
+  tag_ids?: string[] | undefined
   role?: AccountType
 }
 

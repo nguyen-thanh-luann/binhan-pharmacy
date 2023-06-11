@@ -8,6 +8,7 @@ import classNames from 'classnames'
 import { useRef } from 'react'
 import { PostRoleTag } from './postRoleTag'
 import { PostCategoryTag } from './postCategoryTag'
+import { PostTagItem } from '../postTag'
 
 interface PostItemProps {
   post: Post
@@ -53,14 +54,20 @@ const PostAdminItem = ({
             ))}
           </div>
 
-          <p className="text_md line-clamp-2">{post?.short_content}</p>
+          <p className="text_md line-clamp-2 mb-8">{post?.short_content}</p>
+
           <p className="text">
             <p className="">
               Đăng bởi: <span className="title">{post?.author_name}</span>
             </p>
             <p className="text-sm">{moment(post?.created_at).fromNow()}</p>
           </p>
-          <p></p>
+
+          <div className="flex gap-8 overflow-scroll scrollbar-hide">
+            {post?.tags?.map((tag) => (
+              <PostTagItem data={tag} />
+            ))}
+          </div>
         </div>
       </div>
 

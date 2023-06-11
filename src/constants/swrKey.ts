@@ -25,6 +25,7 @@ export const SWR_KEY = {
   get_parent_post_category_list: 'get_parent_post_category_list',
   get_post_category_list: 'get_post_category_list',
   current_post_parent_category: 'current_post_parent_category',
+  get_post_tags: 'get_post_tags',
 
   get_post_category_option: 'get_post_category_option',
 

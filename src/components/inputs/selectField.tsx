@@ -9,6 +9,7 @@ type SelectFieldProps = Props & {
   onChange?: (_: OptionType<any>) => void
   label?: string
   labelClassName?: string
+  // isMulti?: boolean
 }
 
 export const SelectField = ({
