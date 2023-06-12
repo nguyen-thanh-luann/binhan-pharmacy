@@ -40,8 +40,8 @@ export const PostTagAdminItem = ({
           <div
             className={classNames(data?.active ? 'bg-green' : 'bg-gray', 'w-12 h-12 rounded-full')}
           ></div>
-          <p className="text-base text-text-color ml-8">{`${
-            data?.active ? 'active' : 'inactive'
+          <p className="text-base text-text-color ml-8 line-clamp-1">{`${
+            data?.active ? 'Hiển thị trên web' : 'Không hiển thị trên web'
           }`}</p>
         </div>
       </div>

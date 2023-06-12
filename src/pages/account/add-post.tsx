@@ -125,6 +125,7 @@ const CreatePostPage = () => {
                       }
                     }}
                   />
+                  {/* <PostEditorV2 defaultValue={content} /> */}
                 </div>
               )}
             </div>

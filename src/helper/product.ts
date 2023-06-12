@@ -69,12 +69,22 @@ export function generateFilterProductParamFormRouter(router: NextRouter): Filter
   }
 }
 
-export function purchasableProduct(product: Product | ProductDetail, userInfo: UserInfo | undefined) {
+export function purchasableProduct(
+  product: Product | ProductDetail,
+  userInfo: UserInfo | undefined
+) {
   if (!product || !userInfo) return false
+  // if product is medicine => just drugstore account can buy it!
 
-  return product?.product_type === 'medicine'
-    ? userInfo?.account?.medicine_account_type === 'drugstore_account'
-    : true // if product is medicine => just drugstore account can buy it!
+  if (product?.product_type === 'medicine') {
+    if (userInfo?.account?.medicine_account_type === 'drugstore_account') {
+      return true
+    } else {
+      return false
+    }
+  } else {
+    return true
+  }
 }
 
 export function calcDiscountPercent(product: Product): number {
@@ -90,5 +100,3 @@ export const isProductDescContainChild = (data: ProductDescription, category_id:
 
   return false
 }
-
-
