@@ -4,13 +4,11 @@ import {
   CartCompany,
   CartProduct,
   LastMessage,
-  MessageRes,
-  PostCategory,
-  ProductDescription,
+  MessageRes, ProductDescription,
   ProductUom,
   ReactSelectType,
   UserAccount,
-  UserInfo,
+  UserInfo
 } from '@/types'
 import _ from 'lodash'
 const sign = require('jwt-encode')
@@ -379,25 +377,6 @@ export function isAdmin(account: UserAccount | undefined): boolean {
   //admin is an account with account_type: 'npp' => who have all permissions with post
   if (!account) return false
   return account.account_type === 'npp'
-}
-
-export function transPostCategoryDataToSelectionType(data: PostCategory[]) {
-  const transformedData: any = []
-
-  data.forEach((item) => {
-    const transformedItem = {
-      label: item?.name,
-      value: item?.id,
-    }
-
-    transformedData.push(transformedItem)
-
-    if (item.children && item.children.length > 0) {
-      transformedData.push(...transPostCategoryDataToSelectionType(item.children))
-    }
-  })
-
-  return transformedData
 }
 
 export function ValidAccountRoleToUsePostService(data: UserInfo | undefined): AccountType {

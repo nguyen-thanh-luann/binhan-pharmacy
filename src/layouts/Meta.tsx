@@ -1,8 +1,7 @@
-import { WEB_TITTLE, WEB_DESCRIPTION } from '@/constants'
-import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { NextSeo } from 'next-seo'
+import { WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
 import { AppConfig } from '@/utils'
+import { NextSeo } from 'next-seo'
+import Head from 'next/head'
 
 export type MetaProps = {
   title: string
@@ -12,7 +11,7 @@ export type MetaProps = {
 }
 
 const Meta = (props: MetaProps) => {
-  const router = useRouter()
+  // const router = useRouter()
   const { title = WEB_TITTLE, description = WEB_DESCRIPTION, thumbnail = '' } = props
 
   return (
@@ -37,7 +36,7 @@ const Meta = (props: MetaProps) => {
         <meta property="twitter:image" content={thumbnail} />
         <meta property="twitter:image:width" content="875" />
         <meta property="twitter:image:height" content="476" />
-        <link rel="icon" href={`${router.basePath}/favicon.ico`} key="favicon" />
+        {/* <link rel="icon" href={`${router.basePath}/favicon.ico`} key="favicon" /> */}
       </Head>
       <NextSeo
         title={title}

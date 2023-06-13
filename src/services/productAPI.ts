@@ -51,8 +51,7 @@ const productAPI = {
   },
 
   getListAtributeMinor: (params: GetListAttributeMinorParams) => {
-    return axiosClient.get(
-      `/category_controller/list_attribute_minor`, {params})
+    return axiosClient.get(`/category_controller/list_attribute_minor`, { params })
   },
 
   getListVisceraAttribute: () => {

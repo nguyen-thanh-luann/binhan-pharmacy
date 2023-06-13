@@ -15,12 +15,12 @@ interface ImageShowerProps {
 export const ImageShower = ({ url }: ImageShowerProps) => {
   const dispatch = useDispatch()
   return (
-    <div className="fixed z-40 bg-black-700 inset-0">
+    <div className="fixed z-100 bg-black-700 inset-0">
       <div className="absolute top-[50%] left-[50%]" style={{ transform: 'translate(-50%, -50%)' }}>
         <TransformWrapper initialScale={1} initialPositionX={0} initialPositionY={0}>
           {({ zoomIn, zoomOut, resetTransform }) => (
             <>
-              <div className="fixed top-[8px] right-[8px] flex justify-end z-40 bg-black-400 p-4 rounded-full">
+              <div className="fixed top-[8px] right-[8px] flex justify-end z-100 bg-black-400 p-4 rounded-full">
                 <button
                   className="w-[30px] h-[30px] bg-dark-opacity-400 flex items-center justify-center text-white cursor-pointer"
                   onClick={() => zoomIn()}

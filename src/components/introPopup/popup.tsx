@@ -38,20 +38,20 @@ export const IntroPopUp = ({ className }: PopUpProps) => {
               THÔNG TIN CHỈ MANG TÍNH CHẤT THAM KHẢO
             </p>
             <p className="text-md text-text-color mb-12">
-              Website <a className='text-primary' href="https://duocbinhan.vn/">www.duocbinhan.vn </a>
+              Website{' '}
+              <a className="text-primary" href="https://duocbinhan.vn/">
+                www.duocbinhan.vn{' '}
+              </a>
               được xây dựng nhằm giới thiệu thông tin về sản phẩm chăm sóc sức khỏe do Dược phẩm
               BINHAN Pharmacy phân phối. Các sản phẩm được bán tại nhà thuốc, quầy thuốc và các cơ
               sở phân phối có người phụ trách chuyên môn theo quy định của pháp luật. Nội dung về
-              sản phẩm, giá bán, thông tin tham khảo nhằm mục đích cung cấp thông tin cho người phụ
-              trách chuyên môn, thành viên có quyền mua hàng có thể xác định các đặc tính của hàng
-              hóa để đưa ra quyết định mua. Hình ảnh sản phẩm, thông tin, giá bán được công khai
-              nhằm mục đích bảo vệ quyền lợi người tiêu dùng khi có nhu cầu mua sản phẩm tại các
-              điểm bán. Tránh mua phải những sản phẩm không đúng, không đảm bảo chất lượng, mua giá
-              quá cao so với thực tế. Ngoài ra, tin tức về sức khỏe được chọn lọc, giúp hỗ trợ thông
-              tin trong việc chăm sóc sức khỏe bản thân. Việc sử dụng thuốc kê đơn hay chữa bệnh
-              phải tuyệt đối tuân thủ theo sự hướng dẫn của người có chuyên môn về y dược. Binhan
-              Pharmacy không chịu trách nhiệm cho bất cứ hậu quả nào xảy ra do tự ý dùng thuốc dựa
-              trên các thông tin trên và các trường hợp cố tình mua thuốc cho mục đích tiêu dùng.
+              sản phẩm, giá bán, tin tức… nhằm mục đích cung cấp thông tin cho người phụ trách
+              chuyên môn có thể xác định đúng các đặc tính của sản phẩm. Đồng thời bảo vệ quyền lợi
+              người tiêu dùng khi có nhu cầu mua sản phẩm tại các điểm bán, mua đúng sản phẩm, đảm
+              bảo chất lượng, đúng giá. Tin sức khỏe và dùng thuốc chỉ tham khảo, việc sử dụng thuốc
+              kê đơn hay chữa bệnh phải tuyệt đối tuân thủ theo sự hướng dẫn của người có chuyên môn
+              về y dược. Binhan Pharmacy không chịu trách nhiệm cho bất cứ hậu quả nào xảy ra do cố
+              tình mua và tự ý dùng thuốc dựa trên các thông tin trên.
             </p>
 
             <div className="flex-center flex-wrap gap-12">

@@ -119,13 +119,26 @@ const CreatePostPage = () => {
                   <PostEditor
                     defaultValue={content}
                     onSubmit={(val) => {
+                      // console.log({val});
+
                       setContent(val)
                       if (val) {
                         setStep(2)
                       }
                     }}
                   />
-                  {/* <PostEditorV2 defaultValue={content} /> */}
+
+                  {/* <JoditPostEditor
+                    defaultValue={content}
+                    onSubmit={(val) => {
+                      setContent(val)
+                      console.log({ val })
+
+                      if (val) {
+                        setStep(2)
+                      }
+                    }}
+                  /> */}
                 </div>
               )}
             </div>

@@ -4,6 +4,7 @@ import { formatMoneyVND, generateProductSlug, isObjectHasValue, purchasableProdu
 import { useAddToCart, useProductPromotion, useUser, useWishlist } from '@/hooks'
 import { productAPI } from '@/services'
 import { ProductDetail as IProductDetail, Product } from '@/types'
+import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { toast } from 'react-hot-toast'
@@ -196,11 +197,14 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
               <span className="text-text-color text-sm ml-4">{`/ ${currentProduct?.uom_id?.uom_name}`}</span>
             </p>
 
-            {currentProduct?.price_unit === currentProduct?.origin_price_unit ? (
-              <p className="text-gray-400 text-md font-medium line-through">
-                {formatMoneyVND(currentProduct?.origin_price_unit || 0)}
-              </p>
-            ) : null}
+            <p
+              className={classNames(
+                'text-gray-400 text-md font-medium line-through',
+                currentProduct?.price_unit !== currentProduct?.origin_price_unit ? '' : 'hidden'
+              )}
+            >
+              {formatMoneyVND(currentProduct?.origin_price_unit || 0)}
+            </p>
           </div>
         ) : null}
 

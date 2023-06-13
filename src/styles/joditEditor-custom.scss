@@ -1,0 +1,31 @@
+.post-editor {
+  .jodit-toolbar__box {
+    position: sticky !important;
+    top: $header_group_height;
+    background-color: white;
+    z-index: 40;
+    @include responsive(md-screen) {
+      top: $header_mobile_height;
+    }
+  }
+
+  .jodit-workplace,
+  .jodit-wysiwyg {
+    min-height: 400px !important;
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    p,
+    span,
+    li,
+    div {
+      @apply select-text break-all;
+    }
+  }
+}

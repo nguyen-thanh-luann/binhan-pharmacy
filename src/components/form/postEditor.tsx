@@ -37,7 +37,7 @@ const formats = [
   'link',
   'image',
   'undo',
-  'table'
+  'table',
 ]
 
 interface blogEditorProps {
@@ -93,9 +93,7 @@ const PostEditor = ({ onSubmit, defaultValue, btnLabel, validating = false }: bl
           [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }],
           [{ list: 'ordered' }, { list: 'bullet' }],
           ['link', 'image'],
-          ['table']
         ],
-
         handlers: {
           image: () => handleUploadImage(),
         },
