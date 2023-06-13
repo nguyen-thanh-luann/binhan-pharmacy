@@ -1,4 +1,4 @@
-import { RightIcon, categoryPromotionIcon } from '@/assets'
+import { categoryPromotionIcon } from '@/assets'
 import { SWR_KEY } from '@/constants'
 import { useModal } from '@/hooks'
 import { promotionAPI } from '@/services'
@@ -9,7 +9,7 @@ import {
   GetPromotionsAppliedOnProductReq,
   MutateProductParams,
   PromotionRes,
-  UserInfo,
+  UserInfo
 } from '@/types'
 import produce from 'immer'
 import _ from 'lodash'
@@ -81,10 +81,9 @@ export const CartProductPromotion = (props: CartProductPromotionProps) => {
         ) : (
           <div
             onClick={openPromotionModal}
-            className="bg-primary p-6 rounded-[6px] flex items-center gap-8 cursor-pointer active:opacity-50 duration-200"
+            className="p-6 rounded-[6px] flex items-center gap-8 cursor-pointer active:opacity-50 duration-200"
           >
-            <p className="text-base text-white">Khuyến mãi theo sản phẩm</p>
-            <RightIcon className="text-sm text-white" />
+            <p className="text-base text-primary">{`Khuyến mãi theo sản phẩm >>`}</p>
           </div>
         )}
       </div>

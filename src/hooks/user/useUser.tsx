@@ -108,7 +108,7 @@ export const useUser = ({ key, shouldFetch = true }: useUserProps): useUserRes =
 
   const mutateAccountData = () => {
     mutateConfig(SWR_KEY.get_guest_information)
-    mutateConfig(SWR_KEY.get_cart_length)
+    mutateConfig(SWR_KEY.cart_count)
     mutateConfig(SWR_KEY.get_user_information)
   }
 

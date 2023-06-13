@@ -296,12 +296,6 @@ export const useCarts = () => {
               .shopping_cart_product_id
           }
         }
-
-        // if (product?.product_id?.product_id && product.is_check) {
-        //   product.promotions_product_applied = []
-        //   category.promotions_category_applied = []
-        //   company.promotions_applied = []
-        // }
       }),
       false
     )
@@ -435,7 +429,7 @@ export const useCarts = () => {
     asyncHandler({
       fetcher: cartAPI.deleteCartProduct({
         cart_product_ids: productsChecked.map((item) => item.shopping_cart_product_id),
-        category_type: 'category_minor'
+        category_type: 'category_minor',
       }),
       onSuccess: () => {
         deleteCartItemHandler((product) => product.is_check)

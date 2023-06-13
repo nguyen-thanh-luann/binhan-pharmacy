@@ -109,7 +109,6 @@ export const CartCategoryPromotion = ({
           }}
         />
       </Modal>
-      <div>{/* <p className="text">{`Doanh số nhóm: ${formatMoneyVND(999000)}`}</p> */}</div>
     </div>
   )
 }

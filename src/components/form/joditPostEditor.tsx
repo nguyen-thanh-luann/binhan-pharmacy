@@ -33,6 +33,9 @@ export const JoditPostEditor = ({
     }
   }, [isUploading])
 
+  console.log({editorRef});
+  
+
   const handleUploadImage = () => {
     const input = document.createElement('input')
     input.setAttribute('type', 'file')
@@ -46,17 +49,7 @@ export const JoditPostEditor = ({
         if (editorRef) {
           console.log({ editorRef })
           console.log({ res })
-
-          const imgElement = `<img src="${res?.url}" alt="Inserted Image">`
-          const editorInstance = editorRef?.current?.editor
-
-          console.log({ editorInstance })
-
-          const currentValue = editorInstance.getEditorValue()
-
-          const newValue = `${currentValue}${imgElement}`
-
-          editorInstance.setEditorValue(newValue)
+          editorRef?.current?.insertImage(res?.url)
         }
       })
     }

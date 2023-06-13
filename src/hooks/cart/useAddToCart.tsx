@@ -28,7 +28,7 @@ export const useAddToCart = () => {
         swrConfigMutate(SWR_KEY.cart_list)
         if (res?.compute_type === 'add') {
           //increase cart length
-          swrConfigMutate(SWR_KEY.get_cart_length)
+          swrConfigMutate(SWR_KEY.cart_count)
           toast.success('Thêm vào giỏ hàng thành công!')
         } else {
           toast.success('Cập nhật giỏ hàng thành công!')

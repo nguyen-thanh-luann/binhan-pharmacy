@@ -1,5 +1,6 @@
 import { PromotionRes } from '@/types'
 import { twMerge } from 'tailwind-merge'
+import { CouponItem } from './couponItem'
 import { ProductGiftItem } from './productGiftItem'
 
 type Props = {
@@ -24,15 +25,13 @@ export const PromotionsAppliedOnCartView = ({ data, className }: Props) => {
           ))
         }
 
-        // return (
-        //   <CouponItem
-        //     className=""
-        //     key={item.promotion_id}
-        //     label={item?.selected_range_line?.range_name || item.promotion_name}
-        //   />
-        // )
-
-        return null
+        return (
+          <CouponItem
+            className=""
+            key={item.promotion_id}
+            label={item?.selected_range_line?.range_name || item.promotion_name}
+          />
+        )
       })}
     </div>
   )

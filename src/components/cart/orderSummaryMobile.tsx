@@ -15,7 +15,7 @@ export const OrderSummaryMobile = () => {
   const [showCartSummaryDetail, setShowCartSummaryDetail] = useState<boolean>(false)
   const { data } = useSWR<GetOrderDraftRes>(SWR_KEY.orders)
 
-  const { data: cartLength } = useSWR(SWR_KEY.get_cart_length, () =>
+  const { data: cartLength } = useSWR(SWR_KEY.cart_count, () =>
     cartAPI.getCartLength().then((res) => res?.data?.cart_product_count)
   )
 

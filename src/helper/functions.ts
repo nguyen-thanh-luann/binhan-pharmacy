@@ -4,11 +4,13 @@ import {
   CartCompany,
   CartProduct,
   LastMessage,
-  MessageRes, ProductDescription,
+  MessageRes,
+  ProductDescription,
   ProductUom,
+  PromotionRes,
   ReactSelectType,
   UserAccount,
-  UserInfo
+  UserInfo,
 } from '@/types'
 import _ from 'lodash'
 const sign = require('jwt-encode')
@@ -383,4 +385,18 @@ export function ValidAccountRoleToUsePostService(data: UserInfo | undefined): Ac
   if (!data || data?.account?.medicine_account_type !== 'drugstore_account') return 'th'
 
   return 'npp'
+}
+
+export function cartContainBogoSale(data: PromotionRes[] | undefined) {
+  if (!data) return false
+
+  const bogoIndex = data?.findIndex(
+    (promotion) => promotion?.promotion_type === 'bogo_sale' && promotion?.free_product?.length
+  )
+
+  if (bogoIndex !== -1) {
+    return true
+  }
+
+  return false
 }

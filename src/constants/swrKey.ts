@@ -38,9 +38,6 @@ export const SWR_KEY = {
   get_user_information: 'get_user_information',
   get_guest_information: 'get_guest_information',
 
-  get_cart_length: 'get_cart_length',
-  check_cart_length: 'check_cart_length',
-
   get_main_banner: 'get_main_banner',
   get_banner_list: 'get_banner_list',
   get_mobile_banner: 'get_mobile_banner',

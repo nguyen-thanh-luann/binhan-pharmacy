@@ -1,4 +1,4 @@
-import { RightIcon, categoryPromotionIcon } from '@/assets'
+import { categoryPromotionIcon, RightIcon } from '@/assets'
 import { SWR_KEY } from '@/constants'
 import { useCompanyPromotion, useModal } from '@/hooks'
 import { promotionAPI } from '@/services'
@@ -15,8 +15,6 @@ import { Modal } from '../modal'
 import { PromotionLoading } from './promotionLoading'
 import { PromotionsAppliedOnCartView } from './promotionsAppliedView'
 import { SelectPromotion } from './selectPromotion'
-import { isArrayHasValue } from '@/helper'
-import { CouponItem } from './couponItem'
 
 export type CartCompanyPromotionProps = {
   company: CartCompany
@@ -48,7 +46,7 @@ export const CartCompanyPromotion = ({ company, companyIndex }: CartCompanyPromo
   console.log({ company })
 
   return (
-    <div className="mt-12 bg-white px-16 py-10 shadow-shadow-1 rounded-[10px]">
+    <div className="mt-12 bg-white p-10 shadow-shadow-1 rounded-[10px]">
       <div className="flex justify-between items-center flex-wrap gap-12">
         <div className="flex flex-1 items-center gap-8">
           <Image alt="" src={categoryPromotionIcon} imageClassName="w-32 h-32 object-cover" />
@@ -63,21 +61,6 @@ export const CartCompanyPromotion = ({ company, companyIndex }: CartCompanyPromo
               <RightIcon className="text-sm text-white" />
             </div>
           )}
-        </div>
-
-        <div className="md:max-w-[50%] flex justify-end w-full overflow-scroll scrollbar-hide">
-          {isArrayHasValue(company?.promotions_applied) &&
-            company?.promotions_applied?.map((promotion) => (
-              <div>
-                {promotion?.promotion_type !== 'bogo_sale' && (
-                  <CouponItem
-                    className=""
-                    key={promotion.promotion_id}
-                    label={promotion?.selected_range_line?.range_name || promotion.promotion_name}
-                  />
-                )}
-              </div>
-            ))}
         </div>
       </div>
 

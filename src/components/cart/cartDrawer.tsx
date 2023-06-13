@@ -10,7 +10,7 @@ export const CartDrawer = () => {
 
   const { isDesktop } = useDevice()
 
-  const { data: cartLength } = useSWR(SWR_KEY.get_cart_length, () =>
+  const { data: cartLength } = useSWR(SWR_KEY.cart_count, () =>
     cartAPI.getCartLength().then((res) => res?.data?.cart_product_count || 0)
   )
 

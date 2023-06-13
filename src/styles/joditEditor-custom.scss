@@ -9,13 +9,7 @@
     }
   }
 
-  .jodit-workplace,
-  .jodit-wysiwyg {
-    min-height: 400px !important;
-    max-width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-
+  .jodit-workplace {
     h1,
     h2,
     h3,
@@ -27,5 +21,13 @@
     div {
       @apply select-text break-all;
     }
+  }
+
+  .jodit-wysiwyg,
+  .jodit-source {
+    min-height: 400px !important;
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
   }
 }

@@ -38,6 +38,10 @@ const formats = [
   'image',
   'undo',
   'table',
+  'code',
+  'script',
+  'size',
+  'font',
 ]
 
 interface blogEditorProps {
@@ -78,6 +82,7 @@ const PostEditor = ({ onSubmit, defaultValue, btnLabel, validating = false }: bl
       uploadSingleImage(files[0], (res: any) => {
         const quill = quillRef?.current?.getEditor()
         const range = quill.getSelection(true)
+
         quill.insertEmbed(range.index, 'image', res?.url)
       })
     }
@@ -87,12 +92,13 @@ const PostEditor = ({ onSubmit, defaultValue, btnLabel, validating = false }: bl
     return {
       toolbar: {
         container: [
-          [{ header: [1, 2, 3, 4, 5, false] }],
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
           ['bold', 'italic', 'underline', 'strike', 'blockquote'],
           [{ color: [] }, { background: [] }],
           [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }],
           [{ list: 'ordered' }, { list: 'bullet' }],
           ['link', 'image'],
+          // ['code'],
         ],
         handlers: {
           image: () => handleUploadImage(),
@@ -120,6 +126,7 @@ const PostEditor = ({ onSubmit, defaultValue, btnLabel, validating = false }: bl
           onChange={(val: string) => handleSetText(val)}
           modules={modules}
           formats={formats}
+          theme="snow"
         />
       </div>
 

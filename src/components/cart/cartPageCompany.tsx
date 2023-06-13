@@ -8,6 +8,7 @@ import { useAsync } from '@/hooks'
 import { cartAPI } from '@/services'
 import { Spinner } from '../spinner'
 import { CartCompanyPromotion } from './cartCompanyPromotion'
+import { useEffect } from 'react'
 
 interface CartPageCompanyProps {
   data: CartCompany
@@ -46,6 +47,10 @@ export const CartPageCompany = ({
     })
   }
 
+  useEffect(() => {
+    console.log('cartpage company data:', data)
+  }, [data])
+
   return (
     <div className={twMerge(classNames('', className))}>
       <div className="flex items-center gap-12 bg-white rounded-[10px] p-12 mb-12 shadow-shadow-1">
@@ -82,8 +87,9 @@ export const CartPageCompany = ({
         ))}
       </div>
 
+
       {data?.has_promotion ? (
-        <CartCompanyPromotion company={data} companyIndex={companyIndex}/>
+        <CartCompanyPromotion company={data} companyIndex={companyIndex} />
       ) : null}
     </div>
   )
