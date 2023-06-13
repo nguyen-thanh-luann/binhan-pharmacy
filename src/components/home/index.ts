@@ -1,5 +1,6 @@
 export * from './homeSlide'
 export * from './homePosts'
+export * from './homePostList'
 export * from './productsOnNavCategory'
 export * from './sectionBuyMedicine'
 export * from './productsByAttributeMinor'

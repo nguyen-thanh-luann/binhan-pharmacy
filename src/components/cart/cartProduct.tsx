@@ -197,7 +197,7 @@ export const CartProduct = ({
             {/* mobile view */}
             <div className="md:hidden flex flex-wrap justify-between items-center">
               <p className="text-md text-primary font-bold leading-8 line-clamp-1 mt-8">
-                {formatMoneyVND(data.product_id?.price_unit)}
+                {formatMoneyVND(data?.price_unit)}
               </p>
 
               <div className="flex justify-start mt-8">
@@ -244,7 +244,7 @@ export const CartProduct = ({
         {/* price */}
         <div className="w-[115px] text-start hidden md:block">
           <p className="text-md text-primary font-bold leading-8 line-clamp-1">
-            {formatMoneyVND(data.product_id?.price_unit)}
+            {formatMoneyVND(data?.price_unit)}
           </p>
         </div>
 

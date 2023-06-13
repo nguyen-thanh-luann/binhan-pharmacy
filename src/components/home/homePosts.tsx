@@ -2,7 +2,7 @@ import { NotebookIconOutline } from '@/assets'
 import { SWR_KEY } from '@/constants'
 import { isArrayHasValue } from '@/helper'
 import { usePostList, useUser } from '@/hooks'
-import { Post } from '@/types'
+import { Post, PostCategory } from '@/types'
 import classNames from 'classnames'
 import { Autoplay, Navigation, Pagination } from 'swiper'
 import 'swiper/css'
@@ -15,9 +15,10 @@ import { HomeSlide } from './homeSlide'
 
 interface HomePostsProps {
   className?: string
+  postCategory?: PostCategory
 }
 
-export const HomePosts = ({ className }: HomePostsProps) => {
+export const HomePosts = ({ className, postCategory }: HomePostsProps) => {
   const { userInfo } = useUser({ shouldFetch: false })
 
   const { data: postList, isValidating: loadingPostList } = usePostList({
@@ -39,7 +40,7 @@ export const HomePosts = ({ className }: HomePostsProps) => {
       {isArrayHasValue(postList) ? (
         <HomeSlide
           className="md:p-24"
-          title="Sống khỏe mỗi ngày"
+          title={postCategory?.name || 'Tin tức'}
           icon={<NotebookIconOutline className="text-primary w-[34px] h-[34px]" />}
         >
           <Swiper
@@ -73,7 +74,7 @@ export const HomePosts = ({ className }: HomePostsProps) => {
                 ?.filter((post) => post?.role !== 'npp')
                 ?.map((post: Post) => (
                   <SwiperSlide key={post.id}>
-                    <PostItem data={post} />
+                    <PostItem data={post} parent_category={postCategory?.id} />
                   </SwiperSlide>
                 ))}
             </div>

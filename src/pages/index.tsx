@@ -3,7 +3,7 @@ import {
   HomeBanner,
   HomeBannerMobile,
   HomeDecor,
-  HomePosts,
+  HomePostsList,
   IntroPopUp,
   ListProductByAttributeMinor,
   SectionBuyMedicine,
@@ -36,7 +36,7 @@ const HomePage = () => {
         <HomeDecor />
 
         <div className="container px-12">
-          <HomePosts />
+          <HomePostsList />
         </div>
 
         <IntroPopUp />
