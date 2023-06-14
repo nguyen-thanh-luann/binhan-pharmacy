@@ -14,7 +14,7 @@ import { DOMAIN_URL, thumbnailImageUrl, WEB_DESCRIPTION, WEB_TITTLE } from '@/co
 import { useDevice } from '@/hooks'
 import { Main } from '@/templates'
 
-// this is final branch
+// this is final branch.
 const HomePage = () => {
   const { isDesktop } = useDevice()
 
