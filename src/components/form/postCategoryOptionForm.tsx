@@ -59,7 +59,7 @@ export const PostCategoryOptionForm = ({
   }
 
   const handleTogglePostCategory = (data: PostCategory) => {
-    const index = checkPostCategories?.findIndex((c) => c === data?.id) // kiểm tra xem cate được check hay chưa
+    const index = checkPostCategories?.findIndex((c) => c === data?.id) // kiểm tra xem postCategory được check hay chưa
 
     //check xem người dùng có muốn return cấp parent hay không
     if (isReturnParent) {

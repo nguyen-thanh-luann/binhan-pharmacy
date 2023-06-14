@@ -1,14 +1,12 @@
 import {
-  AttributeReq,
-  FilterProductParams,
+  AttributeReq, FilterProductParams,
   Product,
   ProductDescription,
   ProductDetail,
   ProductfilterSortType,
-  UserInfo,
+  UserInfo
 } from '@/types'
 import { NextRouter } from 'next/router'
-import _ from 'lodash'
 import { isObjectHasValue } from './functions'
 
 export function generateFilterProductParamFormRouter(router: NextRouter): FilterProductParams {
@@ -31,6 +29,7 @@ export function generateFilterProductParamFormRouter(router: NextRouter): Filter
     }
   })
 
+  // handle attribute data from params
   if (isObjectHasValue(attribute)) {
     attribute_ids = Object.keys(attribute).reduce(
       (prev: AttributeReq[], curr) =>
@@ -46,12 +45,14 @@ export function generateFilterProductParamFormRouter(router: NextRouter): Filter
     )
   }
 
+  // handle category data from params
   if (isObjectHasValue(category)) {
     category_ids = Object.keys(category)?.map((c) => {
       return Number(c?.split('category_')[1] || 0)
     })
   }
 
+  // handle category minor data from params
   if (isObjectHasValue(category_minor)) {
     category_minor_ids = Object.keys(category_minor)?.map((c) => {
       return Number(c?.split('minor_category_')[1] || 0)

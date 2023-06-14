@@ -20,7 +20,9 @@ export const FilterByCategory = () => {
   const hanldeCategorySelect = (category_id: number) => {
     const _category_id = category_id.toString()
     const category = `category_${_category_id}`
+
     const categories: any = router.query?.[category]
+    
     if (showCategories.includes(category_id)) {
       setShowCategories(showCategories.filter((id) => id !== category_id))
     } else {

@@ -1,6 +1,6 @@
 export const avatarBlank = require('./avatarBlank.png')
 export const searchEmpty = require('./searchEmpty.png')
-export const companyIconSm = require('./company_icon_sm.png')
+export const companyIconSm = require('./company_icon.png')
 export const logoSm = require('./logo_sm.png')
 export const logoLg = require('./logo_lg.png')
 export const downloadGooglePlay = require('./download_google_play.png')
