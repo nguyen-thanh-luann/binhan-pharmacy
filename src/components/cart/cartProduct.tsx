@@ -1,4 +1,4 @@
-import { TrashIconOutline, empty } from '@/assets'
+import { empty, TrashIconOutline } from '@/assets'
 import { API_URL } from '@/constants'
 import {
   changeProductUomTypeToReactSelectType,
@@ -21,7 +21,7 @@ import { useState } from 'react'
 import Select from 'react-select'
 import { twMerge } from 'tailwind-merge'
 import { Image } from '../image'
-import { InputCheckbox, InputQuantity, InputQuantityV2 } from '../inputs'
+import { CustomInputQuantity, InputCheckbox } from '../inputs'
 import { ModalConfirm } from '../modal'
 import { Spinner } from '../spinner'
 import { CartProductVariants } from './cartProductVariants'
@@ -225,11 +225,8 @@ export const CartProduct = ({
             </div>
 
             <div className="md:hidden flex justify-between items-center mt-8">
-              <InputQuantity
-                minusIconClassName="text-md text-white"
-                plusIconClassName="text-base text-white"
-                inputClassName={`text-base text-text-color text-center outline-none`}
-                quantity={data?.quantity}
+              <CustomInputQuantity
+                defaultValue={data?.quantity}
                 disabled={isQuantityUpdating}
                 onChangeQuantity={handleChangeQuantity}
               />
@@ -250,13 +247,19 @@ export const CartProduct = ({
 
         {/* quantity */}
         <div className="w-[115px] text-start hidden md:block">
-          <InputQuantityV2
+          {/* <InputQuantityV2
             minusIconClassName="text-md text-white"
             plusIconClassName="text-base text-white"
             inputClassName={`text-base text-text-color text-center outline-none`}
             quantity={data?.quantity}
             onChangeQuantity={handleChangeQuantity}
             disabled={isQuantityUpdating}
+          /> */}
+
+          <CustomInputQuantity
+            defaultValue={data?.quantity}
+            disabled={isQuantityUpdating}
+            onChangeQuantity={handleChangeQuantity}
           />
         </div>
 

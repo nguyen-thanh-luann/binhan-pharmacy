@@ -54,6 +54,7 @@ export const CartCategoryPromotion = ({
     <div className="">
       <div className="flex items-center gap-8">
         <Image alt="" src={categoryPromotionIcon} imageClassName="w-32 h-32 object-cover" />
+
         {category?.is_promotion_category_loading ? (
           <PromotionLoading />
         ) : (
@@ -61,7 +62,7 @@ export const CartCategoryPromotion = ({
             onClick={openPromotionModal}
             className="bg-primary p-6 rounded-[6px] flex items-center gap-8 cursor-pointer active:opacity-50 duration-200"
           >
-            <p className="text-base text-white">{`Chọn chương trình ${
+            <p className="text-base text-white line-clamp-1">{`Chọn chương trình ${
               category?.category_id?.category_name.toLowerCase() || ''
             }`}</p>
             <RightIcon className="text-sm text-white" />

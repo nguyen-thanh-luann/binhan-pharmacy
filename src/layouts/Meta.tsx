@@ -36,8 +36,16 @@ const Meta = (props: MetaProps) => {
         <meta property="twitter:image" content={thumbnail} />
         <meta property="twitter:image:width" content="875" />
         <meta property="twitter:image:height" content="476" />
-        {/* <link rel="icon" href={`${router.basePath}/favicon.ico`} key="favicon" /> */}
+
+        <link rel="icon" type="image/png" sizes="32x32" href={`/favicon-32x32.png`} />
+
+        <link rel="icon" type="image/png" sizes="16x16" href={`/favicon-32x32.png`} />
+
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="icon" sizes="32x32" href="/favicon.ico" key="favicon" />
+        <link rel="icon" href={`/favicon.ico`} key="favicon" />
       </Head>
+
       <NextSeo
         title={title}
         description={description}

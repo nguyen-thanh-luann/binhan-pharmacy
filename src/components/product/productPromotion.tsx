@@ -18,8 +18,8 @@ export const ProductPromotionItem = ({ data, className }: ProductPromotionProps)
         </div>
       ) : (
         <div className="flex gap-8 items-center">
-          <div className="w-12 h-12 rounded-full bg-orange"></div>
-          <p className="text-md">{data?.promotion_name}</p>
+          <div className="w-12 min-w-[12px] h-12 rounded-full bg-orange"></div>
+          <p className="text-md line-clamp-1">{data?.promotion_name}</p>
         </div>
       )}
     </div>

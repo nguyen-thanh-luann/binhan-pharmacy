@@ -1,9 +1,9 @@
-import { NoteIconOutline, companyIconSm } from '@/assets'
+import { companyIconSm, NoteIconOutline } from '@/assets'
 import { DOMAIN_URL, SWR_KEY } from '@/constants'
 import { formatMoneyVND, generateProductSlug, isObjectHasValue, purchasableProduct } from '@/helper'
 import { useAddToCart, useProductPromotion, useUser, useWishlist } from '@/hooks'
 import { productAPI } from '@/services'
-import { ProductDetail as IProductDetail, Product } from '@/types'
+import { Product, ProductDetail as IProductDetail } from '@/types'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -14,7 +14,7 @@ import { Button } from '../button'
 import { PromotionLoading } from '../cart/promotionLoading'
 import { Divider } from '../divider'
 import { Image } from '../image'
-import { InputQuantity } from '../inputs'
+import { CustomInputQuantity } from '../inputs'
 import { ShareSocial } from '../shareSocial'
 import { Spinner } from '../spinner'
 import { Star } from '../star'
@@ -270,11 +270,16 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
 
         <div className="flex items-center gap-12 mb-16">
           <p className="text_md">{`Số lượng`}</p>
-          <InputQuantity
+          {/* <InputQuantity
             minusIconClassName="text-md text-white"
             plusIconClassName="text-base text-white"
             inputClassName={`text-base text-text-color text-center outline-none`}
             quantity={quantity}
+            onChangeQuantity={(q: number) => setQuantity(q)}
+          /> */}
+
+          <CustomInputQuantity
+            defaultValue={quantity}
             onChangeQuantity={(q: number) => setQuantity(q)}
           />
         </div>
