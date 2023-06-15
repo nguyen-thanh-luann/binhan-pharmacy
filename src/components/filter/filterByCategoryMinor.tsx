@@ -2,13 +2,14 @@ import { RightIcon } from '@/assets'
 import { SWR_KEY } from '@/constants'
 import { isArrayHasValue } from '@/helper'
 import { useCategoryMinorList } from '@/hooks'
+import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { CategoryItemLoading } from '../category/categoryItemLoading'
 
 export const FilterByCategoryMinor = () => {
   const [showCategories, setShowCategories] = useState<number[]>([])
- 
+
   const router = useRouter()
 
   const { categoryMinorList, isValidating: categoryMinorListLoading } = useCategoryMinorList({
@@ -92,11 +93,23 @@ export const FilterByCategoryMinor = () => {
               <div key={category?.category_id} className="bg-white">
                 {isArrayHasValue(category?.child_ids) ? (
                   <div className="">
-                    <div
-                      onClick={() => hanldeShowCategories(category?.category_id)}
-                      className="border-b border-gray-200 p-8 flex-between cursor-pointer"
-                    >
-                      <p className="text-text-color font-bold text-md">{category?.category_name}</p>
+                    <div className="border-b border-gray-200 p-8 flex-between cursor-pointer">
+                      <p
+                        onClick={() => hanldeCategorySelect(category?.category_id)}
+                        className={classNames(
+                          ' font-bold text-md hover:text-primary',
+                          isActive(category?.category_id?.toString())
+                            ? 'text-primary'
+                            : 'text-text-color'
+                        )}
+                      >
+                        {category?.category_name}
+                      </p>
+
+                      <div
+                        className="flex flex-1 justify-end"
+                        onClick={() => hanldeShowCategories(category?.category_id)}
+                      ></div>
                       <RightIcon className={`${isShow ? 'rotate-90' : ''} duration-200`} />
                     </div>
 

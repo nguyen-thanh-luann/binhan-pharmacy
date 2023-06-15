@@ -2,6 +2,7 @@ import { RightIcon } from '@/assets'
 import { SWR_KEY } from '@/constants'
 import { isArrayHasValue } from '@/helper'
 import { useCategoryList } from '@/hooks'
+import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { CategoryItemLoading } from '../category/categoryItemLoading'
@@ -13,8 +14,10 @@ export const FilterByCategory = () => {
   )
 
   const { categoryList, isValidating: categoryListLoading } = useCategoryList({
-    key: SWR_KEY.get_category_list,
-    params: {},
+    key: SWR_KEY.get_category_list_filter,
+    params: {
+      position_view: 'left_menu',
+    },
   })
 
   const hanldeCategorySelect = (category_id: number) => {
@@ -22,7 +25,7 @@ export const FilterByCategory = () => {
     const category = `category_${_category_id}`
 
     const categories: any = router.query?.[category]
-    
+
     if (showCategories.includes(category_id)) {
       setShowCategories(showCategories.filter((id) => id !== category_id))
     } else {
@@ -49,6 +52,7 @@ export const FilterByCategory = () => {
       } else {
         query[category] = _category_id
       }
+      1
     }
 
     router.push({
@@ -98,12 +102,25 @@ export const FilterByCategory = () => {
               <div key={category?.category_id} className="bg-white">
                 {isArrayHasValue(category?.child_ids) ? (
                   <div>
-                    <div
-                      onClick={() => hanldeShowCategories(category?.category_id)}
-                      className="border-b border-gray-200 p-8 flex-between cursor-pointer"
-                    >
-                      <p className="text-text-color font-bold text-md">{category?.category_name}</p>
-                      <RightIcon className={`${isShow ? 'rotate-90' : ''} duration-200`} />
+                    <div className="border-b border-gray-200 p-8 flex-between cursor-pointer">
+                      <p
+                        onClick={() => hanldeCategorySelect(category?.category_id)}
+                        className={classNames(
+                          ' font-bold text-md hover:text-primary',
+                          isActive(category?.category_id?.toString())
+                            ? 'text-primary'
+                            : 'text-text-color'
+                        )}
+                      >
+                        {category?.category_name}
+                      </p>
+
+                      <div
+                        className="flex flex-1 justify-end"
+                        onClick={() => hanldeShowCategories(category?.category_id)}
+                      >
+                        <RightIcon className={`${isShow ? 'rotate-90' : ''} duration-200`} />
+                      </div>
                     </div>
 
                     <div className={`pl-12 animate-fade ${isShow ? 'block' : 'hidden'}`}>

@@ -44,6 +44,7 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
     } else {
       router.push(`/search/?minor_category_${id}=${id}`)
     }
+    setCurrentCategoryId(undefined)
   }
 
   const hanldePostCategoryClick = (postCategory: PostCategory) => {

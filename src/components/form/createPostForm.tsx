@@ -67,12 +67,15 @@ export const CreatePostForm = ({
   }, [defaultValue])
 
   const tagsOption = postTagList
-    ?.filter((t) => t?.active === true)
+    // ?.filter((t) => t?.active === true)
     ?.map((tag) => {
-      return {
-        label: tag?.content || '',
-        value: tag.id,
+      if (tag?.active === true) {
+        return {
+          label: tag?.content || '',
+          value: tag.id,
+        }
       }
+      return null
     })
 
   return (

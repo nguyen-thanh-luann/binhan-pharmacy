@@ -43,7 +43,6 @@ export const CartCompanyPromotion = ({ company, companyIndex }: CartCompanyPromo
     openModal()
   }
 
-  console.log({ company })
 
   return (
     <div className="mt-12 bg-white p-10 shadow-shadow-1 rounded-[10px]">

@@ -82,6 +82,10 @@ export const useCreateOrderDone = () => {
     { date_order, note, tag_ids }: createOrderDoneFunction,
     cb?: (_: CreateOrderDoneRes) => void
   ) => {
+    console.log('sale orders: ', orders)
+    console.log('order address: ', orderAddress);
+    
+
     if (!checkDataValid() || !orders?.length) return
 
     const order_id = orders.filter((item) => item.order_id)?.map((item) => item.order_id)

@@ -1,7 +1,6 @@
-import { WarningCircleIconOutline, orderDoneIcon } from '@/assets'
+import { orderDoneIcon, WarningCircleIconOutline } from '@/assets'
 import { Image, Spinner } from '@/components'
 import { VNPAY_STATUS_NAME } from '@/constants'
-import { formatMoneyVND } from '@/helper'
 import { useCreateOrderDone } from '@/hooks'
 import { orderAPI } from '@/services'
 import classNames from 'classnames'
@@ -13,7 +12,7 @@ const CheckoutProcess = () => {
   const router = useRouter()
   const { createOrderDone } = useCreateOrderDone()
   const [isValidating, setValidating] = useState<boolean>(false)
-  const { vnp_ResponseCode, sale_order_id, vnp_Amount } = router.query
+  const { vnp_ResponseCode, sale_order_id } = router.query
 
   useEffect(() => {
     if (vnp_ResponseCode !== '00') return
@@ -27,7 +26,7 @@ const CheckoutProcess = () => {
 
         if (res.result?.success) {
           createOrderDone({}, () => {
-            toast.success('Tạo thanh toán thành công')
+            toast.success('Congrat!')
           })
         }
       })
@@ -37,7 +36,7 @@ const CheckoutProcess = () => {
       })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [vnp_ResponseCode, sale_order_id])
 
   const isTransactionSuccess = vnp_ResponseCode === '00'
 
@@ -82,8 +81,6 @@ const CheckoutProcess = () => {
             >
               {isTransactionSuccess ? 'Giao dịch thành công' : 'Giao dịch không thành công'}
             </p>
-
-            <p className="text-md">{formatMoneyVND(Number(vnp_Amount))}</p>
 
             <div
               className={classNames(

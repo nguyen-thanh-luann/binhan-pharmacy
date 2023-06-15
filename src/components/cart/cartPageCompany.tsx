@@ -1,14 +1,13 @@
-import { CartCompany, CartProduct, ToggleCheckProduct, UpdateProduct } from '@/types'
-import classNames from 'classnames'
-import { twMerge } from 'tailwind-merge'
-import { CartCategoryGroup } from './cartCategoryGroup'
-import { InputCheckbox } from '../inputs'
 import { StoreIcon } from '@/assets'
 import { useAsync } from '@/hooks'
 import { cartAPI } from '@/services'
+import { CartCompany, CartProduct, ToggleCheckProduct, UpdateProduct } from '@/types'
+import classNames from 'classnames'
+import { twMerge } from 'tailwind-merge'
+import { InputCheckbox } from '../inputs'
 import { Spinner } from '../spinner'
+import { CartCategoryGroup } from './cartCategoryGroup'
 import { CartCompanyPromotion } from './cartCompanyPromotion'
-import { useEffect } from 'react'
 
 interface CartPageCompanyProps {
   data: CartCompany
@@ -47,9 +46,6 @@ export const CartPageCompany = ({
     })
   }
 
-  useEffect(() => {
-    console.log('cartpage company data:', data)
-  }, [data])
 
   return (
     <div className={twMerge(classNames('', className))}>
