@@ -59,6 +59,7 @@ export const SWR_KEY = {
 
   get_drug_stores: 'get_drug_stores',
   get_drug_store_detail: 'get_drug_store_detail',
+  order_draft: 'order_draft',
 
   cart_list: 'cart_list',
   cart_count: 'cart_count',

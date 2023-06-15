@@ -157,7 +157,7 @@ export const useCreateOrder = () => {
       dispatch(dispatch(setBackdropVisible(true)))
 
       const res: any = await orderAPI.updateOrderDraft({
-        order_id,
+        order_id: order_id,
         partner_shipping_id: partner_shipping_id || null,
         acquirer_id: acquirer_id || null,
       })

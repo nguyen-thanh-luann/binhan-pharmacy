@@ -129,6 +129,14 @@ export type createOrderDoneFunction = Pick<CreateOrderDoneReq, 'note' | 'date_or
   tag_ids?: IdAndName[]
 }
 
+export type CreateOrderDoneWithTransactionConfirmedFunction = Pick<
+  CreateOrderDoneReq,
+  'note' | 'date_order' | 'order_id'
+> & {
+  delivery?: SelectedDelivery[]
+  tag_ids?: IdAndName[]
+}
+
 export interface SelectedDelivery extends DeliveryMethodRes {
   company_id: number
   order_id: number

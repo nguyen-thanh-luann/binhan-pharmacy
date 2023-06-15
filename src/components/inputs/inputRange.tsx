@@ -71,7 +71,7 @@ export const InputRange: FC<MultiRangeSliderProps> = memo(function InputRangeChi
           setMinVal(value)
           event.target.value = value.toString()
         }}
-        className={classnames('thumb z-30', {
+        className={classnames('thumb z-100', {
           'z-50': minVal > max - 100,
         })}
       />
@@ -86,7 +86,7 @@ export const InputRange: FC<MultiRangeSliderProps> = memo(function InputRangeChi
           setMaxVal(value)
           event.target.value = value.toString()
         }}
-        className="thumb z-40"
+        className="thumb z-100"
       />
 
       <div className="relative w-[250px]">

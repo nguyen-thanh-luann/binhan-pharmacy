@@ -13,7 +13,7 @@ interface ProductFilterSidebarProps {
 
 export const ProductFilterSidebar = ({
   className,
-  price_max = 0,
+  price_max = 100000,
   price_min = 0,
 }: ProductFilterSidebarProps) => {
 

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useRef } from 'react'
 import { Button } from '../button'
 import { InputRange } from '../inputs'
+import { roundingNumber } from '@/helper'
 
 interface FilterByPriceProps {
   className?: string
@@ -15,18 +16,32 @@ interface Price {
   max: number
 }
 
-export const FilterByPrice = ({ className, price_max = 0, price_min = 0 }: FilterByPriceProps) => {
+export const FilterByPrice = ({
+  className,
+  price_max = 100000,
+  price_min = 0,
+}: FilterByPriceProps) => {
   const router = useRouter()
-  const prices = useRef<Price>()
+
+  const priceMax = roundingNumber(price_max, 'upper', 50000)
+  const priceMin = roundingNumber(price_min, 'lower', 50000)
+
+  console.log({priceMax, priceMin});
+  
+
+  const prices = useRef<Price>({
+    min: priceMin,
+    max: priceMax,
+  })
 
   const hanldeFilterPrice = () => {
-    if (!prices.current) return
+    if (!prices) return
 
     router.push({
       query: {
         ...router?.query,
-        price_min: prices.current.min,
-        price_max: prices.current.max,
+        price_min: prices?.current?.min,
+        price_max: prices?.current?.max,
       },
     })
   }
@@ -36,8 +51,8 @@ export const FilterByPrice = ({ className, price_max = 0, price_min = 0 }: Filte
       <p className="text-text-color font-bold text-lg mb-10">Khoảng giá</p>
 
       <InputRange
-        max={price_max}
-        min={price_min}
+        max={priceMax}
+        min={priceMin}
         onChange={({ min, max }: { min: number; max: number }) => {
           prices.current = { max, min }
         }}

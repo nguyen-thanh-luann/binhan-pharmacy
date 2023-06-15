@@ -9,12 +9,13 @@ import {
   setBackdropVisible,
 } from '@/store'
 import {
+  createOrderDoneFunction,
   CreateOrderDoneRes,
+  CreateOrderDoneWithTransactionConfirmedFunction,
   GetOrderDraftRes,
   OrderLineDelivery,
   Payment,
   ShippingAddressV2,
-  createOrderDoneFunction,
 } from '@/types'
 import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
@@ -82,10 +83,6 @@ export const useCreateOrderDone = () => {
     { date_order, note, tag_ids }: createOrderDoneFunction,
     cb?: (_: CreateOrderDoneRes) => void
   ) => {
-    console.log('sale orders: ', orders)
-    console.log('order address: ', orderAddress);
-    
-
     if (!checkDataValid() || !orders?.length) return
 
     const order_id = orders.filter((item) => item.order_id)?.map((item) => item.order_id)
@@ -107,7 +104,53 @@ export const useCreateOrderDone = () => {
       asyncHandler({
         fetcher: orderAPI.createOrderDone({
           order_id,
-          date_order: date_order,
+          date_order,
+          note,
+          tag_ids: tag_ids?.length ? tag_ids.map((item) => item.id) : [],
+        }),
+        onSuccess: (data: any) => {
+          cb?.(data)
+          dispatch(resetOrderData())
+          deleteCheckedProducts()
+          setTimeout(() => {
+            mutate(SWR_KEY.orders, [], false)
+          }, 4000)
+        },
+        config: {
+          successMsg: 'Tạo đơn hàng thành công',
+        },
+      })
+    } catch (e) {
+      console.log(e)
+      dispatch(dispatch(setBackdropVisible(false)))
+    }
+  }
+
+  const createOrderDoneWithTransactionConfirmed = async (
+    { date_order, note, tag_ids, order_id }: CreateOrderDoneWithTransactionConfirmedFunction,
+    cb?: (_: CreateOrderDoneRes) => void
+  ) => {
+    if (!checkDataValid() || !order_id?.length) return
+
+    dispatch(dispatch(setBackdropVisible(true)))
+
+    try {
+      const res: any = await orderAPI?.updateOrderDraft({
+        order_id,
+        partner_shipping_id: orderAddress?.id || null,
+      })
+
+      dispatch(dispatch(setBackdropVisible(false)))
+
+      if (!res?.result) {
+        toast.error(res?.result?.message || 'Có lỗi xảy ra')
+        return
+      }
+
+      asyncHandler({
+        fetcher: orderAPI.createOrderDone({
+          order_id,
+          date_order,
           note,
           tag_ids: tag_ids?.length ? tag_ids.map((item) => item.id) : [],
         }),
@@ -131,5 +174,6 @@ export const useCreateOrderDone = () => {
 
   return {
     createOrderDone,
+    createOrderDoneWithTransactionConfirmed,
   }
 }

@@ -1,34 +1,55 @@
 import { orderDoneIcon, WarningCircleIconOutline } from '@/assets'
 import { Image, Spinner } from '@/components'
-import { VNPAY_STATUS_NAME } from '@/constants'
+import { SWR_KEY, VNPAY_STATUS_NAME } from '@/constants'
 import { useCreateOrderDone } from '@/hooks'
 import { orderAPI } from '@/services'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
+import useSWR from 'swr'
 
 const CheckoutProcess = () => {
-  const router = useRouter()
-  const { createOrderDone } = useCreateOrderDone()
+  const { query, isReady, push } = useRouter()
+  const { createOrderDoneWithTransactionConfirmed } = useCreateOrderDone()
   const [isValidating, setValidating] = useState<boolean>(false)
-  const { vnp_ResponseCode, sale_order_id } = router.query
+  const { vnp_ResponseCode, sale_order_id } = query
+  const { data: orderDraftData } = useSWR(
+    !isReady ? null : SWR_KEY.order_draft,
+    !isReady ? null : () => fetcherHandler()
+  )
+
+  async function fetcherHandler() {
+    if (!sale_order_id) return null
+
+    try {
+      const res = await orderAPI.getOrderDrafts({ order_ids: [+sale_order_id] })
+      return res.result?.data
+    } catch (error) {
+      return null
+    }
+  }
 
   useEffect(() => {
-    if (vnp_ResponseCode !== '00') return
+    if (vnp_ResponseCode !== '00' || !orderDraftData) return
 
     setValidating(true)
 
     orderAPI
       .confirmTransaction({ sale_order_id: Number(sale_order_id) })
       .then((res: any) => {
-        setValidating(false)
-
-        if (res.result?.success) {
-          createOrderDone({}, () => {
-            toast.success('Congrat!')
-          })
+        if (res?.result?.success && sale_order_id) {
+          createOrderDoneWithTransactionConfirmed(
+            {
+              order_id: orderDraftData?.sale_orders?.map((order) => +order?.order_id),
+            },
+            () => {
+              toast.success('Congrat!')
+            }
+          )
         }
+
+        setValidating(false)
       })
       .catch(() => {
         toast.error('Something went wrong!')
@@ -36,7 +57,7 @@ const CheckoutProcess = () => {
       })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [vnp_ResponseCode, sale_order_id])
+  }, [orderDraftData])
 
   const isTransactionSuccess = vnp_ResponseCode === '00'
 
@@ -98,9 +119,9 @@ const CheckoutProcess = () => {
             <div
               onClick={() => {
                 if (isTransactionSuccess) {
-                  router.push('/')
+                  push('/')
                 } else {
-                  router.push({
+                  push({
                     pathname: '/checkout',
                     query: {
                       sale_order_id,
