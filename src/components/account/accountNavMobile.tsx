@@ -43,7 +43,7 @@ export const AccountNavMobile = ({ className }: AccountNavMobileProps) => {
             <div className="flex items-center">
               <div
                 className={classNames(
-                  'w-24 h-24 text-text-color flex-center text-lg group-hover:bg-primary group-hover:text-white',
+                  'w-24 h-24 text-text-color flex-center text-lg group-hover:text-primary',
                   isActive ? '!text-primary' : ''
                 )}
               >
@@ -51,7 +51,7 @@ export const AccountNavMobile = ({ className }: AccountNavMobileProps) => {
               </div>
               <p
                 className={classNames(
-                  'ml-4 h-24 text-md group-hover:bg-primary group-hover:text-white',
+                  'ml-4 h-24 text-md group-hover:text-primary',
                   isActive ? '!text-primary' : ''
                 )}
               >

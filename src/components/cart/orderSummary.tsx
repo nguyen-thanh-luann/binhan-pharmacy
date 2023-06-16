@@ -23,8 +23,6 @@ export const OrderSummary = ({ className }: CartSummaryProps) => {
   const { createOrderDone } = useCreateOrderDone()
   const { createPayment } = usePayment()
 
-  console.log({ data })
-
   const payment: Payment = useSelector(selectOrderPayment)
 
   const handleCreateOrder = () => {

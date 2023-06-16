@@ -1,13 +1,10 @@
 import { useCreateOrder, usePayment } from '@/hooks'
-import classNames from 'classnames'
-import React from 'react'
-import { twMerge } from 'tailwind-merge'
-import { InputCheckbox } from '../inputs'
-import { Image } from '../image'
-import { Payment } from '@/types'
-import { companyIconSm } from '@/assets'
-import { useDispatch, useSelector } from 'react-redux'
 import { selectOrderPayment, setOrderPayment } from '@/store'
+import { Payment } from '@/types'
+import classNames from 'classnames'
+import { useDispatch, useSelector } from 'react-redux'
+import { twMerge } from 'tailwind-merge'
+import { PaymentMethod, PaymentMethodLoading } from '../payment'
 
 interface CheckoutPaymentMethodProps {
   className?: string
@@ -15,7 +12,7 @@ interface CheckoutPaymentMethodProps {
 }
 
 export const CheckoutPaymentMethod = ({ className, order_id }: CheckoutPaymentMethodProps) => {
-  const { data: paymentList = [] } = usePayment()
+  const { data: paymentList = [], isValidating } = usePayment()
   const dispatch = useDispatch()
   const { updateOrderDraft } = useCreateOrder()
   const payment = useSelector(selectOrderPayment)
@@ -32,36 +29,30 @@ export const CheckoutPaymentMethod = ({ className, order_id }: CheckoutPaymentMe
 
   return (
     <div className={twMerge(classNames(`bg-white shadow-shadow-1 rounded-lg p-12`, className))}>
-      <p className="text-text-color capitalize font-bold text-xl leading-10 mb-12">
+      <p className="text-text-color font-bold text-xl leading-10 mb-12">
         Chọn phương thức thanh toán
       </p>
 
       <div>
-        {paymentList?.map(
-          (item) =>
-            item.state === 'enabled' && (
-              <li
-                key={item.acquirer_id}
-                onClick={() => handleAddPayment(item)}
-                className={`flex items-center cursor-pointer mb-12 gap-8 last:mb-0`}
-              >
-                <InputCheckbox
-                  type="radio"
-                  isChecked={payment?.acquirer_id === item.acquirer_id}
-                  onCheck={() => handleAddPayment(item)}
-                  className="rounded-full"
+        {isValidating ? (
+          <div className="flex flex-col">
+            {Array?.from({ length: 4 })?.map((_, index) => (
+              <PaymentMethodLoading key={index} />
+            ))}
+          </div>
+        ) : (
+          paymentList?.map(
+            (item) =>
+              item.state === 'enabled' && (
+                <PaymentMethod
+                  key={item?.acquirer_id}
+                  data={item}
+                  isCheck={payment?.acquirer_id === item.acquirer_id}
+                  hanldeCheck={() => handleAddPayment(item)}
+                  className="mb-12 last:mb-0"
                 />
-
-                <div className="">
-                  <Image
-                    src={item?.image_url || companyIconSm}
-                    className="w-[24px] h-[24px] object-cover"
-                  />
-                </div>
-
-                <p className="text-md font-bold text-text-color line-clamp-1">{item.name}</p>
-              </li>
-            )
+              )
+          )
         )}
       </div>
     </div>

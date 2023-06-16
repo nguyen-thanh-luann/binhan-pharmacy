@@ -10,7 +10,7 @@ const CheckoutSuccessPage = () => {
 
   return (
     <MainNoFooter title={WEB_TITTLE} description={WEB_DESCRIPTION}>
-      <div className="container min-h-[80vh] w-[90vw] lg:w-[50vw] mx-auto mt-24 mb-bottom_nav_height md:mb-0">
+      <div className="container min-h-[80vh] w-[90vw] lg:w-[50vw] mx-auto mt-24 mb-bottom_nav_height md:mb-[32px]">
         <div className="bg-white p-16 shadow-shadow-1 rounded-lg">
           <div className={`min-h-[200px] flex items-center justify-center flex-col mb-12`}>
             <Image

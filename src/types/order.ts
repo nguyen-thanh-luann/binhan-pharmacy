@@ -320,6 +320,7 @@ export interface OrderHistoryDetail {
   url_tracking_delivery: string | false
   delivery_message: string
   payment_method: OrderPaymentMethod
+  category_minor_promotion: OrderDraftCategoryMinorPromotion[]
 }
 
 export interface OrderPaymentMethod {

@@ -1,11 +1,14 @@
 import { UpIcon } from '@/assets'
-import { SWR_KEY } from '@/constants'
+import { DOMAIN_URL, SWR_KEY } from '@/constants'
 import { formatMoneyVND } from '@/helper'
-import { useCreateOrderDone } from '@/hooks'
+import { useCreateOrderDone, usePayment } from '@/hooks'
 import { cartAPI } from '@/services'
-import { GetOrderDraftRes } from '@/types'
+import { selectOrderPayment } from '@/store'
+import { GetOrderDraftRes, Payment } from '@/types'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
+import { toast } from 'react-hot-toast'
+import { useSelector } from 'react-redux'
 import useSWR from 'swr'
 import { Button } from '../button'
 import { OrderSummaryMobileDetail } from './orderSummaryMobileDetail'
@@ -14,6 +17,8 @@ export const OrderSummaryMobile = () => {
   const router = useRouter()
   const [showCartSummaryDetail, setShowCartSummaryDetail] = useState<boolean>(false)
   const { data } = useSWR<GetOrderDraftRes>(SWR_KEY.orders)
+  const payment: Payment = useSelector(selectOrderPayment)
+  const { createPayment } = usePayment()
 
   const { data: cartLength } = useSWR(SWR_KEY.cart_count, () =>
     cartAPI.getCartLength().then((res) => res?.data?.cart_product_count)
@@ -47,12 +52,35 @@ export const OrderSummaryMobile = () => {
 
   const { createOrderDone } = useCreateOrderDone()
 
-  const hanldeCreateOrder = () => {
-    createOrderDone({}, (data) => {
-      let query = ''
-      data?.sale_order_id.forEach((item) => (query += `sale_order_id=${item.sale_order_id}&`))
-      router.push(`/checkout-success?${query.slice(0, query.length - 1)}`)
-    })
+  const handleCreateOrder = () => {
+    if (payment?.provider === 'vnpay') {
+      if (data?.sale_orders?.[0]) {
+        const order_id = data.sale_orders[0].order_id
+
+        createPayment(
+          {
+            sale_order_id: order_id,
+            acquirer_id: payment.acquirer_id,
+            returned_url: `${DOMAIN_URL}/checking-checkout-status?sale_order_id=${order_id}`,
+          },
+          (data: any) => {
+            router.push(data.vnpay_payment_url)
+          },
+          () => {
+            toast?.error('Tạo thanh toán không thành công')
+          }
+        )
+      } else {
+        // Not hanlde for multi company
+        return
+      }
+    } else {
+      createOrderDone({}, (data) => {
+        let query = ''
+        data?.sale_order_id.forEach((item) => (query += `sale_order_id=${item.sale_order_id}&`))
+        router.push(`/checkout-success?${query.slice(0, query.length - 1)}`)
+      })
+    }
   }
 
   return (
@@ -93,7 +121,7 @@ export const OrderSummaryMobile = () => {
             title={`Đặt hàng`}
             className="bg-primary rounded-[10px] py-10 flex-1"
             textClassName="text-base font-medium leading-9 text-white"
-            onClick={hanldeCreateOrder}
+            onClick={handleCreateOrder}
           />
         </div>
       </div>

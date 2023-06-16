@@ -1,4 +1,4 @@
-import { Image, ImageShower, OrderTicketProduct, Spinner } from '@/components'
+import { Image, ImageShower, OrderProductLoading, OrderTicketProduct } from '@/components'
 import { API_URL } from '@/constants'
 import { formatMoneyVND } from '@/helper'
 import { useOrderHistoryDetail } from '@/hooks'
@@ -20,8 +20,10 @@ export const OrderConfirmTicket = ({ sale_order_id }: OrderConfirmTicketProps) =
   return (
     <div>
       {isValidating ? (
-        <div className="flex-center my-24">
-          <Spinner />
+        <div className="my-24">
+          {Array?.from({ length: 4 }).map((_, index) => (
+            <OrderProductLoading key={index} />
+          ))}
         </div>
       ) : (
         <div className="">

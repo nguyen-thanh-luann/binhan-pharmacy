@@ -3,13 +3,13 @@ import {
   NotFound,
   OrderHistoryDetail,
   OrderHistoryItem,
-  Spinner,
+  OrderProductLoading,
   Tabs,
 } from '@/components'
 import { DEFAULT_LIMIT } from '@/constants'
 import { useClickOutside, useDevice, useModal, useOrderHistory } from '@/hooks'
 import { AccountContainer, Main } from '@/templates'
-import { OrderHistoryDetail as IOrderHistoryDetail, OrderFilterParams } from '@/types'
+import { OrderFilterParams, OrderHistoryDetail as IOrderHistoryDetail } from '@/types'
 import moment from 'moment'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
@@ -39,7 +39,7 @@ const PurchasedOrderPage = () => {
   const {
     visible: showDatePicker,
     closeModal: closeDatePickerModal,
-    openModal: openDatePicker,
+    toggle: toggleDatePicker,
   } = useModal()
 
   useEffect(() => {
@@ -141,19 +141,19 @@ const PurchasedOrderPage = () => {
           ) : (
             <div>
               <div className="bg-white p-12 mb-12 rounded-[10px] shadow-shadow-1">
-                <div className="border-b border-gray-200 pb-12 mb-18 flex-between flex-wrap">
+                <div className="border-b border-gray-200 pb-12 mb-18 flex-between flex-wrap max-w-[100%]">
                   <p className="text-xl capitalize font-semibold">Đơn hàng</p>
 
                   <div ref={datePickerRef} className="">
                     <div className="relative">
                       <div
-                        onClick={openDatePicker}
+                        onClick={toggleDatePicker}
                         className="flex border border-primary cursor-pointer rounded-lg p-8"
                       >
                         <p>
-                          {`${moment(dateFilter[0]?.startDate).format('YYYY-MM-DD')} 
+                          {`${moment(dateFilter[0]?.startDate).format('DD-MM-YYYY')} 
                             ~
-                             ${moment(dateFilter[0]?.endDate).format('YYYY-MM-DD')}`}
+                             ${moment(dateFilter[0]?.endDate).format('DD-MM-YYYY')}`}
                         </p>
                       </div>
 
@@ -196,8 +196,10 @@ const PurchasedOrderPage = () => {
 
               <div>
                 {isOrderListLoading ? (
-                  <div className="flex-center">
-                    <Spinner />
+                  <div className="bg-white p-12">
+                    {Array?.from({ length: 4 }).map((_, index) => (
+                      <OrderProductLoading key={index} />
+                    ))}
                   </div>
                 ) : orderHistory?.sale_orders?.length > 0 ? (
                   <div className="overflow-scroll scrollbar-hide">

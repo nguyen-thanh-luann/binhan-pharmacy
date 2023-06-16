@@ -26,8 +26,8 @@ export const DeliveryAddress = ({ className }: DeliveryAddressProps) => {
   return (
     <div className={twMerge(classNames(`bg-white shadow-shadow-1 rounded-lg p-12`, className))}>
       <div className="flex justify-between items-center flex-wrap gap-12 mb-24">
-        <p className="text-text-color capitalize font-bold text-xl leading-10">
-          Thông Tin Địa Chỉ Nhận Hàng
+        <p className="text-text-color font-bold text-xl leading-10">
+          Thông tin địa chỉ nhận hàng
         </p>
 
         <div className="">

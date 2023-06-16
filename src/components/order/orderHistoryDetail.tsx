@@ -1,19 +1,19 @@
 import { ArrowLeftIcon, UpIcon } from '@/assets'
+import { API_URL } from '@/constants'
 import { formatMoneyVND, isObjectHasValue } from '@/helper'
 import { useOrderHistoryDetail } from '@/hooks'
+import { selectPreviewImageUrl, setPreviewImageUrl } from '@/store'
 import { OrderHistoryDetail as IOrderHistoryDetail } from '@/types'
 import classNames from 'classnames'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { twMerge } from 'tailwind-merge'
 import { CustomImage } from '../customImage'
-import { Spinner } from '../spinner'
-import { PromotionsAppliedOnOrderView } from './promotionsAppliedOnOrderView'
 import { Image } from '../image'
-import { API_URL } from '@/constants'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectPreviewImageUrl, setPreviewImageUrl } from '@/store'
 import { ImageShower } from '../imageShower'
+import { OrderProductLoading } from './orderProductLoading'
+import { PromotionsAppliedOnOrderView } from './promotionsAppliedOnOrderView'
 
 interface OrderHistoryDetailProps {
   type?: 'history' | 'order'
@@ -22,21 +22,13 @@ interface OrderHistoryDetailProps {
   cb?: (params: IOrderHistoryDetail) => void
 }
 
-export const OrderHistoryDetail = ({
-  sale_order_id,
-  className,
-  cb: om,
-}: OrderHistoryDetailProps) => {
+export const OrderHistoryDetail = ({ sale_order_id, className, cb }: OrderHistoryDetailProps) => {
   const { data: order, isValidating } = useOrderHistoryDetail({ sale_order_id })
   const dispatch = useDispatch()
   const previewImageUrl = useSelector(selectPreviewImageUrl)
 
-
-  console.log({order});
-  
-
   useEffect(() => {
-    if (order) om?.(order)
+    if (order) cb?.(order)
   }, [order])
 
   const RenderOrderDetail = () => {
@@ -57,7 +49,7 @@ export const OrderHistoryDetail = ({
               <p className="text-md font-bold mr-8">Chi tiết đơn hàng</p>
               <UpIcon
                 className={classNames(
-                  'duration-200 ease-in-out text-md',
+                  'duration-200 ease-in-out text-base',
                   viewOrderDetail ? '' : 'rotate-180'
                 )}
               />
@@ -65,7 +57,7 @@ export const OrderHistoryDetail = ({
 
             <table
               className={classNames(
-                'hidden animate-fade table-auto',
+                'hidden animate-fade table-auto ml-12',
                 viewOrderDetail ? 'md:table' : ''
               )}
             >
@@ -99,7 +91,7 @@ export const OrderHistoryDetail = ({
             </table>
 
             {/* show in mobile */}
-            <div className={`${viewOrderDetail ? 'block' : 'hidden'} md:hidden`}>
+            <div className={`${viewOrderDetail ? 'block ml-12' : 'hidden'} md:hidden`}>
               {order?.products?.map((item) => (
                 <div key={item.product_id} className="flex gap-12 mb-12">
                   <div className="">
@@ -122,9 +114,18 @@ export const OrderHistoryDetail = ({
         {order?.discount ? <PromotionsAppliedOnOrderView data={order.discount} /> : null}
 
         <div className="border-t border-gray-200 p-12">
-          <p className="text-end mb-12">
-            <span className="text-text-color font-bold text-md">{`Tổng tiền: `}</span>
-            <span className="text-md font-bold text-primary">
+          {order?.category_minor_promotion?.map((promotion) => (
+            <div key={promotion?.category_id} className="flex-between mb-8 last:mb-0">
+              <p className="text-text-color text-md font-semibold">{`${promotion?.category_name} (-${promotion?.percent}%)`}</p>
+              <p className="text-text-color text-md font-semibold">{`-${formatMoneyVND(
+                promotion?.promotion_total
+              )}`}</p>
+            </div>
+          ))}
+
+          <p className="flex-between">
+            <span className="text-text-color font-bold text-md">{`Tổng tiền`}</span>
+            <span className="text-md font-bold text-red">
               {formatMoneyVND(order?.amount_total || 0)}
             </span>
           </p>
@@ -135,8 +136,10 @@ export const OrderHistoryDetail = ({
 
   if (isValidating)
     return (
-      <div className="flex-center">
-        <Spinner />
+      <div className="bg-white p-12">
+        {Array?.from({ length: 4 }).map((_, index) => (
+          <OrderProductLoading key={index} />
+        ))}
       </div>
     )
 

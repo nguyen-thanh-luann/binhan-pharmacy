@@ -11,13 +11,11 @@ interface OrderHistoryItemProps {
 }
 
 export const OrderHistoryItem = ({ data, onClick: onExternalClick }: OrderHistoryItemProps) => {
-  console.log({data});
-  
   return (
     <div className="bg-white p-16 rounded-lg mb-20 last:mb-0 shadow-shadow-1">
       <div className="border-b border-gray-200 pb-12 flex items-center flex-between flex-wrap">
         <div className="flex items-center">
-          <NoteIconOutline className="mr-8" />
+          <NoteIconOutline className="mr-8 font-bold" />
           <p className="text-md font-bold text-text-color">{`Mã đơn hàng: ${data?.name}`}</p>
 
           <p className="rounded-lg p-4 px-12 bg-primary-100 text-primary ml-8">
@@ -44,7 +42,9 @@ export const OrderHistoryItem = ({ data, onClick: onExternalClick }: OrderHistor
             </div>
             <div className="flex-1">
               <p className="text-base font-bold line-clamp-2 mb-8">{product?.name}</p>
-              <p className="text-base font-bold line-clamp-2 mb-8 text-red">{formatMoneyVND(product?.price)}</p>
+              <p className="text-base font-bold line-clamp-2 mb-8 text-red">
+                {formatMoneyVND(product?.price)}
+              </p>
               <p className="text-base font-bold line-clamp-2">{`Số lượng: ${product?.quantity}`}</p>
             </div>
           </div>

@@ -1,7 +1,13 @@
 @import './variables.scss';
 
 .date-picker{
+
   .rdrDefinedRangesWrapper{
-    @apply hidden md:block
+    @apply hidden
+  }
+
+  .rdrCalendarWrapper, 
+  .rdrDateRangeWrapper{
+    @apply max-w-[100%]
   }
 }

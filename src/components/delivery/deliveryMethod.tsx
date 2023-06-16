@@ -19,7 +19,7 @@ const DeliveryMethod = (props: DeliveryMethodProps) => {
     <div
       onClick={() => addDelivery && addDelivery(delivery)}
       key={delivery.carrier_id}
-      className={`cursor-pointer border-1 border-gray-200 w-fit p-8 rounded-md ${
+      className={`cursor-pointer border-1 border-gray-200 w-fit rounded-md mb-12 last:mb-0 ${
         isActive ? 'border-primary' : ''
       } ${disabled ? 'cursor-default opacity-50' : ''}`}
     >
@@ -28,7 +28,7 @@ const DeliveryMethod = (props: DeliveryMethodProps) => {
           type="radio"
           isChecked={isActive}
           onCheck={() => addDelivery && addDelivery(delivery)}
-          className='rounded-full'
+          className="rounded-full"
         />
 
         <div className="">
@@ -39,10 +39,9 @@ const DeliveryMethod = (props: DeliveryMethodProps) => {
         </div>
 
         <div className="">
-          <p className="text-md font-bold text-text-color">{delivery.carrier_name}</p>
-          <p className="text-md font-bold text-text-color">
-            {formatMoneyVND(delivery.shipping_fee)}
-          </p>
+          <p className="text-md font-bold text-text-color">{`${
+            delivery.carrier_name
+          } (${formatMoneyVND(delivery?.shipping_fee)})`}</p>
         </div>
       </div>
     </div>
@@ -50,4 +49,3 @@ const DeliveryMethod = (props: DeliveryMethodProps) => {
 }
 
 export { DeliveryMethod }
-
