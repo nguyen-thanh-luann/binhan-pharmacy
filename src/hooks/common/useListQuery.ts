@@ -29,7 +29,6 @@ export const useListQuery = <Data = any, Params extends QueryList = any>({
     config
   )
 
-  
   const [params, setParams] = useState<Params>(getDefaultParams)
   const hasMore = (data?.data?.length || 0) < (data?.total || 0)
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false)
@@ -117,9 +116,9 @@ export const useListQuery = <Data = any, Params extends QueryList = any>({
       setParams(newParams)
 
       const res: any = await fetcher(newParams)
-      const response: any = getDataResponse<Data>(res)
+      const response = getDataResponse<Data>(res)
       mutate(response, false)
-      onSuccess?.(response?.result)
+      onSuccess?.(response?.data)
     } catch (error) {
       onError?.()
     }
@@ -131,6 +130,33 @@ export const useListQuery = <Data = any, Params extends QueryList = any>({
         { data: params, limit: data?.limit, offset: data?.offset, total: data?.total },
         shouldFetch
       )
+    }
+  }
+
+  const paginate = async (
+    _params: Params,
+    onSuccess?: (data: Data[]) => void,
+    onError?: () => void
+  ) => {
+    if (isLoadingMore || !data?.data?.length || !hasMore || isValidating) return
+
+    const limit = data.limit
+
+    try {
+      setIsLoadingMore(true)
+      const newOffset = ((_params?.page || 0) - 1) * limit
+      const newParams = { ...params, limit, offset: newOffset }
+
+      const res: any = await fetcher(newParams)
+      const response = getDataResponse<Data>(res)
+
+      setIsLoadingMore(false)
+
+      mutate(response, false)
+      onSuccess?.(response?.data)
+    } catch (error) {
+      setIsLoadingMore(false)
+      onError?.()
     }
   }
 
@@ -148,5 +174,6 @@ export const useListQuery = <Data = any, Params extends QueryList = any>({
     filter,
     getMore,
     refresh,
+    paginate,
   }
 }

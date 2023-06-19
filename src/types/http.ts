@@ -89,6 +89,7 @@ export interface UseQueryListRes<T, V extends QueryList> {
 export interface QueryList {
   limit?: number | undefined
   offset?: number | undefined
+  page?: number
   keyword?: string | string[]
 }
 

@@ -19,23 +19,25 @@ interface usePostListRes {
   updatePost: (params: UpdatePost, handleSuccess?: () => void, handleError?: () => void) => void
   deletePost: (id: string, handleSuccess?: () => void, handleError?: () => void) => void
   filter: (props: GetPostListParams) => void
+  paginate: (props: GetPostListParams) => void
+  offset: number,
+  limit: number
+  total: number
 }
 
 export const usePostList = ({ key, params }: usePostListProps): usePostListRes => {
   const dispatch = useDispatch()
 
-  const { data, isValidating, getMore, hasMore, isLoadingMore, mutate, filter } = useListQuery<
-    Post,
-    GetPostListParams
-  >({
-    key,
-    fetcher: postAPI.getPostList,
-    initialParams: params,
-    config: {
-      revalidateOnFocus: false,
-      dedupingInterval: 60000,
-    },
-  })
+  const { data, isValidating, getMore, hasMore, isLoadingMore, mutate, filter, paginate, offset, limit, total } =
+    useListQuery<Post, GetPostListParams>({
+      key,
+      fetcher: postAPI.getPostList,
+      initialParams: params,
+      config: {
+        revalidateOnFocus: false,
+        dedupingInterval: 60000,
+      },
+    })
 
   const createPost = async (
     params: CreatePost,
@@ -119,5 +121,9 @@ export const usePostList = ({ key, params }: usePostListProps): usePostListRes =
     deletePost,
     updatePost,
     filter,
+    paginate,
+    offset,
+    limit,
+    total
   }
 }
