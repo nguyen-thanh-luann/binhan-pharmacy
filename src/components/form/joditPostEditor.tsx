@@ -5,9 +5,20 @@ import classNames from 'classnames'
 import dynamic from 'next/dynamic'
 import { Button } from '../button'
 
-const JoditEditor: any = dynamic(() => import('jodit-react').then((mod) => mod), {
-  ssr: false,
-})
+// const JoditEditor: any = dynamic(() => import('jodit-react').then((mod) => mod), {
+//   ssr: false,
+// })
+
+const JoditEditor: any = dynamic(
+  async () => {
+    const { default: RQ } = await import('jodit-react')
+
+    return ({ forwardedRef, ...props }: any) => <RQ ref={forwardedRef} {...props} />
+  },
+  {
+    ssr: false,
+  }
+)
 
 interface JoditPostEditorProps {
   onSubmit?: (val: string) => void
@@ -33,9 +44,6 @@ export const JoditPostEditor = ({
     }
   }, [isUploading])
 
-  console.log({editorRef});
-  
-
   const handleUploadImage = () => {
     const input = document.createElement('input')
     input.setAttribute('type', 'file')
@@ -47,9 +55,9 @@ export const JoditPostEditor = ({
 
       uploadSingleImage(files[0], (res: any) => {
         if (editorRef) {
-          console.log({ editorRef })
-          console.log({ res })
-          editorRef?.current?.insertImage(res?.url)
+          const editor = editorRef.current
+          editor?.insertHTML(`<img src='${res?.url}' at='photo'/>`)
+          // editorRef?.current?.insertImage(res?.url)
         }
       })
     }
@@ -62,14 +70,23 @@ export const JoditPostEditor = ({
         exec: handleUploadImage,
       },
     ],
+    uploader: {
+      insertImageAsBase64URI: true,
+    },
   }
+
+  useEffect(() => {
+    console.log({
+      editorRef,
+    })
+  }, [editorRef])
 
   return (
     <div className="relative">
       <div className="post-editor">
         <JoditEditor
           config={config}
-          ref={editorRef}
+          forwardedRef={editorRef}
           value={content}
           onBlur={(newContent: any) => setContent(newContent)}
           className="!text-md"

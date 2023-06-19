@@ -6,8 +6,7 @@ import {
   HomePostsList,
   IntroPopUp,
   ListProductByAttributeMinor,
-  SectionBuyMedicine,
-  VisceraAttribute,
+  SectionBuyMedicine, VisceraAttribute
 } from '@/components'
 
 import { DOMAIN_URL, thumbnailImageUrl, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'

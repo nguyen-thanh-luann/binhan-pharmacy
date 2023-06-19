@@ -12,6 +12,12 @@ import { ProductItem, ProductItemLoading } from '../product'
 import { Tabs } from '../tabs'
 import { HomeSlide } from './homeSlide'
 
+import { Navigation, Pagination } from 'swiper'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import { Swiper, SwiperSlide } from 'swiper/react'
+
 interface ProductsByAttributeMinorProps {
   atribute: AttributeMinor | undefined
   className?: string
@@ -135,11 +141,43 @@ export const ProductsByAttributeMinor = ({
           ) : undefined
         }
       >
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12">
+        {/* <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12">
           {productList?.result?.map((product) => (
             <ProductItem key={product?.product_id} data={product} />
           ))}
-        </div>
+        </div> */}
+        <Swiper
+          slidesPerView={5}
+          spaceBetween={12}
+          slidesPerGroup={1}
+          navigation={true}
+          pagination={{
+            clickable: true,
+          }}
+          allowTouchMove={false}
+          loop={true}
+          modules={[Pagination, Navigation]}
+          breakpoints={{
+            300: {
+              slidesPerView: 2,
+            },
+            900: {
+              slidesPerView: 3,
+            },
+            1024: {
+              slidesPerView: 5,
+            },
+          }}
+        >
+          <div>
+            {productList &&
+              productList?.result?.map((product) => (
+                <SwiperSlide key={product?.product_id}>
+                  <ProductItem key={product?.product_id} data={product} />
+                </SwiperSlide>
+              ))}
+          </div>
+        </Swiper>
       </HomeSlide>
     </div>
   )

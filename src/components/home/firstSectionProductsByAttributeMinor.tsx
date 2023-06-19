@@ -5,6 +5,8 @@ import { twMerge } from 'tailwind-merge'
 import { ProductItemLoading } from '../product'
 import { ProductsByAttributeMinor } from './productsByAttributeMinor'
 
+
+
 interface ListProductByAttributeMinorProps {
   className?: string
 }

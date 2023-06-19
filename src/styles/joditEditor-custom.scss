@@ -1,4 +1,5 @@
 .post-editor {
+
   .jodit-toolbar__box {
     position: sticky !important;
     top: $header_group_height;
@@ -21,13 +22,7 @@
     div {
       @apply select-text break-all;
     }
-  }
 
-  .jodit-wysiwyg,
-  .jodit-source {
     min-height: 400px !important;
-    max-width: 100%;
-    display: flex;
-    flex-wrap: wrap;
   }
 }
