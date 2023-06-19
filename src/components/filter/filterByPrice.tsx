@@ -25,8 +25,6 @@ export const FilterByPrice = ({
 
   const priceMax = roundingNumber(price_max, 'upper', 50000)
   const priceMin = roundingNumber(price_min, 'lower', 50000)
-
-  console.log({priceMax, priceMin});
   
 
   const prices = useRef<Price>({

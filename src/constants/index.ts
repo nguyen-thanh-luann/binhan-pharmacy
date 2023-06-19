@@ -18,6 +18,7 @@ export const DOMAIN_URL = process.env.NEXT_PUBLIC_DOMAIN_URL
 export const ZALO_OA_ID = process.env.NEXT_PUBLIC_ZALO_OA_ID
 export const FACEBOOK_PAGE_ID = process.env.NEXT_PUBLIC_FACEBOOK_PAGE_ID
 export const FACEBOOK_APP_ID = process.env.NEXT_PUBLIC_FACEBOOK_APP_ID
+export const TINYMCE_EDITOR_KEY = process.env.NEXT_PUBLIC_TINY_EDITOR_KEY
 
 export const PHONE_SCHEMA = /((^(\+84|84|0|0084){1})(3|5|7|8|9))+([0-9]{8})$/
 

@@ -139,6 +139,8 @@ const CreatePostPage = () => {
                       }
                     }}
                   /> */}
+
+                  {/* <TinyMceEditor /> */}
                 </div>
               )}
             </div>
