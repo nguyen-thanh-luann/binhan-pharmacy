@@ -46,7 +46,7 @@ export const AccessoryProduct = ({ className, product_id }: AccessoryProductProp
           spaceBetween={12}
           slidesPerGroup={1}
           navigation={true}
-          allowTouchMove={false}
+          // allowTouchMove={false}
           pagination={{
             clickable: true,
           }}

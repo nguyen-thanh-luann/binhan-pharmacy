@@ -73,7 +73,7 @@ export const OrderSummaryMobileDetail = ({ onClose }: ICartSummaryMobileDetail) 
           <div className="flex items-center justify-between mb-12 title-md">
             <p className="text-base text-text-color font-semibold">{`Khuyến mãi`}</p>
             <p className="text-base text-text-color font-semibold">
-              {formatMoneyVND(totalPromotion)}
+              {`-${formatMoneyVND(totalPromotion)}`}
             </p>
           </div>
 

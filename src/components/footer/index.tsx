@@ -1,18 +1,32 @@
-import React from 'react'
-import { Image } from '../image'
 import {
-  TelePhoneIcon,
   downloadAppStore,
   downloadGooglePlay,
   facebookIcon,
   logoSm,
+  TelePhoneIcon,
   zaloIcon,
 } from '@/assets'
+import { CONTACT_PHONE_NUMBER, SWR_KEY, ZALO_OA_ID } from '@/constants'
+import { AboutUsData } from '@/data'
+import { Category, HTTPListRes } from '@/types'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { AboutUsData, WebCategoryData } from '@/data'
-import { CONTACT_PHONE_NUMBER, ZALO_OA_ID } from '@/constants'
+import useSWR from 'swr'
+import { Image } from '../image'
 
 export const Footer = () => {
+  const router = useRouter()
+
+  const categoryList = useSWR<HTTPListRes<Category[]>>(SWR_KEY.get_category_list)?.data?.result
+
+  const handleCategoryClick = (id: number, type: 'category' | 'minor_category') => {
+    if (type === 'category') {
+      router.push(`/search/?category_${id}=${id}`)
+    } else {
+      router.push(`/search/?minor_category_${id}=${id}`)
+    }
+  }
+
   return (
     <footer className="footer relative w-full py-80 px-24">
       <div className="container px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-40">
@@ -50,12 +64,18 @@ export const Footer = () => {
 
         <div className="col-span-1 z-10">
           <p className="text-primary font-bold text-lg leading-10 mb-24">Danh mục Website</p>
-
-          {WebCategoryData.map((item, index) => (
-            <Link className="forward-link" key={index} href={item.path}>
-              <p className="text-md text-text-color font-normal leading-8 mb-16">{item.title}</p>
-            </Link>
-          ))}
+          {categoryList &&
+            categoryList?.map((category) => (
+              <div
+                onClick={() => handleCategoryClick(category.category_id, 'category')}
+                className="forward-link"
+                key={category?.category_id}
+              >
+                <p className="text-md text-text-color font-normal leading-8 mb-16">
+                  {category.category_name}
+                </p>
+              </div>
+            ))}
         </div>
 
         <div className="col-span-1 z-10">
@@ -100,7 +120,7 @@ export const Footer = () => {
                 />
               </Link>
 
-              <Link href={`https://zalo.me/${ZALO_OA_ID}`} target='_blank'>
+              <Link href={`https://zalo.me/${ZALO_OA_ID}`} target="_blank">
                 <Image src={zaloIcon} className="w-[40px] h-[40px] object-cover cursor-pointer" />
               </Link>
             </div>

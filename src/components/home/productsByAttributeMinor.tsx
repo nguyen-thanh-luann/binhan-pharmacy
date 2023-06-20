@@ -1,6 +1,6 @@
 import { UserCircleIcon } from '@/assets'
 import { DEFAULT_LIMIT_PRODUCT, SWR_KEY } from '@/constants'
-import { useProductListByAttributeMinor } from '@/hooks'
+import { useProductListByAttributeMinor, useUser } from '@/hooks'
 import { AttributeMinor } from '@/types'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
@@ -30,6 +30,7 @@ export const ProductsByAttributeMinor = ({
   isValidating,
 }: ProductsByAttributeMinorProps) => {
   const router = useRouter()
+  const { userInfo } = useUser({})
 
   const [currentTab, setCurrentTab] = useState<string>('')
   const [params, setParams] = useState<object>({})
@@ -54,7 +55,9 @@ export const ProductsByAttributeMinor = ({
     isValidating: productListLoading,
     fetchByOtherAttrValues,
   } = useProductListByAttributeMinor({
-    key: `${SWR_KEY?.get_product_list_by_attribute_minor}_${atribute?.attribute_id || 0}`,
+    key: `${SWR_KEY?.get_product_list_by_attribute_minor}_${atribute?.attribute_id || 0}_${
+      userInfo?.account?.partner_id || 0
+    }`,
     params: {
       attribute_id: atribute?.attribute_id || 0,
       attribute_value_ids: [atribute?.value_ids?.[0]?.value_id || 0],
@@ -154,7 +157,7 @@ export const ProductsByAttributeMinor = ({
           pagination={{
             clickable: true,
           }}
-          allowTouchMove={false}
+          // allowTouchMove={false}
           loop={true}
           modules={[Pagination, Navigation]}
           breakpoints={{

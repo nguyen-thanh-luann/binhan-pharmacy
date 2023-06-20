@@ -1,23 +1,51 @@
 import { UpIcon } from '@/assets'
 import { SWR_KEY } from '@/constants'
-import { formatMoneyVND, sumMoneyAndTotalProductInCart } from '@/helper'
-import { cartAPI } from '@/services'
+import { formatMoneyVND, getPromotionValueReq, sumMoneyAndTotalProductInCart } from '@/helper'
+import { cartAPI, promotionAPI } from '@/services'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
-import useSWR from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 import { CartSummaryMobileDetail } from './cartSummaryMobileDetail'
 import { Button } from '../button'
 import { useCreateOrder } from '@/hooks'
-import { GetShoppingCartRes } from '@/types'
+import { GetProductsInCartRes, GetShoppingCartRes, UserInfo } from '@/types'
 
 export const CartSummaryMobile = () => {
   const router = useRouter()
+  const { cache } = useSWRConfig()
   const [showCartSummaryDetail, setShowCartSummaryDetail] = useState<boolean>(false)
   const { data: shoppingcart } = useSWR<GetShoppingCartRes>(SWR_KEY.cart_list)
+  const customer_id = useSWR<UserInfo>(SWR_KEY.get_user_information)?.data?.account?.partner_id
 
   const { totalAmount, totalProduct, isLoading } = useMemo(() => {
     return sumMoneyAndTotalProductInCart(shoppingcart)
   }, [shoppingcart])
+
+  const { data: totalPromotion = 0, isValidating } = useSWR(
+    SWR_KEY.cartSummary,
+    () => cartSummaryFetcher(),
+    { revalidateOnMount: false }
+  )
+
+  async function cartSummaryFetcher() {
+    const cart: GetProductsInCartRes = cache.get(SWR_KEY.cart_list)?.data
+    if (!customer_id || !cart?.result?.length) return 0
+
+    try {
+      const order_data = getPromotionValueReq(cart)
+      if (!order_data?.length) return 0
+
+      const res = await promotionAPI.getPromotionValue({
+        customer_id,
+        order_data,
+        only_promotion_total: true,
+      })
+      return res.data?.promotion_total || 0
+    } catch (error) {
+      console.log(error)
+      return 0
+    }
+  }
 
   const { data: cartLength } = useSWR(SWR_KEY.cart_count, () =>
     cartAPI.getCartLength().then((res) => res?.data?.cart_product_count)
@@ -38,7 +66,6 @@ export const CartSummaryMobile = () => {
     })
   }
 
-
   return (
     <div className={`fixed w-full z-40 bottom-bottom_nav_height `}>
       <div>
@@ -47,6 +74,9 @@ export const CartSummaryMobile = () => {
             onClose={() => {
               toggleCartSummaryDetail()
             }}
+            subTotal={totalAmount}
+            totalPromotion={totalPromotion}
+            total={totalAmount - totalPromotion}
           />
         ) : null}
       </div>
@@ -60,7 +90,9 @@ export const CartSummaryMobile = () => {
             }}
             className="flex-1 flex items-center"
           >
-            <p className="text-base text-text-color font-bold">{formatMoneyVND(totalAmount)}</p>
+            <p className="text-base text-text-color font-bold">
+              {formatMoneyVND(totalAmount - totalPromotion)}
+            </p>
 
             {cartLength || 0 > 0 ? (
               <div className="cursor-pointer">
@@ -74,8 +106,8 @@ export const CartSummaryMobile = () => {
           </div>
 
           <Button
-            disabled={isLoading}
-            loading={isLoading}
+            disabled={isLoading || isValidating}
+            loading={isLoading || isValidating}
             title={`Đặt hàng (${totalProduct})`}
             className="bg-primary rounded-[10px] py-10 flex-1"
             textClassName="text-base font-medium leading-9 text-white"

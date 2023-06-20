@@ -28,7 +28,7 @@ export const OrderSummaryMobile = () => {
     setShowCartSummaryDetail(!showCartSummaryDetail)
   }
 
-  const { amountSubtotal } = useMemo(() => {
+  const { amountTotal } = useMemo(() => {
     let totalPromotion = 0
     let amountSubtotal = 0
     let amountTotal = 0
@@ -104,7 +104,7 @@ export const OrderSummaryMobile = () => {
             }}
             className="flex-1 flex items-center"
           >
-            <p className="text-base text-text-color font-bold">{formatMoneyVND(amountSubtotal)}</p>
+            <p className="text-base text-text-color font-bold">{formatMoneyVND(amountTotal)}</p>
 
             {cartLength || 0 > 0 ? (
               <div className="cursor-pointer">

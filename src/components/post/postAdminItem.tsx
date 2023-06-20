@@ -50,7 +50,7 @@ const PostAdminItem = ({
             <PostRoleTag data={post} />
 
             {post?.categories?.map((category) => (
-              <PostCategoryTag data={category?.category_name} />
+              <PostCategoryTag key={category?.category_id} data={category?.category_name} />
             ))}
           </div>
 
@@ -65,7 +65,7 @@ const PostAdminItem = ({
 
           <div className="flex gap-8 overflow-scroll scrollbar-hide">
             {post?.tags?.map((tag) => (
-              <PostTagItem data={tag} />
+              <PostTagItem key={tag.tag_id} data={tag} />
             ))}
           </div>
         </div>
@@ -85,7 +85,7 @@ const PostAdminItem = ({
           <div
             className={classNames(
               visible ? 'block' : 'hidden',
-              'absolute z-50 right-0 rounded-lg p-8 shadow-shadow-1 bg-white min-w-[120px] animate-fade'
+              'absolute z-50 right-0 rounded-lg p-8 shadow-shadow-1 bg-white min-w-[120px]'
             )}
           >
             <button

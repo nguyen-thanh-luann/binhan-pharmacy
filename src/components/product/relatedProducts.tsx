@@ -48,7 +48,7 @@ export const RelatedProducts = ({ className, category_id }: ViewedProductsProps)
           spaceBetween={12}
           slidesPerGroup={1}
           navigation={true}
-          allowTouchMove={false}
+          // allowTouchMove={false}
           pagination={{
             clickable: true,
           }}

@@ -10,7 +10,7 @@ import {
 } from '@/components'
 import { PRODUCT_FILTER_TABS, SWR_KEY, WEB_TITTLE } from '@/constants'
 import { generateFilterProductParamFormRouter, isArrayHasValue, isObjectHasValue } from '@/helper'
-import { useModal, useProductQuery } from '@/hooks'
+import { useModal, useProductQuery, useUser } from '@/hooks'
 import { MainNoFooter } from '@/templates'
 import { ProductfilterSortType } from '@/types'
 import { useRouter } from 'next/router'
@@ -19,12 +19,13 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 
 const SearchPage = () => {
   const router = useRouter()
+  const { userInfo } = useUser({})
   const [currentTab, setCurrentTab] = useState<string>('default')
   const { visible: showFilters, openModal: openFilters, closeModal: closeFilters } = useModal()
 
   const { products, filter, isValidating, hasMore, getMore, isFilter, price_max, price_min } =
     useProductQuery({
-      key: `${SWR_KEY.filter_product}`,
+      key: `${SWR_KEY.filter_product}_${userInfo?.account?.partner_id || 0}`,
       params: {
         product_type: 'product_product',
       },
