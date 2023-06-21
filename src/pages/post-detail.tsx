@@ -22,6 +22,7 @@ import { Main } from '@/templates'
 import { Post } from '@/types'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 const PostDetailPage = () => {
   const router = useRouter()
@@ -46,13 +47,19 @@ const PostDetailPage = () => {
     limit,
     total,
     offset,
+    filter,
   } = usePostList({
     key: `${SWR_KEY.get_post_list_related}`,
     params: {
       limit: DEFAULT_POST_LIMIT,
-      category_id: categoryId || parentCategoryId || undefined,
     },
   })
+
+  useEffect(() => {
+    filter({
+      category_id: categoryId || parentCategoryId || undefined,
+    })
+  }, [parentCategoryId, categoryId])
 
   const renderderPostLoading = () => {
     return (
