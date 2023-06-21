@@ -77,7 +77,7 @@ export const CartSummary = ({ className }: CartSummaryProps) => {
       </div>
 
       <div className="flex-between p-16 border-b border-gray-200">
-        <p className="text-text-color text-base font-medium leading-9">{`Khuyến mãi`}</p>
+        <p className="text-text-color text-base font-medium leading-9">{`Khuyến mãi tổng`}</p>
         {isValidating ? (
           <Spinner />
         ) : (
