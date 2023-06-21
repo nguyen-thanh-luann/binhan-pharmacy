@@ -1,5 +1,5 @@
 import { ArrowLeftIcon } from '@/assets'
-import { Breadcrumb, CreatePostForm, NotFound, TinyMceEditor } from '@/components'
+import { Breadcrumb, CreatePostForm, NotFound, PostEditor } from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
 import { isAdmin } from '@/helper'
 import { useChatAccount, usePostList, useUser } from '@/hooks'
@@ -116,7 +116,7 @@ const CreatePostPage = () => {
                 </div>
               ) : (
                 <div className="post_editor_account_page">
-                  {/* <PostEditor
+                  <PostEditor
                     defaultValue={content}
                     onSubmit={(val) => {
                       // console.log({val});
@@ -126,9 +126,9 @@ const CreatePostPage = () => {
                         setStep(2)
                       }
                     }}
-                  /> */}
+                  />
 
-                  <TinyMceEditor
+                  {/* <TinyMceEditor
                     defaultValue={content}
                     onSubmit={(val) => {
                       setContent(val)
@@ -136,7 +136,7 @@ const CreatePostPage = () => {
                         setStep(2)
                       }
                     }}
-                  />
+                  /> */}
                 </div>
               )}
             </div>

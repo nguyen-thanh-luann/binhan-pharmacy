@@ -12,12 +12,10 @@ import { useSWRConfig } from 'swr'
 import { twMerge } from 'tailwind-merge'
 import { Button } from '../button'
 import { PromotionLoading } from '../cart/promotionLoading'
-import { Divider } from '../divider'
 import { Image } from '../image'
 import { CustomInputQuantity } from '../inputs'
 import { ShareSocial } from '../shareSocial'
 import { Spinner } from '../spinner'
-import { Star } from '../star'
 import { ListProductPromotion } from './listProductPromotion'
 import ProductImg from './productImage'
 import { ProductVariants } from './productVariants'
@@ -167,7 +165,7 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
           {currentProduct?.product_name}
         </p>
 
-        <div className="flex mb-16">
+        {/* <div className="flex mb-16">
           <Star
             readonly
             ratingValue={currentProduct?.star_rating * 20}
@@ -182,13 +180,13 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
           <Divider />
 
           <p className="text_md">{`${currentProduct?.sold_quantity || 0} Đã bán`}</p>
-        </div>
+        </div> */}
 
-        {purchasable ? (
+        {/* {purchasable ? (
           <p className="text_md mb-16">{`Tồn kho khả dụng: ${
             currentProduct?.stock_quantity?.factor || 0
           }`}</p>
-        ) : null}
+        ) : null} */}
 
         {purchasable ? (
           <div className="flex h-fit gap-12 items-center mb-16">
