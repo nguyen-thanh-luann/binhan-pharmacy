@@ -1,10 +1,12 @@
+import { FilterOutlineIcon, TimesIcon } from '@/assets'
 import {
   Breadcrumb,
+  Modal,
   Pagination,
   PostCategoryMenu,
   PostItemLoading,
   PostListItemHorizontal,
-  PostListItemVertical
+  PostListItemVertical,
 } from '@/components'
 import {
   DEFAULT_POST_LIMIT,
@@ -12,10 +14,10 @@ import {
   SWR_KEY,
   thumbnailImageUrl,
   WEB_DESCRIPTION,
-  WEB_TITTLE
+  WEB_TITTLE,
 } from '@/constants'
 import { fromProductSlugToProductId, generateProductSlug, isArrayHasValue } from '@/helper'
-import { usePostList } from '@/hooks'
+import { useModal, usePostList } from '@/hooks'
 import { Main, PostListPageContainer } from '@/templates'
 import { Post } from '@/types'
 import classNames from 'classnames'
@@ -26,6 +28,8 @@ import { useSWRConfig } from 'swr'
 const PostListPage = () => {
   const router = useRouter()
   const { cache } = useSWRConfig()
+  const { visible: showFilters, openModal: openFilters, closeModal: closeFilters } = useModal()
+
   const current_post_parent_id = cache.get(SWR_KEY.current_post_parent_category)?.data || ''
 
   const { category_id, tag_ids } = router.query
@@ -33,7 +37,6 @@ const PostListPage = () => {
   const {
     data: postList,
     isValidating,
-
     filter,
     offset,
     limit,
@@ -78,8 +81,7 @@ const PostListPage = () => {
   }
 
   const handlePaginate = (page: number) => {
-    console.log({ page })
-    paginate({page})
+    paginate({ page })
   }
 
   return (
@@ -95,6 +97,35 @@ const PostListPage = () => {
         />
 
         <div>
+          <div
+            onClick={openFilters}
+            className="py-8  flex-end md:hidden mb-12 items-center gap-4 cursor-pointer hover:text-primary duration-150"
+          >
+            <FilterOutlineIcon className="w-20 h-20" />
+            <span className="text-base">Lọc</span>
+          </div>
+
+          {/* modal in mobile */}
+          <Modal
+            visible={showFilters}
+            animationType="slideFromLeft"
+            headerClassName="hidden"
+            modalClassName="h-full w-full max-w-[350px] fixed right-0"
+          >
+            <div>
+              <div className="flex-between bg-primary px-12 py-8">
+                <div onClick={closeFilters} className="cursor-pointer">
+                  <TimesIcon className="text-white" />
+                </div>
+                <span className="flex-1 text-center text-white text-md">Lọc sản phẩm</span>
+              </div>
+
+              <div className="p-16 h-[100vh] overflow-scroll scrollbar-hide">
+                <PostCategoryMenu />
+              </div>
+            </div>
+          </Modal>
+
           <div className="mb-24">
             {isValidating ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
