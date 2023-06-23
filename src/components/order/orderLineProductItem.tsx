@@ -14,6 +14,7 @@ interface OrderLineProductItemProps {
 
 export const OrderLineProductItem = ({ data, className }: OrderLineProductItemProps) => {
  
+  
   return (
     <div
       className={twMerge(

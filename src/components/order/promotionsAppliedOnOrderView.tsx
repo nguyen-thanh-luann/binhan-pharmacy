@@ -2,6 +2,7 @@ import { PromotionOrderRes } from '@/types'
 import React from 'react'
 import { CouponItem, ProductGiftItem } from '../cart'
 import classNames from 'classnames'
+import { isArrayHasValue } from '@/helper'
 
 type Props = {
   data: PromotionOrderRes[]
@@ -9,6 +10,8 @@ type Props = {
 }
 
 export const PromotionsAppliedOnOrderView = ({ data, className }: Props) => {
+  if (!isArrayHasValue(data)) return null
+
   return (
     <div className={classNames('', className)}>
       <p className="text-md font-bold">Thông tin khuyến mãi</p>

@@ -1,7 +1,7 @@
 import { CategoryIdName } from './category'
 import { ImageId, ImageRes } from './common'
 import { HTTPListResponse, Pagination, QueryList } from './http'
-import { CompanyIdName, ProductUom, ValueId } from './product'
+import { CompanyIdName, ProductUom, ValueId, ProductClassification } from './product'
 import {
   CategoryIdAndName,
   GetPromotionApplyOnCategoryReq,
@@ -166,10 +166,12 @@ export interface CartProductItem {
   product_id: number
   product_code: string
   product_name: string
+  product_type: ProductClassification
   representation_image: ImageRes
   attribute_ids: CartProductAttribute[]
   rel_attribute_ids: CartProductRelAttribute[]
   price_unit: number
+  origin_price_unit: number
   stock: CartProductStock
 }
 

@@ -7,7 +7,7 @@ import {
   CartSummaryMobile,
   Spinner,
 } from '@/components'
-import { SWR_KEY } from '@/constants'
+import { SWR_KEY, WEB_DESCRIPTION } from '@/constants'
 import { isArrayHasValue } from '@/helper'
 import { useCarts, useUser, useUserAddress } from '@/hooks'
 import { selectOrderAddress, setOrderAddress } from '@/store'
@@ -41,8 +41,9 @@ const ShoppingCartPage = () => {
     }
   }, [addressList])
 
+
   return (
-    <MainNoFooter title={'Giỏ hàng'} description="">
+    <MainNoFooter title={'Giỏ hàng'} description={WEB_DESCRIPTION}>
       <div className="mb-24">
         <div className="container min-h-[100vh] mb-mobile_bottom_distance_default md:mb-0">
           {isValidating ? (
