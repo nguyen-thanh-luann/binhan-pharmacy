@@ -24,17 +24,18 @@ export const DescriptionMenu = ({
   const [activeDescId, setActiveDescId] = useState<number>(currentDescId)
 
   const handleParentCategoryClick = (data: ProductDescription) => {
-    if (!isArrayHasValue(data?.child || [])) {
-      onClick?.(data)
+    onClick?.(data)
+    
+    toggleChildCategory()
+  }
+
+  const toggleChildCategory = () => {
+    if (showChilds || activeDescId !== 0) {
+      setShowChilds(!showChilds)
+      setActiveDescId(0)
     } else {
-      // toggle  children category menu
-      if (showChilds || activeDescId !== 0) {
-        setShowChilds(!showChilds)
-        setActiveDescId(0)
-      } else {
-        setShowChilds(true)
-        setActiveDescId(currentDescId)
-      }
+      setShowChilds(true)
+      setActiveDescId(currentDescId)
     }
   }
 
@@ -58,11 +59,9 @@ export const DescriptionMenu = ({
               return (
                 <div key={category.category_id}>
                   {/* parent category */}
-                  <div
-                    onClick={() => handleParentCategoryClick(category)}
-                    className="flex-between border-b border-gray-200 p-10 cursor-pointer group"
-                  >
+                  <div className="flex-between border-b border-gray-200 p-10 cursor-pointer group">
                     <p
+                      onClick={() => handleParentCategoryClick(category)}
                       className={classNames(
                         'text-md font-bold group-hover:text-primary duration-200 ease-in-out',
                         category.category_id === activeDescId ? '!text-primary' : ''
@@ -72,7 +71,10 @@ export const DescriptionMenu = ({
                     </p>
 
                     {isArrayHasValue(category?.child) ? (
-                      <div className="w-[22px] h-[22px] flex-center duration-200 ease-in-out">
+                      <div
+                        onClick={toggleChildCategory}
+                        className="w-[22px] h-[22px] flex-center duration-200 ease-in-out"
+                      >
                         <RightIcon
                           className={classNames(
                             'text-sm text-text-color duration-200 ease-in-out',

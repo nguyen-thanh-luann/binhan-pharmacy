@@ -8,13 +8,12 @@ import { useRouter } from 'next/router'
 import {
   AccessoryProduct,
   Breadcrumb,
-  NotFound,
-  ProductDescription,
+  NotFound, ProductDescriptionV2,
   ProductDetail,
   ProductDetailLoading,
   ProductTabs,
   RelatedProducts,
-  ViewedProducts,
+  ViewedProducts
 } from '@/components'
 import { SWR_KEY, WEB_TITTLE } from '@/constants'
 import { fromProductSlugToProductId, isArrayHasValue, isObjectHasValue } from '@/helper'
@@ -83,7 +82,13 @@ const ProductDetailPage = () => {
 
             <ProductDetail data={data?.product_data} className="mb-24" />
 
-            <ProductDescription
+            {/* <ProductDescription
+              product_id={data?.product_data?.product_id || 0}
+              className="mb-24"
+            /> */}
+
+            <ProductDescriptionV2
+              product_classification_type={data?.product_data?.product_type}
               product_id={data?.product_data?.product_id || 0}
               className="mb-24"
             />

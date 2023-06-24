@@ -44,7 +44,6 @@ export const ProductDescription = ({ product_id, className }: ProductDescription
     if (currentDescId !== data?.category_id && !descriptionContentRef?.current?.show) {
       descriptionContentRef?.current?.setShow(true)
     }
-    // console.log(descriptionContentRef?.current?.setShow(true))
 
     setCurrentDescCategory(data as IProductDescription)
   }
@@ -80,8 +79,7 @@ export const ProductDescription = ({ product_id, className }: ProductDescription
           <Spinner />
         </div>
       ) : isArrayHasValue(data) ? (
-          <div>
-            
+        <div>
           {/* Description menu in mobile */}
           <DescriptionMenuMobile
             className="sticky block md:hidden top-header_mobile_height bg-white z-30 shadow-sm"

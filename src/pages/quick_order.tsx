@@ -8,7 +8,7 @@ export type OrderTabOption = 'purchase' | 'advice'
 const QuickOrder = () => {
   const registerTabs = [
     { label: 'Đặt mua nhanh hơn', value: 'purchase' },
-    { label: 'Đăng ký tư vấn sản phẩm', value: 'advice' },
+    { label: 'Đăng ký tư vấn', value: 'advice' },
   ]
 
   const [currentTab, setCurrentTab] = useState<OrderTabOption>('purchase')

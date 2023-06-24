@@ -277,7 +277,7 @@ export const getCartProductIndexFromCategory = (
 }
 
 export const generateProductSlug = (name: string, id: number | string): string => {
-   return `${convertViToEn(name).replaceAll(/[\/%$ ]/g, '-')}-${id}`
+  return `${convertViToEn(name).replaceAll(/[\/%$ ]/g, '-')}-${id}`
 }
 
 export const fromProductSlugToProductId = (slug: string): string => {
@@ -286,36 +286,6 @@ export const fromProductSlugToProductId = (slug: string): string => {
   return productIdArr?.[productIdArr.length - 1]?.toString() || ''
 }
 
-export const mergeProductDescriptionContent = (productDescriptions: ProductDescription[]) => {
-  let descContent = ''
-
-  productDescriptions.forEach((description) => {
-    if (!isArrayHasValue(description.tab)) {
-      descContent += `<h1 class='desc_title' id='desc_category_${description.category_id}'>${
-        description?.category_name || ''
-      }</h1> 
-      ${description?.content || ''} 
-      ${description?.extra_content || ''}
-      <br/>
-      `
-
-      if (isArrayHasValue(description.child)) {
-        description.child.forEach((child) => {
-          descContent += `<h2 class='desc_title' id='desc_category_${child.category_id}'>${
-            child.category_name
-          }</h2> 
-          ${child?.content || ''}
-           <br/>
-          ${child?.extra_content || ''}
-           <br/>
-          `
-        })
-      }
-    }
-  })
-
-  return descContent
-}
 
 export const scrollIntoElementById = (id: string, fromTop: number) => {
   const elementPosition = document.getElementById(id)?.getBoundingClientRect().top || 0

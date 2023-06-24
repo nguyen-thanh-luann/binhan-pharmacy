@@ -1,13 +1,14 @@
 import {
-  AttributeReq, FilterProductParams,
+  AttributeReq,
+  FilterProductParams,
   Product,
   ProductDescription,
   ProductDetail,
   ProductfilterSortType,
-  UserInfo
+  UserInfo,
 } from '@/types'
 import { NextRouter } from 'next/router'
-import { isObjectHasValue } from './functions'
+import { isArrayHasValue, isObjectHasValue } from './functions'
 
 export function generateFilterProductParamFormRouter(router: NextRouter): FilterProductParams {
   let attribute: any = {}
@@ -100,4 +101,68 @@ export const isProductDescContainChild = (data: ProductDescription, category_id:
   if (index !== -1) return true
 
   return false
+}
+
+export const mergeProductDescriptionContent = (productDescriptions: ProductDescription[]) => {
+  let descContent = ''
+
+  productDescriptions.forEach((description) => {
+    descContent += `<h1 class='desc_title' id='desc_category_${description.category_id}'>${
+      description?.category_name || ''
+    }</h1> 
+      ${description?.content || ''} 
+      ${description?.extra_content || ''}
+      <br/>
+      `
+
+    if (isArrayHasValue(description.child)) {
+      description.child.forEach((child) => {
+        descContent += `<h2 class='desc_title' id='desc_category_${child.category_id}'>${
+          child.category_name
+        }</h2> 
+          ${child?.content || ''}
+           <br/>
+          ${child?.extra_content || ''}
+           <br/>
+          `
+      })
+    }
+  })
+
+  return descContent
+}
+
+export const mergeProductDescriptionTabContent = (productDescription: ProductDescription | '') => {
+  if (productDescription === '') return ''
+
+  let descContent = ''
+
+  descContent += `<h1 class='desc_title' id='desc_category_${productDescription.category_id}'>${
+    productDescription?.category_name || ''
+  }</h1> 
+      ${productDescription?.content || ''} 
+      ${productDescription?.extra_content || ''}
+      <br/>
+      `
+
+  if (isArrayHasValue(productDescription.child)) {
+    productDescription.child.forEach((child) => {
+      descContent += `<h2 class='desc_title' id='desc_category_${child.category_id}'>${
+        child.category_name
+      }</h2> 
+          ${child?.content || ''}
+           <br/>
+          ${child?.extra_content || ''}
+           <br/>
+          `
+    })
+  }
+
+  return descContent
+}
+
+export const getTabDescriptionIndex = (data: ProductDescription[] | undefined, tab_id: string) => {
+  if (!data) return -1
+
+  return data?.findIndex((tabCategory) => tabCategory.category_id.toString() === tab_id)
 }

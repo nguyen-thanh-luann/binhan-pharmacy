@@ -85,7 +85,9 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
   }
 
   const onProductClick = () => {
-    router.push(productSlug)
+    router.push({
+      pathname: productSlug,
+    })
     dispatch(addViewedProduct(data))
   }
 
@@ -120,17 +122,20 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
             </div>
 
             {/* packing rule */}
-            <div
-              className={classNames(
-                'absolute top-3',
-                discount > 0 ? 'right-25' : 'right-3',
-                'z-10 min-w-[40px] max-w-[86px] max-h-[35px] overflow-scroll scrollbar-hide rounded-[10px] border border-primary px-4 py-2 bg-white bg-opacity-70'
-              )}
-            >
-              <p className="text-xs font-medium line-clamp-2 flex-center h-full">
-                {data?.packaging_specifications || ''}
-              </p>
-            </div>
+
+            {data?.packaging_specifications && data?.packaging_specifications?.trim() !== '' && (
+              <div
+                className={classNames(
+                  'absolute top-3',
+                  discount > 0 ? 'right-25' : 'right-3',
+                  'z-10 min-w-[40px] max-w-[86px] max-h-[35px] overflow-scroll scrollbar-hide rounded-[10px] border border-primary px-4 py-2 bg-white bg-opacity-70'
+                )}
+              >
+                <p className="text-xs font-medium line-clamp-2 flex-center h-full">
+                  {data?.packaging_specifications}
+                </p>
+              </div>
+            )}
 
             {discount > 0 ? (
               <div className="absolute top-0 right-0 z-10">

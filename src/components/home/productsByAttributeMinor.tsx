@@ -54,6 +54,7 @@ export const ProductsByAttributeMinor = ({
     data: productList,
     isValidating: productListLoading,
     fetchByOtherAttrValues,
+    
   } = useProductListByAttributeMinor({
     key: `${SWR_KEY?.get_product_list_by_attribute_minor}_${atribute?.attribute_id || 0}_${
       userInfo?.account?.partner_id || 0

@@ -21,6 +21,7 @@ export const useProductListByAttributeMinor = ({
   key,
   params,
 }: useProductListByAttributeMinorProps): useProductListByAttributeMinorPropsRes => {
+  
   const { data, isValidating, mutate } = useSWR(
     key,
     !shouldFetch || !params?.attribute_id
