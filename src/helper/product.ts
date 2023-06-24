@@ -75,18 +75,17 @@ export function purchasableProduct(
   product: Product | ProductDetail,
   userInfo: UserInfo | undefined
 ) {
-  if (!product || !userInfo) return false
+  if (!product) return false
   // if product is medicine => just drugstore account can buy it!
 
   if (product?.product_type === 'medicine') {
-    if (userInfo?.account?.medicine_account_type === 'drugstore_account') {
+    if (userInfo && userInfo?.account?.medicine_account_type === 'drugstore_account') {
       return true
-    } else {
-      return false
     }
-  } else {
-    return true
+    return false
   }
+
+  return true
 }
 
 export function calcDiscountPercent(product: Product): number {

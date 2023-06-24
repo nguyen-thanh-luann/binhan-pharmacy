@@ -1,13 +1,12 @@
-import { ProductCartIcon, empty } from '@/assets'
+import { empty, ProductCartIcon } from '@/assets'
 import { API_URL } from '@/constants'
 import {
   calcDiscountPercent,
   formatMoneyVND,
   generateProductSlug,
-  isObjectHasValue,
-  purchasableProduct,
+  isObjectHasValue
 } from '@/helper'
-import { useAddToCart, useModal, useUser } from '@/hooks'
+import { useAddToCart, useModal, usePurchasableProduct } from '@/hooks'
 import { addViewedProduct, setProduct } from '@/store'
 import { Product } from '@/types'
 import classNames from 'classnames'
@@ -45,10 +44,8 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
   const productSlug = `/${generateProductSlug(data?.product_name, data?.product_id)}`
   const router = useRouter()
   const dispatch = useDispatch()
-  const { userInfo } = useUser({})
   const { addToCart, isAddingTocart } = useAddToCart()
-
-  const purchasable = purchasableProduct(data, userInfo)
+  const {isPurchasable} = usePurchasableProduct({product: data})
 
   const {
     visible: showProductDetailModal,
@@ -57,7 +54,7 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
   } = useModal()
 
   const handleAddToCart = (product: Product) => {
-    if (isAddingTocart || !purchasable) return
+    if (isAddingTocart || !isPurchasable) return
 
     if (product.has_variant) {
       hanldeOpenModalDetail()
@@ -205,7 +202,7 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
             <div className="relative">
               {/* price */}
               <div>
-                {purchasable ? (
+                {isPurchasable ? (
                   <div className="mb-8 flex items-center">
                     <div className="flex items-center flex-1 flex-wrap">
                       <p className="text-orange text-base md:text-md font-bold leading-9 mr-10">

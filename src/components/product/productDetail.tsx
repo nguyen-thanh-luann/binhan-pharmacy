@@ -1,7 +1,13 @@
 import { companyIconSm, NoteIconOutline } from '@/assets'
 import { DOMAIN_URL, SWR_KEY } from '@/constants'
-import { formatMoneyVND, generateProductSlug, isObjectHasValue, purchasableProduct } from '@/helper'
-import { useAddToCart, useProductPromotion, useUser, useWishlist } from '@/hooks'
+import { formatMoneyVND, generateProductSlug, isObjectHasValue } from '@/helper'
+import {
+  useAddToCart,
+  useProductPromotion,
+  usePurchasableProduct,
+  useUser,
+  useWishlist
+} from '@/hooks'
 import { productAPI } from '@/services'
 import { Product, ProductDetail as IProductDetail } from '@/types'
 import classNames from 'classnames'
@@ -34,10 +40,10 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
 
   const { userInfo } = useUser({ shouldFetch: false })
 
+  const { isPurchasable } = usePurchasableProduct({ product: data })
+
   const { addWhishlist, deleteWhishlist, isLoading: isToggleWishlist } = useWishlist({})
   const { addToCart, isAddingTocart } = useAddToCart()
-
-  const purchasable = purchasableProduct(data, userInfo)
 
   const { data: productPromotions, isValidating: isLoadProductPromotion } = useProductPromotion({
     key: `${SWR_KEY.get_product_promotion}_${data?.product_id}_${userInfo?.account?.partner_id}`,
@@ -48,7 +54,7 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
   const [currentProduct, setCurrentProduct] = useState<IProductDetail>(data)
 
   const handleAddToCart = (product: Product) => {
-    if (!purchasable) return
+    if (!isPurchasable) return
 
     if (!userInfo?.account?.partner_id) {
       router.push(`${DOMAIN_URL}/login`)
@@ -188,7 +194,7 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
           }`}</p>
         ) : null} */}
 
-        {purchasable ? (
+        {isPurchasable ? (
           <div className="flex h-fit gap-12 items-center mb-16">
             <p className="text-red text-2xl font-semibold">
               {formatMoneyVND(currentProduct?.price_unit || 0)}
@@ -293,7 +299,7 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
             textClassName="text-primary text-md"
           />
 
-          {purchasable && (
+          {isPurchasable && (
             <Button
               onClick={() => handleAddToCart(currentProduct)}
               title={isAddingTocart ? '' : 'Chọn mua'}
