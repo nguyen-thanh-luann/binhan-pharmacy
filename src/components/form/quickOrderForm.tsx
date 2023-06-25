@@ -34,7 +34,7 @@ export const QuickOrderForm = ({ className, type = 'purchase' }: QuickOrderFormP
   const addressPickerRef = useRef<any>(null)
   const { getBase64Images } = useAttachment({ limit: LIMIT_ATTACHMENT })
   const { createAttachment, isLoading: isLoadAttachment } = useCreateAttachment()
-  
+
   const previewImageUrl = useSelector(selectPreviewImageUrl)
 
   const [prescriptionPhotos, setPrescriptionPhotos] = useState<CreateAttachmentRes[]>()
@@ -144,6 +144,7 @@ export const QuickOrderForm = ({ className, type = 'purchase' }: QuickOrderFormP
         value: 0,
       },
       note: '',
+      drugstore_name: '',
     })
     addressPickerRef.current?.resetData()
     setPrescriptionPhotos([])
@@ -164,6 +165,7 @@ export const QuickOrderForm = ({ className, type = 'purchase' }: QuickOrderFormP
         district_id: data?.district?.value,
         ward_id: data?.ward?.value,
         note: data?.note,
+        drugstore_name: data?.drugstore_name || '',
         gender: data?.gender,
         medical_order_image_url: getOrderPrescriptionPhotos(prescriptionPhotos),
         order_line: getOrderProductsData(productSelected),
@@ -328,7 +330,7 @@ export const QuickOrderForm = ({ className, type = 'purchase' }: QuickOrderFormP
               control={control}
               name="drugstore_id"
               type="text"
-              label={`Nhà thuốc`}
+              label={`Chọn nhà thuốc`}
               placeholder={`Chọn nhà thuốc`}
               labelClassName="!text-lg !font-bold"
               inputClassName="p-12"
@@ -337,7 +339,17 @@ export const QuickOrderForm = ({ className, type = 'purchase' }: QuickOrderFormP
               value={getValues('drugstore_id.label')}
             />
           </div>
-          <div className="flex-1"></div>
+          <div className="flex-1">
+            <InputField
+              control={control}
+              name="drugstore_name"
+              type="text"
+              label={`Nhà thuốc mới`}
+              placeholder={`Nhập tên nhà thuốc`}
+              labelClassName="!text-lg !font-bold"
+              inputClassName="p-12"
+            />
+          </div>
         </div>
 
         <div className="mb-24">

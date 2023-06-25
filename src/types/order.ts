@@ -426,6 +426,7 @@ export interface CreateOpportunityParams {
   ward_id?: number
   street?: string
   note?: string
+  drugstore_name?: string
   medical_order_image_url?: number[]
   order_line?: ProductLineOpportunityParams[]
 }

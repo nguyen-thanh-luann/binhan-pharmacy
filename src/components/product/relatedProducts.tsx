@@ -42,7 +42,7 @@ export const RelatedProducts = ({ className, category_id }: ViewedProductsProps)
 
   return (
     <div className={twMerge(classNames(`bg-white p-12`, className))}>
-      <HomeSlide title="Sản phẩm tương tự">
+      <HomeSlide title="Sản phẩm cùng chuyên mục">
         <Swiper
           slidesPerView={5}
           spaceBetween={12}

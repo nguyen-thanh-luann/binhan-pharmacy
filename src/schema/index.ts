@@ -227,6 +227,7 @@ export const getAdviceSchema = Yup.object().shape({
     })
     .optional(),
   note: Yup.string().optional(),
+  drugstore_name: Yup.string().optional(),
 })
 
 export const storeReceiveSchema = Yup.object().shape({
