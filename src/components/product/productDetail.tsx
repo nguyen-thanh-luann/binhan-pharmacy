@@ -274,13 +274,6 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
 
         <div className="flex items-center gap-12 mb-16">
           <p className="text_md">{`Số lượng`}</p>
-          {/* <InputQuantity
-            minusIconClassName="text-md text-white"
-            plusIconClassName="text-base text-white"
-            inputClassName={`text-base text-text-color text-center outline-none`}
-            quantity={quantity}
-            onChangeQuantity={(q: number) => setQuantity(q)}
-          /> */}
 
           <CustomInputQuantity
             defaultValue={quantity}
@@ -288,7 +281,7 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
           />
         </div>
 
-        <div className="flex gap-12 items-center">
+        <div className="flex gap-12 items-center flex-wrap">
           <Button
             onClick={() => {
               router.push('/quick_order')

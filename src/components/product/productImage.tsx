@@ -52,7 +52,8 @@ export const ProductImg = ({ type, className, representation_image, images_ids =
                             ? img?.image_url || ''
                             : `${API_URL}${img?.image_url}`
                         }
-                        className="rounded-md object-cover w-[440px] h-[440px] aspect-1 mx-auto"
+                        className="w-fit md:w-[440px] mx-auto"
+                        imageClassName="rounded-md md:h-[440px] w-[440px] md:object-cover aspect-1"
                       />
                     </div>
                   </SwiperSlide>
