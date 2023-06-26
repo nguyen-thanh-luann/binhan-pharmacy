@@ -20,14 +20,14 @@ interface CartSummaryProps {
 export const OrderSummary = ({ className }: CartSummaryProps) => {
   const router = useRouter()
   const { data, isValidating } = useSWR<GetOrderDraftRes>(SWR_KEY.orders)
-  const { createOrderDone } = useCreateOrderDone()
+  const { createOrderDone, checkDataValid } = useCreateOrderDone()
   const { createPayment } = usePayment()
 
   const payment: Payment = useSelector(selectOrderPayment)
 
   const handleCreateOrder = () => {
     if (payment?.provider === 'vnpay') {
-      if (data?.sale_orders?.[0]) {
+      if (data?.sale_orders?.[0] && checkDataValid()) {
         const order_id = data.sale_orders[0].order_id
 
         createPayment(

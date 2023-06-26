@@ -34,7 +34,7 @@ const Register = () => {
             </div>
           ) : (
             <div>
-              <UserRegister className="w-[50%] mx-auto" />
+              <UserRegister className="w-[90%] lg:w-[50%] mx-auto" />
             </div>
           )}
         </div>

@@ -190,7 +190,6 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
                 business_registration_certification_image_url: data?.businessCertificateImage?.id,
                 business_operation_name: data?.business_name,
                 business_operation_owner: data?.business_owner,
-                business_phone: data?.business_phone,
                 establish_date: data?.establish_date,
               },
               () => {
@@ -245,8 +244,8 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
               control={control}
               name="name"
               type="text"
-              label={`Tên đăng nhập`}
-              placeholder={`Họ và tên`}
+              label={`Tên đăng nhập theo số di động`}
+              placeholder={`Mã OTP sẽ gửi đến số điện thoại của bạn`}
               inputClassName="p-12"
               required
             />
@@ -272,10 +271,10 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
           <div className="flex-1">
             <InputField
               control={control}
-              name="business_owner"
+              name="business_name"
               type="text"
-              label={`Tên chủ sở hữu`}
-              placeholder={`Họ và tên`}
+              label={`Tên Cơ sở kinh doanh`}
+              placeholder={`Tên cơ sở`}
               inputClassName="p-12"
             />
           </div>
@@ -295,14 +294,15 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
           <div className="flex-1">
             <InputField
               control={control}
-              name="business_name"
+              name="business_owner"
               type="text"
-              label={`Tên Cơ sở kinh doanh`}
-              placeholder={`Tên cơ sở`}
+              label={`Tên chủ sở hữu`}
+              placeholder={`Họ và tên`}
               inputClassName="p-12"
             />
           </div>
-          <div className="flex-1">
+
+          {/* <div className="flex-1">
             <InputField
               control={control}
               name="business_phone"
@@ -311,10 +311,7 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
               placeholder={`Số điện thoại`}
               inputClassName="p-12"
             />
-          </div>
-        </div>
-
-        <div className="mb-18 flex flex-wrap flex-col md:flex-row gap-24">
+          </div> */}
           <div className="flex-1">
             <InputDate
               control={control}
@@ -324,8 +321,6 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
               inputClassName="p-12"
             />
           </div>
-
-          <div className="flex-1"></div>
         </div>
 
         <p className="text-lg font-bold text-primary mb-24">

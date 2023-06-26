@@ -175,5 +175,6 @@ export const useCreateOrderDone = () => {
   return {
     createOrderDone,
     createOrderDoneWithTransactionConfirmed,
+    checkDataValid,
   }
 }

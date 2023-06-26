@@ -79,9 +79,9 @@ export const STORE_TYPE: OptionType<string>[] = [
   { label: 'Nhà thuốc', value: 'drugstore' },
   { label: 'Phòng khám', value: 'clinic' },
   { label: 'Shop bán hàng', value: 'store' },
-  { label: 'quầy thuốc', value: 'pharmacy' },
-  { label: 'trạm y tế', value: 'health_store' },
-  { label: 'khác', value: 'orther' },
+  { label: 'Quầy thuốc', value: 'pharmacy' },
+  { label: 'Trạm y tế', value: 'health_store' },
+  { label: 'Khác', value: 'orther' },
 ]
 
 export const PRODUCT_FILTER_TABS: OptionType<string>[] = [

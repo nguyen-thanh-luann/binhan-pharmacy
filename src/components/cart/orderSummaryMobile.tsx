@@ -50,11 +50,11 @@ export const OrderSummaryMobile = () => {
     return { totalPromotion, amountSubtotal, amountTotal }
   }, [data])
 
-  const { createOrderDone } = useCreateOrderDone()
+  const { createOrderDone, checkDataValid } = useCreateOrderDone()
 
   const handleCreateOrder = () => {
     if (payment?.provider === 'vnpay') {
-      if (data?.sale_orders?.[0]) {
+      if (data?.sale_orders?.[0] && checkDataValid()) {
         const order_id = data.sale_orders[0].order_id
 
         createPayment(
