@@ -6,7 +6,7 @@ import {
   useProductPromotion,
   usePurchasableProduct,
   useUser,
-  useWishlist
+  useWishlist,
 } from '@/hooks'
 import { productAPI } from '@/services'
 import { Product, ProductDetail as IProductDetail } from '@/types'
@@ -54,12 +54,7 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
   const [currentProduct, setCurrentProduct] = useState<IProductDetail>(data)
 
   const handleAddToCart = (product: Product) => {
-    if (!isPurchasable) return
-
-    if (!userInfo?.account?.partner_id) {
-      router.push(`${DOMAIN_URL}/login`)
-      return
-    }
+    if (isAddingTocart || !isPurchasable) return
 
     addToCart({
       ...product,
