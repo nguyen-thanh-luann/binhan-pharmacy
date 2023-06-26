@@ -262,7 +262,9 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
         ) : null}
 
         {isLoadProductPromotion ? (
-          <PromotionLoading />
+          <div className="mb-16">
+            <PromotionLoading />
+          </div>
         ) : (
           <ListProductPromotion className="mb-16" data={productPromotions || []} />
         )}
