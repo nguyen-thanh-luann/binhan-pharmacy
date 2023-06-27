@@ -8,7 +8,7 @@ import { useRouter } from 'next/router'
 import {
   AccessoryProduct,
   Breadcrumb,
-  NotFound, ProductDescriptionV2,
+  NotFound, ProductDescription,
   ProductDetail,
   ProductDetailLoading,
   ProductTabs,
@@ -21,7 +21,7 @@ import { useEffect, useState } from 'react'
 
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
-    const res: any = await productAPI.filterProduct({ product_type: 'product_product' })
+    const res: any = await productAPI.filterProduct({ product_type: 'product_product', limit: 12 })
 
     return {
       paths: res?.data?.result.map((item: Product) => ({
@@ -82,12 +82,7 @@ const ProductDetailPage = () => {
 
             <ProductDetail data={data?.product_data} className="mb-24" />
 
-            {/* <ProductDescription
-              product_id={data?.product_data?.product_id || 0}
-              className="mb-24"
-            /> */}
-
-            <ProductDescriptionV2
+            <ProductDescription
               product_classification_type={data?.product_data?.product_type}
               product_id={data?.product_data?.product_id || 0}
               className="mb-24"

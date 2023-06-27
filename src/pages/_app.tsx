@@ -15,6 +15,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   const { openGraphData = [] } = pageProps as any
   const { loginGuest } = useGuest()
   const previousRoute = usePreviousRoute()
+  
   // login guest account when user visit web
   useEffect(() => {
     loginGuest()
