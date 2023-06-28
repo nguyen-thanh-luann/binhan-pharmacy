@@ -29,7 +29,18 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         })
       }
 
-      const { token, refresh_token } = response?.data
+      const { token, refresh_token, account_state } = response?.data
+
+      if (!account_state) {
+        return res.status(400).json({
+          result: {
+            message: 'Tài khoản chưa được kích hoạt',
+            success: false,
+            code: 400,
+            data: undefined,
+          },
+        })
+      }
 
       cookies.set('token', token, {
         httpOnly: true,

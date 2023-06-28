@@ -25,6 +25,7 @@ export const PHONE_SCHEMA = /((^(\+84|84|0|0084){1})(3|5|7|8|9))+([0-9]{8})$/
 export const DEFAULT_LIMIT = 30
 export const DEFAULT_POST_LIMIT = 8
 export const DEFAULT_LIMIT_PRODUCT = 30
+export const DEFAULT_LIMIT_PRODUCT_FILTER = 20
 export const LIMIT_MESSAGES = 30
 export const LIMIT_ROOM_CHAT = 20
 export const LIMIT_DRUG_STORES = 20

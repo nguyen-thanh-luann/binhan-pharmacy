@@ -14,9 +14,13 @@ interface useProductQueryRes {
   hasMore: boolean
   isValidating: boolean
   filter: (params: FilterProductParams) => void
+  paginate: (params: FilterProductParams) => void
   getMore: () => void
   price_max: number
   price_min: number
+  total: number
+  limit: number
+  offset: number
 }
 
 export const useProductQuery = ({ key, params }: useProductQueryProps): useProductQueryRes => {
@@ -30,6 +34,10 @@ export const useProductQuery = ({ key, params }: useProductQueryProps): useProdu
     filter,
     price_max,
     price_min,
+    total,
+    limit,
+    offset,
+    paginate,
   } = useProductFilter<Product, FilterProductParams>({
     key,
     fetcher: productAPI.filterProduct,
@@ -48,7 +56,11 @@ export const useProductQuery = ({ key, params }: useProductQueryProps): useProdu
     hasMore,
     getMore,
     filter,
+    paginate,
     price_max,
     price_min,
+    total,
+    limit,
+    offset,
   }
 }

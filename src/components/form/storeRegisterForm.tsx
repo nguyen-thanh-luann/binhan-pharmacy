@@ -221,7 +221,10 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
   }
 
   const handleSubmitForm = (data: any) => {
-    if (!isValid) return
+    if (!isValid || !gppCerImage || !businessCerImage) {
+      toast.error('Vui lòng cung cấp đầy đủ thông tin!')
+      return
+    }
 
     setFormData(data)
 
@@ -245,7 +248,7 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
               name="name"
               type="text"
               label={`Tên đăng nhập theo số di động`}
-              placeholder={`Mã OTP sẽ gửi đến số điện thoại của bạn`}
+              placeholder={`Tên đăng nhập`}
               inputClassName="p-12"
               required
             />
@@ -257,7 +260,7 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
               name="phone"
               type="text"
               label={`Số điện thoại`}
-              placeholder={`số điện thoại`}
+              placeholder={`Mã OTP sẽ gửi đến số điện thoại của bạn`}
               inputClassName="p-12"
               required
               onBlur={(e) => {
@@ -331,18 +334,22 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
           </span>
         </p>
 
-        <label className="capitalize text-lg font-bold">Công việc hiện tại</label>
+        <label className="capitalize text-lg font-bold">
+          Công việc hiện tại <span className="text-red text-base">*</span>{' '}
+        </label>
         <div className="mb-24 mt-12">
           <RadioField
             data={STORE_TYPE}
-            control={control}
             defaultValue={STORE_TYPE[0]?.value}
+            control={control}
             name="storeType"
           />
         </div>
 
         <div className="mb-24">
-          <label className="capitalize text-lg font-bold mb-24">Địa chỉ</label>
+          <label className="capitalize text-lg font-bold mb-24">
+            Địa chỉ <span className="text-red text-base">*</span>{' '}
+          </label>
           <div className="my-12">
             <AddressPicker onSubmit={(data: AddressPickerRes) => handleSelectAddress(data)} />
           </div>
@@ -452,7 +459,7 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
           type="submit"
           title="Đăng ký"
           className={`py-8 w-[50%] mx-auto bg-primary rounded-[10px] mb-24 ${
-            isValid ? '' : 'opacity-25 cursor-default'
+            isValid && gppCerImage && businessCerImage ? '' : 'opacity-25 cursor-default'
           }`}
           textClassName="text-white"
         />

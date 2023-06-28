@@ -3,19 +3,20 @@ import {
   Breadcrumb,
   Modal,
   NotFound,
+  Pagination,
   ProductFilterSidebar,
   ProductItem,
   ProductsLoadingSlice,
   Tabs,
 } from '@/components'
-import { PRODUCT_FILTER_TABS, SWR_KEY, WEB_TITTLE } from '@/constants'
+import { DEFAULT_LIMIT_PRODUCT_FILTER, PRODUCT_FILTER_TABS, SWR_KEY, WEB_TITTLE } from '@/constants'
 import { generateFilterProductParamFormRouter, isArrayHasValue, isObjectHasValue } from '@/helper'
 import { useModal, useProductQuery, useUser } from '@/hooks'
 import { MainNoFooter } from '@/templates'
 import { ProductfilterSortType } from '@/types'
+import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import InfiniteScroll from 'react-infinite-scroll-component'
 
 const SearchPage = () => {
   const router = useRouter()
@@ -23,13 +24,24 @@ const SearchPage = () => {
   const [currentTab, setCurrentTab] = useState<string>('default')
   const { visible: showFilters, openModal: openFilters, closeModal: closeFilters } = useModal()
 
-  const { products, filter, isValidating, hasMore, getMore, isFilter, price_max, price_min } =
-    useProductQuery({
-      key: `${SWR_KEY.filter_product}_${userInfo?.account?.partner_id || 0}`,
-      params: {
-        product_type: 'product_product',
-      },
-    })
+  const {
+    products,
+    filter,
+    isValidating,
+    isFilter,
+    price_max,
+    price_min,
+    total,
+    limit,
+    offset,
+    paginate,
+  } = useProductQuery({
+    key: `${SWR_KEY.filter_product}_${userInfo?.account?.partner_id || 0}`,
+    params: {
+      product_type: 'product_product',
+      limit: DEFAULT_LIMIT_PRODUCT_FILTER,
+    },
+  })
 
   useEffect(() => {
     const searchParams = generateFilterProductParamFormRouter(router)
@@ -51,6 +63,12 @@ const SearchPage = () => {
     router.push({
       query: { ...router?.query, sort_by: value },
     })
+  }
+
+  const handlePaginate = (page: number) => {
+    console.log('call paginate: ', page)
+
+    paginate({ page })
   }
 
   return (
@@ -142,16 +160,12 @@ const SearchPage = () => {
             <div className="">
               {isValidating || isFilter ? (
                 <ProductsLoadingSlice className="grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-12" />
-              ) : null}
-
-              {isValidating ? (
-                <ProductsLoadingSlice className="grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-12" />
               ) : isArrayHasValue(products) ? (
                 <div
                   className="max-h-[80vh] overflow-auto scrollbar-hide"
                   id="productsListScrollabelTarget"
                 >
-                  <InfiniteScroll
+                  {/* <InfiniteScroll
                     scrollableTarget="productsListScrollabelTarget"
                     dataLength={products?.length || 0}
                     next={() => getMore()}
@@ -167,7 +181,22 @@ const SearchPage = () => {
                         <ProductItem data={product} key={product?.product_id} />
                       ))}
                     </div>
-                  </InfiniteScroll>
+                  </InfiniteScroll> */}
+
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
+                    {products?.map((product) => (
+                      <ProductItem data={product} key={product?.product_id} />
+                    ))}
+                  </div>
+
+                  {!isValidating && (
+                    <Pagination
+                      forcePage={offset / limit}
+                      className={classNames('mt-[24px]')}
+                      pageCount={Math.ceil(total / DEFAULT_LIMIT_PRODUCT_FILTER)}
+                      onPageChange={({ selected }) => handlePaginate(selected + 1)}
+                    />
+                  )}
                 </div>
               ) : (
                 <div className="">

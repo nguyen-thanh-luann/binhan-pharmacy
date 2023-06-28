@@ -25,7 +25,7 @@ export const LoginOTPScreen = ({ onClose }: LoginOTPScreenProps) => {
         onBack={() => {
           phoneNumber ? setPhoneNumber(undefined) : dispatch(setAuthOption('loginPassword'))
         }}
-        onClose={() => onClose?.()}
+        onClose={() => onClose?.()} 
         footerOption={phoneNumber ? undefined : 'signup'}
       >
         <div className="px-24">

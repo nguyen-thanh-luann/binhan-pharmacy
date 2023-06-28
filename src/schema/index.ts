@@ -181,14 +181,6 @@ export const storeRegisterSchema = Yup.object().shape({
       label: Yup.string().required(),
     })
     .required('Vui lòng chọn điạ chỉ phường xã'),
-  businessCertificateImage: Yup.object({
-    id: Yup.number().required(),
-    url: Yup.string().required(),
-  }).required('Vui lòng bổ sung giấy chứng nhận'),
-  gppCertificateImage: Yup.object({
-    id: Yup.number().required(),
-    url: Yup.string().required(),
-  }).required('Vui lòng bổ sung giấy chứng nhận'),
 })
 
 export const getAdviceSchema = Yup.object().shape({
