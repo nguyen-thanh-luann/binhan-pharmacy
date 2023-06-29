@@ -1,5 +1,4 @@
-import { empty, ProductCartIcon } from '@/assets'
-import { API_URL } from '@/constants'
+import { ProductCartIcon } from '@/assets'
 import {
   calcDiscountPercent,
   formatMoneyVND,
@@ -17,7 +16,7 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { twMerge } from 'tailwind-merge'
-import { Image } from '../image'
+import { CustomImage } from '../customImage'
 import { ModalProductDetail } from '../modal'
 import { Spinner } from '../spinner'
 import { Star } from '../star'
@@ -45,7 +44,7 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
   const router = useRouter()
   const dispatch = useDispatch()
   const { addToCart, isAddingTocart } = useAddToCart()
-  const {isPurchasable} = usePurchasableProduct({product: data})
+  const { isPurchasable } = usePurchasableProduct({ product: data })
 
   const {
     visible: showProductDetailModal,
@@ -107,12 +106,8 @@ export const ProductItem = ({ data, className, isLoading }: ProductItemProps) =>
               onClick={onProductClick}
               className="mb-8 rounded-tl-[6px] rounded-tr-[6px] max-h-[230px] relative overflow-hidden cursor-pointer"
             >
-              <Image
-                src={
-                  data?.representation_image?.image_url
-                    ? `${API_URL}${data?.representation_image?.image_url}`
-                    : empty
-                }
+              <CustomImage
+                src={data?.representation_image?.image_url}
                 imageClassName="object-cover w-full h-full hover:scale-110 duration-200 ease-in-out aspect-[1/1]"
                 className="aspect-[1/1]"
               />

@@ -1,3 +1,4 @@
+import { NOTIFICATION } from '@/constants'
 import { authAPI } from '@/services'
 import Cookies from 'cookies'
 import httpProxy from 'http-proxy'
@@ -34,7 +35,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       if (!account_state) {
         return res.status(400).json({
           result: {
-            message: 'Tài khoản chưa được kích hoạt',
+            message: `${NOTIFICATION.account_is_being_verified}`,
             success: false,
             code: 400,
             data: undefined,

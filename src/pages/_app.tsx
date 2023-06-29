@@ -10,12 +10,16 @@ import { useEffect } from 'react'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { SWRConfig } from 'swr'
+import useBeforeUnload from '@/hooks/common/useBeforeUnload'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const { openGraphData = [] } = pageProps as any
   const { loginGuest } = useGuest()
   const previousRoute = usePreviousRoute()
-  
+
+  //logout guest when user close tab or browser
+  useBeforeUnload()
+
   // login guest account when user visit web
   useEffect(() => {
     loginGuest()

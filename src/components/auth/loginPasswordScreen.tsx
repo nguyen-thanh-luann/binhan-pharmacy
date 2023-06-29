@@ -17,7 +17,7 @@ export const LoginPasswordScreen = ({
 }: LoginPasswordScreenProps) => {
   const dispatch = useDispatch()
   const router = useRouter()
-  const { guestInfo } = useGuest()
+  const { guestInfo, logoutGuest } = useGuest()
   const deviceCode = guestInfo?.device_code || ''
   const { addGuestCartToShoppingCart, mutateAccountData } = useUser({})
   const { loginWithPassword } = useAuth()
@@ -33,6 +33,7 @@ export const LoginPasswordScreen = ({
         // merge cart data of guest to user's cart
         addGuestCartToShoppingCart(deviceCode)
         autoSignupChatServer()
+        logoutGuest()
         router.push('/')
       },
     })

@@ -84,11 +84,11 @@ const SearchPage = () => {
         />
 
         <div className="grid grid-cols-4">
-          <div className="col-span-1 hidden md:block h-[95vh] overflow-scroll scrollbar-hide px-12 pb-12">
+          <div className="col-span-1 hidden md:block h-[100vh] overflow-scroll scrollbar-hide px-12 pb-12">
             <ProductFilterSidebar price_max={price_max} price_min={price_min} />
           </div>
 
-          <div className="col-span-4 md:col-span-3 overflow-scroll scrollbar-hide px-12 h-[100vh]">
+          <div className="col-span-4 md:col-span-3 px-12">
             {/* search bar */}
             <div className="p-12 rounded-lg bg-white z-50 mb-12 shadow-shadow-1">
               <Tabs
@@ -161,27 +161,7 @@ const SearchPage = () => {
               {isValidating || isFilter ? (
                 <ProductsLoadingSlice className="grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-12" />
               ) : isArrayHasValue(products) ? (
-                <div
-                  className="max-h-[80vh] overflow-auto scrollbar-hide"
-                  id="productsListScrollabelTarget"
-                >
-                  {/* <InfiniteScroll
-                    scrollableTarget="productsListScrollabelTarget"
-                    dataLength={products?.length || 0}
-                    next={() => getMore()}
-                    hasMore={hasMore}
-                    loader={
-                      hasMore ? (
-                        <ProductsLoadingSlice className="grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-12" />
-                      ) : null
-                    }
-                  >
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
-                      {products?.map((product) => (
-                        <ProductItem data={product} key={product?.product_id} />
-                      ))}
-                    </div>
-                  </InfiniteScroll> */}
+                <div className='h-[100vh] overflow-scroll'>
 
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
                     {products?.map((product) => (
@@ -192,7 +172,7 @@ const SearchPage = () => {
                   {!isValidating && (
                     <Pagination
                       forcePage={offset / limit}
-                      className={classNames('mt-[24px]')}
+                      className={classNames('my-[24px]')}
                       pageCount={Math.ceil(total / DEFAULT_LIMIT_PRODUCT_FILTER)}
                       onPageChange={({ selected }) => handlePaginate(selected + 1)}
                     />

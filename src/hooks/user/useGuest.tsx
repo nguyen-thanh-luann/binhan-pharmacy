@@ -7,6 +7,7 @@ interface useGuestRes {
   guestInfo: LoginRes
   loginGuest: (onSuccess?: (data: LoginRes) => void) => void
   getGuestInfo: (onSuccess?: (data: LoginRes) => void) => void
+  logoutGuest: (onSuccess?: () => void) => void
 }
 
 export const useGuest = (): useGuestRes => {
@@ -32,6 +33,18 @@ export const useGuest = (): useGuestRes => {
     }
   }
 
+  const logoutGuest = async (hanldeSuccess?: () => void) => {
+    try {
+      const res: any = await userAPI.logoutGuest()
+
+      if (res?.result?.success) {
+        hanldeSuccess?.()
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   const getGuestInfo = async (handleSuccess?: (props: LoginRes) => void) => {
     try {
       const res: any = await userAPI.getGuestInfo()
@@ -49,5 +62,6 @@ export const useGuest = (): useGuestRes => {
     guestInfo,
     loginGuest,
     getGuestInfo,
+    logoutGuest,
   }
 }

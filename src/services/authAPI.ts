@@ -10,7 +10,7 @@ import type {
   TokenRes,
 } from '@/types'
 import { AxiosPromise } from 'axios'
-import axiosClient from '.'
+import axiosClient, { axiosClientNoContentType } from '.'
 import { axiosInstance } from './axiosInstance'
 
 const authAPI = {
@@ -25,7 +25,7 @@ const authAPI = {
   },
 
   logoutGuestAccount: () => {
-    return axiosClient.get('/user_information_controller/logout_guest_account')
+    return axiosClientNoContentType.get('/user_information_controller/logout_guest_account')
   },
 
   refreshToken: (refresh_token: string): AxiosPromise<HTTPResponse<TokenRes>> => {

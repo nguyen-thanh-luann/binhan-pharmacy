@@ -1,14 +1,13 @@
+import { isArrayHasValue } from '@/helper'
+import { selectPreviewImageUrl, setPreviewImageUrl } from '@/store'
+import { ImageId } from '@/types'
+import classNames from 'classnames'
 import { useState } from 'react'
-import { isArrayHasValue, isRemoteImageUrl } from '@/helper'
 import { useDispatch, useSelector } from 'react-redux'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { selectPreviewImageUrl, setPreviewImageUrl } from '@/store'
-import { Image } from '../image'
-import { API_URL } from '@/constants'
-import { ImageShower } from '../imageShower'
 import { twMerge } from 'tailwind-merge'
-import classNames from 'classnames'
-import { ImageId } from '@/types'
+import { CustomImage } from '../customImage'
+import { ImageShower } from '../imageShower'
 
 interface IProductImage {
   images_ids?: ImageId[]
@@ -18,7 +17,12 @@ interface IProductImage {
   className?: string
 }
 
-export const ProductImg = ({ type, className, representation_image, images_ids = [] }: IProductImage) => {
+export const ProductImg = ({
+  type,
+  className,
+  representation_image,
+  images_ids = [],
+}: IProductImage) => {
   const dispatch = useDispatch()
   const [swiper, setSwiper] = useState<any>({})
   const [activeIndex, setActiveIndex] = useState<number>(0)
@@ -46,14 +50,10 @@ export const ProductImg = ({ type, className, representation_image, images_ids =
                     key={index}
                   >
                     <div>
-                      <Image
-                        src={
-                          isRemoteImageUrl(img?.image_url || '')
-                            ? img?.image_url || ''
-                            : `${API_URL}${img?.image_url}`
-                        }
-                        className="w-fit md:w-[440px] mx-auto"
-                        imageClassName="rounded-md md:h-[440px] w-[440px] md:object-cover aspect-1"
+                      <CustomImage
+                        src={img?.image_url}
+                        className="rounded-md w-[440px] h-[440px] mx-auto"
+                        imageClassName="rounded-md object-cover w-[440px] h-[440px] aspect-1 mx-auto"
                       />
                     </div>
                   </SwiperSlide>
@@ -74,14 +74,10 @@ export const ProductImg = ({ type, className, representation_image, images_ids =
                   index === activeIndex ? '!border-primary' : ''
                 }`}
               >
-                <Image
-                  src={
-                    isRemoteImageUrl(img?.image_url || '')
-                      ? img?.image_url || ''
-                      : `${API_URL}${img?.image_url}`
-                  }
-                  className="rounded-lg object-cover h-[64px]"
-                  imageClassName="rounded-lg object-cover"
+                <CustomImage
+                  src={img?.image_url}
+                  className="rounded-lg h-[64px]"
+                  imageClassName="rounded-lg aspect-1 object-cover h-[64px]"
                 />
               </div>
             )
