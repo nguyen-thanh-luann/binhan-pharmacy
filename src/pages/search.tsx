@@ -88,7 +88,7 @@ const SearchPage = () => {
             <ProductFilterSidebar price_max={price_max} price_min={price_min} />
           </div>
 
-          <div className="col-span-4 md:col-span-3 px-12">
+          <div className="col-span-4 md:col-span-3 px-12 h-[100vh] overflow-scroll">
             {/* search bar */}
             <div className="p-12 rounded-lg bg-white z-50 mb-12 shadow-shadow-1">
               <Tabs
@@ -161,8 +161,7 @@ const SearchPage = () => {
               {isValidating || isFilter ? (
                 <ProductsLoadingSlice className="grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-12" />
               ) : isArrayHasValue(products) ? (
-                <div className='h-[100vh] overflow-scroll'>
-
+                <div className="">
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
                     {products?.map((product) => (
                       <ProductItem data={product} key={product?.product_id} />

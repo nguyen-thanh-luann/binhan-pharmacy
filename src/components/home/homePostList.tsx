@@ -33,15 +33,6 @@ export const HomePostsList = ({ className }: HomePostListProps) => {
     <div className={twMerge(classNames(`mb-24`, className))}>
       {isArrayHasValue(postCategoryList) ? (
         <div>
-          {/* {postCategoryList
-            ?.filter((p) => p.role !== 'npp')
-            ?.map((postCategory) => (
-              <HomePosts
-                key={postCategory?.id}
-                postCategory={postCategory}
-                className="mb-12 last:mb-0"
-              />
-            ))} */}
           {postCategoryList?.map((postCategory) => {
             if (postCategory?.role !== 'npp') {
               return (
