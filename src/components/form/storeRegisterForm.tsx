@@ -49,7 +49,7 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
   const router = useRouter()
   const { guestInfo } = useGuest()
   const deviceCode = guestInfo?.device_code || ''
-  const { loginPhoneNumber } = useAuth()
+  const { drugStoreRegister } = useAuth()
   const { updateUser, addGuestCartToShoppingCart, mutateAccountData } = useUser({})
   const { autoSignupChatServer } = useChatAccount()
   const [formData, setFormData] = useState<any>()
@@ -173,7 +173,7 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
       },
       // account not exist handler (signup and update accounttype as patient_account)
       () => {
-        loginPhoneNumber({
+        drugStoreRegister({
           otpInput,
           handleSuccess: () => {
             updateUser(
@@ -197,6 +197,7 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
                 // merge cart data of guest to user's cart
                 mutateAccountData()
                 addGuestCartToShoppingCart(deviceCode)
+                toast.success('Đăng ký thành công, chúng tôi sẽ liên hệ với bạn. Xin cảm ơn')
                 router.push('/')
               }
             )

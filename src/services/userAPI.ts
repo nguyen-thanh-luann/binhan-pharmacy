@@ -28,6 +28,10 @@ const userAPI = {
     return axiosClient.post('/login-phone-number', { params: data })
   },
 
+  drugStoreRegister: (data: FirebaseAuthParams) => {
+    return axiosClient.post('/drugstore-register', { params: data })
+  },
+
   resetPassword: (data: ResetPasswordParams) => {
     return axiosClient.post('/reset-password', { params: data })
   },

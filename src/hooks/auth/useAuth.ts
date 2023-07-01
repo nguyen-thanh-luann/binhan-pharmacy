@@ -79,6 +79,33 @@ export const useAuth = () => {
     }
   }
 
+  const drugStoreRegister = async (props: otpProps) => {
+    const { handleSuccess, handleError, otpInput } = props
+    dispatch(setBackdropVisible(true))
+
+    try {
+      OTPVerifier({
+        otpInput,
+        handleSuccess: async (firebaseToken) => {
+          asyncHandler({
+            fetcher: userAPI.drugStoreRegister({
+              firebase_access_token: firebaseToken,
+              type: 'firebase',
+            }),
+            onSuccess: handleSuccess,
+            onError: handleError?.(),
+            config: {
+              showSuccessMsg: false,
+            },
+          })
+        },
+        handleError: () => handleError && handleError(),
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const resetPassword = async (props: UseAuthResetPasswordParams) => {
     const { handleSuccess, handleError, otpInput, password, re_password } = props
     dispatch(setBackdropVisible(true))
@@ -156,6 +183,7 @@ export const useAuth = () => {
     loginWithPassword,
     logout,
     loginPhoneNumber,
+    drugStoreRegister,
     generateChatToken,
     resetPassword,
   }
