@@ -44,8 +44,7 @@ export const CartPageCompany = ({
         setLoadingState: true,
       },
     })
-  }
-
+  }  
 
   return (
     <div className={twMerge(classNames('', className))}>

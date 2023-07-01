@@ -52,18 +52,16 @@ export const CartCategoryGroup = ({
           'flex justify-between flex-wrap items-start p-16 gap-12 border-b border-gray-200 '
         )}
       >
-        <div className=''>
-          {data?.has_promotion ? (
-            <CartCategoryPromotion
-              category={data}
-              categoryIndex={categoryIndex}
-              companyId={companyIndex}
-              companyIndex={companyIndex}
-            />
-          ) : null}
+        <div className="">
+          <CartCategoryPromotion
+            category={data}
+            categoryIndex={categoryIndex}
+            companyId={companyIndex}
+            companyIndex={companyIndex}
+          />
         </div>
 
-        <div className='p-6'>
+        <div className="p-6">
           <p className="text-base">{`Doanh số nhóm: ${formatMoneyVND(amount_total)}`}</p>
         </div>
       </div>

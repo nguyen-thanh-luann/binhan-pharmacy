@@ -79,7 +79,7 @@ export const CartCategoryPromotion = ({
 
       <Modal
         headerClassName="px-12"
-        modalClassName="w-[500px] flex-col h-[500px]"
+        modalClassName="w-full max-w-[500px] h-[100vh] fixed right-0"
         onClose={closeModal}
         visible={visible}
         headerTitle={`Khuyến mãi ${category.category_id.category_name}`}
