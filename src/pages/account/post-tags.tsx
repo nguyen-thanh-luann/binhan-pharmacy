@@ -155,30 +155,30 @@ const PostTagsPage = () => {
                       </div>
                     </InfiniteScroll>
                   </div>
-
-                  <Modal
-                    visible={isShowTagForm}
-                    animationType="fade"
-                    headerClassName="hidden"
-                    modalClassName="p-20 h-fit max-h-[550px] w-[500px] max-w-[90%] rounded-[10px] overflow-scroll scrollbar-hide"
-                  >
-                    <div className="flex justify-between items-center mb-12">
-                      <p className="text-lg font-bold">{currentTag ? 'Cập nhật tag' : 'Tạo tag'}</p>
-                      <div className="cursor-pointer" onClick={hanldeCloseTagForm}>
-                        <TimesIcon className="w-16 h-16 text-gray" />
-                      </div>
-                    </div>
-
-                    <CreateTagForm
-                      type={currentTag ? 'update' : 'create'}
-                      defaultValue={currentTag}
-                      onSubmit={hanldeSubmit}
-                    />
-                  </Modal>
                 </div>
               ) : (
                 <NotFound notify="Không tìm thấy tag nào!" />
               )}
+
+              <Modal
+                visible={isShowTagForm}
+                animationType="fade"
+                headerClassName="hidden"
+                modalClassName="p-20 h-fit max-h-[550px] w-[500px] max-w-[90%] rounded-[10px] overflow-scroll scrollbar-hide"
+              >
+                <div className="flex justify-between items-center mb-12">
+                  <p className="text-lg font-bold">{currentTag ? 'Cập nhật tag' : 'Tạo tag'}</p>
+                  <div className="cursor-pointer" onClick={hanldeCloseTagForm}>
+                    <TimesIcon className="w-16 h-16 text-gray" />
+                  </div>
+                </div>
+
+                <CreateTagForm
+                  type={currentTag ? 'update' : 'create'}
+                  defaultValue={currentTag}
+                  onSubmit={hanldeSubmit}
+                />
+              </Modal>
             </div>
           ) : (
             // <SignupPostAdminForm className="md:w-[60%] mx-auto" />

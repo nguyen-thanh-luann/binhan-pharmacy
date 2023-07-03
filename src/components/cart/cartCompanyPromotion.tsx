@@ -69,7 +69,7 @@ export const CartCompanyPromotion = ({ company, companyIndex }: CartCompanyPromo
 
       <Modal
         headerClassName="px-12"
-        modalClassName="w-[500px] flex-col h-[600px]"
+        modalClassName="w-full max-w-[500px] flex-col h-[100vh] fixed right-0"
         onClose={closeModal}
         visible={visible}
         headerTitle={`${company.company_id.company_name} Khuyến mãi`}

@@ -38,7 +38,7 @@ export const BottomNavigation = ({ className }: BottomNavigationProps) => {
             </div>
             <p
               className={classNames(
-                'text-sm text-text-color',
+                'text-sm',
                 isActive ? 'text-primary' : 'text-text-color'
               )}
             >

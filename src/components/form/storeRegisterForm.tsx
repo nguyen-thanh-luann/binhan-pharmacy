@@ -2,12 +2,8 @@ import { PhotoIcon } from '@/assets'
 import { LIMIT_ATTACHMENT, STORE_TYPE } from '@/constants'
 import {
   useAttachment,
-  useAuth,
-  useChatAccount,
-  useCreateAttachment,
-  useGuest,
-  useModal,
-  useUser,
+  useAuth, useCreateAttachment, useModal,
+  useUser
 } from '@/hooks'
 import { storeRegisterSchema } from '@/schema'
 import { userAPI } from '@/services'
@@ -47,11 +43,9 @@ type certificatteTypeImage = 'businessCertificateImage' | 'gppCertificateImage'
 export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
   const dispatch = useDispatch()
   const router = useRouter()
-  const { guestInfo } = useGuest()
-  const deviceCode = guestInfo?.device_code || ''
   const { drugStoreRegister } = useAuth()
-  const { updateUser, addGuestCartToShoppingCart, mutateAccountData } = useUser({})
-  const { autoSignupChatServer } = useChatAccount()
+  const { updateUser } = useUser({})
+  // const { autoSignupChatServer } = useChatAccount()
   const [formData, setFormData] = useState<any>()
 
   const { visible: showOtpForm, openModal: setShowOtpForm, closeModal: closeOtpForm } = useModal()
@@ -193,10 +187,10 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
                 establish_date: data?.establish_date,
               },
               () => {
-                autoSignupChatServer('npp')
+                // autoSignupChatServer('npp')
                 // merge cart data of guest to user's cart
-                mutateAccountData()
-                addGuestCartToShoppingCart(deviceCode)
+                // mutateAccountData()
+                // addGuestCartToShoppingCart(deviceCode)
                 toast.success('Đăng ký thành công, chúng tôi sẽ liên hệ với bạn. Xin cảm ơn')
                 router.push('/')
               }

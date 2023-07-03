@@ -84,11 +84,11 @@ const SearchPage = () => {
         />
 
         <div className="grid grid-cols-4">
-          <div className="col-span-1 hidden md:block h-[100vh] overflow-scroll scrollbar-hide px-12 pb-12">
+          <div className="col-span-1 hidden md:block px-12 pb-12">
             <ProductFilterSidebar price_max={price_max} price_min={price_min} />
           </div>
 
-          <div className="col-span-4 md:col-span-3 px-12 h-[100vh] overflow-scroll">
+          <div className="col-span-4 md:col-span-3 px-12">
             {/* search bar */}
             <div className="p-12 rounded-lg bg-white z-50 mb-12 shadow-shadow-1">
               <Tabs
