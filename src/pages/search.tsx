@@ -66,8 +66,6 @@ const SearchPage = () => {
   }
 
   const handlePaginate = (page: number) => {
-    console.log('call paginate: ', page)
-
     paginate({ page })
   }
 

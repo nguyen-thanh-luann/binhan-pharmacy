@@ -368,6 +368,7 @@ export type PromotionValueUnitRes = { value: number; unit: string }
 export interface PromotionFreeProduct {
   product_id: number
   product_name: string
+  category_minor?: string
   representation_image: ImageId
   uom_id: {
     uom_full_standard_name: string

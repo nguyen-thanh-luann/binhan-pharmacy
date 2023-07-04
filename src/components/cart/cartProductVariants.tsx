@@ -1,13 +1,13 @@
-import { DownIcon } from '@/assets'
+import { RightIcon } from '@/assets'
 import { useClickOutside, useModal } from '@/hooks'
 import {
   CartProduct,
   CartProductAttribute,
   CartProductAttributeValue,
-  RelProductQty,
+  RelProductQty
 } from '@/types'
-import produce from 'immer'
 import classNames from 'classnames'
+import produce from 'immer'
 import { useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Button } from '../button'
@@ -146,27 +146,15 @@ export const CartProductVariants = ({
   return (
     <div ref={VariantModalref} className={twMerge(classNames('relative', className))}>
       <div onClick={toggle} className="flex items-center gap-12 cursor-pointer active:opacity-50 ">
-        {/* style 1 */}
-        {/* <div className="line-clamp-2 flex">
-          {selectedVariants?.map((variant, index) => (
-            <span key={index} className="text-primary text-base w-fit">
-              {`${variant?.attribute_value?.value_name} ${
-                index === selectedVariants?.length - 1 ? '' : ', '
-              }`}
-            </span>
-          ))}
-        </div>
-
-        <DownIcon className="w-10 min-w-[10px] text-primary" />
-         */}
-
         {/* style 2 */}
         <div className="">
           {selectedVariants?.map((variant, index) => (
             <div key={index} className="w-fit flex items-center gap-8">
               <p className="text-base text-primary">{`${variant?.attribute?.attribute_name}: ${variant?.attribute_value?.value_name}`}</p>
 
-              {index === 0 ? <DownIcon className="w-10 min-w-[10px] text-primary" /> : null}
+              {index === 0 ? (
+                <RightIcon className={classNames('w-10 text-xs min-w-[10px] text-primary duration-150', showVariantModal ? 'rotate-90' : '')} />
+              ) : null}
             </div>
           ))}
         </div>
@@ -178,7 +166,11 @@ export const CartProductVariants = ({
           {renderVariantOptions()}
 
           <div className="flex justify-end gap-12 p-12">
-            <Button title="Trở lại" className="w-[100px] border border-gray-100" onClick={closeVariantModal} />
+            <Button
+              title="Trở lại"
+              className="w-[100px] border border-gray-100"
+              onClick={closeVariantModal}
+            />
 
             <Button
               title="Xác nhận"
@@ -198,11 +190,7 @@ export const CartProductVariants = ({
               {renderVariantOptions()}
 
               <div className="flex justify-end gap-12 p-12">
-                <Button
-                  title="Trở lại"
-                  className="w-[100px]"
-                  onClick={closeVariantModal}
-                />
+                <Button title="Trở lại" className="w-[100px]" onClick={closeVariantModal} />
 
                 <Button
                   title="Xác nhận"

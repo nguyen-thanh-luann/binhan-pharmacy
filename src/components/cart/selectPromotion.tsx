@@ -121,7 +121,7 @@ export const SelectPromotion = <Params extends QueryList>({
                     onClick={() => setPromotionRangeLine(undefined)}
                   />
                 </div>
-                <p className="flex-1 line-clamp-1 text-lg">{promotionRangeLine.promotion_name}</p>
+                <p className="flex-1 line-clamp-2 text-lg">{promotionRangeLine.promotion_name}</p>
               </div>
 
               <PromotionRanges

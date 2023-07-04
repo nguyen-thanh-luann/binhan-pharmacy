@@ -1,7 +1,7 @@
 import { TimesIcon } from '@/assets'
 import { SWR_KEY } from '@/constants'
 import { formatMoneyVND } from '@/helper'
-import { GetOrderDraftRes } from '@/types'
+import { GetOrderDraftRes, OrderLineDelivery } from '@/types'
 import { useMemo } from 'react'
 import useSWR from 'swr'
 
@@ -11,6 +11,7 @@ interface ICartSummaryMobileDetail {
 
 export const OrderSummaryMobileDetail = ({ onClose }: ICartSummaryMobileDetail) => {
   const { data } = useSWR<GetOrderDraftRes>(SWR_KEY.orders)
+    const checkoutCarrierMethod: OrderLineDelivery = useSWR(SWR_KEY.checkout_carrier_method)?.data
 
   const { totalPromotion, amountSubtotal, amountTotal } = useMemo(() => {
     let totalPromotion = 0
@@ -28,8 +29,9 @@ export const OrderSummaryMobileDetail = ({ onClose }: ICartSummaryMobileDetail) 
     data.sale_orders.forEach((item) => {
       amountSubtotal += item.amount_subtotal
       totalPromotion += item.promotion_total
-      amountTotal += item.amount_total
     })
+
+     amountTotal = data?.amount_total
 
     return { totalPromotion, amountSubtotal, amountTotal }
   }, [data])
@@ -77,10 +79,21 @@ export const OrderSummaryMobileDetail = ({ onClose }: ICartSummaryMobileDetail) 
             </p>
           </div>
 
+          {checkoutCarrierMethod && (
+            <div className="flex items-center justify-between mb-12 title-md">
+              <p className="text-base text-text-color font-semibold">{`Phí vận chuyển`}</p>
+              <p className="text-base text-text-color font-semibold">
+                {formatMoneyVND(checkoutCarrierMethod?.shipping_fee)}
+              </p>
+            </div>
+          )}
+
           {/* total */}
           <div className="flex items-center justify-between mb-12 title-md">
             <p className="text-base text-text-color font-semibold">{`Tổng`}</p>
-            <p className="text-base text-text-color font-semibold">{formatMoneyVND(amountTotal)}</p>
+            <p className="text-base text-text-color font-semibold">
+              {formatMoneyVND(amountTotal)}
+            </p>
           </div>
         </div>
       </div>

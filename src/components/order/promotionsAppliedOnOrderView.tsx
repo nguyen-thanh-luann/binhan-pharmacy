@@ -9,7 +9,8 @@ type Props = {
   className?: string
 }
 
-export const PromotionsAppliedOnOrderView = ({ data, className }: Props) => {
+export const PromotionsAppliedOnOrderView = ({ data, className }: Props) => { 
+  
   if (!isArrayHasValue(data)) return null
 
   return (
@@ -30,7 +31,7 @@ export const PromotionsAppliedOnOrderView = ({ data, className }: Props) => {
                   key={product.product_id}
                   className="mb-0 last:mb-0"
                   data={product}
-                  label={item?.promotion_name}
+                  label={product?.category_minor || item?.promotion_name || ''}
                 />
               ))
             ) : item.promotion_type === 'range' ? (
@@ -48,7 +49,7 @@ export const PromotionsAppliedOnOrderView = ({ data, className }: Props) => {
                         key={product.product_id}
                         className={classNames()}
                         data={product}
-                        label={item?.promotion_name}
+                        label={product?.category_minor || ''}
                       />
                     ))
                   : null}

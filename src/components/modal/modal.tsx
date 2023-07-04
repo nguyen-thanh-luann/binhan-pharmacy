@@ -68,7 +68,7 @@ export const Modal = ({
             >
               {header || (
                 <div
-                  className={twMerge(classNames('h-[56px] flex items-center p-4', headerClassName))}
+                  className={twMerge(classNames('relative h-[56px] flex items-center p-4', headerClassName))}
                 >
                   <p className="text-lg line-clamp-1 flex-1">{headerTitle}</p>
                   <button className="p-[4px]" onClick={onClose}>

@@ -21,7 +21,7 @@ export const useCreateOrder = () => {
   const { asyncHandler } = useAsync()
   const dispatch = useDispatch()
   const { userInfo } = useUser({ shouldFetch: true })
-  const customer_id = userInfo?.account?.partner_id 
+  const customer_id = userInfo?.account?.partner_id
 
   const { data: shoppingcart } = useSWR<GetShoppingCartRes>(SWR_KEY.cart_list)
   const totalCount = useMemo(() => {
@@ -153,25 +153,17 @@ export const useCreateOrder = () => {
     const { handleSuccess, params } = props
     const { acquirer_id, order_id, partner_shipping_id } = params
 
-    try {
-      dispatch(dispatch(setBackdropVisible(true)))
-
-      const res: any = await orderAPI.updateOrderDraft({
+    asyncHandler({
+      fetcher: orderAPI.updateOrderDraft({
         order_id: order_id,
         partner_shipping_id: partner_shipping_id || null,
         acquirer_id: acquirer_id || null,
-      })
-
-      dispatch(dispatch(setBackdropVisible(false)))
-
-      if (!res?.result) {
-        toast.error(res?.result?.message || 'Có lỗi xảy ra')
-        return
-      }
-      handleSuccess?.()
-    } catch (error) {
-      dispatch(dispatch(setBackdropVisible(false)))
-    }
+      }),
+      onSuccess: (res) => {
+        handleSuccess?.(res)
+      },
+      config: { showSuccessMsg: false },
+    })
   }
 
   return {

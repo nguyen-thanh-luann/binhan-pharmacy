@@ -17,7 +17,7 @@ interface CartSummaryProps {
 
 export const CartSummary = ({ className }: CartSummaryProps) => {
   const router = useRouter()
-  const { cache } = useSWRConfig()
+  const { cache, mutate: mutateRemote } = useSWRConfig()
   const customer_id = useSWR<UserInfo>(SWR_KEY.get_user_information)?.data?.account?.partner_id
   const { data: shoppingcart } = useSWR<GetShoppingCartRes>(SWR_KEY.cart_list)
   const { createOrderDraft } = useCreateOrder()
@@ -53,6 +53,9 @@ export const CartSummary = ({ className }: CartSummaryProps) => {
 
   const hanldeCreateOrderDraft = () => {
     createOrderDraft((orders) => {
+      mutateRemote(SWR_KEY.checkout_carrier_method, undefined, false)
+      mutateRemote(SWR_KEY.checkout_paymet_method, undefined, false)
+
       router.push({
         pathname: `/checkout`,
         query: { order_ids: orders.map((item) => item.order_id) },

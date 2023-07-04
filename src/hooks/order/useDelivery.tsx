@@ -49,8 +49,8 @@ const useDelivery = ({ order_id }: UseDeliveryProps): DeliverySWR => {
         required_note: 'DUOC_PHEP_KIEM_TRA_HANG',
         delivery_message: delivery?.delivery_message || '',
       }),
-      onSuccess: () => {
-        handleSuccess?.()
+      onSuccess: (res) => {
+        handleSuccess?.(res)
       },
       config: { showSuccessMsg: false },
     })
@@ -66,4 +66,3 @@ const useDelivery = ({ order_id }: UseDeliveryProps): DeliverySWR => {
 }
 
 export { useDelivery }
-

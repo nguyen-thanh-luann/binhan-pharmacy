@@ -222,6 +222,20 @@ export interface Delivery {
   note?: string
 }
 
+export interface ConfirmDeliveryCarrierResponse {
+  id: number
+  name: string
+  amount_total: number
+  delivery_price: number
+}
+
+export interface ConfirmPaymentMethodResponse {
+  id: number
+  name: string
+  amount_total: number
+  fee_acquirer: number
+}
+
 export interface OrderLineDelivery extends Delivery {
   company_id?: number
 }

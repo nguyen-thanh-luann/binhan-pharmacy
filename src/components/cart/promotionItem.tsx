@@ -26,7 +26,7 @@ export const PromotionItem = ({
     <div
       // onClick={!disabled ? () => onPress?.(data) : undefined}
       className={classNames(
-        'relative h-[108px] shadow-shadow-1 rounded-[10px] p-12 overflow-hidden border border-solid',
+        'relative h-[125px] shadow-shadow-1 rounded-[10px] p-12 overflow-hidden border border-solid',
         active ? 'bg-primary-100 border-primary' : 'border-transparent bg-white',
         disabled ? 'opacity-50 pointer-events-none select-none' : '',
         className
@@ -40,12 +40,14 @@ export const PromotionItem = ({
         <div className="mx-12 h-full border-r-[0.8px] border-dashed border-r-border-1"></div>
 
         <div className="flex flex-col justify-between h-full flex-1">
-          <p className="text-base font-bold text-primary line-clamp-1 mb-4">
+          <p className="text-base font-bold text-primary line-clamp-2 mb-4">
             {data.promotion_name}
           </p>
+
           <p className="text-sm line-clamp-1 mr-[40px]">
             {data?.promotion_brief || data?.promotion_code}
           </p>
+          
           <div className="flex items-end justify-between flex-1">
             <div className="flex-1 mr-12">
               <p className="flex items-center">

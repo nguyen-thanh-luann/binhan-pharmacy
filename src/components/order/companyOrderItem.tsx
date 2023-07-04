@@ -12,6 +12,7 @@ interface CompanyOrderItemProps {
 }
 
 export const CompanyOrderItem = ({ data, className }: CompanyOrderItemProps) => {
+  
   return (
     <div className={twMerge(classNames(`bg-white shadow-shadow-1 rounded-lg`, className))}>
       <div className="p-12 border-b border-gray-200">

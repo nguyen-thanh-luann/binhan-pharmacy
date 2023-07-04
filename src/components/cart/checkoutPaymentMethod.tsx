@@ -1,8 +1,8 @@
+import { SWR_KEY } from '@/constants'
 import { useCreateOrder, usePayment } from '@/hooks'
-import { selectOrderPayment, setOrderPayment } from '@/store'
-import { Payment } from '@/types'
+import { ConfirmPaymentMethodResponse, GetOrderDraftRes, Payment } from '@/types'
 import classNames from 'classnames'
-import { useDispatch, useSelector } from 'react-redux'
+import useSWR, { useSWRConfig } from 'swr'
 import { twMerge } from 'tailwind-merge'
 import { PaymentMethod, PaymentMethodLoading } from '../payment'
 
@@ -13,16 +13,21 @@ interface CheckoutPaymentMethodProps {
 
 export const CheckoutPaymentMethod = ({ className, order_id }: CheckoutPaymentMethodProps) => {
   const { data: paymentList = [], isValidating } = usePayment()
-  const dispatch = useDispatch()
+
+  const { mutate: mutateRemote } = useSWRConfig()
+  const checkoutPaymentMethod = useSWR(SWR_KEY.checkout_paymet_method)?.data
+  const { data: orders } = useSWR<GetOrderDraftRes>(SWR_KEY.orders)
+
   const { updateOrderDraft } = useCreateOrder()
-  const payment = useSelector(selectOrderPayment)
 
   const handleAddPayment = (props: Payment) => {
-    if (props?.acquirer_id === payment?.acquirer_id) return
+    if (props?.acquirer_id === checkoutPaymentMethod?.acquirer_id) return
     updateOrderDraft({
       params: { acquirer_id: props.acquirer_id, order_id: [order_id] },
-      handleSuccess: () => {
-        dispatch(setOrderPayment(props))
+      handleSuccess: (res: ConfirmPaymentMethodResponse[]) => {
+        mutateRemote(SWR_KEY.checkout_paymet_method, props)
+
+        mutateRemote(SWR_KEY.orders, { ...orders, amount_total: res?.[0]?.amount_total }, false)
       },
     })
   }
@@ -47,7 +52,7 @@ export const CheckoutPaymentMethod = ({ className, order_id }: CheckoutPaymentMe
                 <PaymentMethod
                   key={item?.acquirer_id}
                   data={item}
-                  isCheck={payment?.acquirer_id === item.acquirer_id}
+                  isCheck={checkoutPaymentMethod?.acquirer_id === item.acquirer_id}
                   hanldeCheck={() => handleAddPayment(item)}
                   className="mb-12 last:mb-0"
                 />

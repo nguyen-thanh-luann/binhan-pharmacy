@@ -1,17 +1,15 @@
 import { DOMAIN_URL, SWR_KEY } from '@/constants'
 import { formatMoneyVND } from '@/helper'
 import { useCreateOrderDone, usePayment } from '@/hooks'
-import { selectOrderPayment } from '@/store'
-import { GetOrderDraftRes, Payment } from '@/types'
+import { GetOrderDraftRes, OrderLineDelivery, Payment } from '@/types'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { useSelector } from 'react-redux'
+import { toast } from 'react-hot-toast'
 import useSWR from 'swr'
 import { twMerge } from 'tailwind-merge'
 import { Button } from '../button'
 import { Spinner } from '../spinner'
-import { toast } from 'react-hot-toast'
 
 interface CartSummaryProps {
   className?: string
@@ -22,18 +20,18 @@ export const OrderSummary = ({ className }: CartSummaryProps) => {
   const { data, isValidating } = useSWR<GetOrderDraftRes>(SWR_KEY.orders)
   const { createOrderDone, checkDataValid } = useCreateOrderDone()
   const { createPayment } = usePayment()
-
-  const payment: Payment = useSelector(selectOrderPayment)
+  const checkoutPaymentMethod: Payment = useSWR(SWR_KEY.checkout_paymet_method)?.data
+  const checkoutCarrierMethod: OrderLineDelivery = useSWR(SWR_KEY.checkout_carrier_method)?.data
 
   const handleCreateOrder = () => {
-    if (payment?.provider === 'vnpay') {
+    if (checkoutPaymentMethod?.provider === 'vnpay') {
       if (data?.sale_orders?.[0] && checkDataValid()) {
         const order_id = data.sale_orders[0].order_id
 
         createPayment(
           {
             sale_order_id: order_id,
-            acquirer_id: payment.acquirer_id,
+            acquirer_id: checkoutPaymentMethod.acquirer_id,
             returned_url: `${DOMAIN_URL}/checking-checkout-status?sale_order_id=${order_id}`,
           },
           (data: any) => {
@@ -72,8 +70,9 @@ export const OrderSummary = ({ className }: CartSummaryProps) => {
     data.sale_orders.forEach((item) => {
       amountSubtotal += item.amount_subtotal
       totalPromotion += item.promotion_total
-      amountTotal += item.amount_total
     })
+
+    amountTotal = data?.amount_total
 
     return { totalPromotion, amountSubtotal, amountTotal }
   }, [data])
@@ -118,9 +117,20 @@ export const OrderSummary = ({ className }: CartSummaryProps) => {
         )}
       </div>
 
+      {checkoutCarrierMethod && (
+        <div className="flex-between p-16 border-b border-gray-200">
+          <p className="text-text-color text-base font-semibold leading-9">{`Phí vận chuyển`}</p>
+          <p className="text-text-color text-base font-semibold leading-9">
+            {formatMoneyVND(checkoutCarrierMethod?.shipping_fee)}
+          </p>
+        </div>
+      )}
+
       <div className="flex-between p-16">
         <p className="text-text-color text-lg font-bold leading-9">{`Thanh toán`}</p>
-        <p className="text-primary text-lg font-bold leading-9">{formatMoneyVND(amountTotal)}</p>
+        <p className="text-primary text-lg font-bold leading-9">
+          {formatMoneyVND(amountTotal)}
+        </p>
       </div>
 
       <div className="p-16 pt-0">

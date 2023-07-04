@@ -140,10 +140,6 @@ export const CartProduct = ({
 
   return (
     <div className={classNames('p-12', className)}>
-      {data?.has_promotion ? (
-        <CartProductPromotion {...indexes} companyId={company_id} product={data} />
-      ) : null}
-
       <div className={twMerge(classNames('bg-white flex md:gap-24 items-center'))}>
         {/* product info */}
         <div className="flex-1 flex items-center">
@@ -294,6 +290,10 @@ export const CartProduct = ({
           <TrashIconOutline className="text-red w-16 h-16 active:opacity-50 " />
         </div>
       </div>
+
+      {data?.has_promotion ? (
+        <CartProductPromotion {...indexes} companyId={company_id} product={data} />
+      ) : null}
 
       <ModalConfirm
         visible={visible}

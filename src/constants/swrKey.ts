@@ -61,6 +61,9 @@ export const SWR_KEY = {
   get_drug_store_detail: 'get_drug_store_detail',
   order_draft: 'order_draft',
 
+  checkout_carrier_method: 'checkout_carrier_method',
+  checkout_paymet_method: 'checkout_paymet_method',
+
   cart_list: 'cart_list',
   cart_count: 'cart_count',
   cart_company_promotion: (id: number) => `cart_company_promotion_${id}`,

@@ -3,12 +3,10 @@ import { DOMAIN_URL, SWR_KEY } from '@/constants'
 import { formatMoneyVND } from '@/helper'
 import { useCreateOrderDone, usePayment } from '@/hooks'
 import { cartAPI } from '@/services'
-import { selectOrderPayment } from '@/store'
 import { GetOrderDraftRes, Payment } from '@/types'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
 import { toast } from 'react-hot-toast'
-import { useSelector } from 'react-redux'
 import useSWR from 'swr'
 import { Button } from '../button'
 import { OrderSummaryMobileDetail } from './orderSummaryMobileDetail'
@@ -17,7 +15,7 @@ export const OrderSummaryMobile = () => {
   const router = useRouter()
   const [showCartSummaryDetail, setShowCartSummaryDetail] = useState<boolean>(false)
   const { data } = useSWR<GetOrderDraftRes>(SWR_KEY.orders)
-  const payment: Payment = useSelector(selectOrderPayment)
+  const checkoutPaymentMethod: Payment = useSWR(SWR_KEY.checkout_paymet_method)?.data
   const { createPayment } = usePayment()
 
   const { data: cartLength } = useSWR(SWR_KEY.cart_count, () =>
@@ -44,8 +42,9 @@ export const OrderSummaryMobile = () => {
     data.sale_orders.forEach((item) => {
       amountSubtotal += item.amount_subtotal
       totalPromotion += item.promotion_total
-      amountTotal += item.amount_total
     })
+
+    amountTotal = data?.amount_total
 
     return { totalPromotion, amountSubtotal, amountTotal }
   }, [data])
@@ -53,14 +52,14 @@ export const OrderSummaryMobile = () => {
   const { createOrderDone, checkDataValid } = useCreateOrderDone()
 
   const handleCreateOrder = () => {
-    if (payment?.provider === 'vnpay') {
+    if (checkoutPaymentMethod?.provider === 'vnpay') {
       if (data?.sale_orders?.[0] && checkDataValid()) {
         const order_id = data.sale_orders[0].order_id
 
         createPayment(
           {
             sale_order_id: order_id,
-            acquirer_id: payment.acquirer_id,
+            acquirer_id: checkoutPaymentMethod.acquirer_id,
             returned_url: `${DOMAIN_URL}/checking-checkout-status?sale_order_id=${order_id}`,
           },
           (data: any) => {

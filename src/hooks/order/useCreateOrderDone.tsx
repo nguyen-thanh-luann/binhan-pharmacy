@@ -3,19 +3,13 @@ import { getProductsCheckedInCart } from '@/helper'
 import { cartAPI, orderAPI } from '@/services'
 import {
   resetOrderData,
-  selectOrderAddress,
-  selectOrderLineDelivery,
-  selectOrderPayment,
-  setBackdropVisible,
+  selectOrderAddress, setBackdropVisible
 } from '@/store'
 import {
   createOrderDoneFunction,
   CreateOrderDoneRes,
   CreateOrderDoneWithTransactionConfirmedFunction,
-  GetOrderDraftRes,
-  OrderLineDelivery,
-  Payment,
-  ShippingAddressV2,
+  GetOrderDraftRes, ShippingAddressV2
 } from '@/types'
 import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
@@ -27,9 +21,10 @@ export const useCreateOrderDone = () => {
   const { asyncHandler } = useAsync()
   const dispatch = useDispatch()
   const orderAddress: ShippingAddressV2 = useSelector(selectOrderAddress)
-  const orderLineDelivery: OrderLineDelivery = useSelector(selectOrderLineDelivery)
-  const orderPayment: Payment = useSelector(selectOrderPayment)
   const orders = useSWR<GetOrderDraftRes>(SWR_KEY.orders)?.data?.sale_orders
+
+  const checkoutCarrierMethod = useSWR(SWR_KEY.checkout_carrier_method)?.data
+  const checkoutPaymentMethod = useSWR(SWR_KEY.checkout_paymet_method)?.data
 
   const checkDataValid = (): boolean => {
     if (!checkOrderAddressValid(orderAddress)) {
@@ -37,12 +32,12 @@ export const useCreateOrderDone = () => {
       return false
     }
 
-    if (!orderLineDelivery?.carrier_id) {
+    if (!checkoutCarrierMethod?.carrier_id) {
       toast.error('Vui lòng chọn phương thức vận chuyển!')
       return false
     }
 
-    if (!orderPayment?.acquirer_id) {
+    if (!checkoutPaymentMethod?.acquirer_id) {
       toast.error('Vui lòng chọn phương thức thanh toán!')
       return false
     }

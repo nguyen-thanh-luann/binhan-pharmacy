@@ -1,10 +1,9 @@
+import { SWR_KEY } from '@/constants'
 import { useDelivery } from '@/hooks'
+import { ConfirmDeliveryCarrierResponse, Delivery, GetOrderDraftRes } from '@/types'
 import classNames from 'classnames'
-import React from 'react'
+import useSWR, { useSWRConfig } from 'swr'
 import { twMerge } from 'tailwind-merge'
-import { Delivery, OrderLineDelivery } from '@/types'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectOrderLineDelivery, setOrderLineDelivery } from '@/store'
 import { DeliveryMethod, DeliveryMethodLoading } from '../delivery'
 
 interface CheckoutCarrierMethodProps {
@@ -18,20 +17,23 @@ export const CheckoutCarrierMethod = ({
   order_id,
   company_id,
 }: CheckoutCarrierMethodProps) => {
-  const dispatch = useDispatch()
-  const orderLineDelivery: OrderLineDelivery = useSelector(selectOrderLineDelivery)
-
+  const { mutate: mutateRemote } = useSWRConfig()
+  const checkoutCarrierMethod = useSWR(SWR_KEY.checkout_carrier_method)?.data
+  const { data: orders } = useSWR<GetOrderDraftRes>(SWR_KEY.orders)
+  
   const { confirmDelivery, data, isValidating } = useDelivery({ order_id })
 
   const handleAddDelivery = (deliveryProps: Delivery) => {
-    if (orderLineDelivery?.carrier_id === deliveryProps?.carrier_id) return
+    if (checkoutCarrierMethod?.carrier_id === deliveryProps?.carrier_id) return
 
     confirmDelivery({
       delivery: {
         carrier_id: deliveryProps.carrier_id,
       },
-      handleSuccess: () => {
-        dispatch(setOrderLineDelivery({ company_id, ...deliveryProps }))
+      handleSuccess: (res: ConfirmDeliveryCarrierResponse[]) => {
+        mutateRemote(SWR_KEY.checkout_carrier_method, { company_id, ...deliveryProps })
+
+        mutateRemote(SWR_KEY.orders, { ...orders, amount_total: res?.[0]?.amount_total }, false)
       },
     })
   }
@@ -56,7 +58,7 @@ export const CheckoutCarrierMethod = ({
               key={item.carrier_id}
               addDelivery={handleAddDelivery}
               delivery={item}
-              isActive={orderLineDelivery?.carrier_id === item.carrier_id}
+              isActive={checkoutCarrierMethod?.carrier_id === item.carrier_id}
             />
           ))
         )}

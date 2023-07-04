@@ -88,12 +88,6 @@ const PostEditor = ({ onSubmit, defaultValue, btnLabel, validating = false }: bl
     }
   }
 
-    useEffect(() => {
-      console.log({
-        quillRef,
-      })
-    }, [quillRef])
-
   const modules = useMemo(() => {
     return {
       toolbar: {

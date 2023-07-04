@@ -6,9 +6,16 @@ interface TooltipProps {
   children: ReactElement
   viewTooltip?: boolean
   className?: string
+  tooltipClassName?: string
 }
 
-export const Tooltip = ({ text, children, viewTooltip = true, className }: TooltipProps) => {
+export const Tooltip = ({
+  text,
+  children,
+  viewTooltip = true,
+  className,
+  tooltipClassName,
+}: TooltipProps) => {
   return (
     <div className={classNames('relative flex flex-col items-center group', className)}>
       {children}
@@ -17,7 +24,8 @@ export const Tooltip = ({ text, children, viewTooltip = true, className }: Toolt
         className={classNames(
           viewTooltip
             ? 'absolute top-[45px] flex-col items-center hidden group-hover:flex z-[100] animate-fade'
-            : 'hidden'
+            : 'hidden',
+          tooltipClassName
         )}
       >
         <div className="w-12 h-12 -mb-8 rotate-45 bg-primary-10"></div>
