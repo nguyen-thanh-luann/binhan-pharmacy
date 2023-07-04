@@ -9,7 +9,7 @@ import {
   AddressPickerRes,
   GetDrugStoreParams,
   ShippingAddressV2,
-  UserAccount,
+  UserAccount
 } from '@/types'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useEffect, useState } from 'react'
@@ -21,7 +21,7 @@ import { useSWRConfig } from 'swr'
 import { Button } from '../button'
 import { InputCheckbox, InputField } from '../inputs'
 import { Spinner } from '../spinner'
-import { AddressPicker } from './addressPicker'
+import { AddressPickerV2 } from './addressPickerV2'
 import { SearchField } from './searchField'
 
 export const StoreReceiveForm = () => {
@@ -177,7 +177,7 @@ export const StoreReceiveForm = () => {
             </div>
 
             <div className="mb-12">
-              <AddressPicker
+              <AddressPickerV2
                 placeHolder="Tìm theo địa chỉ"
                 onSubmit={(data: AddressPickerRes) => addressFilter(data)}
               />

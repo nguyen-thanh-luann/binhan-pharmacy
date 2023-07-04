@@ -20,7 +20,7 @@ export const CheckoutCarrierMethod = ({
   const { mutate: mutateRemote } = useSWRConfig()
   const checkoutCarrierMethod = useSWR(SWR_KEY.checkout_carrier_method)?.data
   const { data: orders } = useSWR<GetOrderDraftRes>(SWR_KEY.orders)
-  
+
   const { confirmDelivery, data, isValidating } = useDelivery({ order_id })
 
   const handleAddDelivery = (deliveryProps: Delivery) => {
@@ -33,7 +33,9 @@ export const CheckoutCarrierMethod = ({
       handleSuccess: (res: ConfirmDeliveryCarrierResponse[]) => {
         mutateRemote(SWR_KEY.checkout_carrier_method, { company_id, ...deliveryProps })
 
-        mutateRemote(SWR_KEY.orders, { ...orders, amount_total: res?.[0]?.amount_total }, false)
+        if (res?.[0]?.amount_total) {
+          mutateRemote(SWR_KEY.orders, { ...orders, amount_total: res?.[0]?.amount_total }, false)
+        }
       },
     })
   }

@@ -1,16 +1,16 @@
+import { TimesIcon } from '@/assets'
+import { SWR_KEY } from '@/constants'
 import { isArrayHasValue } from '@/helper'
 import { useClickOutside, useDrugstores } from '@/hooks'
 import { AddressPickerRes, GetDrugStoreParams, UserAccount } from '@/types'
 import classNames from 'classnames'
+import { useEffect, useRef, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { twMerge } from 'tailwind-merge'
 import { NotFound } from '../notFound'
 import { Spinner } from '../spinner'
-import { useEffect, useRef, useState } from 'react'
-import { TimesIcon } from '@/assets'
+import { AddressPickerV2 } from './addressPickerV2'
 import { SearchField } from './searchField'
-import { AddressPicker } from './addressPicker'
-import { SWR_KEY } from '@/constants'
 
 interface SelectDrugStoreFormProps {
   className?: string
@@ -76,7 +76,7 @@ export const SelectDrugStoreForm = ({ className, onSelect, onClose }: SelectDrug
         </div>
 
         <div className='p-12'>
-          <AddressPicker
+          <AddressPickerV2
             placeHolder="Tìm theo địa chỉ"
             onSubmit={(data: AddressPickerRes) => addressFilter(data)}
           />

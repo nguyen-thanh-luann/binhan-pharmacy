@@ -24,7 +24,7 @@ import { CustomImage } from '../customImage'
 import { InputDate, InputField, RadioField, TextareaField } from '../inputs'
 import { Modal } from '../modal'
 import { Spinner } from '../spinner'
-import { AddressPicker } from './addressPicker'
+import { AddressPickerV2 } from './addressPickerV2'
 import { OtpForm } from './otpForm'
 
 interface StoreRegisterFormProps {
@@ -346,7 +346,7 @@ export const StoreRegisterForm = ({ className }: StoreRegisterFormProps) => {
             Địa chỉ <span className="text-red text-base">*</span>{' '}
           </label>
           <div className="my-12">
-            <AddressPicker onSubmit={(data: AddressPickerRes) => handleSelectAddress(data)} />
+            <AddressPickerV2 onSubmit={(data: AddressPickerRes) => handleSelectAddress(data)} />
           </div>
 
           <div>

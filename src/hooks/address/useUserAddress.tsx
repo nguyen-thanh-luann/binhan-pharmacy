@@ -6,6 +6,7 @@ import { toast } from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import useSWR from 'swr'
 import { useUser } from '../user'
+import { useAsync } from '../common'
 
 interface useAddressListProps {
   key?: string
@@ -36,12 +37,12 @@ export const useUserAddress = ({
   const { userInfo } = useUser({})
   const partner_id = userInfo?.account.partner_id || 0
   const dispatch = useDispatch()
+  const { asyncHandler } = useAsync()
 
   const addAddress = async ({ address, addressForm, onSuccess }: AddAddressHook) => {
-    try {
-      const res: any = await userAPI.addAddress(address)
-
-      if (res?.result?.success) {
+    asyncHandler({
+      fetcher: userAPI.addAddress(address),
+      onSuccess: (res: any) => {
         if (address.adress_id) {
           if (addressForm)
             mutate(
@@ -57,24 +58,16 @@ export const useUserAddress = ({
           toast.success('Chỉnh sửa địa chỉ thành công')
         } else {
           if (addressForm)
-            mutate(
-              [
-                ...(data || []),
-                { ...addressForm, id: res?.result?.data?.[0]?.partner_shipping_id },
-              ],
-              false
-            )
-          addressForm &&
-            onSuccess?.({ ...addressForm, id: res?.result?.data?.[0]?.partner_shipping_id })
+            mutate([...(data || []), { ...addressForm, id: res?.[0]?.partner_shipping_id }], false)
+          addressForm && onSuccess?.({ ...addressForm, id: res?.[0]?.partner_shipping_id })
 
           toast.success('Thêm địa chỉ thành công')
         }
-      } else {
-        toast.error(res?.result?.message || 'Có lỗi xảy ra')
-      }
-    } catch (error) {
-      console.log(error)
-    }
+      },
+      config: {
+        showSuccessMsg: false,
+      },
+    })
   }
 
   const deleteAddress = async (address: AddressDelete) => {

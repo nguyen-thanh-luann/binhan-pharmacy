@@ -1,11 +1,11 @@
 import { EmailIcon, PenIconSolid, TelePhoneIcon } from '@/assets'
 import {
-  AddressPicker,
+  AddressPickerV2,
   Button,
   CustomImage,
   InputDate,
   InputField,
-  TextareaField,
+  TextareaField
 } from '@/components'
 import { LIMIT_ATTACHMENT } from '@/constants'
 import { isAddressNameValid, isInvalidDate } from '@/helper'
@@ -239,7 +239,7 @@ export const StoreProfile = ({ data, className }: StoreProfileProps) => {
 
           <div className="mb-18">
             <p className="text-lg text-text-color mb-18 font-bold capitalize">Địa chỉ</p>
-            <AddressPicker
+            <AddressPickerV2
               className="mb-12"
               onSubmit={(data: AddressPickerRes) => handleSelectAddress(data)}
               defaultValue={
@@ -248,9 +248,7 @@ export const StoreProfile = ({ data, className }: StoreProfileProps) => {
                   data?.account?.district_id?.district_name,
                   data?.account?.ward_id?.ward_name
                 )
-                  ? `${data?.account?.ward_id?.ward_name} ${
-                      data?.account?.district_id?.district_name
-                    } ${data?.account?.province_id?.province_name} `
+                  ? `${data?.account?.ward_id?.ward_name} ${data?.account?.district_id?.district_name} ${data?.account?.province_id?.province_name} `
                   : undefined
               }
             />

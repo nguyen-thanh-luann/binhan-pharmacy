@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { twMerge } from 'tailwind-merge'
 import { Button } from '../button'
 import { InputField, TextareaField } from '../inputs'
-import { AddressPicker } from './addressPicker'
+import { AddressPickerV2 } from './addressPickerV2'
 
 interface AddressFormProps {
   onSubmit?: Function
@@ -160,7 +160,7 @@ export const AddressForm = ({ onSubmit: onExternalSubmit, className }: AddressFo
         </div>
 
         <div className="mb-12">
-          <AddressPicker
+          <AddressPickerV2
             onSubmit={(data: AddressPickerRes) => handleSelectAddress(data)}
             defaultValue={
               addressForm

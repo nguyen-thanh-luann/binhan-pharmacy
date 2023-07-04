@@ -1,11 +1,10 @@
-import { RightIcon } from '@/assets'
-import { useAddress, useClickOutside, useModal } from '@/hooks'
+import { RightIcon, TimesIcon } from '@/assets'
+import { useAddress, useClickOutside, useInputText, useModal } from '@/hooks'
 import { OptionType } from '@/types'
 import classNames from 'classnames'
-import { useRef, useState, useImperativeHandle, forwardRef } from 'react'
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Tabs } from '../tabs'
-import { SearchField } from './searchField'
 
 export interface AddressPickerV2Props {
   onSubmit?: Function
@@ -16,7 +15,6 @@ export interface AddressPickerV2Props {
   defaultValue?: string
 }
 
-// This version of AddressPicker can use ref to call reset data from external
 export const AddressPickerV2 = forwardRef(
   (
     {
@@ -36,21 +34,35 @@ export const AddressPickerV2 = forwardRef(
       toggle: toggleAddressModal,
     } = useModal()
 
+    const {
+      clearValue: clearSearchValue,
+      onChange: onChangeSearchValue,
+      value: searchValue,
+    } = useInputText()
+
     // Get Address from custom hook
     const { districts, getDistricts, getWards, states, wards } = useAddress()
 
     const [state, setState] = useState<OptionType<number> | undefined>(undefined)
     const [district, setDistrict] = useState<OptionType<number> | undefined>(undefined)
     const [ward, setWard] = useState<OptionType<number> | undefined>(undefined)
-    const [searchValue, setSearchValue] = useState<string>('')
 
     const [currentTab, setCurrentTab] = useState<string>('state')
 
     const addressModalRef = useRef<HTMLDivElement>(null)
-    const searchFieldRef = useRef<HTMLDivElement>(null)
+    const searchFieldRef = useRef<HTMLInputElement>(null)
     const selectRef = useRef<HTMLInputElement>(null)
 
-    useClickOutside([addressModalRef], closeAddressModal)
+    const handleReturnData = () => {
+      closeAddressModal()
+      onSubmit?.({
+        state,
+        district,
+        ward,
+      })
+    }
+
+    useClickOutside([addressModalRef], handleReturnData)
 
     const focusSearchField = () => {
       searchFieldRef?.current?.focus()
@@ -79,29 +91,35 @@ export const AddressPickerV2 = forwardRef(
       }
       getDistricts(state.value)
       setCurrentTab('district')
+
+      hanldeResetSearchField()
     }
 
     const handleSelectDistrict = (district: OptionType<number>) => {
       setDistrict(district)
-      setSearchValue('')
+
       if (ward) {
         setWard(undefined)
       }
       getWards(district.value)
       setCurrentTab('ward')
+
+      hanldeResetSearchField()
     }
 
     const handleSelectWard = (ward: OptionType<number>) => {
       setWard(ward)
-      setSearchValue('')
 
-      onSubmit?.({
-        state,
-        district,
-        ward,
-      })
+      handleReturnData()
 
-      closeAddressModal()
+      hanldeResetSearchField()
+    }
+
+    const hanldeResetSearchField = () => {
+      clearSearchValue()
+      if (searchFieldRef && searchFieldRef.current) {
+        searchFieldRef.current.value = ''
+      }
     }
 
     const handleTabChange = (tab: string) => {
@@ -176,22 +194,37 @@ export const AddressPickerV2 = forwardRef(
             tabActive={currentTab}
             onChange={(val: string) => handleTabChange(val)}
             className="bg-white"
-            labelClassName="flex-1 p-8 text-base text-center"
-            tabActiveClassName="border-b border-primary"
+            labelClassName="flex-1 p-8 border-b border-gray-200 text-base text-center"
+            tabActiveClassName="!border-primary"
           />
 
-          <SearchField
-            ref={searchFieldRef}
-            showSearchIcon={false}
-            placeholder="Tìm kiếm"
-            className="border-b border-gray-200 px-12"
-            onChangeWithDebounceValue={(val) => setSearchValue(val.toUpperCase())}
-          />
+          <div className="flex justify-between items-center border-b border-gray-200 rounded-md px-12 py-8">
+            <input
+              ref={searchFieldRef}
+              className="outline-none w-full rounded-lg"
+              type="text"
+              onChange={(e) => {
+                onChangeSearchValue(e.target.value)
+              }}
+              placeholder="Tìm kiếm"
+            />
+
+            <span
+              className={`text-gray-800 my-auto mx-8 ${
+                searchValue ? 'block cursor-pointer' : 'hidden'
+              }`}
+              onClick={() => {
+                hanldeResetSearchField()
+              }}
+            >
+              <TimesIcon className="text-gray text-xs" />
+            </span>
+          </div>
 
           <div className={`h-[250px] overflow-scroll scrollbar-hide`}>
             {currentTab === 'state'
               ? states?.map((item) =>
-                  item?.name.toUpperCase().includes(searchValue) ? (
+                  item?.name?.toLowerCase().includes(searchValue?.toLowerCase()) ? (
                     <div
                       key={item.id}
                       className="address_picker_item"
@@ -212,7 +245,7 @@ export const AddressPickerV2 = forwardRef(
 
             {currentTab === 'district'
               ? districts?.map((item) =>
-                  item?.name.toUpperCase().includes(searchValue) ? (
+                  item?.name?.toLowerCase().includes(searchValue?.toLowerCase()) ? (
                     <div
                       key={item.id}
                       className="address_picker_item"
@@ -233,7 +266,7 @@ export const AddressPickerV2 = forwardRef(
 
             {currentTab === 'ward'
               ? wards?.map((item) =>
-                  item?.name.toUpperCase().includes(searchValue) ? (
+                  item?.name?.toLowerCase().includes(searchValue?.toLowerCase()) ? (
                     <div
                       key={item.id}
                       className="address_picker_item"

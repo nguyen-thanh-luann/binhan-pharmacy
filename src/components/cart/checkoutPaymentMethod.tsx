@@ -27,7 +27,9 @@ export const CheckoutPaymentMethod = ({ className, order_id }: CheckoutPaymentMe
       handleSuccess: (res: ConfirmPaymentMethodResponse[]) => {
         mutateRemote(SWR_KEY.checkout_paymet_method, props)
 
-        mutateRemote(SWR_KEY.orders, { ...orders, amount_total: res?.[0]?.amount_total }, false)
+        if (res?.[0]?.amount_total) {
+          mutateRemote(SWR_KEY.orders, { ...orders, amount_total: res?.[0]?.amount_total }, false)
+        }
       },
     })
   }
