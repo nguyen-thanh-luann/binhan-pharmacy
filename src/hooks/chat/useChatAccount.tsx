@@ -2,11 +2,9 @@ import { SWR_KEY } from '@/constants'
 import { encodeJWT } from '@/helper'
 import { authAPI, userAPI } from '@/services'
 import {
-  AccountType,
-  GenerateChatTokenRes,
+  AccountType, GenerateChatTokenRes,
   GetChatTokenRes,
-  SingupNewChatAccountParams,
-  UserInfo,
+  SingupNewChatAccountParams, UserInfo
 } from '@/types'
 import useSWR from 'swr'
 import { useAuth } from '../auth'
@@ -104,8 +102,8 @@ export const useChatAccount = (): useChatAccountRes => {
             phone: user?.account?.phone || '',
             role: role
               ? role
-              : user?.account?.account_type === 'npp'
-              ? 'admin'
+              : user?.account?.account_type === 'manager'
+              ? 'npp'
               : user?.account?.account_type,
             user_name: user.account?.partner_name,
             avatar: user?.account?.avatar_url?.url,
@@ -126,6 +124,6 @@ export const useChatAccount = (): useChatAccountRes => {
     isValidating,
     setChatToken,
     generateChatServiceToken,
-    autoSignupChatServer,
+    autoSignupChatServer
   }
 }

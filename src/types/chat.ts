@@ -2,6 +2,7 @@ import { AxiosResponse } from 'axios'
 import { AttachmentId } from './common'
 import { ListRes } from './http'
 import { IAttachment } from './attachment'
+import { AccountType } from './auth'
 
 export interface CreateTagMessage {
   role: UserRole
@@ -602,4 +603,23 @@ export type UserItemRes = {
 export type MessageDetailRes = MessageRes & {
   read_by: UserItemRes[]
   un_read_by: UserItemRes[]
+}
+
+export interface ChatAccount {
+  id: string
+  phone: string
+  user_name: string
+  avatar: string
+  role: AccountType
+  socket_id: string
+  offline_at: Date
+  is_yourself: boolean
+  message_unread_count: number
+  token: string
+  expires_in: number
+}
+
+export interface UpdateChatAccountRoleParams {
+  id: string
+  role: AccountType
 }

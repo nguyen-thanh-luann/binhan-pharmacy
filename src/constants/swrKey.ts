@@ -64,6 +64,8 @@ export const SWR_KEY = {
   checkout_carrier_method: 'checkout_carrier_method',
   checkout_paymet_method: 'checkout_paymet_method',
 
+  chat_account_info: 'chat_account_info',
+
   cart_list: 'cart_list',
   cart_count: 'cart_count',
   cart_company_promotion: (id: number) => `cart_company_promotion_${id}`,

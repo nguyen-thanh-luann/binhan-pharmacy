@@ -1,4 +1,4 @@
-export type AccountType = 'th' | 'nvkd' | 'npp' | 'gsbh' | 'asm' | 'admin'
+export type AccountType = 'th' | 'nvkd' | 'npp' | 'gsbh' | 'asm' | 'admin' | 'manager'
 
 export interface LoginPasswordReq {
   phone: string

@@ -348,7 +348,7 @@ export function isDrugStore(account: UserAccount | undefined): boolean {
 export function isAdmin(account: UserAccount | undefined): boolean {
   //admin is an account with account_type: 'npp' => who have all permissions with post
   if (!account) return false
-  return account.account_type === 'npp'
+  return account.account_type === 'manager'
 }
 
 export function ValidAccountRoleToUsePostService(data: UserInfo | undefined): AccountType {

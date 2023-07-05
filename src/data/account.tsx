@@ -15,10 +15,10 @@ import {
 
 export const accountIconStyle = 'w-[20px] h-[20px]'
 
-export const PublicAccessRule = ['th', 'nvkd', 'npp', 'gsbh', 'asm', ''] // all user
+export const PublicAccessRule = ['th', 'nvkd', 'npp', 'gsbh', 'asm', 'manager', 'admin', '']
 
-export const UserAccessRule = ['th', 'nvkd', 'gsbh', 'asm', ''] //without 'npp'
-export const AdminAccessRule = ['npp']
+export const UserAccessRule = ['th', 'nvkd', 'gsbh', 'asm', 'npp'] //whithout manager
+export const AdminAccessRule = ['manager']
 
 export const PublicAccountTypePermissions = ['drugstore_account', 'patient_account', '']
 

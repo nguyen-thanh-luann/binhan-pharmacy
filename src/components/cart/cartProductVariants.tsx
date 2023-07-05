@@ -184,7 +184,7 @@ export const CartProductVariants = ({
 
       {/* on Mobile */}
       {showVariantModal ? (
-        <div className="fixed md:hidden bottom-0 right-0 left-0 z-50">
+        <div className="fixed md:hidden bottom-0 right-0 left-0 z-100">
           <div className="relative h-[100vh] bg-black-400 animate-fade">
             <div className="absolute bottom-0 bg-white w-full rounded-tl-2xl rounded-tr-2xl">
               {renderVariantOptions()}

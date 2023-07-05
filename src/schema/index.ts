@@ -119,25 +119,25 @@ export const storeInfoSchema = Yup.object().shape({
   businessPhone: Yup.string()
     .matches(PHONE_SCHEMA, 'Vui lòng nhập số điện thoại hợp lệ')
     .required('Vui lòng nhập số điện thoại'),
-  addressDetail: Yup.string(),
-  state: Yup.object()
-    .shape({
-      value: Yup.number().required(),
-      label: Yup.string().required(),
-    })
-    .required('Vui lòng chọn điạ tỉnh thành phố'),
-  district: Yup.object()
-    .shape({
-      value: Yup.number().required(),
-      label: Yup.string().required(),
-    })
-    .required('Vui lòng chọn điạ chỉ quận huyện'),
-  ward: Yup.object()
-    .shape({
-      value: Yup.number().required(),
-      label: Yup.string().required(),
-    })
-    .required('Vui lòng chọn điạ chỉ phường xã'),
+  // addressDetail: Yup.string(),
+  // state: Yup.object()
+  //   .shape({
+  //     value: Yup.number().required(),
+  //     label: Yup.string().required(),
+  //   })
+  //   .required('Vui lòng chọn điạ tỉnh thành phố'),
+  // district: Yup.object()
+  //   .shape({
+  //     value: Yup.number().required(),
+  //     label: Yup.string().required(),
+  //   })
+  //   .required('Vui lòng chọn điạ chỉ quận huyện'),
+  // ward: Yup.object()
+  //   .shape({
+  //     value: Yup.number().required(),
+  //     label: Yup.string().required(),
+  //   })
+  //   .required('Vui lòng chọn điạ chỉ phường xã'),
 })
 
 export const messageSchema = Yup.object().shape({

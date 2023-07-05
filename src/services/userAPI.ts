@@ -13,8 +13,9 @@ import type {
   ResetPasswordParams,
   ShippingAddressV2,
   StateId,
+  UpdateChatAccountRoleParams,
   UpdateUserParams,
-  UserAccount
+  UserAccount,
 } from '@/types'
 import { LoginFormParams } from '@/types'
 import axiosClient, { axiosInstance } from '.'
@@ -137,6 +138,19 @@ const userAPI = {
 
   getShippingAddressList: (): Promise<HTTPResponse<ShippingAddressV2[]>> => {
     return axiosClient.post('/api/v2.0/user/get_adress_by_partner', {})
+  },
+
+  getChatAccountInfo: () => {
+    return axiosClient.get('/chatDMS/api/user')
+  },
+
+  updateChatAccountRole: (params: UpdateChatAccountRoleParams) => {
+    const { id, role } = params
+    return axiosClient.patch(`/chatDMS/api/user/${id}`, { role })
+  },
+
+  setChatAccessToken: (token: string) => {
+    return axiosClient.post(`/chatDMS/set-chat-access-token`, { token })
   },
 }
 

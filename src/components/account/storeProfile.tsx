@@ -5,7 +5,7 @@ import {
   CustomImage,
   InputDate,
   InputField,
-  TextareaField
+  TextareaField,
 } from '@/components'
 import { LIMIT_ATTACHMENT } from '@/constants'
 import { isAddressNameValid, isInvalidDate } from '@/helper'
@@ -34,7 +34,6 @@ export const StoreProfile = ({ data, className }: StoreProfileProps) => {
     control,
     handleSubmit,
     setValue,
-    formState: { isValid },
   } = useForm({
     resolver: yupResolver(storeInfoSchema),
     mode: 'all',
@@ -48,7 +47,7 @@ export const StoreProfile = ({ data, className }: StoreProfileProps) => {
     setValue('businessName', data?.account?.business_operation_name || '')
     setValue('businessOwner', data?.account?.business_operation_owner || '')
     setValue('businessPhone', data?.account?.business_phone || '')
-    setValue('addressDetail', data?.account?.full_address || '')
+    setValue('addressDetail', data?.account?.street || '')
     setValue('state', {
       label: data?.account?.province_id?.province_name,
       value: data?.account?.province_id?.province_id,
@@ -65,7 +64,7 @@ export const StoreProfile = ({ data, className }: StoreProfileProps) => {
     })
     setValue('dateOfBirth', moment(data?.account?.date_of_birth).format('YYYY-MM-DD') || '')
     setValue('establishDate', moment(data?.account?.establish_date).format('YYYY-MM-DD') || '')
-  }, [])
+  }, [data])
 
   const handleEditUser = (newUserInfo: any) => {
     updateUser(
@@ -258,16 +257,14 @@ export const StoreProfile = ({ data, className }: StoreProfileProps) => {
               name="addressDetail"
               placeholder="Địa chỉ chi tiết"
               label="Địa chỉ cụ thể"
-              defaultValue={data?.account?.full_address}
+              defaultValue={data?.account?.street || ''}
             />
           </div>
 
           <div className="flex-center">
             <Button
               title="Cập nhật thông tin"
-              className={`rounded-full bg-primary py-12 px-24 ${
-                isValid ? '' : 'opacity-50 cursor-default'
-              }`}
+              className={`rounded-full bg-primary py-12 px-24`}
               textClassName={`text-base text-white`}
             />
           </div>

@@ -2,7 +2,7 @@ import { ArrowLeftIcon } from '@/assets'
 import { Breadcrumb, CreatePostForm, NotFound, PostEditor } from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
 import { isAdmin } from '@/helper'
-import { useChatAccount, usePostList, useUser } from '@/hooks'
+import { useChatAccount, useChatAdminAccount, usePostList, useUser } from '@/hooks'
 import { selectPostForm, setPostForm } from '@/store'
 import { AccountContainer, Main } from '@/templates'
 import { CreatePost, Post } from '@/types'
@@ -17,6 +17,7 @@ const CreatePostPage = () => {
   const { post_id } = router.query
   const { userInfo } = useUser({})
   const { data: chatToken } = useChatAccount()
+  const { data: chatInfo, updateChatAccountRole } = useChatAdminAccount()
 
   const postForm: Post = useSelector(selectPostForm)
 
@@ -68,6 +69,17 @@ const CreatePostPage = () => {
       handleCreatePost(params)
     }
   }
+
+  useEffect(() => {
+    if (isAdmin(userInfo?.account)) {
+      if (chatInfo && chatInfo?.role !== 'npp') {
+        updateChatAccountRole({
+          id: chatInfo?.id,
+          role: 'npp',
+        })
+      }
+    }
+  }, [userInfo, chatInfo])
 
   return (
     <Main title={WEB_TITTLE} description={WEB_DESCRIPTION}>

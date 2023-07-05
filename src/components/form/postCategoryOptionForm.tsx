@@ -26,7 +26,7 @@ export const PostCategoryOptionForm = ({
   const { userInfo } = useUser({ shouldFetch: false })
   const userRole: AccountType = ValidAccountRoleToUsePostService(userInfo)
   const getPostCategoryParams =
-    userInfo?.account?.account_type === 'npp'
+    userInfo?.account?.account_type === 'manager'
       ? {
           limit: DEFAULT_LIMIT,
         }

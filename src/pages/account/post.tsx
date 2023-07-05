@@ -8,17 +8,17 @@ import {
   PostAdminItem,
   PostAdminItemLoading,
   PostCategoryOptionForm,
-  PostContentDetail
+  PostContentDetail,
 } from '@/components'
 
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
 import { isAdmin, isArrayHasValue } from '@/helper'
-import { useChatAccount, usePostList, useUser } from '@/hooks'
+import { useChatAccount, useChatAdminAccount, usePostList, useUser } from '@/hooks'
 import { setPostForm } from '@/store'
 import { AccountContainer, Main } from '@/templates'
 import { Post } from '@/types'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useDispatch } from 'react-redux'
@@ -28,6 +28,7 @@ const PostPage = () => {
   const dispatch = useDispatch()
   const { userInfo } = useUser({})
   const { data: chatToken } = useChatAccount()
+  const { data: chatInfo, updateChatAccountRole } = useChatAdminAccount()
   const [currentPostId, setCurrentPostId] = useState<string | undefined>()
   const [currentPostContent, setCurrentPostContent] = useState<string | undefined>()
 
@@ -77,6 +78,17 @@ const PostPage = () => {
       </div>
     )
   }
+
+  useEffect(() => {
+    if (isAdmin(userInfo?.account)) {
+      if (chatInfo && chatInfo?.role !== 'npp') {
+        updateChatAccountRole({
+          id: chatInfo?.id,
+          role: 'npp',
+        })
+      }
+    }
+  }, [userInfo, chatInfo])
 
   return (
     <Main title={WEB_TITTLE} description={WEB_DESCRIPTION}>

@@ -10,16 +10,17 @@ import {
 } from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
 import { isAdmin, isArrayHasValue } from '@/helper'
-import { useChatAccount, useModal, useUser } from '@/hooks'
+import { useChatAccount, useChatAdminAccount, useModal, useUser } from '@/hooks'
 import { usePostTag } from '@/hooks/post/usePostTag'
 import { AccountContainer, Main } from '@/templates'
 import { CreatePostTagReq, PostTag, UpdatePostTagReq } from '@/types'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
 const PostTagsPage = () => {
   const { data: chatToken } = useChatAccount()
+  const { data: chatInfo, updateChatAccountRole } = useChatAdminAccount()
   const { userInfo } = useUser({})
   const [currentTag, setCurrentTag] = useState<PostTag>()
 
@@ -93,6 +94,16 @@ const PostTagsPage = () => {
     }
   }
 
+  useEffect(() => {
+    if (isAdmin(userInfo?.account)) {
+      if (chatInfo && chatInfo?.role !== 'npp') {
+        updateChatAccountRole({
+          id: chatInfo?.id,
+          role: 'npp',
+        })
+      }
+    }
+  }, [userInfo, chatInfo])
   return (
     <Main title={WEB_TITTLE} description={WEB_DESCRIPTION}>
       <div className="container">

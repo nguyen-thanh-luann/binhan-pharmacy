@@ -10,7 +10,7 @@ import {
 } from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
 import { isAdmin, isArrayHasValue } from '@/helper'
-import { useChatAccount, usePostCategory, useUser } from '@/hooks'
+import { useChatAccount, useChatAdminAccount, usePostCategory, useUser } from '@/hooks'
 import { setPostCategoryForm } from '@/store'
 import { AccountContainer, Main } from '@/templates'
 import { BreadcrumbItem, PostCategory } from '@/types'
@@ -24,7 +24,8 @@ import { useDispatch } from 'react-redux'
 const PostCategoryPage = () => {
   const router = useRouter()
   const { parent_id, parent_name } = router.query
-  const { data: chatToken } = useChatAccount()
+  const { data: chatToken} = useChatAccount()
+    const { data: chatInfo, updateChatAccountRole } = useChatAdminAccount()
   const { userInfo } = useUser({})
 
   const [breadcrumbList, setBreadcrumbList] = useState<BreadcrumbItem[]>([
@@ -99,6 +100,17 @@ const PostCategoryPage = () => {
       ])
     }
   }, [router.query])
+
+  useEffect(() => {
+    if (isAdmin(userInfo?.account)) {
+      if (chatInfo && chatInfo?.role !== 'npp') {
+        updateChatAccountRole({
+          id: chatInfo?.id,
+          role: 'npp',
+        })
+      }
+    }
+  }, [userInfo, chatInfo])
 
   return (
     <Main title={WEB_TITTLE} description={WEB_DESCRIPTION}>
