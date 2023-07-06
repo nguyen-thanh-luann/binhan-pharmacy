@@ -66,6 +66,9 @@ export const SWR_KEY = {
 
   chat_account_info: 'chat_account_info',
 
+  get_footer: 'get_footer',
+  get_footer_description: 'get_footer_description',
+
   cart_list: 'cart_list',
   cart_count: 'cart_count',
   cart_company_promotion: (id: number) => `cart_company_promotion_${id}`,

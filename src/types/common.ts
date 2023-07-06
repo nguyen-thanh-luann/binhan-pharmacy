@@ -42,7 +42,7 @@ export interface ImageRes {
 export interface URLRes {
   id: number
   url: string
-  image_url?: string
+  image_url: string
   name: string
   data_type: string
 }

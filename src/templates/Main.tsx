@@ -3,10 +3,9 @@ import { ReactNode } from 'react'
 import {
   Backdrop,
   BottomNavigation,
-  ContactOptions,
-  Footer,
+  ContactOptions, FooterV2,
   HeaderGroup,
-  HeaderMobile,
+  HeaderMobile
 } from '@/components'
 import type { MetaProps } from '@/layouts'
 import { Meta } from '@/layouts'
@@ -41,7 +40,8 @@ export const Main = ({ children, ...attributes }: IMainProps) => {
       <div className="mb-bottom_nav_height md:mb-0">
         {children}
 
-        <Footer />
+        {/* <Footer /> */}
+        <FooterV2 />
       </div>
       <ContactOptions />
 
