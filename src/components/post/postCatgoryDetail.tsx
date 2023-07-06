@@ -88,8 +88,9 @@ export const PostCatgoryDetail = ({
       {isValidating ? (
         <PostCategoryItemLoading />
       ) : isArrayHasValue(postCategoryList) ? (
-        <div className="max-h-[80vh] overflow-scroll scrollbar-hide">
+        <div className="max-h-[80vh] overflow-scroll scrollbar-hide" id="postCategoryScrollable">
           <InfiniteScroll
+            scrollableTarget="postCategoryScrollable"
             dataLength={postCategoryList?.length || 0}
             next={() => getMore()}
             hasMore={hasMore}

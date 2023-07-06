@@ -79,8 +79,12 @@ const PurchasedProductPage = () => {
           </p>
 
           {/* content */}
-          <div>
+          <div
+            className="max-h-[80vh] overflow-scroll scrollbar-hide"
+            id="productHistoryScrollable"
+          >
             <InfiniteScroll
+              scrollableTarget="productHistoryScrollable"
               dataLength={productHistory?.length || 0}
               next={() => getMore()}
               hasMore={hasMore}

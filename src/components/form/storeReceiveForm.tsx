@@ -9,7 +9,7 @@ import {
   AddressPickerRes,
   GetDrugStoreParams,
   ShippingAddressV2,
-  UserAccount
+  UserAccount,
 } from '@/types'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useEffect, useState } from 'react'
@@ -183,8 +183,9 @@ export const StoreReceiveForm = () => {
               />
             </div>
 
-            <div className="max-h-[400px] overflow-scroll scrollbar-hide">
+            <div className="max-h-[400px] overflow-scroll scrollbar-hide" id="drugstoreScrollable">
               <InfiniteScroll
+                scrollableTarget="drugstoreScrollable"
                 dataLength={drugstores?.length || 0}
                 next={() => getMore()}
                 hasMore={false}

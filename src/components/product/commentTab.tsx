@@ -125,10 +125,11 @@ export const CommentTab = ({ className, product_id }: CommentProps) => {
         </div>
       </div>
 
-      <div className="max-h-[50vh] overflow-scroll scrollbar-hide">
+      <div>
         {isValidating || isArrayHasValue(comments) ? (
-          <div>
+          <div className="max-h-[50vh] overflow-scroll scrollbar-hide" id="commentsTabScrollable">
             <InfiniteScroll
+              scrollableTarget="commentsTabScrollable"
               dataLength={comments?.length || 0}
               next={() => getMore()}
               hasMore={hasMore}

@@ -24,8 +24,8 @@ import { useDispatch } from 'react-redux'
 const PostCategoryPage = () => {
   const router = useRouter()
   const { parent_id, parent_name } = router.query
-  const { data: chatToken} = useChatAccount()
-    const { data: chatInfo, updateChatAccountRole } = useChatAdminAccount()
+  const { data: chatToken } = useChatAccount()
+  const { data: chatInfo, updateChatAccountRole } = useChatAdminAccount()
   const { userInfo } = useUser({})
 
   const [breadcrumbList, setBreadcrumbList] = useState<BreadcrumbItem[]>([
@@ -153,8 +153,12 @@ const PostCategoryPage = () => {
               <div>
                 {isValidating || isArrayHasValue(postCategoryList) ? (
                   <div>
-                    <div className="max-h-[80vh] overflow-scroll scrollbar-hide">
+                    <div
+                      className="max-h-[80vh] overflow-scroll scrollbar-hide"
+                      id="postCategoryScrollable"
+                    >
                       <InfiniteScroll
+                        scrollableTarget="postCategoryScrollable"
                         dataLength={postCategoryList?.length || 0}
                         next={() => getMore()}
                         hasMore={hasMore}

@@ -75,7 +75,7 @@ export const SelectDrugStoreForm = ({ className, onSelect, onClose }: SelectDrug
           />
         </div>
 
-        <div className='p-12'>
+        <div className="p-12">
           <AddressPickerV2
             placeHolder="Tìm theo địa chỉ"
             onSubmit={(data: AddressPickerRes) => addressFilter(data)}
@@ -83,8 +83,9 @@ export const SelectDrugStoreForm = ({ className, onSelect, onClose }: SelectDrug
         </div>
       </div>
 
-      <div className="p-12">
+      <div className="p-12 max-h-[50vh] overflow-auto scrollbar-hide" id="drugstoresScrollable">
         <InfiniteScroll
+          scrollableTarget="drugstoresScrollable"
           dataLength={drugstores?.length || 0}
           next={() => getMore()}
           hasMore={false}

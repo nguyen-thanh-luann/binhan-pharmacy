@@ -95,7 +95,7 @@ export const FooterV2 = () => {
                     >
                       <CustomImage
                         onClick={() => hanldeDescriptionLineClick(line)}
-                        src={line?.image_url?.image_url}
+                        src={line?.image_url?.image_url || ''}
                         className={classNames(
                           `w-[${line?.image_size?.width}px] h-[${line?.image_size?.height}px]`,
                           line.description_style === 'description_html' ||
@@ -117,7 +117,7 @@ export const FooterV2 = () => {
                           ) : (
                             <CustomImage
                               onClick={() => hanldeDescriptionLineClick(line)}
-                              src={content?.image_url?.image_url}
+                              src={content?.image_url?.image_url || ''}
                               className={classNames(
                                 `w-[${line?.image_size?.width}px] h-[${line?.image_size?.height}px]`,
                                 line.description_style === 'description_html' ||

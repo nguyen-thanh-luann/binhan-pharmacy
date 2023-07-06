@@ -121,8 +121,12 @@ const YourNewsPage = () => {
               </div>
 
               {isValidating || isArrayHasValue(postList) ? (
-                <div>
+                <div
+                  className="max-h-[80vh] overflow-scroll scrollbar-hide"
+                  id="postListScrollable"
+                >
                   <InfiniteScroll
+                    scrollableTarget="postListScrollable"
                     dataLength={postList?.length || 0}
                     next={() => getMore()}
                     hasMore={hasMore}

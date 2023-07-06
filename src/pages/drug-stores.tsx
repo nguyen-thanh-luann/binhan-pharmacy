@@ -6,13 +6,15 @@ import {
   NotFound,
   SearchField,
   SelectField,
-  Spinner
+  Spinner,
 } from '@/components'
 import {
   DOMAIN_URL,
   LIMIT_DRUG_STORES,
-  SWR_KEY, thumbnailImageUrl, WEB_DESCRIPTION,
-  WEB_TITTLE
+  SWR_KEY,
+  thumbnailImageUrl,
+  WEB_DESCRIPTION,
+  WEB_TITTLE,
 } from '@/constants'
 import { isArrayHasValue } from '@/helper'
 import { useAddress, useDrugstores } from '@/hooks'
@@ -169,8 +171,9 @@ const DrugstorePage = () => {
                 {renderFilerOptions()}
               </div>
 
-              <div>
+              <div className="max-h-[50vh] overflow-auto scrollbar-hide" id="drugstoreScrollable">
                 <InfiniteScroll
+                  scrollableTarget="drugstoreScrollable"
                   dataLength={drugstores?.length || 0}
                   next={() => getMore()}
                   hasMore={false}

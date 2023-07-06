@@ -37,7 +37,9 @@ export const CommentItem = ({ data, className, onDelete }: CommentItemProps) => 
       </div>
 
       <div className="flex-1">
-        <p className="title_md">{data?.author?.partner_name}</p>
+        <p className="title_md">
+          {data?.author?.business_operation_owner || data?.author?.partner_name}
+        </p>
         <p
           className="text_md"
           dangerouslySetInnerHTML={{

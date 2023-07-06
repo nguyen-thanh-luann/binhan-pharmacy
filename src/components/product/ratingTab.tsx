@@ -112,8 +112,9 @@ export const Rating = ({ className, product_id }: RatingProps) => {
         </div>
       </div>
 
-      <div className="max-h-[50vh] overflow-scroll scrollbar-hide">
+      <div className="max-h-[50vh] overflow-scroll scrollbar-hide" id="ratingScrollable">
         <InfiniteScroll
+          scrollableTarget="ratingScrollable"
           dataLength={ratings?.length || 0}
           next={() => getMore()}
           hasMore={hasMore}

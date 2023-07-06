@@ -19,6 +19,8 @@ export interface CommentAuthor {
   phone: string
   gender: string
   avatar_url: URLRes
+  business_operation_name: string
+  business_operation_owner: string
 }
 
 export interface Comment {

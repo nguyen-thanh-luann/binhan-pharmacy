@@ -135,8 +135,12 @@ const PostTagsPage = () => {
             <div>
               {isValidating || isArrayHasValue(postTagsList) ? (
                 <div>
-                  <div className="max-h-[80vh] overflow-scroll scrollbar-hide">
+                  <div
+                    className="max-h-[80vh] overflow-scroll scrollbar-hide"
+                    id="postTagScrollable"
+                  >
                     <InfiniteScroll
+                      scrollableTarget="postTagScrollable"
                       dataLength={postTagsList?.length || 0}
                       next={() => getMore()}
                       hasMore={hasMore}
