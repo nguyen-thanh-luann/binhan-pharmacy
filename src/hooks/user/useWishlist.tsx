@@ -3,6 +3,7 @@ import { useSWRConfig } from 'swr'
 import { useAsync } from '../common'
 import { userAPI } from '@/services'
 import { SWR_KEY } from '@/constants'
+import { useUser } from './useUser'
 
 interface useWhishlistProps {
   key?: string
@@ -11,7 +12,7 @@ interface useWhishlistProps {
 
 export const useWishlist = ({}: useWhishlistProps) => {
   const { cache, mutate: mutateProduct } = useSWRConfig()
-
+  const { userInfo } = useUser({ shouldFetch: false })
   const { asyncHandler, isLoading } = useAsync()
 
   const addWhishlist = async (productDetail: ProductDetail) => {
@@ -23,7 +24,7 @@ export const useWishlist = ({}: useWhishlistProps) => {
       config: {
         showBackdrop: false,
         showSuccessMsg: false,
-        setLoadingState: true
+        setLoadingState: true,
       },
     })
   }
@@ -43,9 +44,9 @@ export const useWishlist = ({}: useWhishlistProps) => {
   }
 
   const mutateProductDetail = (like: boolean, product_id: number) => {
-    const key = `${SWR_KEY.get_product_detail}_${product_id}`
+    const key = `${SWR_KEY.get_product_detail}_${product_id}_${userInfo?.account?.partner_id}`
     const productDetail: ProductDetailRes = cache.get(key)?.data
-    
+
     mutateProduct(
       key,
       {

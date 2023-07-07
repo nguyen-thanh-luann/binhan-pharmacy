@@ -1,4 +1,4 @@
-import { LocationOutlineIcon, TelePhoneIconOutline, TrashIconOutline } from '@/assets'
+import { LocationOutlineIcon, TrashIconOutline } from '@/assets'
 import {
   Breadcrumb,
   Button,
@@ -11,6 +11,7 @@ import {
 import {
   DOMAIN_URL,
   LIMIT_DRUG_STORES,
+  PHONE_SCHEMA,
   SWR_KEY,
   thumbnailImageUrl,
   WEB_DESCRIPTION,
@@ -31,7 +32,7 @@ const DrugstorePage = () => {
 
   const { districts, getDistricts, getWards, states } = useAddress()
 
-  const { drugstores, filter, hasMore, getMore, isValidating, total } = useDrugstores({
+  const { drugstores, filter, hasMore, getMore, isValidating } = useDrugstores({
     key: `${SWR_KEY.get_drug_stores}`,
     params: {
       limit: LIMIT_DRUG_STORES,
@@ -71,9 +72,9 @@ const DrugstorePage = () => {
     resetField('district', {})
   }
 
-  const filterAddress = `${getValues('ward') ? getValues('ward')?.label : ''}${
-    getValues('district') ? getValues('district')?.label : ''
-  }${getValues('state') ? getValues('state')?.label : ''}`
+  // const filterAddress = `${getValues('ward') ? getValues('ward')?.label : ''}${
+  //   getValues('district') ? getValues('district')?.label : ''
+  // }${getValues('state') ? getValues('state')?.label : ''}`
 
   const renderFilerOptions = () => {
     return (
@@ -171,7 +172,7 @@ const DrugstorePage = () => {
                 {renderFilerOptions()}
               </div>
 
-              <div className="max-h-[50vh] overflow-auto scrollbar-hide" id="drugstoreScrollable">
+              <div className="max-h-[80vh] overflow-auto scrollbar-hide" id="drugstoreScrollable">
                 <InfiniteScroll
                   scrollableTarget="drugstoreScrollable"
                   dataLength={drugstores?.length || 0}
@@ -191,40 +192,42 @@ const DrugstorePage = () => {
                     </div>
                   ) : isArrayHasValue(drugstores) ? (
                     <div>
-                      <p className="text-md mb-12 font-bold">{`Tìm thấy ${total} cửa hàng ${
-                        filterAddress !== '' ? `tại ${filterAddress}` : ''
-                      }`}</p>
+                      <p className="text-md mb-12 font-bold">{`Danh sách cửa hàng`}</p>
 
                       <div className="max-h-[60vh] overflow-scroll">
-                        {drugstores?.map((store) => (
-                          <div
-                            key={store.partner_id}
-                            className="flex items-center gap-12 border border-gray-200 rounded-md p-12 mb-12 last:mb-0 hover:bg-gray-100"
-                            onClick={() => {}}
-                          >
-                            <div className="min-w-[46px] h-[46px]">
-                              <CustomImage
-                                src={store?.avatar_url?.url}
-                                imageClassName="w-[46px] h-[46px] object-cover rounded-full"
-                              />
-                            </div>
-                            <div className="flex-1">
-                              <p className="text-md font-bold mb-8">{store.partner_name}</p>
+                        {drugstores?.map((store) => {
+                          if (store?.drugstore_account_state === 'active') {
+                            return (
+                              <div
+                                key={store.partner_id}
+                                className="flex items-center gap-12 border border-gray-200 rounded-md p-12 mb-12 last:mb-0 hover:bg-gray-100"
+                                onClick={() => {}}
+                              >
+                                <div className="min-w-[46px] h-[46px]">
+                                  <CustomImage
+                                    src={store?.avatar_url?.url}
+                                    imageClassName="w-[46px] h-[46px] object-cover rounded-full"
+                                  />
+                                </div>
+                                <div className="flex-1">
+                                  <p className="text-md font-bold mb-8">
+                                    {' '}
+                                    {!store?.partner_name?.replace(/\s/g, '').match(PHONE_SCHEMA)
+                                      ? store?.partner_name
+                                      : store?.business_operation_name || ''}
+                                  </p>
 
-                              <div className="flex items-center gap-8 mb-8">
-                                <LocationOutlineIcon className="min-w-[16px] w-[16px] h-[16px]" />
-                                <p className="text-base font-semibold line-clamp-1">{`Địa chỉ: ${store.full_address}`}</p>
+                                  <div className="flex items-center gap-8 mb-8">
+                                    <LocationOutlineIcon className="min-w-[16px] w-[16px] h-[16px]" />
+                                    <p className="text-base font-semibold line-clamp-1">{`Địa chỉ: ${store.full_address}`}</p>
+                                  </div>
+                                </div>
                               </div>
-
-                              <div className="flex items-center gap-8">
-                                <TelePhoneIconOutline className="min-w-[16px] w-[16px] h-[16px]" />
-                                <p className="text-base font-semibold line-clamp-1">
-                                  {store.phone}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
+                            )
+                          } else {
+                            return null
+                          }
+                        })}
                       </div>
                     </div>
                   ) : (

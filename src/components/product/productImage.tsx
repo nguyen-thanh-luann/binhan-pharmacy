@@ -8,6 +8,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { twMerge } from 'tailwind-merge'
 import { CustomImage } from '../customImage'
 import { ImageShower } from '../imageShower'
+import ScrollContainer from 'react-indiana-drag-scroll'
 
 interface IProductImage {
   images_ids?: ImageId[]
@@ -52,8 +53,8 @@ export const ProductImg = ({
                     <div>
                       <CustomImage
                         src={img?.image_url}
-                        className="rounded-md w-[440px] h-[440px] mx-auto"
-                        imageClassName="rounded-md object-cover w-[440px] h-[440px] aspect-1 mx-auto"
+                        className="mx-auto max-w-[440px]"
+                        imageClassName="rounded-md w-[440px] object-cover aspect-1 mx-auto"
                       />
                     </div>
                   </SwiperSlide>
@@ -62,7 +63,7 @@ export const ProductImg = ({
           </Swiper>
         </div>
 
-        <div className="flex gap-12 overflow-scroll scrollbar-hide">
+        <ScrollContainer mouseScroll={true} className="flex gap-12">
           {imageList.map((img, index) => {
             return (
               <div
@@ -82,7 +83,7 @@ export const ProductImg = ({
               </div>
             )
           })}
-        </div>
+        </ScrollContainer>
 
         {previewImageUrl ? <ImageShower url={previewImageUrl} /> : null}
       </div>

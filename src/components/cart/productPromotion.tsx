@@ -67,7 +67,7 @@ export const CartProductPromotion = (props: CartProductPromotionProps) => {
     }
 
     if (!customer_id) {
-      Toast('Vui lòng chọn khách hàng')
+      Toast('Vui lòng đăng nhập lại!')
       return
     }
 

@@ -48,7 +48,7 @@ export interface UserAccount {
   full_address: string
   email: string
   date_of_birth: Date
-  drugstore_account_state: boolean
+  drugstore_account_state: 'active' | 'inactive'
 }
 
 export interface UserDetail {

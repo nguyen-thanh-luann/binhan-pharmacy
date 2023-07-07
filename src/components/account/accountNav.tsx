@@ -21,7 +21,7 @@ export const AccountNav = ({ className }: AccountNavProps) => {
       closeModal()
     })
   }
-
+  
   return (
     <div className={twMerge(classNames(`p-12 bg-white`, className))}>
       {accountNavData?.map((item, index) => {

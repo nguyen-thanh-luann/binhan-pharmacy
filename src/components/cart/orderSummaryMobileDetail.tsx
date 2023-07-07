@@ -90,7 +90,7 @@ export const OrderSummaryMobileDetail = ({ onClose }: ICartSummaryMobileDetail) 
 
           {/* total */}
           <div className="flex items-center justify-between mb-12 title-md">
-            <p className="text-base text-text-color font-semibold">{`Tổng`}</p>
+            <p className="text-base text-text-color font-semibold">{`Thanh toán`}</p>
             <p className="text-base text-text-color font-semibold">
               {formatMoneyVND(amountTotal)}
             </p>

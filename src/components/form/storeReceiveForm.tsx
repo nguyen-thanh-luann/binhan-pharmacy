@@ -1,5 +1,5 @@
 import { LocationOutlineIcon, UserDoubleCircleIcon } from '@/assets'
-import { SWR_KEY } from '@/constants'
+import { SWR_KEY, PHONE_SCHEMA } from '@/constants'
 import { isArrayHasValue } from '@/helper'
 import { useDrugstores, useUser, useUserAddress } from '@/hooks'
 import { storeReceiveSchema } from '@/schema'
@@ -199,25 +199,35 @@ export const StoreReceiveForm = () => {
               >
                 {isArrayHasValue(drugstores) ? (
                   <div>
-                    {drugstores?.map((store) => (
-                      <div
-                        key={store.partner_id}
-                        className="border border-gray-200 rounded-md p-12 mb-12 last:mb-0 cursor-pointer hover:bg-gray-200 flex gap-8 items-center"
-                        onClick={() => onCheckStore(store)}
-                      >
-                        <InputCheckbox
-                          type="radio"
-                          isChecked={storeSelected?.partner_id === store?.partner_id}
-                          onCheck={() => onCheckStore(store)}
-                          className="rounded-full"
-                        />
+                    {drugstores?.map((store) => {
+                      if (store?.drugstore_account_state === 'active') {
+                        return (
+                          <div
+                            key={store.partner_id}
+                            className="border border-gray-200 rounded-md p-12 mb-12 last:mb-0 cursor-pointer hover:bg-gray-200 flex gap-8 items-center"
+                            onClick={() => onCheckStore(store)}
+                          >
+                            <InputCheckbox
+                              type="radio"
+                              isChecked={storeSelected?.partner_id === store?.partner_id}
+                              onCheck={() => onCheckStore(store)}
+                              className="rounded-full"
+                            />
 
-                        <div className="flex-1">
-                          <p className="text-md font-bold">{store.partner_name}</p>
-                          <p className="text">{`Địa chỉ: ${store.full_address}`}</p>
-                        </div>
-                      </div>
-                    ))}
+                            <div className="flex-1">
+                              <p className="text-md font-bold">
+                                {!store?.partner_name?.replace(/\s/g, '').match(PHONE_SCHEMA)
+                                  ? store?.partner_name
+                                  : store?.business_operation_name || ''}
+                              </p>
+                              <p className="text">{`Địa chỉ: ${store.full_address}`}</p>
+                            </div>
+                          </div>
+                        )
+                      } else {
+                        return null
+                      }
+                    })}
                   </div>
                 ) : null}
               </InfiniteScroll>

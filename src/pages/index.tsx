@@ -32,7 +32,7 @@ const HomePage = () => {
           <ListProductByAttributeMinor />
         </div>
 
-        <HomeDecor className='hidden md:block' />
+        <HomeDecor className='mb-24' />
 
         <div className="container px-12">
           <HomePostsList />

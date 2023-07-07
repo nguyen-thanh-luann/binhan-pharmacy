@@ -17,9 +17,9 @@ export const ProductPromotionItem = ({ data, className }: ProductPromotionProps)
           <p className="text-md text-red font-bold">{data?.promotion_name}</p>
         </div>
       ) : (
-        <div className="flex gap-8 items-center">
-          <div className="w-12 min-w-[12px] h-12 rounded-full bg-orange"></div>
-          <p className="text-md line-clamp-1">{data?.promotion_name}</p>
+        <div className="flex gap-8 items-start">
+          <div className="w-12 min-w-[12px] mt-6 h-12 rounded-full bg-orange"></div>
+          <p className="text-md">{data?.promotion_name}</p>
         </div>
       )}
     </div>

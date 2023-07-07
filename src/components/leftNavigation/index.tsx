@@ -6,11 +6,13 @@ import { useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Image } from '../image'
 import { LeftNavCategoryDropDown } from '../category'
-import { useCategoryList, useCategoryMinorList } from '@/hooks'
+import { useCategoryList, useCategoryMinorList, usePrimaryPostCategory, useUser } from '@/hooks'
 import { SWR_KEY } from '@/constants'
 import { Spinner } from '../spinner'
-import { isArrayHasValue } from '@/helper'
+import { isArrayHasValue, isDrugStore } from '@/helper'
 import { useRouter } from 'next/router'
+import { PostCategory } from '@/types'
+import { toast } from 'react-hot-toast'
 interface LeftNavigationProps {
   className?: string
   onClose?: () => void
@@ -20,6 +22,7 @@ export const LeftNavigation = ({ className, onClose }: LeftNavigationProps) => {
   const [currentCategoryId, setCurrentCategoryId] = useState<number>()
   const [isCategoryMinor, setIsCategoryMinor] = useState<boolean>(false)
   const router = useRouter()
+  const { userInfo } = useUser({ shouldFetch: false })
 
   const { categoryList, isValidating: categoryListLoading } = useCategoryList({
     key: SWR_KEY.get_category_list,
@@ -28,6 +31,11 @@ export const LeftNavigation = ({ className, onClose }: LeftNavigationProps) => {
 
   const { categoryMinorList, isValidating: categoryMinorListLoading } = useCategoryMinorList({
     key: SWR_KEY.get_category_minor_list,
+    params: {},
+  })
+
+  const { data: postCategoryList, isValidating: postCategoryLoading } = usePrimaryPostCategory({
+    key: `${SWR_KEY.get_parent_post_category_list}`,
     params: {},
   })
 
@@ -47,6 +55,18 @@ export const LeftNavigation = ({ className, onClose }: LeftNavigationProps) => {
     }
   }
 
+  const hanldePostCategoryClick = (postCategory: PostCategory) => {
+    if (postCategory.role === 'npp' && !isDrugStore(userInfo?.account)) {
+      toast.error('Thông tin chỉ dành cho người phụ trách chuyên môn về dược')
+    } else {
+      router.push({
+        pathname: '/post-list',
+        query: {
+          parent_category: postCategory?.id,
+        },
+      })
+    }
+  }
   return (
     <div className={twMerge(classNames(`h-full`, className))}>
       <div className="flex-between p-12">
@@ -148,9 +168,40 @@ export const LeftNavigation = ({ className, onClose }: LeftNavigationProps) => {
               </div>
             ))}
           </div>
-        ) : (
-          <div></div>
-        )}
+        ) : null}
+
+        <div
+          onClick={() => {
+            router.push('/drug-stores')
+          }}
+          className="flex-between my-auto cursor-pointer w-full p-12 border-b border-gray-100"
+        >
+          <p className="text-md text-text-color font-bold line-clamp-1">Điểm bán</p>
+        </div>
+
+        {postCategoryLoading ? (
+          <div className="flex-center my-24">
+            <Spinner />
+          </div>
+        ) : isArrayHasValue(postCategoryList) ? (
+          <div>
+            {postCategoryList?.map((postCategory) => {
+              return postCategory?.role !== 'npp' ? (
+                <div
+                  className="flex-between my-auto cursor-pointer w-full p-12 border-b border-gray-100"
+                  key={postCategory.id}
+                  onClick={() => {
+                    hanldePostCategoryClick(postCategory)
+                  }}
+                >
+                  <p className="text-md text-text-color font-bold line-clamp-1">
+                    {postCategory?.name}
+                  </p>
+                </div>
+              ) : null
+            })}
+          </div>
+        ) : null}
       </div>
     </div>
   )

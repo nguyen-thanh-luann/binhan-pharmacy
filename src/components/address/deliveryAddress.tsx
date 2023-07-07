@@ -12,8 +12,8 @@ export type DeliveryTabOption = 'user' | 'store'
 
 export const DeliveryAddress = ({ className }: DeliveryAddressProps) => {
   const deliveryTabs = [
-    { label: 'Giao hàng cho bạn', value: 'user' },
-    { label: 'Nhận tại nhà thuốc', value: 'store' },
+    { label: 'Giao hàng COD', value: 'user' },
+    { label: 'Mua tại điểm bán', value: 'store' },
   ]
 
   const [currentTab, setCurrentTab] = useState<DeliveryTabOption>('user')

@@ -142,7 +142,7 @@ export const CartProduct = ({
     <div className={classNames('p-12', className)}>
       <div className={twMerge(classNames('bg-white flex md:gap-24 items-center'))}>
         {/* product info */}
-        <div className="flex-1 flex items-center">
+        <div className="flex-1 flex items-start">
           <div className="w-32">
             {isToggleChecking ? (
               <Spinner />
@@ -203,37 +203,39 @@ export const CartProduct = ({
                   </p>
                 ) : null}
               </div>
-
-              <div className="flex justify-start mt-8">
-                {data?.rel_uom_ids?.length > 1 ? (
-                  <Select
-                    isSearchable={false}
-                    className="text-base min-w-[80px] border-primary"
-                    components={{ IndicatorSeparator: () => null }}
-                    defaultValue={changeProductUomTypeToReactSelectType(data?.uom_id)}
-                    options={data?.rel_uom_ids.map((productUom) =>
-                      changeProductUomTypeToReactSelectType(productUom)
-                    )}
-                    onChange={(val) =>
-                      handleChangeProductUom(
-                        changeReactSelectTypeToProductUomType(val || undefined)
-                      )
-                    }
-                  />
-                ) : (
-                  <div>
-                    <p className="text-base line-clamp-1">{data?.uom_id?.uom_name}</p>
-                  </div>
-                )}
-              </div>
             </div>
 
             <div className="md:hidden flex justify-between items-center mt-8">
-              <CustomInputQuantity
-                defaultValue={data?.quantity}
-                disabled={isQuantityUpdating}
-                onChangeQuantity={handleChangeQuantity}
-              />
+              <div className='flex items-center gap-12'>
+                <CustomInputQuantity
+                  defaultValue={data?.quantity}
+                  disabled={isQuantityUpdating}
+                  onChangeQuantity={handleChangeQuantity}
+                />
+
+                <div className="flex justify-start">
+                  {data?.rel_uom_ids?.length > 1 ? (
+                    <Select
+                      isSearchable={false}
+                      className="text-base min-w-[80px] border-primary"
+                      components={{ IndicatorSeparator: () => null }}
+                      defaultValue={changeProductUomTypeToReactSelectType(data?.uom_id)}
+                      options={data?.rel_uom_ids.map((productUom) =>
+                        changeProductUomTypeToReactSelectType(productUom)
+                      )}
+                      onChange={(val) =>
+                        handleChangeProductUom(
+                          changeReactSelectTypeToProductUomType(val || undefined)
+                        )
+                      }
+                    />
+                  ) : (
+                    <div>
+                      <p className="text-base line-clamp-1">{data?.uom_id?.uom_name}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
 
               <div className="cursor-pointer" onClick={openModal}>
                 <TrashIconOutline className="text-red w-16 h-16 active:opacity-50 " />

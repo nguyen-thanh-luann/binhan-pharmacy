@@ -131,7 +131,7 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
               representation_image={currentProduct?.representation_image}
               images_ids={currentProduct?.image_ids}
               type="detail"
-              className="w-full md:w-[440px]"
+              className="w-full"
             />
           ) : (
             <Image src={companyIconSm} imageClassName="w-[440px] h-[440px] object-cover" />
@@ -139,7 +139,7 @@ export const ProductDetail = ({ data, className, type = 'detail' }: ProductDetai
         </div>
 
         {/* like & share */}
-        <div className="flex justify-between flex-col md:flex-row">
+        <div className="flex justify-between flex-wrap">
           <div className="mr-8 flex items-center">
             <p className="text-text-color text-md font-semibold mr-12">Chia sẻ: </p>
             <ShareSocial
