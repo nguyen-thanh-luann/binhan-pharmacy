@@ -13,6 +13,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Button } from '../button'
 import { Spinner } from '../spinner'
+import useSWR from 'swr'
 
 interface PostCategoryMenuProps {
   className?: string
@@ -20,11 +21,14 @@ interface PostCategoryMenuProps {
 
 export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
   const [expandCategories, setExpandCategories] = useState<string[]>([])
+
   const router = useRouter()
   const { userInfo } = useUser({})
 
   const { parent_category, category_id } = router.query
   const currentPostCategoryId = fromProductSlugToProductId(category_id as string)
+  const postParentCategories: PostCategory[] = useSWR(SWR_KEY.get_parent_post_category_list)?.data
+    ?.data
 
   const {
     data: postCategoryList,
@@ -38,10 +42,19 @@ export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
   })
 
   useEffect(() => {
-    filter({
-      parent_id: parent_category as string,
-    })
-  }, [parent_category])
+    if (parent_category) {
+      filter({
+        parent_id: parent_category as string,
+      })
+    } else if (isArrayHasValue(postParentCategories)) {
+      const index = postParentCategories?.findIndex((category) => category?.role !== 'npp')
+      if (index !== -1 && postParentCategories?.[index]?.id) {
+        filter({
+          parent_id: postParentCategories[index]?.id,
+        })
+      }
+    }
+  }, [parent_category, postParentCategories])
 
   const hanldeCategoryClick = (cate: PostCategory) => {
     if (!cate) return
@@ -73,11 +86,21 @@ export const PostCategoryMenu = ({ className }: PostCategoryMenuProps) => {
     setExpandCategories([...(expandCategories || []), data?.id])
   }
 
-  if (!parent_category) return <div></div>
+  if (!isArrayHasValue(postCategoryList)) return <div></div>
 
   return (
     <div className={classNames('bg-white', className)}>
-      <div className="p-10 flex items-center gap-12 border-b border-gray-200">
+      <div
+        className="p-10 flex items-center gap-12 border-b border-gray-200 cursor-pointer"
+        onClick={() => {
+          router.push({
+            pathname: '/post-list',
+            query: {
+              ...router.query,
+            },
+          })
+        }}
+      >
         <MenuIcon className="text-text-color w-32 h-32" />
 
         <p className="title_lg">{`Danh mục tin tức`}</p>

@@ -152,25 +152,6 @@ const PostListPage = () => {
             <div>
               {isValidating || isArrayHasValue(postData) ? (
                 <div>
-                  {/* <InfiniteScroll
-                    dataLength={postList?.length || 0}
-                    next={() => getMore()}
-                    hasMore={hasMore}
-                    loader={hasMore ? renderderPostLoading() : null}
-                  >
-                    <div>
-                      {isValidating ? (
-                        <div>{renderderPostLoading()}</div>
-                      ) : (
-                        <div>
-                          {postData?.map((post) => (
-                            <PostListItemHorizontal data={post} onClick={hanldePostClick} />
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </InfiniteScroll> */}
-
                   <div>
                     {isValidating ? (
                       <div>{renderderPostLoading()}</div>
