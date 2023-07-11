@@ -9,8 +9,7 @@ type Props = {
   className?: string
 }
 
-export const PromotionsAppliedOnOrderView = ({ data, className }: Props) => { 
-  
+export const PromotionsAppliedOnOrderView = ({ data, className }: Props) => {
   if (!isArrayHasValue(data)) return null
 
   return (
@@ -36,12 +35,12 @@ export const PromotionsAppliedOnOrderView = ({ data, className }: Props) => {
               ))
             ) : item.promotion_type === 'range' ? (
               <div>
-                {item.range_line?.range_discount_type !== 'free_product' ? (
+                {/* {item.range_line?.range_discount_type !== 'free_product' ? (
                   <CouponItem
                     className={classNames(item?.free_product?.length && 'mb-8')}
                     label={item.range_line.range_name}
                   />
-                ) : null}
+                ) : null} */}
 
                 {item?.free_product?.length
                   ? item.free_product.map((product) => (
@@ -49,7 +48,7 @@ export const PromotionsAppliedOnOrderView = ({ data, className }: Props) => {
                         key={product.product_id}
                         className={classNames()}
                         data={product}
-                        label={product?.category_minor || ''}
+                        label={item.range_line.range_name || ''}
                       />
                     ))
                   : null}

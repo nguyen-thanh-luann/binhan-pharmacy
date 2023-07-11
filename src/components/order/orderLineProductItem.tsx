@@ -12,8 +12,7 @@ interface OrderLineProductItemProps {
   className?: string
 }
 
-export const OrderLineProductItem = ({ data, className }: OrderLineProductItemProps) => {
- 
+export const OrderLineProductItem = ({ data, className }: OrderLineProductItemProps) => {  
   
   return (
     <div
