@@ -83,7 +83,8 @@ export const QuickOrderForm = ({ className, type = 'purchase' }: QuickOrderFormP
 
   const handleSelectStore = (store: UserAccount) => {
     setValue('drugstore_id', {
-      label: store?.partner_name,
+      label:
+        store?.business_operation_name || store?.business_operation_owner || store?.partner_name,
       value: store?.partner_id,
     })
   }
@@ -140,10 +141,11 @@ export const QuickOrderForm = ({ className, type = 'purchase' }: QuickOrderFormP
       phone: '',
       gender: 'male',
       drugstore_id: {
-        label: ' ',
+        label: 'Chọn nhà thuốc',
         value: 0,
       },
       note: '',
+      street: '',
       drugstore_name: '',
     })
     addressPickerRef.current?.resetData()
@@ -165,6 +167,7 @@ export const QuickOrderForm = ({ className, type = 'purchase' }: QuickOrderFormP
         district_id: data?.district?.value,
         ward_id: data?.ward?.value,
         note: data?.note,
+        street: data?.street,
         drugstore_name: data?.drugstore_name || '',
         gender: data?.gender,
         medical_order_image_url: getOrderPrescriptionPhotos(prescriptionPhotos),
@@ -362,6 +365,13 @@ export const QuickOrderForm = ({ className, type = 'purchase' }: QuickOrderFormP
           </div>
 
           <div>
+            <TextareaField control={control} name="street" placeholder="Nhập địa chỉ chi tiết" />
+          </div>
+        </div>
+
+        <div className="mb-24">
+          <label className="capitalize text-lg font-bold mb-24">Ghi chú</label>
+          <div>
             <TextareaField
               control={control}
               name="note"
@@ -381,7 +391,7 @@ export const QuickOrderForm = ({ className, type = 'purchase' }: QuickOrderFormP
       </form>
 
       {/* modal select store */}
-      <ModalSelectData visible={showSelectStore} modalClassName="">
+      <ModalSelectData visible={showSelectStore} modalClassName="w-[700px]">
         <SelectDrugStoreForm
           onClose={closeSelectStore}
           onSelect={(data) => handleSelectStore(data)}
@@ -389,7 +399,7 @@ export const QuickOrderForm = ({ className, type = 'purchase' }: QuickOrderFormP
       </ModalSelectData>
 
       {/* modal select product */}
-      <ModalSelectData visible={showSelectProduct} modalClassName="">
+      <ModalSelectData visible={showSelectProduct} modalClassName="w-[700px]">
         <SelectProductForm
           onClose={closeSelectProduct}
           onSubmit={(data) => {

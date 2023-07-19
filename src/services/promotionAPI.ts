@@ -31,6 +31,7 @@ export const promotionAPI = {
       params,
     })
   },
+
   getPromotionsCanApplyOnProducts: (
     params: GetPromotionsAppliedOnProductReq
   ): Promise<GetProductPromotionSingleRes | GetProductPromotionMultipleRes> => {
@@ -38,6 +39,7 @@ export const promotionAPI = {
       params,
     })
   },
+
   getGlobalPromotions: (params: GetGlobalPromotionReq): Promise<HTTPResponseV2<PromotionRes[]>> => {
     return axiosClient.get(`/list_promotion_controller/global`, {
       params,

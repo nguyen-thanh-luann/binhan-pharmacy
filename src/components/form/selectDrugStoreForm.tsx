@@ -105,7 +105,11 @@ export const SelectDrugStoreForm = ({ className, onSelect, onClose }: SelectDrug
                   className="border border-gray-200 rounded-md p-12 mb-12 last:mb-0 cursor-pointer hover:bg-gray-200"
                   onClick={() => hanldeSelectStore(store)}
                 >
-                  <p className="text-md font-bold">{store.partner_name}</p>
+                  <p className="text-md font-bold">
+                    {store?.business_operation_name ||
+                      store?.business_operation_owner ||
+                      store?.partner_name}
+                  </p>
                   <p className="text">{`Địa chỉ: ${store.full_address}`}</p>
                 </div>
               ))}

@@ -1,6 +1,7 @@
 import { TimesIcon } from '@/assets'
+import { SWR_KEY } from '@/constants'
 import { isArrayHasValue } from '@/helper'
-import { useClickOutside, useProductQuery } from '@/hooks'
+import { useProductQuery } from '@/hooks'
 import { Product } from '@/types'
 import classNames from 'classnames'
 import { useRef, useState } from 'react'
@@ -11,7 +12,6 @@ import { NotFound } from '../notFound'
 import { SelectProductItem } from '../product'
 import { Spinner } from '../spinner'
 import { SearchField } from './searchField'
-import { SWR_KEY } from '@/constants'
 
 interface SelectProductFormProps {
   className?: string
@@ -29,11 +29,7 @@ export const SelectProductForm = ({
   const [productSelected, setProductSelected] = useState<Product[]>(defaultProductSelected || [])
 
   const ref = useRef<HTMLDivElement>(null)
-
-  useClickOutside([ref], () => {
-    onClose?.()
-  })
-
+  
   const { products, filter, hasMore, getMore } = useProductQuery({
     key: `${SWR_KEY.search_product}`,
     params: {
@@ -132,7 +128,7 @@ export const SelectProductForm = ({
       {isArrayHasValue(productSelected) ? (
         <div className="p-12">
           <p className="text-md font-bold mb-12 bg-primary-200 rounded-full p-4 px-8 w-fit">
-            Sản phẩm đã chọn
+            {` Sản phẩm đã chọn x${productSelected?.length}`}
           </p>
 
           {productSelected?.map((product) => (
