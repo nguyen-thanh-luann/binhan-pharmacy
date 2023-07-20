@@ -11,7 +11,6 @@ import {
 import {
   DOMAIN_URL,
   LIMIT_DRUG_STORES,
-  PHONE_SCHEMA,
   SWR_KEY,
   thumbnailImageUrl,
   WEB_DESCRIPTION,
@@ -211,10 +210,9 @@ const DrugstorePage = () => {
                                 </div>
                                 <div className="flex-1">
                                   <p className="text-md font-bold mb-8">
-                                    {' '}
-                                    {!store?.partner_name?.replace(/\s/g, '').match(PHONE_SCHEMA)
-                                      ? store?.partner_name
-                                      : store?.business_operation_name || ''}
+                                    {store?.business_operation_name ||
+                                      store?.business_operation_owner ||
+                                      store?.partner_name}
                                   </p>
 
                                   <div className="flex items-center gap-8 mb-8">

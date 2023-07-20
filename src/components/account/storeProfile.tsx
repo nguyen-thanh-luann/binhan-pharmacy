@@ -30,11 +30,7 @@ export const StoreProfile = ({ data, className }: StoreProfileProps) => {
   const { getBase64Images } = useAttachment({ limit: LIMIT_ATTACHMENT })
   const { createAttachment } = useCreateAttachment()
 
-  const {
-    control,
-    handleSubmit,
-    setValue,
-  } = useForm({
+  const { control, handleSubmit, setValue } = useForm({
     resolver: yupResolver(storeInfoSchema),
     mode: 'all',
   })
@@ -69,6 +65,7 @@ export const StoreProfile = ({ data, className }: StoreProfileProps) => {
   const handleEditUser = (newUserInfo: any) => {
     updateUser(
       {
+        partner_name: newUserInfo?.businessName,
         business_operation_name: newUserInfo?.businessName,
         business_operation_owner: newUserInfo?.businessOwner,
         business_phone: newUserInfo?.businessPhone,
