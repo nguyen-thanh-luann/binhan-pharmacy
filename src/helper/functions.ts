@@ -193,6 +193,12 @@ export const formatMoneyVndString = (number: number): string => {
 
 export const toImageUrl = (url: string) => `${process.env.NEXT_PUBLIC_API_URL}${url}`
 
+export const toValidImageUrl = (url: string): string => {
+  if (isRemoteImageUrl(url)) return url
+
+  return `${process.env.NEXT_PUBLIC_API_URL}${url}`
+}
+
 export const getActiveStringOrListString = (
   a: string[] | string,
   b: string[] | string
@@ -285,7 +291,6 @@ export const fromProductSlugToProductId = (slug: string): string => {
 
   return productIdArr?.[productIdArr.length - 1]?.toString() || ''
 }
-
 
 export const scrollIntoElementById = (id: string, fromTop: number) => {
   const elementPosition = document.getElementById(id)?.getBoundingClientRect().top || 0

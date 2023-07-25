@@ -8,16 +8,23 @@ import { useRouter } from 'next/router'
 import {
   AccessoryProduct,
   Breadcrumb,
-  NotFound, ProductDescription,
+  NotFound,
+  ProductDescription,
   ProductDetail,
   ProductDetailLoading,
   ProductTabs,
   RelatedProducts,
-  ViewedProducts
+  ViewedProducts,
 } from '@/components'
-import { SWR_KEY, WEB_TITTLE } from '@/constants'
-import { fromProductSlugToProductId, isArrayHasValue, isObjectHasValue } from '@/helper'
+import { DOMAIN_URL, SWR_KEY, WEB_TITTLE } from '@/constants'
+import {
+  fromProductSlugToProductId,
+  isArrayHasValue,
+  isObjectHasValue,
+  toValidImageUrl,
+} from '@/helper'
 import { useEffect, useState } from 'react'
+import { NextSeo } from 'next-seo'
 
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
@@ -38,10 +45,64 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 }
 
-export async function getStaticProps(context: GetStaticPropsContext) {
+export const getStaticProps = async (context: GetStaticPropsContext) => {
+  // const product_id = Number(
+  //   fromProductSlugToProductId((context?.params!.productId as string) || '')
+  // )
+
   return {
     props: {
       productId: context?.params!.productId,
+      // openGraphData: [
+      //   {
+      //     property: 'og:image',
+      //     content:
+      //       toValidImageUrl(productDetail?.representation_image?.image_url) || thumbnailImageUrl,
+      //     key: 'ogimage',
+      //   },
+      //   {
+      //     property: 'og:image:alt',
+      //     content:
+      //       toValidImageUrl(productDetail?.representation_image?.image_url) || thumbnailImageUrl,
+      //     key: 'ogimagealt',
+      //   },
+      //   {
+      //     property: 'og:image:width',
+      //     content: '400',
+      //     key: 'ogimagewidth',
+      //   },
+      //   {
+      //     property: 'og:image:height',
+      //     content: '300',
+      //     key: 'ogimageheight',
+      //   },
+      //   {
+      //     property: 'og:url',
+      //     content: DOMAIN_URL,
+      //     key: 'ogurl',
+      //   },
+      //   {
+      //     property: 'og:image:secure_url',
+      //     content:
+      //       toValidImageUrl(productDetail?.representation_image?.image_url) || thumbnailImageUrl,
+      //     key: 'ogimagesecureurl',
+      //   },
+      //   {
+      //     property: 'og:title',
+      //     content: productDetail?.product_name || '',
+      //     key: 'ogtitle',
+      //   },
+      //   {
+      //     property: 'og:description',
+      //     content: productDetail?.product_name || '',
+      //     key: 'ogdesc',
+      //   },
+      //   {
+      //     property: 'og:type',
+      //     content: 'website',
+      //     key: 'website',
+      //   },
+      // ],
     },
   }
 }
@@ -78,6 +139,23 @@ const ProductDetailPage = () => {
           <ProductDetailLoading />
         ) : isObjectHasValue(data?.product_data) ? (
           <div className="mb-38">
+            <NextSeo
+              title={data?.product_data?.product_name}
+              openGraph={{
+                type: 'product',
+                url: `${DOMAIN_URL}`,
+                title: `${data?.product_data?.product_name}`,
+                images: [
+                  {
+                    url: toValidImageUrl(data?.product_data?.representation_image?.image_url),
+                    width: 800,
+                    height: 600,
+                    alt: `${data?.product_data?.product_name}`,
+                  },
+                ],
+              }}
+            />
+
             <Breadcrumb breadcrumbList={breadcrumbList} />
 
             <ProductDetail data={data?.product_data} className="mb-24" />
