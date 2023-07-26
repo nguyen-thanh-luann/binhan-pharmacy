@@ -28,6 +28,8 @@ export const PostListItemVertical = ({
 }: PostItemProps) => {
   const router = useRouter()
 
+  const categoryTag = data?.categories?.[data?.categories?.length - 1]
+
   return (
     <div
       className={twMerge(
@@ -67,7 +69,7 @@ export const PostListItemVertical = ({
           </p>
 
           <div className="mb-8 flex gap-8 overflow-scroll scrollbar-hide">
-            {data?.categories?.map((category) => (
+            {/* {data?.categories?.map((category) => (
               <PostCategoryTag
                 data={category?.category_name}
                 onClick={() => {
@@ -83,7 +85,24 @@ export const PostListItemVertical = ({
                   })
                 }}
               />
-            ))}
+            ))} */}
+            {categoryTag && (
+              <PostCategoryTag
+                data={categoryTag?.category_name}
+                onClick={() => {
+                  router.push({
+                    pathname: '/post-list',
+                    query: {
+                      ...router.query,
+                      category_id: generateProductSlug(
+                        categoryTag.category_name,
+                        categoryTag.category_id
+                      ),
+                    },
+                  })
+                }}
+              />
+            )}
           </div>
 
           <p
