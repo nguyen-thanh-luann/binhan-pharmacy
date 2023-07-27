@@ -14,21 +14,21 @@ import {
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
 import { isAdmin, isArrayHasValue } from '@/helper'
 import { useChatAccount, useChatAdminAccount, usePostList, useUser } from '@/hooks'
-import { setPostForm } from '@/store'
 import { AccountContainer, Main } from '@/templates'
 import { Post } from '@/types'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { useDispatch } from 'react-redux'
+import { useSWRConfig } from 'swr'
 
 const PostPage = () => {
   const router = useRouter()
-  const dispatch = useDispatch()
   const { userInfo } = useUser({})
   const { data: chatToken } = useChatAccount()
   const { data: chatInfo, updateChatAccountRole } = useChatAdminAccount()
+
+  const { mutate: mutateRemote } = useSWRConfig()
   const [currentPostId, setCurrentPostId] = useState<string | undefined>()
   const [currentPostContent, setCurrentPostContent] = useState<string | undefined>()
 
@@ -60,7 +60,8 @@ const PostPage = () => {
   }
 
   const handleEditPostClick = (post: Post) => {
-    dispatch(setPostForm(post))
+    // dispatch(setPostForm(post))
+    mutateRemote(SWR_KEY.post_form, post, false)
     router.push({
       pathname: '/account/add-post',
       query: {

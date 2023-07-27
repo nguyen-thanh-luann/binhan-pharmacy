@@ -64,8 +64,6 @@ export const TinyMceEditor = ({ onSubmit, defaultValue, btnLabel }: tinyEditorPr
             },
           }}
           plugins={[
-            'a11ychecker',
-            'advcode',
             'advlist',
             'anchor',
             'autolink',
@@ -75,11 +73,9 @@ export const TinyMceEditor = ({ onSubmit, defaultValue, btnLabel }: tinyEditorPr
             'image',
             'lists',
             'link',
-            'powerpaste',
             'preview',
             'searchreplace',
             'table',
-            'tinymcespellchecker',
             'visualblocks',
             'wordcount',
           ]}
@@ -97,7 +93,6 @@ export const TinyMceEditor = ({ onSubmit, defaultValue, btnLabel }: tinyEditorPr
           onClick={() => onSubmit && onSubmit(content)}
         />
       </div>
-
     </div>
   )
 }

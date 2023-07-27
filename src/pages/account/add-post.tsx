@@ -1,30 +1,33 @@
 import { ArrowLeftIcon } from '@/assets'
-import { Breadcrumb, CreatePostForm, NotFound, PostEditor } from '@/components'
+import { Breadcrumb, CreatePostForm, NotFound, TinyMceEditor } from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
 import { isAdmin } from '@/helper'
 import { useChatAccount, useChatAdminAccount, usePostList, useUser } from '@/hooks'
-import { selectPostForm, setPostForm } from '@/store'
 import { AccountContainer, Main } from '@/templates'
 import { CreatePost, Post } from '@/types'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSWRConfig } from 'swr'
 
 const CreatePostPage = () => {
+  const { cache, mutate: mutateRemote } = useSWRConfig()
+
   const router = useRouter()
-  const dispatch = useDispatch()
   const { post_id } = router.query
   const { userInfo } = useUser({})
   const { data: chatToken } = useChatAccount()
   const { data: chatInfo, updateChatAccountRole } = useChatAdminAccount()
 
-  const postForm: Post = useSelector(selectPostForm)
+  const postForm: Post = cache.get(`${SWR_KEY.post_form}`)?.data
 
   const type = postForm && post_id ? 'update' : 'create'
   const pageTitle = type === 'create' ? 'Tạo tin tức' : 'Cập nhật tin tức'
 
-  const [content, setContent] = useState<string | undefined>(postForm?.content)
+  const [content, setContent] = useState<string | undefined>(
+    post_id && postForm?.content ? postForm?.content : undefined
+  )
+
   const [step, setStep] = useState<number>(1) //step 1 is edit post content, step 2 is select image, categories,.... for this post
 
   const { createPost, updatePost } = usePostList({
@@ -36,7 +39,7 @@ const CreatePostPage = () => {
 
   useEffect(() => {
     if (!post_id) {
-      dispatch(setPostForm(undefined))
+      mutateRemote(SWR_KEY.post_form)
     }
   }, [post_id])
 
@@ -123,12 +126,12 @@ const CreatePostPage = () => {
                       }
                     }}
                     type={type}
-                    defaultValue={postForm}
+                    defaultValue={post_id ? postForm : undefined}
                   />
                 </div>
               ) : (
                 <div className="post_editor_account_page">
-                  <PostEditor
+                  {/* <PostEditor
                     defaultValue={content}
                     onSubmit={(val) => {
                       // console.log({val});
@@ -138,9 +141,9 @@ const CreatePostPage = () => {
                         setStep(2)
                       }
                     }}
-                  />
+                  /> */}
 
-                  {/* <TinyMceEditor
+                  <TinyMceEditor
                     defaultValue={content}
                     onSubmit={(val) => {
                       setContent(val)
@@ -148,7 +151,7 @@ const CreatePostPage = () => {
                         setStep(2)
                       }
                     }}
-                  /> */}
+                  />
                 </div>
               )}
             </div>

@@ -30,6 +30,8 @@ export const SWR_KEY = {
 
   get_post_category_option: 'get_post_category_option',
 
+  post_form: 'post_form',
+
   get_room_list: 'get_room_list',
   get_room_detail: 'get_room_detail',
 
