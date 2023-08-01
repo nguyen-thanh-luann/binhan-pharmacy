@@ -4,6 +4,7 @@ import { QueryList } from './http'
 export interface GetCategoryParams extends QueryList {
   category_parent_id?: number
   position_view?: 'main_menu' | 'left_menu'
+  root_category?: boolean
 }
 
 export interface CategoryIdName {

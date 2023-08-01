@@ -25,12 +25,16 @@ export const CategoryNav = ({ className }: HeaderCategoryNavProps) => {
 
   const { categoryList, isValidating: categoryListLoading } = useCategoryList({
     key: SWR_KEY.get_category_list,
-    params: {},
+    params: {
+      root_category: true,
+    },
   })
 
   const { categoryMinorList, isValidating: categoryMinorListLoading } = useCategoryMinorList({
     key: SWR_KEY.get_category_minor_list,
-    params: {},
+    params: {
+      root_category: true,
+    },
   })
 
   const { data: postCategoryList, isValidating: postCategoryLoading } = usePrimaryPostCategory({

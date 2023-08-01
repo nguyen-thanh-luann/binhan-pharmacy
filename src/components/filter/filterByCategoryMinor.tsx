@@ -16,6 +16,7 @@ export const FilterByCategoryMinor = () => {
     key: SWR_KEY.get_category_minor_list_filter,
     params: {
       position_view: 'left_menu',
+      root_category: true,
     },
   })
 

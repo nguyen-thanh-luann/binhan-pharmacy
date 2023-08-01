@@ -17,6 +17,7 @@ export const FilterByCategory = () => {
     key: SWR_KEY.get_category_list_filter,
     params: {
       position_view: 'left_menu',
+      root_category: true
     },
   })
 
