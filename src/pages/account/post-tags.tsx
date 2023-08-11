@@ -5,8 +5,9 @@ import {
   CreateTagForm,
   Modal,
   NotFound,
+  Pagination,
   PostTagAdminItem,
-  PostTagLoading,
+  PostTagLoading
 } from '@/components'
 import { DEFAULT_LIMIT, SWR_KEY, WEB_DESCRIPTION, WEB_TITTLE } from '@/constants'
 import { isAdmin, isArrayHasValue } from '@/helper'
@@ -14,9 +15,9 @@ import { useChatAccount, useChatAdminAccount, useModal, useUser } from '@/hooks'
 import { usePostTag } from '@/hooks/post/usePostTag'
 import { AccountContainer, Main } from '@/templates'
 import { CreatePostTagReq, PostTag, UpdatePostTagReq } from '@/types'
+import classNames from 'classnames'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
-import InfiniteScroll from 'react-infinite-scroll-component'
 
 const PostTagsPage = () => {
   const { data: chatToken } = useChatAccount()
@@ -33,13 +34,15 @@ const PostTagsPage = () => {
 
   const {
     data: postTagsList,
-    getMore,
-    hasMore,
     isValidating,
     createPostTag,
     updatePostTag,
     deletePostTag,
     reStorePostTag,
+    limit,
+    offset,
+    total,
+    paginate,
   } = usePostTag({
     key: `${SWR_KEY.get_post_tags}`,
     params: {
@@ -94,6 +97,10 @@ const PostTagsPage = () => {
     }
   }
 
+  const handlePaginate = (page: number) => {
+    paginate({ page })
+  }
+
   useEffect(() => {
     if (isAdmin(userInfo?.account)) {
       if (chatInfo && chatInfo?.role !== 'npp') {
@@ -136,43 +143,44 @@ const PostTagsPage = () => {
               {isValidating || isArrayHasValue(postTagsList) ? (
                 <div>
                   <div
-                    className="max-h-[80vh] overflow-scroll scrollbar-hide"
+                    className="max-h-[60vh] overflow-scroll scrollbar-hide"
                     id="postTagScrollable"
                   >
-                    <InfiniteScroll
-                      scrollableTarget="postTagScrollable"
-                      dataLength={postTagsList?.length || 0}
-                      next={() => getMore()}
-                      hasMore={hasMore}
-                      loader={hasMore ? <PostTagLoading /> : null}
-                    >
-                      <div>
-                        {isValidating ? (
-                          <div>
-                            <PostTagLoading />
-                          </div>
-                        ) : (
-                          <div>
-                            {postTagsList?.map((postTag) => {
-                              return (
-                                <div key={postTag.id}>
-                                  <PostTagAdminItem
-                                    className="mb-12"
-                                    data={postTag}
-                                    onEdit={handleEditTagClick}
-                                    onChangeActive={handleChanegActive}
-                                  />
-                                </div>
-                              )
-                            })}
-                          </div>
-                        )}
-                      </div>
-                    </InfiniteScroll>
+                    <div>
+                      {isValidating ? (
+                        <div>
+                          <PostTagLoading />
+                        </div>
+                      ) : (
+                        <div>
+                          {postTagsList?.map((postTag) => {
+                            return (
+                              <div key={postTag.id}>
+                                <PostTagAdminItem
+                                  className="mb-12"
+                                  data={postTag}
+                                  onEdit={handleEditTagClick}
+                                  onChangeActive={handleChanegActive}
+                                />
+                              </div>
+                            )
+                          })}
+                        </div>
+                      )}
+                    </div>
                   </div>
+
+                  {!isValidating && (
+                    <Pagination
+                      forcePage={offset / limit}
+                      className={classNames('mt-[24px]')}
+                      pageCount={Math.ceil(total / DEFAULT_LIMIT)}
+                      onPageChange={({ selected }) => handlePaginate(selected + 1)}
+                    />
+                  )}
                 </div>
               ) : (
-                <NotFound notify="Không tìm thấy tag nào!" />
+                <NotFound notify="Không tìm thấy tag!" />
               )}
 
               <Modal

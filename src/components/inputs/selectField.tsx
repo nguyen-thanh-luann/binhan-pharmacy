@@ -9,6 +9,7 @@ type SelectFieldProps = Props & {
   onChange?: (_: OptionType<any>) => void
   label?: string
   labelClassName?: string
+  onSearchEmpty?: (val: any) => void
   // isMulti?: boolean
 }
 
@@ -18,6 +19,7 @@ export const SelectField = ({
   label,
   labelClassName,
   onChange: onChangeProps,
+  onSearchEmpty,
   ...attributes
 }: SelectFieldProps) => {
   const {
@@ -27,6 +29,18 @@ export const SelectField = ({
     name,
     control,
   })
+
+  const hanldeInputChange = (inputValue: any, action: any) => {
+    if (action?.action === 'input-change' && attributes?.options) {
+      const matchedOptions = attributes?.options.find((option: any) =>
+        option?.label?.toLowerCase()?.includes(inputValue?.toLowerCase())
+      )
+
+      if (!matchedOptions) {
+        onSearchEmpty?.(inputValue)
+      }
+    }
+  }
 
   return (
     <div>
@@ -46,6 +60,7 @@ export const SelectField = ({
           onChangeProps?.(val)
           onChange(val)
         }}
+        onInputChange={hanldeInputChange}
         value={value}
         {...attributes}
       />

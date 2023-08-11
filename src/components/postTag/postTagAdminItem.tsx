@@ -2,7 +2,7 @@ import { TagIcon } from '@/assets'
 import { PostTag } from '@/types'
 import classNames from 'classnames'
 import React from 'react'
-import Switch from 'react-switch'
+import { Switch } from 'antd'
 
 interface PostTagAdminItemProps {
   data: PostTag
@@ -38,7 +38,7 @@ export const PostTagAdminItem = ({
         </div>
         <div className="flex items-center">
           <div
-            className={classNames(data?.active ? 'bg-green' : 'bg-gray', 'w-12 h-12 rounded-full')}
+            className={classNames(data?.active ? 'bg-blue' : 'bg-gray', 'w-12 h-12 rounded-full')}
           ></div>
           <p className="text-base text-text-color ml-8 line-clamp-1">{`${
             data?.active ? 'Hiển thị trên web' : 'Không hiển thị trên web'

@@ -31,15 +31,29 @@ interface usePostTagRes {
   reStorePostTag: (props: PostTag, handleSuccess?: () => void, handleError?: () => void) => void
 
   filter: (props: GetPostListParams) => void
+
+  paginate: (props: GetPostListParams) => void
+  offset: number
+  limit: number
+  total: number
 }
 
 export const usePostTag = ({ key, params }: usePostTagProps): usePostTagRes => {
   const dispatch = useDispatch()
 
-  const { data, isValidating, getMore, hasMore, isLoadingMore, mutate, filter } = useListQuery<
-    PostTag,
-    QueryList
-  >({
+  const {
+    data,
+    isValidating,
+    getMore,
+    hasMore,
+    isLoadingMore,
+    mutate,
+    filter,
+    paginate,
+    total,
+    limit,
+    offset,
+  } = useListQuery<PostTag, QueryList>({
     key,
     fetcher: postAPI.getPostTagList,
     initialParams: params,
@@ -166,5 +180,9 @@ export const usePostTag = ({ key, params }: usePostTagProps): usePostTagRes => {
     updatePostTag,
     reStorePostTag,
     filter,
+    paginate,
+    total,
+    limit,
+    offset,
   }
 }

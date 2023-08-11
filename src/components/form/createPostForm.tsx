@@ -37,7 +37,7 @@ export const CreatePostForm = ({
     mode: 'all',
   })
 
-  const { data: postTagList } = usePostTag({
+  const { data: postTagList, getMore: getMoreTag, isLoadingMore: isLoadingMoreTags } = usePostTag({
     key: `${SWR_KEY.get_post_tags}`,
     params: {
       limit: DEFAULT_LIMIT,
@@ -67,7 +67,6 @@ export const CreatePostForm = ({
   }, [defaultValue])
 
   const tagsOption = postTagList
-    // ?.filter((t) => t?.active === true)
     ?.map((tag) => {
       if (tag?.active === true) {
         return {
@@ -131,6 +130,8 @@ export const CreatePostForm = ({
           // defaultValue={tagsOption?.find((item: any) => item.value === defaultValue?.role)}
           control={control}
           name="tag_ids"
+          isLoading={isLoadingMoreTags}
+          onMenuScrollToBottom={getMoreTag}
           placeholder="Chọn tags đính kèm"
           label="Tags"
           labelClassName="!text-md"
