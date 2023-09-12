@@ -92,53 +92,50 @@ export const FilterByCategoryMinor = () => {
 
             return (
               <div key={category?.category_id} className="bg-white">
-                {isArrayHasValue(category?.child_ids) ? (
-                  <div className="">
-                    <div className="border-b border-gray-200 p-8 flex-between cursor-pointer">
-                      <p
-                        onClick={() => hanldeCategorySelect(category?.category_id)}
-                        className={classNames(
-                          ' font-bold text-md hover:text-primary',
-                          isActive(category?.category_id?.toString())
-                            ? 'text-primary'
-                            : 'text-text-color'
-                        )}
-                      >
-                        {category?.category_name}
-                      </p>
+                <div className="">
+                  <div className="border-b border-gray-200 p-8 flex-between cursor-pointer">
+                    <p
+                      onClick={() => hanldeCategorySelect(category?.category_id)}
+                      className={classNames(
+                        ' font-bold text-md hover:text-primary',
+                        isActive(category?.category_id?.toString())
+                          ? 'text-primary'
+                          : 'text-text-color'
+                      )}
+                    >
+                      {category?.category_name}
+                    </p>
 
-                      <div
-                        className="flex flex-1 justify-end"
-                        onClick={() => hanldeShowCategories(category?.category_id)}
-                      >
+                    <div
+                      className="flex flex-1 justify-end"
+                      onClick={() => hanldeShowCategories(category?.category_id)}
+                    >
                       <RightIcon className={`${isShow ? 'rotate-90' : ''} duration-200`} />
-
-                      </div>
-                    </div>
-
-                    <div className={`pl-12 animate-fade ${isShow ? 'block' : 'hidden'}`}>
-                      {category?.child_ids?.map((child) => {
-                        return (
-                          <div
-                            key={child?.category_id}
-                            className="flex gap-12 items-center p-8 cursor-pointer"
-                            onClick={() => hanldeCategorySelect(child.category_id)}
-                          >
-                            <p
-                              className={` font-semibold text-md ${
-                                isActive(child?.category_id?.toString())
-                                  ? 'text-primary'
-                                  : 'text-text-color'
-                              }`}
-                            >
-                              {child?.category_name}
-                            </p>
-                          </div>
-                        )
-                      })}
                     </div>
                   </div>
-                ) : null}
+
+                  <div className={`pl-12 animate-fade ${isShow ? 'block' : 'hidden'}`}>
+                    {category?.child_ids?.map((child) => {
+                      return (
+                        <div
+                          key={child?.category_id}
+                          className="flex gap-12 items-center p-8 cursor-pointer"
+                          onClick={() => hanldeCategorySelect(child.category_id)}
+                        >
+                          <p
+                            className={` font-semibold text-md ${
+                              isActive(child?.category_id?.toString())
+                                ? 'text-primary'
+                                : 'text-text-color'
+                            }`}
+                          >
+                            {child?.category_name}
+                          </p>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
               </div>
             )
           })}
