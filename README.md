@@ -17,3 +17,41 @@
 
 - tailwind.config.js
 - variables.scss
+
+## Getting Started
+
+1. First, install node_modules
+
+```bash
+yarn
+# or
+npm i
+```
+2. Then create .env.local file located at the same level as the src folder with the following environment variables (create your own variables's value)
+
+* NEXT_PUBLIC_API_URL
+* NEXT_PUBLIC_IMAGE_DOMAIN_URL
+* NEXT_PUBLIC_DOMAIN_URL
+* NEXT_PUBLIC_CHAT_API_URL
+* NEXT_PUBLIC_SECRET_KEY
+* NEXT_PUBLIC_ZALO_OA_ID
+* NEXT_PUBLIC_FACEBOOK_PAGE_ID
+* NEXT_PUBLIC_FACEBOOK_APP_ID
+
+
+* NEXT_PUBLIC_API_KEY
+* NEXT_PUBLIC_AUTH_DOMAIN
+* NEXT_PUBLIC_PROJECT_ID
+* NEXT_PUBLIC_STORAGE_BUCKET
+* NEXT_PUBLIC_MESSAGING_SENDER_ID
+
+* NEXT_PUBLIC_TINY_EDITOR_KEY
+
+3. Run the project
+```bash
+yarn dev
+# or
+npm run dev
+```
+
+Open http://localhost:3000 with your browser to see the result.
